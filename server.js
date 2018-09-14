@@ -24,6 +24,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 app.use('/api/users', require('./routes/api/users'));
+app.use('/api/about', require('./routes/api/about'));
 
 app.use(handleErrors);
 
