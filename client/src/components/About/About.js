@@ -5,7 +5,7 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from "react-redux";
 import  {fetchLogo} from "../../actions/about";
 import axios from"axios";
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import "./style/about.css"
 
 

@@ -20,6 +20,7 @@ import ForgotPassword from './components/reset-password/ForgotPassword';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
 import About from "./components/About/About";
+import Story from "./components/story/story";
 
 import './App.css';
 
@@ -52,6 +53,7 @@ class App extends Component {
               <Route path="/about" component={About} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={Dashboard} />
+                <PrivateRoute path='/story/:storyName' component={Story}/>
               </Switch>
             </div>
             <Footer />
