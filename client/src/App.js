@@ -20,7 +20,7 @@ import ForgotPassword from './components/reset-password/ForgotPassword';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
 import About from "./components/About/About";
-import Story from "./components/story/story";
+import Story from "./components/stories/stories";
 
 import './App.css';
 

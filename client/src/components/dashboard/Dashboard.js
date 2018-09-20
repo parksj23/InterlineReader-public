@@ -35,7 +35,7 @@ class Dashboard extends Component {
       <Grid container>
         <Grid item xs={12}>{name}</Grid>
         {stories.map((aStory,index) => {
-          let storyName = aStory.slice(0, aStory.length - 4)
+          let storyName = aStory.slice(0, aStory.indexOf("_logo"))
           return (
             <Grid key={index} item xs={4} style={{height: "100px"}}>
               <Link to={`/story/${storyName}`}>
