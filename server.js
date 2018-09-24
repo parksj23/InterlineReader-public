@@ -5,6 +5,7 @@ const passport = require('passport');
 const handleErrors = require('./helpers/handleErrors');
 
 require('./models/User');
+require('./models/Story');
 const app = express();
 
 app.use(
@@ -24,6 +25,7 @@ app.use(passport.initialize());
 require('./config/passport')(passport);
 
 app.use('/api/users', require('./routes/api/users'));
+app.use('/api/stories', require('./routes/api/stories'));
 
 app.use(handleErrors);
 
