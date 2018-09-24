@@ -52,10 +52,10 @@ class About extends Component {
 
                         <Divider/>
                         <Grid item xs={12} className={"about-section"}>
-                            <h1>Contributors (Click to contact by email)</h1>
-                            <div><p>Software Development: Armaan Dhanji</p></div>
-                            <div><p>Site Design &amp; Project Co-ordinator: Dawn Kim</p></div>
-                            <div><p>Principal Investigator: Dr. Ross King</p></div>
+                          <h1>Contributors (Click to contact by email)</h1>
+                          <div><p style={{fontWeight: "700"}}><a href="mailto:dhanjiarmaan@gmail.com" target="_top">Software Development: Armaan Dhanji</a></p></div>
+                          <div><p style={{fontWeight: "700"}}><a href="mailto:dawndkim@alumni.ubc.ca" target="_top">Site Design &amp; Project Co-ordinator: Dawn Kim</a></p></div>
+                          <div><p style={{fontWeight: "700"}}><a href="mailto:Ross.King@ubc.ca" target="_top">Principal Investigator: Dr. Ross King</a></p></div>
                         </Grid>
                     </Paper>
                 </Grid>
