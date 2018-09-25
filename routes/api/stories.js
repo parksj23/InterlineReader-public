@@ -13,6 +13,6 @@ const story = require('../../controllers/stories');
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
-router.get('/sonagi', (req, res) => story.getVocAndGram(req, res));
+router.get('/:story', (req, res) => story.getVocAndGram(req, res));
 
 module.exports = router;

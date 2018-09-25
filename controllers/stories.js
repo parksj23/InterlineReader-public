@@ -5,16 +5,17 @@ const url = keys.mongoURI;
 const Story = mongoose.model('stories');
 
 exports.getVocAndGram = (req, res) => {
-    MongoClient.connect(url, function(err, client) {
+    let story = (req.params.story).toUpperCase();
+    if(story) {
+      MongoClient.connect(url, function(err, client) {
         if (err) throw err;
         var dbo = client.db("ubcreadertesting");
         var query = {};
-        dbo.collection("KORN410_SONAGI_VOC").find(query).toArray(function(err, result) {
+        dbo.collection(`KORN410_${story}_VOC`).find(query).toArray(function(err, result) {
           if (err) throw err;
           res.json(result); 
           client.close();
         });
       });
-
-     
+    }     
 };
