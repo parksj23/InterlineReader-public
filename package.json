@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/armaandh/interlinereader#readme",
   "dependencies": {
+    "async": "^2.6.1",
     "bcryptjs": "^2.4.3",
     "concurrently": "^3.5.1",
     "express": "^4.16.3",

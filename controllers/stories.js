@@ -11,10 +11,16 @@ exports.getVocAndGram = (req, res) => {
         if (err) throw err;
         var dbo = client.db("ubcreadertesting");
         var query = {};
-        dbo.collection(`KORN410_${story}_VOC`).find(query).toArray(function(err, result) {
+        dbo.collection(`KORN410_${story}_VOC`).find(query).toArray(function(err, voc_result) {
           if (err) throw err;
-          res.json(result); 
-          client.close();
+            dbo.collection(`KORN410_${story}_GRAM`).find(query).toArray(function(err, gram_result) {
+              if (err) throw err;
+              res.json({
+                vocab: voc_result,
+                grammar: gram_result
+              }); 
+              client.close();
+            });
         });
       });
     }     
