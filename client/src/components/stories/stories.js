@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import ReactHTMLParser from "react-html-parser";
 import Sonagi from './Sonagi/Sonagi';
+import SideBar from '../common/sideBar';
 
 
 class Stories extends Component {
@@ -37,7 +38,9 @@ class Stories extends Component {
     const {storyTitle} = this.state;
     //let story = require(`/${storyTitle}/${storyTitle}`)
     return (
-      <Grid container>
+      <div>
+        <SideBar/>
+        <Grid container>
         <Grid item xs={1}/>
         <Grid item xs={10}>
           <Paper elevation={1}>
@@ -54,6 +57,7 @@ class Stories extends Component {
         </Grid>
 
       </Grid>
+      </div>
     );
   }
 }
