@@ -1,4 +1,4 @@
-![Interline Reader](https://github.com/armaandh/InterlineReader/blob/master/ILReader_Logo-with-tagline2.png | height=150)
+<img src="https://github.com/armaandh/InterlineReader/blob/master/ILReader_Logo-with-tagline2.png" height="150">
 
 A literature reading-aid application targetted towards upper-level courses at The University of British Columbia.
 
