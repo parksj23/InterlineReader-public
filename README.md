@@ -1,4 +1,4 @@
-![Interline Reader](http://www.interlinereader.com/images/ILReader_Logo-with-tagline2.png)
+![Interline Reader](https://github.com/armaandh/InterlineReader/blob/master/ILReader_Logo-with-tagline2.png)
 
 A literature reading-aid application targetted towards upper-level courses at The University of British Columbia.
 
