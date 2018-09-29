@@ -9,6 +9,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import Vocab from './Vocab';
+import Grammar from './Grammar';
 
 class SideBar extends Component {
 
@@ -60,8 +62,8 @@ class SideBar extends Component {
                   <Tab label="사전" />
                 </Tabs>
               </AppBar>
-              {value === 0 && <div>Item One</div>}
-              {value === 1 && <div>Item Two</div>}
+              {value === 0 && <div><Vocab/></div>}
+              {value === 1 && <div><Grammar/></div>}
               {value === 2 && <div>Item Three</div>}
               {value === 3 && <div>Item Four</div>}
               {value === 4 && <div>Item Five</div>}

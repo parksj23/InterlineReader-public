@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import ReactHTMLParser from "react-html-parser";
 import Sonagi from './Sonagi/Sonagi';
-import SideBar from '../common/sideBar';
+import SideBar from '../common/sideBar/sideBar';
 
 
 class Stories extends Component {

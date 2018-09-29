@@ -1,4 +1,3 @@
-//TODO: Convert below code from redux-Sagas to redux-Thunk
 
 
 import axios from "axios";
