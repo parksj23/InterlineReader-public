@@ -11,6 +11,9 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Vocab from './Vocab';
 import Grammar from './Grammar';
+import SavedWords from './SavedWords';
+import GrammarSearch from './GrammarSearch';
+import Dictionary from './Dictionary'
 
 class SideBar extends Component {
 
@@ -64,9 +67,9 @@ class SideBar extends Component {
               </AppBar>
               {value === 0 && <div><Vocab/></div>}
               {value === 1 && <div><Grammar/></div>}
-              {value === 2 && <div>Item Three</div>}
-              {value === 3 && <div>Item Four</div>}
-              {value === 4 && <div>Item Five</div>}
+              {value === 2 && <div><SavedWords/></div>}
+              {value === 3 && <div><GrammarSearch/></div>}
+              {value === 4 && <div><Dictionary/></div>}
             </div>
           </div>
         </Drawer>
