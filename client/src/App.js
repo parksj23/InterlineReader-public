@@ -19,6 +19,8 @@ import Dashboard from './components/dashboard/Dashboard';
 import ForgotPassword from './components/reset-password/ForgotPassword';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
+import About from "./components/About/About";
+import Story from "./components/stories/stories";
 
 import './App.css';
 
@@ -48,8 +50,10 @@ class App extends Component {
               <Route path="/login/reset_password/:id/:token" component={ResetPassword} />
               <Route path="/register/verify_email/:id/:token" component={EmailVerification} />
               <Route path="/success" component={Success} />
+              <Route path="/about" component={About} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={Dashboard} />
+                <PrivateRoute path='/story/:storyName' component={Story}/>
               </Switch>
             </div>
             <Footer />

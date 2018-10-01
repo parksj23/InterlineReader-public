@@ -5,12 +5,23 @@ import { connect } from 'react-redux';
 //import { getCurrentProfile, deleteAccount } from '../../actions/profile';
 import { sendEmailVerification } from '../../actions/auth';
 import Spinner from '../common/Spinner';
+import {dashboardInit} from '../../actions/dashboard';
+import Paper from '@material-ui/core/Paper';
+import Grid from "@material-ui/core/Grid";
+import Divider from '@material-ui/core/Divider';
+import ReactSVG from "react-svg";
+
+const parser = new DOMParser();
+
 
 class Dashboard extends Component {
 
-
   onDeleteClick = (e) => {
     //this.props.deleteAccount();
+  }
+
+  componentWillMount(){
+    this.props.dashboardInit();
   }
 
   handleSendEmailVerification = () => {
@@ -18,8 +29,36 @@ class Dashboard extends Component {
     this.props.sendEmailVerification({ id }, this.props.history);
   }
 
+  renderClassStories = (name, stories) => {
+
+    return (
+      <Grid container>
+        <Grid item xs={12}>{name}</Grid>
+        {stories.map((aStory,index) => {
+          let storyName = aStory.slice(0, aStory.indexOf("_logo"))
+          return (
+            <Grid key={index} item xs={4} style={{height: "100px"}}>
+              <Link to={`/story/${storyName}`}>
+                <ReactSVG style={{height: "60px"}} src={`http://localhost:5050/images/korn/${name}/badges/svg/${aStory}`} />
+              </Link>
+            </Grid>
+          )
+
+        })}
+
+      </Grid>
+    )
+  }
+
+
+
   render() {
     const { user } = this.props.auth;
+    const sections = this.props.dashboard.badges;
+    let classNames;
+    if(sections){
+      classNames = Object.keys(sections)
+    }
 
     let dashboardContent;
 
@@ -33,6 +72,7 @@ class Dashboard extends Component {
           </div>
         );
       };
+
     
 
     return (
@@ -42,6 +82,11 @@ class Dashboard extends Component {
             <div className="col-md-12">
               <h1 className="display-4">Stories</h1>
               {dashboardContent}
+              <Grid container >
+                {classNames ? classNames.map(aClass => {
+                  return this.renderClassStories(aClass, sections[aClass])
+                }) : <p>hi</p>}
+              </Grid>
             </div>
           </div>
         </div>
@@ -56,7 +101,13 @@ Dashboard.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  dashboard: state.dashboard
 });
 
-export default connect(mapStateToProps, { sendEmailVerification })(Dashboard);
+const mapDispatchToProps = ({
+  sendEmailVerification,
+  dashboardInit
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
