@@ -55,7 +55,7 @@ router.put('/reset_password/:id/:token', catchErrors(user.setNewPassword));
 // @access  Private
 router.get(
 	'/current',
-	passport.authenticate('jwt', { session: false }, user.getCurrentUser)
+	passport.authenticate('jwt', { session: false }, catchErrors(user.getCurrentUser))
 );
 
 module.exports = router;

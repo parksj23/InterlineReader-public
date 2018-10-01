@@ -6,6 +6,7 @@ const path = require('path')
 const handleErrors = require('./helpers/handleErrors');
 
 require('./models/User');
+require('./models/Story');
 const app = express();
 
 app.use(
@@ -33,6 +34,7 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/about', require('./routes/api/about'));
 app.use('/api/dashboard', require('./routes/api/dashboard'));
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
+app.use('/api/stories', require('./routes/api/stories'));
 
 app.use(handleErrors);
 
