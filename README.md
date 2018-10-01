@@ -1,18 +1,11 @@
-# InterlineReader
+<img src="https://github.com/armaandh/InterlineReader/blob/master/ILReader_Logo-with-tagline2.png" height="150">
 
+A literature reading-aid application targetted towards upper-level courses at The University of British Columbia.
 
-## Technologies
+## Regular Usage
+Visit [www.interlinereader.com](www.interlinereader.com) to use the latest version.
 
-- Express
-- Mongoose
-- Passport
-- JsonWebToken
-- SendGrid
-- Gravatar
-- React
-- Redux
-
-### Installation
+## Developer Usage
 
 Install the dependencies
 
@@ -25,20 +18,13 @@ Run app
 ```sh
 $ npm run dev
 ```
+## Technologies
 
-You will need to create a dev.js in the server config folder with
-
-```
-module.exports = {
-	mongoURI: 'YOUR_MONGO_URI',
-	sendGridKey: 'YOUR_SENDGRID_KEY',
-	redirectDomain: 'YOUR_REDIRECT_DOMAIN', // e.g. http://localhost:3000
-};
-```
-
-and env.development in client folder with 
-
-```
-REACT_APP_GITHUB_ID=YOUR_GITHUB_ID
-REACT_APP_GITHUB_SECRET=YOUR_GITHUB_SECRET
-```
+- Express
+- Mongoose
+- Passport
+- JsonWebToken
+- SendGrid
+- Gravatar
+- React
+- Redux
