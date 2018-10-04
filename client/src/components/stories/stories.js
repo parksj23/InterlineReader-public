@@ -6,6 +6,10 @@ import {connect} from "react-redux";
 import ReactHTMLParser from "react-html-parser";
 import Sonagi from './Sonagi/Sonagi';
 import SideBar from '../common/sideBar/sideBar';
+import {getVocabforStory} from '../../actions/stories';
+
+
+
 
 
 class Stories extends Component {
@@ -13,12 +17,13 @@ class Stories extends Component {
   state = {
     applicationDescription: "",
     storyTitle: "",
-    language: "english"
+    language: "korean"
   }
 
   componentWillMount() {
     let pathname = this.props.location.pathname;
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1)
+    this.props.getVocabforStory(storyTitle);
     this.setState({
       storyTitle,
     })
@@ -36,10 +41,22 @@ class Stories extends Component {
 
   render() {
     const {storyTitle} = this.state;
+    const {stories, vocab} = this.props;
+    let searchWord = null;
+
+    if(vocab && vocab.highlightedWord){
+      if(this.state.language === 'korean') {
+        searchWord = vocab.highlightedWord.korean
+      }
+      else {
+        searchWord = vocab.highlightedWord.english
+      }
+    }
+    console.log(searchWord)
     //let story = require(`/${storyTitle}/${storyTitle}`)
     return (
       <div>
-        <SideBar/>
+        <SideBar vocab={stories.vocab} grammar={stories.grammar}/>
         <Grid container>
         <Grid item xs={1}/>
         <Grid item xs={10}>
@@ -47,7 +64,9 @@ class Stories extends Component {
             <Grid container>
               <Grid item xs={1}/>
               <Grid item xs={10}>
-                <Sonagi language={this.state.language}/>
+
+                  <Sonagi language={this.state.language} searchWord={searchWord}/>
+
               </Grid>
             </Grid>
           </Paper>
@@ -63,9 +82,12 @@ class Stories extends Component {
 }
 
 const mapStateToProps = state => (
-  {about: state.about}
+  {
+    stories: state.stories,
+    vocab: state.vocab
+  }
 )
 
-const mapDispatchToProps = ({})
+const mapDispatchToProps = ({getVocabforStory})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stories);

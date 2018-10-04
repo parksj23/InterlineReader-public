@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {GET_VOCAB_SUCCESS, GET_VOCAB_REQUEST} from "../constants/action-types";
+import {GET_VOCAB_SUCCESS, UPDATE_HIGHLIGHT_WORD} from "../constants/action-types";
 
 
 export const getVocabforStory = (story) => dispatch => {
@@ -21,6 +21,15 @@ export const getVocabforStory = (story) => dispatch => {
     })
   })
 
+
+
+}
+
+export const updateHighlightedWord = (vocabWord) => dispatch =>{
+  dispatch({
+    type: UPDATE_HIGHLIGHT_WORD,
+    payload: vocabWord
+  })
 
 
 }

@@ -39,6 +39,7 @@ class SideBar extends Component {
 
   render(){
     let {value} = this.state;
+    const {vocab, grammar} = this.props;
     return(
       <div>
         <Button style={{position: "absolute"}} onClick={this.toggleDrawer('left', true)}><i className="material-icons">menu</i></Button>
@@ -65,8 +66,8 @@ class SideBar extends Component {
                   <Tab label="사전" />
                 </Tabs>
               </AppBar>
-              {value === 0 && <div><Vocab/></div>}
-              {value === 1 && <div><Grammar/></div>}
+              {value === 0 && <div><Vocab vocab={vocab}/></div>}
+              {value === 1 && <div><Grammar grammar={grammar}/></div>}
               {value === 2 && <div><SavedWords/></div>}
               {value === 3 && <div><GrammarSearch/></div>}
               {value === 4 && <div><Dictionary/></div>}
