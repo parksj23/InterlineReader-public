@@ -13,11 +13,14 @@ import Vocab from './Vocab';
 import Grammar from './Grammar';
 import SavedWords from './SavedWords';
 import GrammarSearch from './GrammarSearch';
-import Dictionary from './Dictionary'
+import Dictionary from './Dictionary';
+
+import {toggleSideBar} from "../../../actions/sideBar";
+
 
 class SideBar extends Component {
 
-  constructor(props){
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,43 +30,53 @@ class SideBar extends Component {
   }
 
   toggleDrawer = (side, open) => () => {
+    this.props.toggleSideBar(open);
     this.setState({
       [side]: open,
     });
   };
 
   handleTabChange = (event, value) => {
-    this.setState({ value });
+    this.setState({value});
   };
 
 
-  render(){
+  render() {
     let {value} = this.state;
     const {vocab, grammar} = this.props;
-    return(
-      <div>
-        <Button style={{position: "absolute"}} onClick={this.toggleDrawer('left', true)}><i className="material-icons">menu</i></Button>
-        <Drawer style={{maxWidth: "33vw"}} open={this.state.left} onClose={this.toggleDrawer('left', false)}>
+    return (
+      <div >
+        <Button style={{position: "absolute"}} onClick={this.toggleDrawer('left', true)}><i
+          className="material-icons">menu</i></Button>
+        <Drawer variant="persistent" open={this.state.left} onClose={this.toggleDrawer('left', false)}>
           <div
             tabIndex={0}
             role="button"
             style={{maxWidth: "40vw"}}
-            >
-            <div>
+          >
               <div>
                 <Grid container>
-                  <Grid item xs={2}><div style={{float: "left", marginLeft: "15px", marginTop: "15px"}}><i style={{fontSize: "36px"}}className="material-icons">settings</i></div></Grid>
+                  <Grid item xs={2}>
+                    <div style={{float: "left", marginLeft: "15px", marginTop: "15px"}}><i style={{fontSize: "36px"}}
+                                                                                           className="material-icons">settings</i>
+                    </div>
+                  </Grid>
                   <Grid item xs={8}/>
-                  <Grid item xs={2}><div style={{float: "right", marginRight: "15px", marginTop: "15px", fontSize: "36px"}}><i style={{fontSize: "36px"}} className="material-icons" onClick={this.toggleDrawer('left', false)}>close</i></div></Grid>
+                  <Grid item xs={2}>
+                    <div style={{float: "right", marginRight: "15px", marginTop: "15px", fontSize: "36px"}}><i
+                      style={{fontSize: "36px"}} className="material-icons"
+                      onClick={this.toggleDrawer('left', false)}>close</i></div>
+                  </Grid>
                 </Grid>
               </div>
               <AppBar position="static">
-                <Tabs style={{backgroundColor: "#212529"}} value={value} onChange={this.handleTabChange} scrollable scrollButtons='auto'>
-                  <Tab label="어휘" />
-                  <Tab label="문법" />
-                  <Tab label="저장한 단어" href="#basic-tabs" />
-                  <Tab label="문법검색" />
-                  <Tab label="사전" />
+                <Tabs style={{backgroundColor: "#212529"}} value={value} onChange={this.handleTabChange} scrollable
+                      scrollButtons='auto'>
+                  <Tab label="어휘"/>
+                  <Tab label="문법"/>
+                  <Tab label="저장한 단어" href="#basic-tabs"/>
+                  <Tab label="문법검색"/>
+                  <Tab label="사전"/>
                 </Tabs>
               </AppBar>
               {value === 0 && <div><Vocab vocab={vocab}/></div>}
@@ -72,20 +85,19 @@ class SideBar extends Component {
               {value === 3 && <div><GrammarSearch/></div>}
               {value === 4 && <div><Dictionary/></div>}
             </div>
-          </div>
         </Drawer>
       </div>
 
     )
   }
-
 }
+
 
 
 const mapStateToProps = state => (
   {}
 )
 
-const mapDispatchToProps = ({})
+const mapDispatchToProps = ({toggleSideBar})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

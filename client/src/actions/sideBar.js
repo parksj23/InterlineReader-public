@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {GET_VOCAB_AND_GRAMMAR_SUCCESS} from "../constants/action-types";
+import {GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR} from "../constants/action-types";
 
 
 export const addVocabToSavedWords = (vocab) => dispatch => {
@@ -9,6 +9,16 @@ export const addVocabToSavedWords = (vocab) => dispatch => {
     responseType: 'application/json',
     classType: 'all'
   }
+
+}
+
+export const toggleSideBar = (isOpened) => dispatch => {
+
+  dispatch({
+    type: TOGGLE_SIDEBAR,
+    payload: isOpened
+  })
+
 
 }
 

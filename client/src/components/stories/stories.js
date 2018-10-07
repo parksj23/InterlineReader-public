@@ -12,6 +12,7 @@ import {getVocabforStory} from '../../actions/stories';
 
 
 
+
 class Stories extends Component {
 
   state = {
@@ -38,6 +39,11 @@ class Stories extends Component {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    if(this.props.vocab.highlightedWord !== prevProps.vocab.highlightedWord)
+      console.log("new highlighted word: " + this.props.vocab.highlightedWord)
+  }
+
 
   render() {
     const {storyTitle} = this.state;
@@ -57,16 +63,15 @@ class Stories extends Component {
     return (
       <div>
         <SideBar vocab={stories.vocab} grammar={stories.grammar}/>
-        <Grid container>
+        <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width:"68%"} : null}>
         <Grid item xs={1}/>
         <Grid item xs={10}>
           <Paper elevation={1}>
             <Grid container>
-              <Grid item xs={1}/>
+              <Grid item xs={1}>
+              </Grid>
               <Grid item xs={10}>
-
-                  <Sonagi language={this.state.language} searchWord={searchWord}/>
-
+                <Sonagi language={this.state.language} searchWord={searchWord}/>
               </Grid>
             </Grid>
           </Paper>

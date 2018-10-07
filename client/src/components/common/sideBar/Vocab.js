@@ -44,7 +44,7 @@ class Vocab extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.vocab.map((aVocab) => {return this.renderVocab(aVocab)})}
+            {this.props.vocab ? this.props.vocab.map((aVocab) => {return this.renderVocab(aVocab)}) : null}
           </TableBody>
         </Table>
       </div>

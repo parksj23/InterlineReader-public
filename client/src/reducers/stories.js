@@ -1,7 +1,8 @@
-import {GET_VOCAB_AND_GRAMMAR_SUCCESS} from '../constants/action-types';
+import {GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR} from '../constants/action-types';
 
 const initialState = {
-  language: "korean"
+  language: "korean",
+  isSideBarOpen: false
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +13,11 @@ export default (state = initialState, action) => {
         vocab: action.payload.vocab,
         grammar: action.payload.grammar
       };
+    case TOGGLE_SIDEBAR:
+      return{
+        ...state,
+        isSideBarOpen: action.payload
+      }
     default:
       return state;
   }
