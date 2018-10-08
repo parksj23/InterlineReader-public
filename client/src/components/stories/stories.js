@@ -7,10 +7,7 @@ import ReactHTMLParser from "react-html-parser";
 import Sonagi from './Sonagi/Sonagi';
 import SideBar from '../common/sideBar/sideBar';
 import {getVocabforStory} from '../../actions/stories';
-
-
-
-
+import {getListOfSavedWords} from "../../actions/sideBar";
 
 
 class Stories extends Component {
@@ -25,6 +22,7 @@ class Stories extends Component {
     let pathname = this.props.location.pathname;
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1)
     this.props.getVocabforStory(storyTitle);
+    this.props.getListOfSavedWords(this.props.userId, storyTitle);
     this.setState({
       storyTitle,
     })
@@ -58,11 +56,10 @@ class Stories extends Component {
         searchWord = vocab.highlightedWord.english
       }
     }
-    console.log(searchWord)
     //let story = require(`/${storyTitle}/${storyTitle}`)
     return (
       <div>
-        <SideBar vocab={stories.vocab} grammar={stories.grammar}/>
+        <SideBar vocab={stories.vocab} grammar={stories.grammar} story={storyTitle}/>
         <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width:"68%"} : null}>
         <Grid item xs={1}/>
         <Grid item xs={10}>
@@ -89,10 +86,11 @@ class Stories extends Component {
 const mapStateToProps = state => (
   {
     stories: state.stories,
-    vocab: state.vocab
+    vocab: state.vocab,
+    userId: state.auth.user.id
   }
 )
 
-const mapDispatchToProps = ({getVocabforStory})
+const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stories);

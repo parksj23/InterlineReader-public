@@ -8,11 +8,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {getVocabforStory} from '../../../actions/vocab';
+import {getSavedWords} from "../../../actions/sideBar";
 
 class SavedWords extends Component {
   constructor(props) {
     super(props);
     this.renderVocab.bind(this);
+  }
+
+  componentWillMount(){
+    this.props.getSavedWords(this.props.userId, this.props.story, this.props.vocabList)
   }
 
   renderVocab = (vocabWord) => {
@@ -26,7 +31,7 @@ class SavedWords extends Component {
   }
 
   render(){
-    const vocabList = this.props.vocab;
+    const savedWords = this.props.savedWords;
     return(
       <div>
         <Table>
@@ -38,7 +43,7 @@ class SavedWords extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {vocabList.map((aVocab) => {return this.renderVocab(aVocab)})}
+            {savedWords ? savedWords.map((aVocab) => {return this.renderVocab(aVocab)}): null}
           </TableBody>
         </Table>
       </div>
@@ -51,88 +56,16 @@ class SavedWords extends Component {
 
 }
 
+
 const mapStateToProps = state => (
-  {
-    vocab: [
-      {
-        "_id": 8,
-        "korean": "개울둑",
-        "hanja": "--",
-        "english": "[-뚝] bank or levy along/of a brook or small stream",
-        "order_id": 8
-      },
-      {
-        "_id": 9,
-        "korean": "비키기",
-        "hanja": "--",
-        "english": "비키다: get out of the way; step aside (from)",
-        "order_id": 9
-      },
-      {
-        "_id": 10,
-        "korean": "요행",
-        "hanja": "僥倖/徼幸",
-        "english": "as luck would have it, by chance",
-        "order_id": 10
-      },
-      {
-        "_id": 11,
-        "korean": "분홍",
-        "hanja": "粉紅",
-        "english": "pink (color)",
-        "order_id": 11
-      },
-      {
-        "_id": 4,
-        "korean": "물장난",
-        "hanja": "--",
-        "english": "[-짱난] dabbling/playing in water",
-        "order_id": 4
-      },
-      {
-        "_id": 12,
-        "korean": "소매",
-        "hanja": "--",
-        "english": "sleeve",
-        "order_id": 12
-      },
-      {
-        "_id": 13,
-        "korean": "걷어 올린",
-        "hanja": "--",
-        "english": "걷어올리다: roll up",
-        "order_id": 13
-      },
-      {
-        "_id": 15,
-        "korean": "마냥",
-        "hanja": "--",
-        "english": "to one's heart's content; to the fullest extent, all the way",
-        "order_id": 15
-      },
-      {
-        "_id": 14,
-        "korean": "목덜미",
-        "hanja": "--",
-        "english": "nape of one's neck",
-        "order_id": 14
-      },
-      {
-        "_id": 17,
-        "korean": "빤히",
-        "hanja": "--",
-        "english": "clearly, obviously; brightly; (stare) fixedly, hard, intently",
-        "order_id": 17
-      }
-
-
-
-
-    ]}
+  {userId: state.auth.user.id,
+  savedWords: state.sideBar.savedWords.savedVocab
+  }
 )
 
 const mapDispatchToProps = ({
-  getVocabforStory
+  getVocabforStory,
+  getSavedWords
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedWords);

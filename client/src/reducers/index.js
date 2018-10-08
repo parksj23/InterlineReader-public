@@ -5,6 +5,7 @@ import about from './about';
 import dashboard from './dashboard';
 import vocab from './vocab';
 import stories from './stories';
+import sideBar from './sideBar';
 
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
   about,
   dashboard,
   vocab,
-  stories
+  stories,
+  sideBar
 });

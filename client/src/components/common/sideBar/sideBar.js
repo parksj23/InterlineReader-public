@@ -81,7 +81,7 @@ class SideBar extends Component {
               </AppBar>
               {value === 0 && <div><Vocab vocab={vocab}/></div>}
               {value === 1 && <div><Grammar grammar={grammar}/></div>}
-              {value === 2 && <div><SavedWords/></div>}
+              {value === 2 && <div><SavedWords story={this.props.story}/></div>}
               {value === 3 && <div><GrammarSearch/></div>}
               {value === 4 && <div><Dictionary/></div>}
             </div>
