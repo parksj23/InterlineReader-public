@@ -1,17 +1,23 @@
-import {GET_LIST_OF_SAVED_WORDS, GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR} from '../constants/action-types';
+import {GET_LIST_OF_SAVED_WORDS, GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR, INIT_STORY} from '../constants/action-types';
 
 const initialState = {
   language: "korean",
-  isSideBarOpen: false
+  isSideBarOpen: false,
+  storyTitle: ""
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case INIT_STORY:
+      return({
+        ...state,
+        storyTitle: action.payload
+      })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {
         ...state,
         vocab: action.payload.vocab,
-        grammar: action.payload.grammar
+        grammar: action.payload.grammar,
       };
     case TOGGLE_SIDEBAR:
       return{

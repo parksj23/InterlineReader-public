@@ -31,4 +31,9 @@ router.get('/getListOfSavedWords', (req, res) => {
   savedWords.getListOfSavedWords(params, res)
 });
 
+router.put('/addSavedWord', (req,res) => {
+  savedWords.addToSavedWords(req.body,res)
+
+})
+
 module.exports = router;

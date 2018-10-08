@@ -1,7 +1,6 @@
 import {GET_SAVED_WORDS} from '../constants/action-types';
 
 const initialState = {
-  user: "",
   savedWords: []
 };
 
@@ -10,7 +9,7 @@ export default (state = initialState, action) => {
     case GET_SAVED_WORDS:
       return{
         ...state,
-        savedWords: action.payload
+        savedWords: action.payload.savedVocab
       }
     default:
       return state;

@@ -44,3 +44,5 @@ export const GET_LIST_OF_SAVED_WORDS = "GET_LIST_OF_SAVED_WORDS";
 export const ADD_SAVED_WORD = "ADD_SAVED_WORD";
 
 export const DELETE_SAVED_WORD = "DELETE_SAVED_WORD";
+
+export const INIT_STORY = "INIT_STORY";

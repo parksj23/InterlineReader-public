@@ -15,7 +15,7 @@ import SavedWords from './SavedWords';
 import GrammarSearch from './GrammarSearch';
 import Dictionary from './Dictionary';
 
-import {toggleSideBar} from "../../../actions/sideBar";
+import {toggleSideBar, getSavedWords} from "../../../actions/sideBar";
 
 
 class SideBar extends Component {
@@ -27,6 +27,10 @@ class SideBar extends Component {
       left: false,
       value: 0
     }
+  }
+
+  componentDidMount(){
+    this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, [204])
   }
 
   toggleDrawer = (side, open) => () => {
@@ -95,9 +99,12 @@ class SideBar extends Component {
 
 
 const mapStateToProps = state => (
-  {}
+  {
+    stories: state.stories,
+    userId: state.auth.user.id
+  }
 )
 
-const mapDispatchToProps = ({toggleSideBar})
+const mapDispatchToProps = ({toggleSideBar, getSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

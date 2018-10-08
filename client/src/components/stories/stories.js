@@ -3,11 +3,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
-import ReactHTMLParser from "react-html-parser";
 import Sonagi from './Sonagi/Sonagi';
 import SideBar from '../common/sideBar/sideBar';
-import {getVocabforStory} from '../../actions/stories';
-import {getListOfSavedWords} from "../../actions/sideBar";
+import {getVocabforStory, initStory} from '../../actions/stories';
+import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 
 
 class Stories extends Component {
@@ -20,9 +19,11 @@ class Stories extends Component {
 
   componentWillMount() {
     let pathname = this.props.location.pathname;
-    let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1)
+    let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1);
+    this.props.initStory(storyTitle);
+
     this.props.getVocabforStory(storyTitle);
-    this.props.getListOfSavedWords(this.props.userId, storyTitle);
+    this.props.getListOfSavedWords(this.props.userId, storyTitle)
     this.setState({
       storyTitle,
     })
@@ -38,8 +39,8 @@ class Stories extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.vocab.highlightedWord !== prevProps.vocab.highlightedWord)
-      console.log("new highlighted word: " + this.props.vocab.highlightedWord)
+    if(this.props.stories.vocabList !== prevProps.stories.vocabList)
+      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList)
   }
 
 
@@ -91,6 +92,6 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords})
+const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords,initStory, getSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stories);

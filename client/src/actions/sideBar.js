@@ -4,14 +4,6 @@ import axios from "axios";
 import {TOGGLE_SIDEBAR, GET_SAVED_WORDS, GET_LIST_OF_SAVED_WORDS} from "../constants/action-types";
 
 
-export const addVocabToSavedWords = (vocab) => dispatch => {
-  const params = {
-    responseType: 'application/json',
-    classType: 'all'
-  }
-
-}
-
 export const toggleSideBar = (isOpened) => dispatch => {
 
   dispatch({
@@ -27,7 +19,7 @@ export const getListOfSavedWords = (userId, story) => dispatch => {
     userId,
     story
   }
-  axios.get(`/api/getSavedWords/getListOfSavedWords`, {params}).then(res=> {
+  axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
     console.log(res)
     if (res.data) {
       dispatch({
@@ -46,12 +38,30 @@ export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
   }
 
   // if(savedWords.length == 0) return;
-  axios.get(`/api/getSavedWords`, {params}).then(res=>{
-    console.log(res.data)
+  axios.get(`/api/savedWords`, {params}).then(res=>{
     dispatch({
       type: GET_SAVED_WORDS,
       payload: res.data
     })
   })
+}
+
+export const addSavedWord = vocab => dispatch => {
+  console.log(vocab);
+  axios.put(`/api/savedWords/addSavedWord`, vocab).then(res=>{
+
+  })
+
+}
+
+export const deleteSavedWord = orderId => dispatch => {
+  const params = {
+    orderId
+  }
+
+  axios.post(`/api/savedWords/deleteSavedWord`, {params}).then(res=>{
+
+  })
+
 }
 

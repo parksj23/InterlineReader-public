@@ -4,6 +4,7 @@ const keys = require('../config/keys');
 const url = keys.mongoURI;
 
 exports.getSavedWords = (params, res) => {
+  console.log(params);
   let {userId, story, savedWords} = params;
   if (userId) {
     MongoClient.connect(url, function (err, client) {
@@ -60,5 +61,31 @@ exports.getListOfSavedWords = (params, res) => {
   }
 
 
+
+}
+
+exports.addToSavedWords = (params,res) => {
+  let {userId,storyTitle} = params;
+  if(userId && storyTitle) {
+    MongoClient.connect(url, function (err, client) {
+      if (err) throw err;
+      var dbo = client.db("ubcreadertesting");
+      let query = {
+        userId
+      };
+      dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
+        voc_list[0].vocabList.push(params.vocabWord.order_id)
+        dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).update(query,voc_list[0]);
+
+        if (err) throw err;
+        res.json({
+          vocabList: voc_list[0],
+        });
+        client.close();
+      });
+    })
+
+
+  }
 
 }

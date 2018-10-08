@@ -6,6 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {connect} from "react-redux";
 import {updateHighlightedWord} from '../../../actions/vocab';
+import {addSavedWord} from "../../../actions/sideBar";
 
 
 class Vocab extends Component {
@@ -15,6 +16,19 @@ class Vocab extends Component {
     this.updateHighlightWord.bind(this);
   }
 
+  handleAddSavedWord =(vocabWord) => {
+
+    let payload = {
+      userId: this.props.userId,
+      storyTitle: this.props.stories.storyTitle,
+      vocabWord
+    }
+
+    this.props.addSavedWord(payload);
+
+
+
+  }
 
   updateHighlightWord = (vocabWord) =>{
     console.log(vocabWord)
@@ -27,7 +41,7 @@ class Vocab extends Component {
       <TableRow>
         <TableCell style={{whiteSpace: "nowrap"}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
         <TableCell>{vocabWord.english}</TableCell>
-        <TableCell><i className="material-icons">add</i></TableCell>
+        <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><i className="material-icons">add</i></TableCell>
       </TableRow>
     )
   }
@@ -55,9 +69,12 @@ class Vocab extends Component {
 
 
 const mapStateToProps = state => (
-  {}
+  {
+    stories: state.stories,
+    userId: state.auth.user.id
+  }
 )
 
-const mapDispatchToProps = ({updateHighlightedWord})
+const mapDispatchToProps = ({updateHighlightedWord, addSavedWord})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vocab);
