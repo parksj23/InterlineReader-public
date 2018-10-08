@@ -17,17 +17,15 @@ class Vocab extends Component {
   }
 
   handleAddSavedWord =(vocabWord) => {
-
-    let payload = {
-      userId: this.props.userId,
-      storyTitle: this.props.stories.storyTitle,
-      vocabWord
+    let vocabList = this.props.stories.vocabList.vocabList;
+    if(vocabList.indexOf(vocabWord.order_id) === -1){
+      let payload = {
+        userId: this.props.userId,
+        storyTitle: this.props.stories.storyTitle,
+        vocabWord
+      }
+      this.props.addSavedWord(payload);
     }
-
-    this.props.addSavedWord(payload);
-
-
-
   }
 
   updateHighlightWord = (vocabWord) =>{

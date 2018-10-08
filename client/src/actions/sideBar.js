@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {TOGGLE_SIDEBAR, GET_SAVED_WORDS, GET_LIST_OF_SAVED_WORDS} from "../constants/action-types";
+import {TOGGLE_SIDEBAR, GET_SAVED_WORDS, GET_LIST_OF_SAVED_WORDS, UPDATE_SAVED_WORDS} from "../constants/action-types";
 
 
 export const toggleSideBar = (isOpened) => dispatch => {
@@ -47,9 +47,12 @@ export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
 }
 
 export const addSavedWord = vocab => dispatch => {
-  console.log(vocab);
   axios.put(`/api/savedWords/addSavedWord`, vocab).then(res=>{
-
+    console.log(res)
+    dispatch({
+      type: UPDATE_SAVED_WORDS,
+      payload: res.data.vocabList
+    })
   })
 
 }

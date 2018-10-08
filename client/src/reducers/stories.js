@@ -1,4 +1,4 @@
-import {GET_LIST_OF_SAVED_WORDS, GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR, INIT_STORY} from '../constants/action-types';
+import {GET_LIST_OF_SAVED_WORDS, GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR, INIT_STORY, UPDATE_SAVED_WORDS} from '../constants/action-types';
 
 const initialState = {
   language: "korean",
@@ -25,6 +25,11 @@ export default (state = initialState, action) => {
         isSideBarOpen: action.payload
       }
     case GET_LIST_OF_SAVED_WORDS:
+      return {
+        ...state,
+        vocabList: action.payload
+      }
+    case UPDATE_SAVED_WORDS:
       return {
         ...state,
         vocabList: action.payload
