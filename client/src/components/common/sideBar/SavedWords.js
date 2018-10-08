@@ -17,12 +17,24 @@ class SavedWords extends Component {
   componentWillMount(){
   }
 
+  handleDelete = (vocabWord) => {
+    let vocabList = this.props.stories.vocabList.vocabList;
+    if(vocabList.indexOf(vocabWord.order_id) !== -1){
+      let payload = {
+        userId: this.props.userId,
+        storyTitle: this.props.stories.storyTitle,
+        vocabWord
+      }
+      this.props.deleteSavedWord(payload);
+    }
+  }
+
   renderVocab = (vocabWord) => {
     return(
       <TableRow>
         <TableCell style={{whiteSpace: "nowrap"}}>{vocabWord.korean}</TableCell>
         <TableCell>{vocabWord.english}</TableCell>
-        <TableCell><i className="material-icons">delete</i></TableCell>
+        <TableCell onClick={()=> this.handleDelete(vocabWord)}><i className="material-icons">delete</i></TableCell>
       </TableRow>
     )
   }
@@ -56,7 +68,8 @@ class SavedWords extends Component {
 
 const mapStateToProps = state => (
   {userId: state.auth.user.id,
-  savedWords: state.sideBar.savedWords
+  savedWords: state.sideBar.savedWords,
+    stories: state.stories
   }
 )
 

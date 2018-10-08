@@ -94,3 +94,39 @@ exports.addToSavedWords = (params,res) => {
   }
 
 }
+
+exports.deleteSavedWords = (params,res) => {
+  let {userId,storyTitle} = params;
+  console.log(params);
+  if(userId && storyTitle) {
+    MongoClient.connect(url, function (err, client) {
+      if (err) throw err;
+      var dbo = client.db("ubcreadertesting");
+      let query = {
+        userId
+      };
+      dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
+        if(voc_list[0].vocabList.indexOf(params.vocabWord.order_id) === -1){
+          res.json({
+            vocabList: voc_list[0],
+          });
+        }
+        else{
+          let vocList = voc_list[0].vocabList;
+          vocList.splice(vocList.indexOf(params.vocabWord.order_id),1)
+          voc_list[0].vocabList = vocList
+          dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).update(query,voc_list[0]);
+
+          if (err) throw err;
+          res.json({
+            vocabList: voc_list[0],
+          });
+        }
+        client.close();
+      });
+    })
+
+
+  }
+
+}

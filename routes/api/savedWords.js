@@ -36,4 +36,9 @@ router.put('/addSavedWord', (req,res) => {
 
 })
 
+router.put('/deleteSavedWord', (req,res) => {
+  savedWords.deleteSavedWords(req.body,res)
+
+})
+
 module.exports = router;

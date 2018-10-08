@@ -20,7 +20,6 @@ export const getListOfSavedWords = (userId, story) => dispatch => {
     story
   }
   axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
-    console.log(res)
     if (res.data) {
       dispatch({
         type: GET_LIST_OF_SAVED_WORDS,
@@ -36,8 +35,6 @@ export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
     story,
     savedWords
   }
-
-  // if(savedWords.length == 0) return;
   axios.get(`/api/savedWords`, {params}).then(res=>{
     dispatch({
       type: GET_SAVED_WORDS,
@@ -48,7 +45,6 @@ export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
 
 export const addSavedWord = vocab => dispatch => {
   axios.put(`/api/savedWords/addSavedWord`, vocab).then(res=>{
-    console.log(res)
     dispatch({
       type: UPDATE_SAVED_WORDS,
       payload: res.data.vocabList
@@ -57,13 +53,12 @@ export const addSavedWord = vocab => dispatch => {
 
 }
 
-export const deleteSavedWord = orderId => dispatch => {
-  const params = {
-    orderId
-  }
-
-  axios.post(`/api/savedWords/deleteSavedWord`, {params}).then(res=>{
-
+export const deleteSavedWord = vocab => dispatch => {
+  axios.put(`/api/savedWords/deleteSavedWord`, vocab).then(res=>{
+    dispatch({
+      type: UPDATE_SAVED_WORDS,
+      payload: res.data.vocabList
+    })
   })
 
 }
