@@ -1,8 +1,7 @@
-import {GET_VOCAB_REQUEST, GET_VOCAB_SUCCESS} from '../constants/action-types';
+import {UPDATE_HIGHLIGHT_WORD, GET_VOCAB_SUCCESS} from '../constants/action-types';
 
 const initialState = {
-  isAuthenticated: false,
-  user: {}
+  highlightedWord: {}
 };
 
 export default (state = initialState, action) => {
@@ -12,6 +11,12 @@ export default (state = initialState, action) => {
         ...state,
         vocab: action.payload,
       };
+    case UPDATE_HIGHLIGHT_WORD:
+      return{
+        ...state,
+        highlightedWord: action.payload
+      }
+
     default:
       return state;
   }
