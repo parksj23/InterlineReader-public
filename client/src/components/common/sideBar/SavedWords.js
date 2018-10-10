@@ -5,8 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {getVocabforStory} from '../../../actions/vocab';
-import {getSavedWords, deleteSavedWord} from "../../../actions/sideBar";
+import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../actions/sideBar";
 
 class SavedWords extends Component {
   constructor(props) {
@@ -17,16 +16,26 @@ class SavedWords extends Component {
   componentWillMount(){
   }
 
+  componentWillUnmount(){
+    let vocabList = this.props.stories.vocabList.vocabList;
+
+    let params = {
+      userId: this.props.userId,
+      storyTitle: this.props.stories.storyTitle,
+      vocabList
+    }
+    this.props.updateSavedWords(params);
+  }
+
   handleDelete = (vocabWord) => {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) !== -1){
-      let payload = {
-        userId: this.props.userId,
-        storyTitle: this.props.stories.storyTitle,
-        vocabWord
-      }
-      this.props.deleteSavedWord(payload);
+      this.props.deleteSavedWord(vocabWord);
+      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList)
     }
+
+
+
   }
 
   renderVocab = (vocabWord) => {
@@ -67,16 +76,17 @@ class SavedWords extends Component {
 
 
 const mapStateToProps = state => (
-  {userId: state.auth.user.id,
-  savedWords: state.sideBar.savedWords,
+  {
+    userId: state.auth.user.id,
+    savedWords: state.sideBar.savedWords,
     stories: state.stories
   }
 )
 
 const mapDispatchToProps = ({
-  getVocabforStory,
   getSavedWords,
-  deleteSavedWord
+  deleteSavedWord,
+  updateSavedWords
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedWords);

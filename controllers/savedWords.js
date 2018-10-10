@@ -10,18 +10,20 @@ exports.getSavedWords = (params, res) => {
       if (err) throw err;
       var dbo = client.db("ubcreadertesting");
       let query = [];
-      savedWords.map(orderId => {
-        query.push({
-          order_id: parseInt(orderId)
+      if(savedWords && savedWords.length > 0) {
+        savedWords.map(orderId => {
+          query.push({
+            order_id: parseInt(orderId)
+          })
         })
-      })
-      dbo.collection(`KORN410_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
-        if (err) throw err;
-        res.json({
-          savedVocab: voc_result,
+        dbo.collection(`KORN410_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
+          if (err) throw err;
+          res.json({
+            savedVocab: voc_result,
+          });
         });
-        client.close();
-      });
+      }
+      client.close();
     })
   }
 }
@@ -62,8 +64,9 @@ exports.getListOfSavedWords = (params, res) => {
 
 }
 
-exports.addToSavedWords = (params,res) => {
-  let {userId,storyTitle} = params;
+exports.updateSavedWords = (params,res) => {
+  let {userId,storyTitle, vocabList} = params;
+  console.log(vocabList)
   if(userId && storyTitle) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
@@ -72,28 +75,20 @@ exports.addToSavedWords = (params,res) => {
         userId
       };
       dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
-        if(voc_list[0].vocabList.indexOf(params.vocabWord.order_id) !== -1){
-          res.json({
-            vocabList: voc_list[0],
-          });
-        }
-        else{
-          voc_list[0].vocabList.push(params.vocabWord.order_id)
+          voc_list[0].vocabList = vocabList
           dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).update(query,voc_list[0]);
 
           if (err) throw err;
           res.json({
             vocabList: voc_list[0],
           });
-        }
+        })
         client.close();
-      });
     })
-
-
   }
-
 }
+
+
 
 exports.deleteSavedWords = (params,res) => {
   let {userId,storyTitle} = params;

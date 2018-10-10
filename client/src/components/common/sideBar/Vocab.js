@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {connect} from "react-redux";
 import {updateHighlightedWord} from '../../../actions/vocab';
-import {addSavedWord} from "../../../actions/sideBar";
+import {addSavedWord, updateSavedWords} from "../../../actions/sideBar";
 
 
 class Vocab extends Component {
@@ -19,12 +19,7 @@ class Vocab extends Component {
   handleAddSavedWord =(vocabWord) => {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) === -1){
-      let payload = {
-        userId: this.props.userId,
-        storyTitle: this.props.stories.storyTitle,
-        vocabWord
-      }
-      this.props.addSavedWord(payload);
+      this.props.addSavedWord(vocabWord)
     }
   }
 
@@ -32,6 +27,17 @@ class Vocab extends Component {
     console.log(vocabWord)
     this.props.updateHighlightedWord(vocabWord)
 
+  }
+
+  componentWillUnmount(){
+    let vocabList = this.props.stories.vocabList.vocabList;
+
+    let params = {
+      userId: this.props.userId,
+      storyTitle: this.props.stories.storyTitle,
+      vocabList
+    }
+    this.props.updateSavedWords(params);
   }
 
   renderVocab = (vocabWord) => {
@@ -73,6 +79,6 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({updateHighlightedWord, addSavedWord})
+const mapDispatchToProps = ({updateHighlightedWord, addSavedWord, updateSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vocab);

@@ -41,4 +41,8 @@ router.put('/deleteSavedWord', (req,res) => {
 
 })
 
+router.put('/updateSavedWords', (req,res) => {
+  savedWords.updateSavedWords(req.body, res)
+})
+
 module.exports = router;

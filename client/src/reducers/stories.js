@@ -1,4 +1,11 @@
-import {GET_LIST_OF_SAVED_WORDS, GET_VOCAB_AND_GRAMMAR_SUCCESS, TOGGLE_SIDEBAR, INIT_STORY, UPDATE_SAVED_WORDS} from '../constants/action-types';
+import {
+  GET_LIST_OF_SAVED_WORDS,
+  GET_VOCAB_AND_GRAMMAR_SUCCESS,
+  TOGGLE_SIDEBAR,
+  INIT_STORY,
+  UPDATE_SAVED_WORDS,
+  ADD_SAVED_WORD, DELETE_SAVED_WORD
+} from '../constants/action-types';
 
 const initialState = {
   language: "korean",
@@ -7,6 +14,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  let vocabList;
   switch (action.type) {
     case INIT_STORY:
       return({
@@ -33,6 +41,20 @@ export default (state = initialState, action) => {
       return {
         ...state,
         vocabList: action.payload
+      }
+    case ADD_SAVED_WORD:
+      vocabList = state.vocabList;
+      vocabList.vocabList.push(action.payload.order_id)
+      return{
+        ...state,
+        vocabList
+      }
+    case DELETE_SAVED_WORD:
+      vocabList = state.vocabList;
+      vocabList.vocabList.splice(vocabList.vocabList.indexOf(action.payload.order_id),1)
+      return{
+        ...state,
+        vocabList
       }
     default:
       return state;
