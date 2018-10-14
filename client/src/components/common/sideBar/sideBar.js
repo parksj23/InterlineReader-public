@@ -8,6 +8,7 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Vocab from './Vocab';
 import Grammar from './Grammar';
@@ -16,7 +17,6 @@ import GrammarSearch from './GrammarSearch';
 import Dictionary from './Dictionary';
 
 import {toggleSideBar, getSavedWords} from "../../../actions/sideBar";
-
 
 class SideBar extends Component {
 
@@ -46,12 +46,14 @@ class SideBar extends Component {
 
 
   render() {
+    const pointerIcon = {cursor: 'pointer'};
     let {value} = this.state;
     const {vocab, grammar} = this.props;
     return (
       <div >
+        <Tooltip disableFocusListener title="Open Drawer">
         <Button style={{position: "absolute"}} onClick={this.toggleDrawer('left', true)}><i
-          className="material-icons">menu</i></Button>
+          className="material-icons">menu</i></Button></Tooltip>
         <Drawer variant="persistent" open={this.state.left} onClose={this.toggleDrawer('left', false)}>
           <div
             tabIndex={0}
@@ -60,12 +62,7 @@ class SideBar extends Component {
           >
               <div>
                 <Grid container>
-                  <Grid item xs={2}>
-                    <div style={{float: "left", marginLeft: "15px", marginTop: "15px"}}><i style={{fontSize: "36px"}}
-                                                                                           className="material-icons">settings</i>
-                    </div>
-                  </Grid>
-                  <Grid item xs={8}/>
+                  <Grid item xs={10}/>
                   <Grid item xs={2}>
                     <div style={{float: "right", marginRight: "15px", marginTop: "15px", fontSize: "36px"}}><i
                       style={{fontSize: "36px"}} className="material-icons"
@@ -75,7 +72,7 @@ class SideBar extends Component {
               </div>
               <AppBar position="static">
                 <Tabs style={{backgroundColor: "#212529"}} value={value} onChange={this.handleTabChange} scrollable
-                      scrollButtons='auto'>
+                      scrollButtons='on'>
                   <Tab label="어휘"/>
                   <Tab label="문법"/>
                   <Tab label="저장한 단어" href="#basic-tabs"/>

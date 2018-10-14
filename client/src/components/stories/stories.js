@@ -61,7 +61,7 @@ class Stories extends Component {
     return (
       <div>
         <SideBar vocab={stories.vocab} grammar={stories.grammar} story={storyTitle}/>
-        <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width:"68%"} : null}>
+        <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width:"85%"} : null}>
         <Grid item xs={1}/>
         <Grid item xs={10}>
           <Paper elevation={1}>

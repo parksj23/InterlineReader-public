@@ -136,6 +136,7 @@ exports.login = async (req, res) => {
 		name: user.name,
 		username: user.username,
 		isVerified: user.isVerified,
+		isStudent: user.role === 'STUDENT'
 	};
 
 	const token = jwt.sign(payload, keys.secretOrKey, {
@@ -169,7 +170,7 @@ exports.checkEmailVerificationUrl = async (req, res) => {
 	const payload = jwt.verify(token, secret);
 
 	user.isVerified = true;
-	const { id, name, username, isVerified } = await user.save();
+	const { id, name, username, isVerified, role } = await user.save();
 
 	const loginToken = jwt.sign(
 		{
@@ -177,6 +178,7 @@ exports.checkEmailVerificationUrl = async (req, res) => {
 			name,
 			username,
 			isVerified,
+			role
 		},
 		keys.secretOrKey,
 		{ expiresIn: 30 * 24 * 60 * 60 * 1000 }

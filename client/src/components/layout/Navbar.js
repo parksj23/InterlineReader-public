@@ -71,11 +71,9 @@ class Navbar extends Component {
                   About
                 </Link>
               </li>
-              {isAuthenticated && (
+              {(Object.keys(user).length>=1 && !user.isStudent) && (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile">
-                    Ipsum
-                  </Link>
+                  <Link className="nav-link" to="/profile"> Instructor Panel</Link>
                 </li>)
               }
             </ul>

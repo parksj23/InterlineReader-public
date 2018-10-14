@@ -41,11 +41,12 @@ class Vocab extends Component {
   }
 
   renderVocab = (vocabWord) => {
+    const pointerButton = {cursor: 'pointer'};
     return(
       <TableRow>
-        <TableCell style={{whiteSpace: "nowrap"}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
-        <TableCell>{vocabWord.english}</TableCell>
-        <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><i className="material-icons">add</i></TableCell>
+        <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer'}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
+        <TableCell style={pointerButton}>{vocabWord.english}</TableCell>
+        <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><i style={pointerButton} className="material-icons">add</i></TableCell>
       </TableRow>
     )
   }
