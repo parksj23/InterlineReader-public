@@ -56,7 +56,7 @@ class App extends Component {
                 <PrivateRoute path='/story/:storyName' component={Story}/>
               </Switch>
             </div>
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </Router>
       </Provider>

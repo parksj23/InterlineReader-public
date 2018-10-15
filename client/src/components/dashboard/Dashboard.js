@@ -13,6 +13,12 @@ import ReactSVG from "react-svg";
 
 const parser = new DOMParser();
 
+let divStyle = {
+  'width': '500px',
+  'display': 'flex',
+  'justify-content': 'space-evenly',
+  'top': '140px'
+};
 
 class Dashboard extends Component {
 
@@ -39,7 +45,7 @@ class Dashboard extends Component {
           return (
             <Grid key={index} item xs={4} style={{height: "100px"}}>
               <Link to={`/story/${storyName}`}>
-                <ReactSVG style={{height: "60px"}} src={`http://localhost:5050/images/korn/${name}/badges/svg/${aStory}`} />
+                <ReactSVG style={{height: "60px"}} src={`http://127.0.0.1:5050/images/korn/${name}/badges/svg/${aStory}`} />
               </Link>
             </Grid>
           )
@@ -56,8 +62,9 @@ class Dashboard extends Component {
     const { user } = this.props.auth;
     const sections = this.props.dashboard.badges;
     let classNames;
+
     if(sections){
-      classNames = Object.keys(sections)
+        classNames = Object.keys(sections)
     }
 
     let dashboardContent;
@@ -78,17 +85,48 @@ class Dashboard extends Component {
     return (
       <div className="dashboard">
         <div className="container">
+        <div col-md-12>
+              <h1>KORN 410A</h1>
+        </div>
           <div className="row">
-            <div className="col-md-12">
-              <h1 className="display-4">Stories</h1>
-              {dashboardContent}
-              <Grid container >
+
+ 
+              {/* <Grid container >
                 {classNames ? classNames.map(aClass => {
                   return this.renderClassStories(aClass, sections[aClass])
-                }) : <p>hi</p>}
-              </Grid>
+                }) : <p>Loading</p>}
+              </Grid> */}
+
+                <div className="book books-1 col-md-2"></div>
+                <div className="col-md-1"></div>
+                <div className="book books-2 col-md-2"></div>
+                <div className="col-md-1"></div>
+                <div className="book books-3 col-md-2"></div>
+                <div className="col-md-1"></div>
+              </div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="col-md-12"></div>
+              <div className="row">
+          
+              <div className="book books-4 col-md-2"></div>
+                <div className="col-md-1"></div>
+                <div className="book books-5 col-md-2"></div>
+                <div className="col-md-1"></div>
+                <div className="book books-6 col-md-2"></div>
+                <div className="col-md-1"></div>    
+            
             </div>
-          </div>
+         
         </div>
       </div>
     );
