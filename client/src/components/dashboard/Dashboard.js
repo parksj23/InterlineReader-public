@@ -10,15 +10,10 @@ import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import Divider from '@material-ui/core/Divider';
 import ReactSVG from "react-svg";
+import '../../Dashboard.css';
 
 const parser = new DOMParser();
 
-let divStyle = {
-  'width': '500px',
-  'display': 'flex',
-  'justify-content': 'space-evenly',
-  'top': '140px'
-};
 
 class Dashboard extends Component {
 
@@ -97,11 +92,17 @@ class Dashboard extends Component {
                 }) : <p>Loading</p>}
               </Grid> */}
 
-                <div className="book books-1 col-md-2"></div>
+                <div className="book col-md-2">
+                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
+                </div>       
                 <div className="col-md-1"></div>
-                <div className="book books-2 col-md-2"></div>
+                <div className="book col-md-2">
+                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
+                </div>  
                 <div className="col-md-1"></div>
-                <div className="book books-3 col-md-2"></div>
+                <div className="book col-md-2">
+                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
+                </div>  
                 <div className="col-md-1"></div>
               </div>
               <div className="col-md-12"></div>
@@ -118,11 +119,17 @@ class Dashboard extends Component {
               <div className="col-md-12"></div>
               <div className="row">
           
-              <div className="book books-4 col-md-2"></div>
+              <div className="book col-md-2">
+                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
+                </div>  
                 <div className="col-md-1"></div>
-                <div className="book books-5 col-md-2"></div>
+                <div className="book col-md-2">
+                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
+                </div>  
                 <div className="col-md-1"></div>
-                <div className="book books-6 col-md-2"></div>
+                <div className="book col-md-2">
+                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
+                </div>  
                 <div className="col-md-1"></div>    
             
             </div>
