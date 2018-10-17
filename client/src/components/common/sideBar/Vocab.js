@@ -4,6 +4,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 import {connect} from "react-redux";
 import {updateHighlightedWord} from '../../../actions/vocab';
 import {addSavedWord, updateSavedWords} from "../../../actions/sideBar";
@@ -44,7 +45,7 @@ class Vocab extends Component {
       <TableRow>
         <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
         <TableCell style={pointerButton}>{vocabWord.english}</TableCell>
-        <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><i style={pointerButton} className="material-icons">add</i></TableCell>
+        <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><Tooltip disableFocusListener title="Save Vocab"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
       </TableRow>
     )
   }
