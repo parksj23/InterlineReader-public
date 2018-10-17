@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../actions/sideBar";
 
 class SavedWords extends Component {
@@ -39,11 +40,12 @@ class SavedWords extends Component {
   }
 
   renderVocab = (vocabWord) => {
+    const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
     return(
       <TableRow>
         <TableCell style={{whiteSpace: "nowrap"}}>{vocabWord.korean}</TableCell>
         <TableCell>{vocabWord.english}</TableCell>
-        <TableCell onClick={()=> this.handleDelete(vocabWord)}><i className="material-icons">delete</i></TableCell>
+        <TableCell onClick={()=> this.handleDelete(vocabWord)}><Tooltip disableFocusListener title="Delete Word"><i className="material-icons" style={pointerButton}>delete</i></Tooltip></TableCell>
       </TableRow>
     )
   }

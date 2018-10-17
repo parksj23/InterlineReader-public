@@ -59,7 +59,9 @@ export default (state = initialState, action) => {
       vocabList.vocabList.splice(vocabList.vocabList.indexOf(action.payload.order_id),1)
       return{
         ...state,
-        vocabList
+        vocabList,
+        openStatus: true,
+        statusMessage: "Deleted Vocab"
       }
     case LEAVE_STORY:
       return initialState
