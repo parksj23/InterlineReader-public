@@ -20,6 +20,7 @@ class Vocab extends Component {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) === -1){
       this.props.addSavedWord(vocabWord)
+      this.props.addWord('success');
     }
   }
 
@@ -30,6 +31,7 @@ class Vocab extends Component {
 
   componentWillUnmount(){
     let vocabList = this.props.stories.vocabList.vocabList;
+    console.log(vocabList)
 
     let params = {
       userId: this.props.userId,

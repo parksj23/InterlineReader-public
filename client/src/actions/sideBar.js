@@ -6,7 +6,8 @@ import {
   GET_SAVED_WORDS,
   GET_LIST_OF_SAVED_WORDS,
   UPDATE_SAVED_WORDS,
-  ADD_SAVED_WORD, DELETE_SAVED_WORD
+  ADD_SAVED_WORD, DELETE_SAVED_WORD,
+  RESET_STATUS
 } from "../constants/action-types";
 
 
@@ -81,5 +82,12 @@ export const updateSavedWords = params => dispatch => {
     })
   })
 
+}
+
+export const handleStatusClose = () => dispatch => {
+  dispatch({
+    type: RESET_STATUS,
+    payload: {}
+  })
 }
 

@@ -1,15 +1,12 @@
 import React, {Component} from "react";
-import Paper from '@material-ui/core/Paper';
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
-import ReactHTMLParser from "react-html-parser";
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import Vocab from './Vocab';
 import Grammar from './Grammar';
 import SavedWords from './SavedWords';
@@ -17,8 +14,9 @@ import GrammarSearch from './GrammarSearch';
 import Dictionary from './Dictionary';
 import './styles/sideBar.css';
 import Resizable from 're-resizable';
+import StatusMessage from '../statusMessage/statusMessage';
 
-import {toggleSideBar, getSavedWords} from "../../../actions/sideBar";
+import {toggleSideBar, getSavedWords, handleStatusClose} from "../../../actions/sideBar";
 
 class SideBar extends Component {
 
@@ -27,8 +25,11 @@ class SideBar extends Component {
 
     this.state = {
       left: false,
-      value: 0
+      value: 0,
+      openStatus: false
     }
+
+    this.handleAddVocab.bind(this)
   }
 
   componentDidMount(){
@@ -45,6 +46,28 @@ class SideBar extends Component {
   handleTabChange = (event, value) => {
     this.setState({value});
   };
+
+  handleStatusClose = () =>{
+    this.setState({
+      openStatus: false
+    })
+  }
+
+  handleAddVocab = (status) => {
+    if(status === 'success') {
+      this.setState({
+        openStatus: true,
+        statusStyle: {backgroundColor: '#42b35b'}
+      })
+    }
+    else{
+      this.setState({
+        openStatus: true,
+        statusStyle: {backgroundColor: '##d32f2f'}
+      })
+    }
+
+  }
   onClick = () => {
     this.setState({width: 200, height: 200});
   };
@@ -93,7 +116,7 @@ class SideBar extends Component {
                 <Tab label="사전"/>
               </Tabs>
             </AppBar>
-            {value === 0 && <div style={{maxWidth: "100%"}}><Vocab vocab={vocab}/></div>}
+            {value === 0 && <div style={{maxWidth: "100%"}}><Vocab vocab={vocab} addWord={this.handleAddVocab}/></div>}
             {value === 1 && <div><Grammar grammar={grammar}/></div>}
             {value === 2 && <div><SavedWords story={this.props.story}/></div>}
             {value === 3 && <div><GrammarSearch/></div>}
@@ -101,6 +124,8 @@ class SideBar extends Component {
           </div>
           </Resizable>
         </Drawer>
+
+        <StatusMessage status="success" open={this.props.openStatus} message={this.props.statusMessage} handleClose={this.props.handleStatusClose}/>
       </div>
 
 
@@ -113,10 +138,12 @@ class SideBar extends Component {
 const mapStateToProps = state => (
   {
     stories: state.stories,
-    userId: state.auth.user.id
+    userId: state.auth.user.id,
+    openStatus: state.stories.openStatus,
+    statusMessage: state.stories.statusMessage
   }
 )
 
-const mapDispatchToProps = ({toggleSideBar, getSavedWords})
+const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

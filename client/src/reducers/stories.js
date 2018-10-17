@@ -4,13 +4,16 @@ import {
   TOGGLE_SIDEBAR,
   INIT_STORY,
   UPDATE_SAVED_WORDS,
-  ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY
+  ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY,
+  RESET_STATUS
 } from '../constants/action-types';
 
 const initialState = {
   language: "korean",
   isSideBarOpen: false,
-  storyTitle: ""
+  storyTitle: "",
+  openStatus: false,
+  statusMessage:''
 };
 
 export default (state = initialState, action) => {
@@ -47,7 +50,9 @@ export default (state = initialState, action) => {
       vocabList.vocabList.push(action.payload.order_id)
       return{
         ...state,
-        vocabList
+        vocabList,
+        openStatus: true,
+        statusMessage: "Added Vocab"
       }
     case DELETE_SAVED_WORD:
       vocabList = state.vocabList;
@@ -58,6 +63,12 @@ export default (state = initialState, action) => {
       }
     case LEAVE_STORY:
       return initialState
+    case RESET_STATUS:
+      return {
+        ...state,
+        openStatus: false,
+        statusMessage: ""
+      }
 
     default:
       return state;
