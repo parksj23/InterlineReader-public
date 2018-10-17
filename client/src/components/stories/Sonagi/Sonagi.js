@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import Divider from "@material-ui/core/Divider";
+import "./styles/Sonagi.css";
 
 
 var Highlight = require('react-highlighter');
@@ -18,7 +19,7 @@ export default class Sonagi extends Component {
     if (this.props.language === 'korean') {
       return (
         <div className="col-lg-12 context korVer" id="theHeader">
-          <div className={'storyHeader'} style={{display: "flex", width: "100%", whiteSpace: 'noWrap'}}>
+          <div className={'storyHeader'} style={{display: "flex", width: "100%", whiteSpace: 'noWrap', paddingTop: "25px"}}>
           <span style={{textAlign:'left', width: "50%"}}>
             <h3> 소나기 </h3>
           </span>
@@ -27,7 +28,7 @@ export default class Sonagi extends Component {
           </span>
           </div>
 
-          <Divider/>
+          <Divider style={{marginTop: "18px", marginBottom: "18px"}}/>
           <p><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>소년은 개울가에서 소녀를 보자 곧 윤 초시네 증손녀딸이라는 걸 알
             수 있었다. 소녀는 개울에다 손을 잠그고 물장난을 하고 있는 것이다. 서울서는 이런 개울물을 보지 못하기나 한 듯이</Highlight></p>
           <p><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>벌써 며칠째 소녀는 학교서 돌아오는 길에 물장난이었다. 그런데

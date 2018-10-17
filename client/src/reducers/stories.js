@@ -4,7 +4,7 @@ import {
   TOGGLE_SIDEBAR,
   INIT_STORY,
   UPDATE_SAVED_WORDS,
-  ADD_SAVED_WORD, DELETE_SAVED_WORD
+  ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY
 } from '../constants/action-types';
 
 const initialState = {
@@ -56,6 +56,9 @@ export default (state = initialState, action) => {
         ...state,
         vocabList
       }
+    case LEAVE_STORY:
+      return initialState
+
     default:
       return state;
   }

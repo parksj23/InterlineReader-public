@@ -10,14 +10,16 @@ export const getVocabforStory = (story) => dispatch => {
     classType: 'all'
   }
 
-  const assetParams = {
-    folder: '/korn/'
-  }
-
   axios.get(`/api/${story}`, {params}).then(res=>{
+    let data = res.data.sort(function(a,b){
+
+      return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)
+
+    })
+
     dispatch({
       type: GET_VOCAB_SUCCESS,
-      payload: res.data
+      payload: data
     })
   })
 

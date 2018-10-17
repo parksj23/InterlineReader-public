@@ -8,7 +8,6 @@ import {connect} from "react-redux";
 import {updateHighlightedWord} from '../../../actions/vocab';
 import {addSavedWord, updateSavedWords} from "../../../actions/sideBar";
 
-
 class Vocab extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +23,6 @@ class Vocab extends Component {
   }
 
   updateHighlightWord = (vocabWord) =>{
-    console.log(vocabWord)
     this.props.updateHighlightedWord(vocabWord)
 
   }
@@ -41,10 +39,10 @@ class Vocab extends Component {
   }
 
   renderVocab = (vocabWord) => {
-    const pointerButton = {cursor: 'pointer'};
+    const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
     return(
       <TableRow>
-        <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer'}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
+        <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
         <TableCell style={pointerButton}>{vocabWord.english}</TableCell>
         <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><i style={pointerButton} className="material-icons">add</i></TableCell>
       </TableRow>
@@ -53,12 +51,11 @@ class Vocab extends Component {
 
   render(){
     return(
-      <div>
-        <Table>
+        <Table classesName={'table'}>
           <TableHead>
             <TableRow>
-              <TableCell>한국어</TableCell>
-              <TableCell>영어</TableCell>
+              <TableCell style={{maxWidth: "116px", paddingRight: "25px"}}> 한국어 </TableCell>
+              <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 영어 </TableCell>
               <TableCell> </TableCell>
             </TableRow>
           </TableHead>
@@ -66,8 +63,6 @@ class Vocab extends Component {
             {this.props.vocab ? this.props.vocab.map((aVocab) => {return this.renderVocab(aVocab)}) : null}
           </TableBody>
         </Table>
-      </div>
-
     )
   }
 }

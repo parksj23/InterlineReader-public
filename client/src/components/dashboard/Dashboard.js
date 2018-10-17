@@ -68,9 +68,8 @@ class Dashboard extends Component {
       if (true) {
         dashboardContent = (
           <div>
-            <p className="lead text-muted">AccountID: {user.name}</p>
             <p>Welcome to Interline Reader</p>
-            {!user.isVerified && <p className='text-warning'>Don{"'"}t forget to verify your email.</p>}
+            {!user.isVerified && <p className='text-warning'>Don't forget to verify your email.</p>}
           </div>
         );
       };

@@ -5,8 +5,18 @@ import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import Sonagi from './Sonagi/Sonagi';
 import SideBar from '../common/sideBar/sideBar';
-import {getVocabforStory, initStory} from '../../actions/stories';
+import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
 import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
+import './styles/stories.css';
+import Drawer from  '@material-ui/core/Drawer';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Vocab from '../common/sideBar/Vocab';
+import Grammar from '../common/sideBar/Grammar';
+import SavedWords from '../common/sideBar/SavedWords';
+import GrammarSearch from '../common/sideBar/GrammarSearch';
+import Dictionary from '../common/sideBar/Dictionary';
 
 
 class Stories extends Component {
@@ -39,18 +49,27 @@ class Stories extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.stories.vocabList !== prevProps.stories.vocabList)
+    if (this.props.stories.vocabList !== prevProps.stories.vocabList)
       this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList)
   }
 
+  componentWillUnmount() {
+    this.props.leaveStories();
+
+
+  }
 
   render() {
     const {storyTitle} = this.state;
     const {stories, vocab} = this.props;
     let searchWord = null;
 
-    if(vocab && vocab.highlightedWord){
-      if(this.state.language === 'korean') {
+    if(document.getElementById('DrawerContainer')) {
+      let drawerWidth = document.getElementById('DrawerContainer').style.width;
+    }
+
+    if (vocab && vocab.highlightedWord) {
+      if (this.state.language === 'korean') {
         searchWord = vocab.highlightedWord.korean
       }
       else {
@@ -60,25 +79,22 @@ class Stories extends Component {
     //let story = require(`/${storyTitle}/${storyTitle}`)
     return (
       <div>
-        <SideBar vocab={stories.vocab} grammar={stories.grammar} story={storyTitle}/>
-        <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width:"85%"} : null}>
-        <Grid item xs={1}/>
-        <Grid item xs={10}>
-          <Paper elevation={1}>
-            <Grid container>
-              <Grid item xs={1}>
+        <div>
+          <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width: "68%"} : null}>
+            <Paper elevation={1}>
+              <Grid container>
+                <Grid item xs={1}>
+                </Grid>
+                <Grid item xs={10}>
+                  <Sonagi language={this.state.language} searchWord={searchWord}/>
+                </Grid>
               </Grid>
-              <Grid item xs={10}>
-                <Sonagi language={this.state.language} searchWord={searchWord}/>
-              </Grid>
-            </Grid>
-          </Paper>
-        </Grid>
-        <Grid item xs={12}>
-          <Button onClick={this.handleTranslate}>Translate</Button>
-        </Grid>
-
-      </Grid>
+            </Paper>
+          </Grid>
+        </div>
+        <div className='translateContainer'>
+          <Button variant="contained" className={'translateButton'} classes={{containedPrimary: 'translateButton'}} color="primary" aria-label="Translate" onClick={this.handleTranslate}>Translate</Button>
+        </div>
       </div>
     );
   }
@@ -92,6 +108,6 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords,initStory, getSavedWords})
+const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Stories);

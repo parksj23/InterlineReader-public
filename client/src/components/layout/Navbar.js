@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/auth';
+import  SideBar from '../common/sideBar/sideBar';
 
 class Navbar extends Component {
 
@@ -14,14 +15,9 @@ class Navbar extends Component {
   render() {
 
     const { isAuthenticated, user } = this.props.auth;
-
+    const {stories} = this.props;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/dashboard">
-            Stories
-          </Link>
-        </li>
         <li className="nav-item">
           <a
             href=""
@@ -51,6 +47,11 @@ class Navbar extends Component {
 
     return (
       <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+        {
+          stories && stories.storyTitle? <div className='sideBarContainer'>
+            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle}/>
+          </div> : null
+        }
         <div className="container">
           <Link className="navbar-brand" to="/">
             Interline Reader
@@ -66,6 +67,11 @@ class Navbar extends Component {
 
           <div className="collapse navbar-collapse" id="mobile-nav">
             <ul className="navbar-nav mr-auto">
+              <li className="nav-item">
+                <Link className="nav-link" to="/dashboard">
+                  Stories
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/about">
                   About
@@ -91,7 +97,8 @@ Navbar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
+  stories: state.stories
 });
 
 export default connect(mapStateToProps, { logoutUser })(Navbar);
