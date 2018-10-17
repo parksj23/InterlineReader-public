@@ -1,0 +1,14 @@
+.translateContainer {
+    position: fixed;
+    right: 2vw;
+    bottom: 2vh;
+}
+
+.translateContainer .translateButton {
+    background-color: #42b35b
+}
+
+.translateContainer .translateButton:hover {
+    background-color: #328644
+
+}
