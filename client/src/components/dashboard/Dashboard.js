@@ -34,13 +34,13 @@ class Dashboard extends Component {
 
     return (
       <Grid container>
-        <Grid item xs={12}>{name}</Grid>
+        <Grid className="classNameHeader" item xs={12}>{name}</Grid>
         {stories.map((aStory,index) => {
           let storyName = aStory.slice(0, aStory.indexOf("_logo"))
           return (
-            <Grid key={index} item xs={4} style={{height: "100px"}}>
-              <Link to={`/story/${storyName}`}>
-                <ReactSVG style={{height: "60px"}} src={`http://127.0.0.1:5050/images/korn/${name}/badges/svg/${aStory}`} />
+            <Grid className="book" item xs={2}>
+            <Link to={`/story/${storyName}`}>
+                <img src={`http://127.0.0.1:5050/images/korn/${name}/badges/png/${aStory}`} alt="img" />
               </Link>
             </Grid>
           )
@@ -78,64 +78,18 @@ class Dashboard extends Component {
     
 
     return (
+
       <div className="dashboard">
-        <div className="container">
-        <div col-md-12>
-              <h1>KORN 410A</h1>
-        </div>
-          <div className="row">
-
- 
-              {/* <Grid container >
-                {classNames ? classNames.map(aClass => {
-                  return this.renderClassStories(aClass, sections[aClass])
-                }) : <p>Loading</p>}
-              </Grid> */}
-
-                <div className="book col-md-2">
-                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
-                </div>       
-                <div className="col-md-1"></div>
-                <div className="book col-md-2">
-                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
-                </div>  
-                <div className="col-md-1"></div>
-                <div className="book col-md-2">
-                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
-                </div>  
-                <div className="col-md-1"></div>
-              </div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="col-md-12"></div>
-              <div className="row">
-          
-              <div className="book col-md-2">
-                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
-                </div>  
-                <div className="col-md-1"></div>
-                <div className="book col-md-2">
-                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
-                </div>  
-                <div className="col-md-1"></div>
-                <div className="book col-md-2">
-                <img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' alt="img" />
-                </div>  
-                <div className="col-md-1"></div>    
+        { <Grid container >
+          {classNames ? classNames.map(aClass => {
+            //console.log(aClass);
+            var index = sections[aClass].indexOf(".DS_Store");
+            index > -1 ? sections[aClass].splice(index, 1) : null;
             
-            </div>
-         
-        </div>
-      </div>
+            return this.renderClassStories(aClass, sections[aClass])
+          }) : <p>Loading</p>}
+        </Grid> }
+      </div>  
     );
   }
 }

@@ -7,6 +7,7 @@ import setAuthToken from './utils/setAuthToken';
 import { Provider } from 'react-redux';
 import store from './store';
 
+
 import PrivateRoute from './components/common/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
@@ -21,6 +22,8 @@ import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
 import About from "./components/About/About";
 import Story from "./components/stories/stories";
+
+
 
 import './App.css';
 
@@ -56,7 +59,7 @@ class App extends Component {
                 <PrivateRoute path='/story/:storyName' component={Story}/>
               </Switch>
             </div>
-            {/* <Footer /> */}
+            <Footer />
           </div>
         </Router>
       </Provider>

@@ -57,12 +57,8 @@
   left: -6px;
 }
 
-.col-md-2 {
+/* .col-md-2 {
   padding-left: 0px !important;
-}
+} */
 
-@media (min-width: 768px){
-  .col-md-2{
-    flex: none;
-  }
-}
+

@@ -57,14 +57,14 @@ exports.getAssetNames = async(req,res) => {
   let assetNames = {};
   switch (classType) {
     case "410A":
-      assetNames["410A"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410A/badges/svg'))
+      assetNames["410A"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410A/badges/png'))
       break;
     case "410B":
-      assetNames["410B"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410B/badges/svg'))
+      assetNames["410B"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410B/badges/png'))
       break;
     case "all":
-      assetNames["410A"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410A/badges/svg'))
-      assetNames["410B"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410B/badges/svg'))
+      assetNames["410A"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410A/badges/png'))
+      assetNames["410B"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410B/badges/png'))
       break;
     default:
   }
@@ -77,7 +77,7 @@ exports.getAssetNames = async(req,res) => {
 
 const getStories = function (className) {
   return new Promise((resolve, reject) => {
-    let pathToStories = path.join(__dirname, `../public/images/korn/${className}/badges/svg`);
+    let pathToStories = path.join(__dirname, `../public/images/korn/${className}/badges/png`);
     let stories = []
 
     fs.readdir(pathToStories, function (err, items) {
