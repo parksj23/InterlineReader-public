@@ -38,11 +38,14 @@ class Dashboard extends Component {
         {stories.map((aStory,index) => {
           let storyName = aStory.slice(0, aStory.indexOf("_logo"))
           return (
+    
             <Grid className="book" item xs={2}>
             <Link to={`/story/${storyName}`}>
                 <img src={`http://127.0.0.1:5050/images/korn/${name}/badges/png/${aStory}`} alt="img" />
               </Link>
             </Grid>
+          
+            
           )
 
         })}
