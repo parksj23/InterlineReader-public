@@ -60,14 +60,8 @@ class Stories extends Component {
   }
 
   render() {
-    const {storyTitle} = this.state;
-    const {stories, vocab} = this.props;
+    const { vocab,sideBar} = this.props;
     let searchWord = null;
-
-    if(document.getElementById('DrawerContainer')) {
-      let drawerWidth = document.getElementById('DrawerContainer').style.width;
-    }
-
     if (vocab && vocab.highlightedWord) {
       if (this.state.language === 'korean') {
         searchWord = vocab.highlightedWord.korean
@@ -76,22 +70,11 @@ class Stories extends Component {
         searchWord = vocab.highlightedWord.english
       }
     }
-    //let story = require(`/${storyTitle}/${storyTitle}`)
     return (
       <div>
-        <div>
-          <Grid container style={stories.isSideBarOpen ? {marginLeft: "32%", width: "68%"} : null}>
-            <Paper elevation={1}>
-              <Grid container>
-                <Grid item xs={1}>
-                </Grid>
-                <Grid item xs={10}>
-                  <Sonagi language={this.state.language} searchWord={searchWord}/>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
-        </div>
+        <Paper elevation={1} style={sideBar.isSideBarOpen ? {marginLeft: sideBar.drawerSize.width+ "px"} : null}>
+          <Sonagi language={this.state.language} searchWord={searchWord}/>
+        </Paper>
         <div className='translateContainer'>
           <Button variant="contained" className={'translateButton'} classes={{containedPrimary: 'translateButton'}} color="primary" aria-label="Translate" onClick={this.handleTranslate}>Translate</Button>
         </div>
@@ -104,7 +87,8 @@ const mapStateToProps = state => (
   {
     stories: state.stories,
     vocab: state.vocab,
-    userId: state.auth.user.id
+    userId: state.auth.user.id,
+    sideBar: state.sideBar
   }
 )
 

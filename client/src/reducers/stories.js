@@ -30,11 +30,6 @@ export default (state = initialState, action) => {
         vocab: action.payload.vocab,
         grammar: action.payload.grammar,
       };
-    case TOGGLE_SIDEBAR:
-      return{
-        ...state,
-        isSideBarOpen: action.payload
-      }
     case GET_LIST_OF_SAVED_WORDS:
       return {
         ...state,

@@ -12,6 +12,7 @@ class Navbar extends Component {
     this.props.logoutUser();
   }
 
+
   render() {
 
     const { isAuthenticated, user } = this.props.auth;
@@ -49,7 +50,7 @@ class Navbar extends Component {
       <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
         {
           stories && stories.storyTitle? <div className='sideBarContainer'>
-            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle}/>
+            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
           </div> : null
         }
         <div className="container">
@@ -101,4 +102,4 @@ const mapStateToProps = state => ({
   stories: state.stories
 });
 
-export default connect(mapStateToProps, { logoutUser })(Navbar);
+export default connect(mapStateToProps, { logoutUser})(Navbar);

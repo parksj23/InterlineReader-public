@@ -15,6 +15,8 @@ import Dictionary from './Dictionary';
 import './styles/sideBar.css';
 import Resizable from 're-resizable';
 import StatusMessage from '../statusMessage/statusMessage';
+import {updateDrawerSize} from '../../../actions/dashboard';
+
 
 import {toggleSideBar, getSavedWords, handleStatusClose} from "../../../actions/sideBar";
 
@@ -37,7 +39,11 @@ class SideBar extends Component {
   }
 
   toggleDrawer = (side, open) => () => {
-    this.props.toggleSideBar(open);
+    let size = {
+      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft),
+      height: document.getElementById('resizeContainer').clientHeight
+    }
+    this.props.toggleSideBar(open, size);
     this.setState({
       [side]: open,
     });
@@ -68,12 +74,13 @@ class SideBar extends Component {
     }
 
   }
-  onClick = () => {
-    this.setState({width: 200, height: 200});
-  };
 
-  onResize = (event, {element, size}) => {
-    this.setState({width: size.width, height: size.height});
+  onResize = (event, {}) => {
+    let size = {
+      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft),
+      height: document.getElementById('resizeContainer').clientHeight
+    }
+    this.props.updateDrawerSize(size)
   };
 
   render() {
@@ -89,9 +96,11 @@ class SideBar extends Component {
         <Drawer id={"DrawerContainer"} variant="persistent" open={this.state.left} onClose={this.toggleDrawer('left', false)}>
           <Resizable
             defaultSize={{
-              width: "30vw",
-              height: "90vh",
+              width: "40vw",
+              height: "100vh",
             }}
+            id={'resizeContainer'}
+            onResize={this.onResize}
           >
           <div tabIndex={0} role="button">
             <div>
@@ -100,7 +109,7 @@ class SideBar extends Component {
                 </Grid>
                 <Grid item xs={8}/>
                 <Grid item xs={2}>
-                  <div style={{float: "right", marginRight: "15px", marginTop: "15px", fontSize: "36px"}}><i
+                  <div style={{float: "right", marginRight: "15px", marginTop: "15px", fontSize: "36px", cursor: "pointer"}}><i
                     style={{fontSize: "36px"}} className="material-icons"
                     onClick={this.toggleDrawer('left', false)}>close</i></div>
                 </Grid>
@@ -144,6 +153,6 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose})
+const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose, updateDrawerSize})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBar);

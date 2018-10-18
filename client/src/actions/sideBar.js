@@ -11,11 +11,15 @@ import {
 } from "../constants/action-types";
 
 
-export const toggleSideBar = (isOpened) => dispatch => {
+export const toggleSideBar = (isOpened, size) => dispatch => {
+  let payload = {
+    isOpened,
+    size
+  }
 
   dispatch({
     type: TOGGLE_SIDEBAR,
-    payload: isOpened
+    payload
   })
 
 

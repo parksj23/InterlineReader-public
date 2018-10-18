@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {GET_DASHBOARD_ASSET, GET_DASHBOARD_SUCCESS} from "../constants/action-types";
+import {GET_DASHBOARD_ASSET, GET_DASHBOARD_SUCCESS, UPDATE_DRAWER_SIZE} from "../constants/action-types";
 
 
 export const dashboardInit = () => dispatch => {
@@ -28,6 +28,15 @@ export const dashboardInit = () => dispatch => {
     })
   }))
 
+
+
+}
+
+export const updateDrawerSize = (size) => dispatch => {
+  dispatch({
+    type: UPDATE_DRAWER_SIZE,
+    payload: size
+  })
 
 
 }

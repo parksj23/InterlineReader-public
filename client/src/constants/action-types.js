@@ -46,3 +46,5 @@ export const INIT_STORY = "INIT_STORY";
 export const LEAVE_STORY = "LEAVE_STORY";
 
 export const RESET_STATUS = "RESET_STATUS";
+
+export const UPDATE_DRAWER_SIZE = "UPDATE_DRAWER_SIZE";
