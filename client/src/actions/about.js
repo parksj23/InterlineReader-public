@@ -1,8 +1,5 @@
-//TODO: Convert below code from redux-Sagas to redux-Thunk
-
-
 import axios from "axios";
-import { GET_LOGO_REQUEST, GET_LOGO_SUCCESS} from "../constants/action-types";
+import {GET_LOGO_SUCCESS} from "../constants/action-types";
 
 
 

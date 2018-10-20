@@ -40,7 +40,7 @@ class SideBar extends Component {
 
   toggleDrawer = (side, open) => () => {
     let size = {
-      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft),
+      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10),
       height: document.getElementById('resizeContainer').clientHeight
     }
     this.props.toggleSideBar(open, size);
@@ -75,16 +75,15 @@ class SideBar extends Component {
 
   }
 
-  onResize = (event, {}) => {
+  onResize = () => {
     let size = {
-      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft),
+      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10),
       height: document.getElementById('resizeContainer').clientHeight
     }
     this.props.updateDrawerSize(size)
   };
 
   render() {
-    const pointerIcon = {cursor: 'pointer'};
     let {value} = this.state;
     const {vocab, grammar} = this.props;
     return (
@@ -115,8 +114,8 @@ class SideBar extends Component {
                 </Grid>
               </Grid>
             </div>
-            <AppBar position="static">
-              <Tabs style={{backgroundColor: "#212529"}} value={value} onChange={this.handleTabChange} scrollable
+            <AppBar position="static" style={{overflow: 'hidden'}}>
+              <Tabs style={{backgroundColor: "#212529", overflow:'scroll'}} value={value} onChange={this.handleTabChange} scrollable
                     scrollButtons='auto'>
                 <Tab label="어휘"/>
                 <Tab label="문법"/>

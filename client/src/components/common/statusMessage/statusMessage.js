@@ -3,8 +3,6 @@ import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from "@material-ui/core/Button";
 import "./styles/statusMessage.css"
-import { withStyles } from '@material-ui/core/styles';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 import IconButton from '@material-ui/core/IconButton';
 
 const successStyles = {
@@ -18,12 +16,6 @@ const failStyles ={
 
 
 class StatusMessage extends Component {
-  constructor(props){
-    super(props)
-
-  }
-
-
   render() {
     let {status} = this.props
 

@@ -31,8 +31,6 @@ class Vocab extends Component {
 
   componentWillUnmount(){
     let vocabList = this.props.stories.vocabList.vocabList;
-    console.log(vocabList)
-
     let params = {
       userId: this.props.userId,
       storyTitle: this.props.stories.storyTitle,
@@ -41,10 +39,10 @@ class Vocab extends Component {
     this.props.updateSavedWords(params);
   }
 
-  renderVocab = (vocabWord) => {
+  renderVocab = (vocabWord, index) => {
     const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
     return(
-      <TableRow>
+      <TableRow key={'vocab' + index}>
         <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
         <TableCell style={pointerButton}>{vocabWord.english}</TableCell>
         <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><Tooltip disableFocusListener title="Save Vocab"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
@@ -54,7 +52,7 @@ class Vocab extends Component {
 
   render(){
     return(
-        <Table classesName={'table'}>
+        <Table className={'table'}>
           <TableHead>
             <TableRow>
               <TableCell style={{maxWidth: "116px", paddingRight: "25px"}}> 한국어 </TableCell>
@@ -63,7 +61,7 @@ class Vocab extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.props.vocab ? this.props.vocab.map((aVocab) => {return this.renderVocab(aVocab)}) : null}
+            {this.props.vocab ? this.props.vocab.map((aVocab, index) => {return this.renderVocab(aVocab, index)}) : <TableRow/>}
           </TableBody>
         </Table>
     )
