@@ -58,6 +58,7 @@ class GrammarSearch extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
+                <TableRow/>
               </TableBody>
             </Table>
           </Grid>
