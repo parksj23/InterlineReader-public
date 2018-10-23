@@ -2,6 +2,7 @@
     position: fixed;
     right: 2vw;
     bottom: 2vh;
+    z-index: 100;
 }
 
 .translateContainer .translateButton {
