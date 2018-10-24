@@ -3,9 +3,11 @@ import Paper from '@material-ui/core/Paper';
 import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
 import Sonagi from './Sonagi/Sonagi';
+import Almaden from './Almaden/Almaden';
 import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
 import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 class Stories extends Component {
 
@@ -42,13 +44,12 @@ class Stories extends Component {
 
   componentWillUnmount() {
     this.props.leaveStories();
-
-
   }
 
-  render() {
-    const { vocab,sideBar} = this.props;
+  renderStoryText = () => {
+    const { vocab, stories} = this.props;
     let searchWord = "";
+    let storyTitle = stories.storyTitle;
     if (vocab && vocab.highlightedWord) {
       if (this.state.language === 'korean') {
         searchWord = vocab.highlightedWord.korean
@@ -57,10 +58,21 @@ class Stories extends Component {
         searchWord = vocab.highlightedWord.english
       }
     }
+    switch (storyTitle) {
+      case 'sonagi':
+        return <Sonagi language={this.state.language} searchWord={searchWord}/>
+      break;
+      case 'almaden':
+        return <Almaden language={this.state.language} searchWord={searchWord}/>
+    }
+  }
+
+  render() {
+    const {sideBar} = this.props;
     return (
       <div>
         <Paper elevation={1} style={sideBar.isSideBarOpen ? {marginLeft: sideBar.drawerSize.width+ "px"} : null}>
-          <Sonagi language={this.state.language} searchWord={searchWord ? searchWord : ""}/>
+          {this.renderStoryText()}
         </Paper>
         <div className='translateContainer'>
           <Button variant="contained" className={'translateButton'} classes={{containedPrimary: 'translateButton'}} color="primary" aria-label="Translate" onClick={this.handleTranslate}>Translate</Button>

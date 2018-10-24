@@ -6,7 +6,7 @@ import "./styles/Sonagi.css";
 var Highlight = require('react-highlighter');
 
 
-export default class Sonagi extends Component {
+class Sonagi extends Component {
 
   renderStory = () => {
     if (this.props.language === 'korean') {
@@ -800,4 +800,6 @@ export default class Sonagi extends Component {
     )
   }
 }
+
+export default Sonagi;
 
