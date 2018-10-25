@@ -1,16 +1,18 @@
 import {
   GET_LIST_OF_SAVED_WORDS,
   GET_VOCAB_AND_GRAMMAR_SUCCESS,
-  TOGGLE_SIDEBAR,
   INIT_STORY,
   UPDATE_SAVED_WORDS,
-  ADD_SAVED_WORD, DELETE_SAVED_WORD
+  ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY,
+  RESET_STATUS
 } from '../constants/action-types';
 
 const initialState = {
   language: "korean",
   isSideBarOpen: false,
-  storyTitle: ""
+  storyTitle: "",
+  openStatus: false,
+  statusMessage:''
 };
 
 export default (state = initialState, action) => {
@@ -27,11 +29,6 @@ export default (state = initialState, action) => {
         vocab: action.payload.vocab,
         grammar: action.payload.grammar,
       };
-    case TOGGLE_SIDEBAR:
-      return{
-        ...state,
-        isSideBarOpen: action.payload
-      }
     case GET_LIST_OF_SAVED_WORDS:
       return {
         ...state,
@@ -47,15 +44,28 @@ export default (state = initialState, action) => {
       vocabList.vocabList.push(action.payload.order_id)
       return{
         ...state,
-        vocabList
+        vocabList,
+        openStatus: true,
+        statusMessage: "Added Vocab"
       }
     case DELETE_SAVED_WORD:
       vocabList = state.vocabList;
       vocabList.vocabList.splice(vocabList.vocabList.indexOf(action.payload.order_id),1)
       return{
         ...state,
-        vocabList
+        vocabList,
+        openStatus: true,
+        statusMessage: "Deleted Vocab"
       }
+    case LEAVE_STORY:
+      return initialState
+    case RESET_STATUS:
+      return {
+        ...state,
+        openStatus: false,
+        statusMessage: ""
+      }
+
     default:
       return state;
   }

@@ -55,7 +55,7 @@ footer {
 .book::before {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  height: -webkit-fill-available;
+  height: stretch;
 }
 
 .book {

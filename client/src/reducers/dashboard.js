@@ -1,5 +1,3 @@
-import isEmpty from '../validation/is-empty';
-
 import {GET_DASHBOARD_ASSET, GET_DASHBOARD_SUCCESS} from '../constants/action-types';
 
 const initialState = {
