@@ -8,6 +8,7 @@ import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
 import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import StoryText from './storyText'
 
 class Stories extends Component {
 
@@ -68,11 +69,23 @@ class Stories extends Component {
   }
 
   render() {
-    const {sideBar} = this.props;
+    const {sideBar, stories, vocab} = this.props;
+    let text;
+    let searchWord = "";
+    if(this.state.language === 'korean') {
+      text = stories.storyTextKorn
+      searchWord = vocab.highlightedWord.korean
+
+    }
+    else {
+      text = stories.storyTextEngl
+      searchWord = vocab.highlightedWord.english
+
+    }
     return (
       <div>
         <Paper elevation={1} style={sideBar.isSideBarOpen ? {marginLeft: sideBar.drawerSize.width+ "px"} : null}>
-          {this.renderStoryText()}
+          {text ? <StoryText text={text} searchWord={searchWord}/> : null}
         </Paper>
         <div className='translateContainer'>
           <Button variant="contained" className={'translateButton'} classes={{containedPrimary: 'translateButton'}} color="primary" aria-label="Translate" onClick={this.handleTranslate}>Translate</Button>

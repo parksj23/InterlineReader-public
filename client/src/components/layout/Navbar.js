@@ -80,7 +80,7 @@ class Navbar extends Component {
               </li>
               {(Object.keys(user).length>=1 && !user.isStudent) && (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/profile"> Instructor Panel</Link>
+                  <Link className="nav-link" to="/instructor"> Instructor Panel</Link>
                 </li>)
               }
             </ul>

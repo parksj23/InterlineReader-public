@@ -26,11 +26,22 @@ export const getVocabforStory = (story) => dispatch => {
 }
 
 export const initStory = (story) => dispatch => {
-  dispatch({
-    type: INIT_STORY,
-    payload: story
-  })
+  const params = {
+    responseType: 'application/json',
+    storyTitle: story
+  }
 
+  axios.get(`/api/stories/${story}/storyText`, {params}).then(res => {
+    dispatch({
+      type: INIT_STORY,
+      payload: {
+        story,
+        storyTextKorn: res.data.storyTextKorn,
+        storyTextEngl: res.data.storyTextEngl
+      }
+    })
+
+  })
 }
 
 export const leaveStories = () => dispatch => {
