@@ -1,24 +1,18 @@
 import React, {Component} from 'react';
-import ReactHtmlParser from 'react-html-parser';
 import Divider from "@material-ui/core/Divider";
+import "./styles/Sonagi.css";
 
 
 var Highlight = require('react-highlighter');
 
 
-export default class Sonagi extends Component {
-  constructor(props) {
-    super(props)
-
-
-  }
-
+class Sonagi extends Component {
 
   renderStory = () => {
     if (this.props.language === 'korean') {
       return (
         <div className="col-lg-12 context korVer" id="theHeader">
-          <div className={'storyHeader'} style={{display: "flex", width: "100%", whiteSpace: 'noWrap'}}>
+          <div className={'storyHeader'} style={{display: "flex", width: "100%", whiteSpace: 'noWrap', paddingTop: "25px"}}>
           <span style={{textAlign:'left', width: "50%"}}>
             <h3> 소나기 </h3>
           </span>
@@ -27,7 +21,7 @@ export default class Sonagi extends Component {
           </span>
           </div>
 
-          <Divider/>
+          <Divider style={{marginTop: "18px", marginBottom: "18px", paddingLeft: "15px", paddingRight: "15px"}}/>
           <p><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>소년은 개울가에서 소녀를 보자 곧 윤 초시네 증손녀딸이라는 걸 알
             수 있었다. 소녀는 개울에다 손을 잠그고 물장난을 하고 있는 것이다. 서울서는 이런 개울물을 보지 못하기나 한 듯이</Highlight></p>
           <p><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>벌써 며칠째 소녀는 학교서 돌아오는 길에 물장난이었다. 그런데
@@ -404,7 +398,7 @@ export default class Sonagi extends Component {
           <hr className="hr-text" data-content="- 14 -"/>
           <p><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>&ldquo;어쩌믄 그렇게 자식복이
             없을까.&rdquo;</Highlight></p>
-          <p><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>&ldquo;글쎄 말이지. 이번 앤 꽤 여러 날 앓는 걸 약두
+          <p style={{paddingBottom: "1em"}}><Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>&ldquo;글쎄 말이지. 이번 앤 꽤 여러 날 앓는 걸 약두
             변변히 못 써봤다드군. 지금 같애서는 윤초시네두 대가 끊긴 셈이지. .....그런데 참
             이번 기집애는 어린것이 여간 잔망스럽지가 않어. 글쎄 죽기 전에 이런 말을 했다지 않어? 자기가 죽거든 자기 입든 옷을 꼭 그대로 입혀서 묻어
             달라구......&rdquo;</Highlight></p>
@@ -414,7 +408,7 @@ export default class Sonagi extends Component {
     else if (this.props.language === 'english') {
       return (
         <div>
-          <div className="col-lg-12 context engVer" style={{"fontFamily":'Georgia'}} id="theHeader">
+          <div className="col-lg-12 context engVer" style={{"fontFamily":'Georgia', paddingBottom: "1em"}} id="theHeader">
             <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
           <span style={{textAlign:'left', width: "50%"}}>
             <h3> Rain Shower </h3>
@@ -806,4 +800,6 @@ export default class Sonagi extends Component {
     )
   }
 }
+
+export default Sonagi;
 

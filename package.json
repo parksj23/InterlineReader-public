@@ -1,6 +1,6 @@
 {
   "name": "interlinereader",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Platform for reading foreign literary texts",
   "main": "server.js",
   "engines": {
@@ -38,6 +38,8 @@
     "nodemon": "^1.18.2",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "re-resizable": "^4.9.0",
+    "react-resizable": "^1.7.5",
     "react-search-input": "^0.11.3",
     "sendgrid": "^5.2.3",
     "validator": "^10.1.0"

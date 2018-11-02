@@ -1,20 +1,15 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import ReactHTMLParser from "react-html-parser";
-
-import Tooltip from '@material-ui/core/Tooltip';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {getVocabforStory} from '../../../actions/vocab';
-import SearchInput, {createFilter} from 'react-search-input'
+import SearchInput from 'react-search-input'
 import Grid from "@material-ui/core/Grid";
 
 
-const KEYS_TO_FILTER = ["random"];
-const grammar = ['apples', 'oranges', 'bananas'];
 
 class GrammarSearch extends Component {
   constructor(props) {
@@ -43,10 +38,6 @@ class GrammarSearch extends Component {
   }
 
   render(){
-    const vocabList = this.props.vocab;
-    const filteredGrammar = grammar.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTER));
-
-
     return(
       <div>
         <Grid container>
@@ -67,6 +58,7 @@ class GrammarSearch extends Component {
                 </TableRow>
               </TableHead>
               <TableBody>
+                <TableRow/>
               </TableBody>
             </Table>
           </Grid>

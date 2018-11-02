@@ -42,3 +42,9 @@ export const ADD_SAVED_WORD = "ADD_SAVED_WORD";
 export const DELETE_SAVED_WORD = "DELETE_SAVED_WORD";
 
 export const INIT_STORY = "INIT_STORY";
+
+export const LEAVE_STORY = "LEAVE_STORY";
+
+export const RESET_STATUS = "RESET_STATUS";
+
+export const UPDATE_DRAWER_SIZE = "UPDATE_DRAWER_SIZE";

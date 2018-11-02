@@ -1,0 +1,20 @@
+.translateContainer {
+    position: fixed;
+    right: 2vw;
+    bottom: 2vh;
+    z-index: 100;
+}
+
+.translateContainer .translateButton {
+    background-color: #42b35b
+}
+
+.translateContainer .translateButton:hover {
+    background-color: #328644
+
+}
+
+.storyHeader {
+    padding-left: 15px;
+    padding-right: 15px;
+}
