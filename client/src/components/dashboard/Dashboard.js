@@ -33,7 +33,7 @@ class Dashboard extends Component {
 
             <Grid className="book" item xs={2} key={'story_badge' + index}>
               <Link to={`/story/${storyName}`}>
-                <img src={`http://127.0.0.1:5050/images/korn/${name}/badges/png/${aStory}`} alt="img" />
+                <img src={`https://www.interlinereader.herokuapp.com/images/korn/${name}/badges/png/${aStory}`} alt="img" />
               </Link>
             </Grid>
           
