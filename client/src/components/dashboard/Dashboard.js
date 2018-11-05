@@ -33,7 +33,7 @@ class Dashboard extends Component {
 
             <Grid className="book" item xs={2} key={'story_badge' + index}>
               <Link to={`/story/${storyName}`}>
-                <img src={`../../../public/images/korn/${name}/badges/png/${aStory}`} alt="img" />
+                <img src={`../../../public/images/korn/${name}/badges/png/${aStory}.png`} alt="img" />
               </Link>
             </Grid>
           
