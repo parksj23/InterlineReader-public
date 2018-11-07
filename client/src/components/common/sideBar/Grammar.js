@@ -5,19 +5,28 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import {connect} from "react-redux";
+import {updateHighlightedWord} from '../../../actions/vocab';
 
 class Grammar extends Component {
   constructor(props) {
     super(props);
     this.renderVocab.bind(this);
+    this.updateHighlightWord.bind(this);
+  }
+
+  updateHighlightWord = (vocabWord, type) =>{
+    this.props.updateHighlightedWord(vocabWord, type)
+
   }
 
   renderVocab = (grammar) => {
+    const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
     return(
       <TableRow>
-        <TableCell>{grammar.sentence}</TableCell>
-        <TableCell>{grammar.pattern}</TableCell>
-        <TableCell>{grammar.here}</TableCell>
+        <TableCell style={{cursor: 'pointer'}} onClick={() => this.updateHighlightWord(grammar.sentence, "grammar")}>{grammar.sentence}</TableCell>
+        <TableCell style={{cursor: 'pointer'}}>{grammar.pattern}</TableCell>
+        <TableCell style={{cursor: 'pointer'}}>{grammar.here}</TableCell>
       </TableRow>
     )
   }
@@ -47,5 +56,13 @@ class Grammar extends Component {
 
 
 }
+const mapStateToProps = state => (
+  {
+    stories: state.stories,
+    userId: state.auth.user.id
+  }
+)
 
-export default(Grammar);
+const mapDispatchToProps = ({updateHighlightedWord})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Grammar);

@@ -24,8 +24,8 @@ class Vocab extends Component {
     }
   }
 
-  updateHighlightWord = (vocabWord) =>{
-    this.props.updateHighlightedWord(vocabWord)
+  updateHighlightWord = (vocabWord, type) =>{
+    this.props.updateHighlightedWord(vocabWord, type)
 
   }
 
@@ -43,7 +43,7 @@ class Vocab extends Component {
     const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
     return(
       <TableRow key={'vocab' + index}>
-        <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => this.updateHighlightWord(vocabWord)}>{vocabWord.korean}</TableCell>
+        <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => this.updateHighlightWord(vocabWord, "vocab")}>{vocabWord.korean}</TableCell>
         <TableCell style={pointerButton}>{vocabWord.english}</TableCell>
         <TableCell onClick={ ()=> this.handleAddSavedWord(vocabWord)}><Tooltip disableFocusListener title="Save Vocab"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
       </TableRow>

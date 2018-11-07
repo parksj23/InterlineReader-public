@@ -48,15 +48,20 @@ class Stories extends Component {
 
   renderStoryText = () => {
     const { vocab, stories} = this.props;
+    console.log(vocab);
     let searchWord = "";
     let storyTitle = stories.storyTitle;
-    if (vocab && vocab.highlightedWord) {
+    if (vocab && vocab.highlightedWord && vocab.kind === "vocab") {
       if (this.state.language === 'korean') {
+        console.log("entered")
         searchWord = vocab.highlightedWord.korean
       }
       else {
+        console.log("entered2")
         searchWord = vocab.highlightedWord.english
       }
+    } else if (vocab && vocab.highlightedWord && vocab.kind === "grammar") {
+      searchWord = vocab.highlightedWord;
     }
     switch (storyTitle) {
       case 'sonagi':
