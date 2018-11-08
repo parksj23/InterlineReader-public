@@ -1,6 +1,6 @@
 {
   "name": "interlinereader",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Platform for reading foreign literary texts",
   "main": "server.js",
   "engines": {

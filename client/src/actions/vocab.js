@@ -27,10 +27,11 @@ export const getVocabforStory = (story) => dispatch => {
 
 }
 
-export const updateHighlightedWord = (vocabWord) => dispatch =>{
+export const updateHighlightedWord = (vocabWord, kind) => dispatch =>{
   dispatch({
     type: UPDATE_HIGHLIGHT_WORD,
-    payload: vocabWord
+    payload: vocabWord,
+    kind: kind
   })
 
 

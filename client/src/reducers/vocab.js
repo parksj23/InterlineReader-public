@@ -14,7 +14,8 @@ export default (state = initialState, action) => {
     case UPDATE_HIGHLIGHT_WORD:
       return{
         ...state,
-        highlightedWord: action.payload
+        highlightedWord: action.payload,
+        kind: action.kind
       }
 
     default:
