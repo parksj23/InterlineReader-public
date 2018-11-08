@@ -1,16 +1,11 @@
 import React, {Component} from "react";
-import Paper from '@material-ui/core/Paper';
-import Button from "@material-ui/core/Button";
 import {connect} from "react-redux";
-import Sonagi from './Sonagi/Sonagi';
-import Almaden from './Almaden/Almaden';
 import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
 import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import StoryText from './storyText'
+import Story from './components/story';
 
-class Stories extends Component {
+class StoriesContainer extends Component {
 
   state = {
     applicationDescription: "",
@@ -47,32 +42,6 @@ class Stories extends Component {
     this.props.leaveStories();
   }
 
-  renderStoryText = () => {
-    const { vocab, stories} = this.props;
-    console.log(vocab);
-    let searchWord = "";
-    let storyTitle = stories.storyTitle;
-    if (vocab && vocab.highlightedWord && vocab.kind === "vocab") {
-      if (this.state.language === 'korean') {
-        console.log("entered")
-        searchWord = vocab.highlightedWord.korean
-      }
-      else {
-        console.log("entered2")
-        searchWord = vocab.highlightedWord.english
-      }
-    } else if (vocab && vocab.highlightedWord && vocab.kind === "grammar") {
-      searchWord = vocab.highlightedWord;
-    }
-    switch (storyTitle) {
-      case 'sonagi':
-        return <Sonagi language={this.state.language} searchWord={searchWord}/>
-      break;
-      case 'almaden':
-        return <Almaden language={this.state.language} searchWord={searchWord}/>
-    }
-  }
-
   render() {
     const {sideBar, stories, vocab} = this.props;
     let text;
@@ -80,21 +49,14 @@ class Stories extends Component {
     if(this.state.language === 'korean') {
       text = stories.storyTextKorn
       searchWord = vocab.highlightedWord.korean
-
     }
     else {
       text = stories.storyTextEngl
       searchWord = vocab.highlightedWord.english
-
     }
     return (
-      <div>
-        <Paper elevation={1} style={sideBar.isSideBarOpen ? {marginLeft: sideBar.drawerSize.width+ "px"} : null}>
-          {text ? <StoryText text={text} searchWord={searchWord}/> : null}
-        </Paper>
-        <div className='translateContainer'>
-          <Button variant="contained" className={'translateButton'} classes={{containedPrimary: 'translateButton'}} color="primary" aria-label="Translate" onClick={this.handleTranslate}>Translate</Button>
-        </div>
+      <div className={'story-container'}>
+        <Story text={text} searchWord={searchWord} sidebar={sideBar} handleTranslate={this.handleTranslate}/>
       </div>
     );
   }
@@ -111,4 +73,4 @@ const mapStateToProps = state => (
 
 const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Stories);
+export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Divider from "@material-ui/core/Divider";
-import "./styles/stories.css";
+import "../../styles/stories.css";
 import ReactHtmlParser from 'react-html-parser';
 import Grid from '@material-ui/core/Grid';
 
