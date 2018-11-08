@@ -1,0 +1,47 @@
+{
+  "name": "interlinereader",
+  "version": "2.0.0",
+  "description": "Platform for reading foreign literary texts",
+  "main": "server.js",
+  "engines": {
+    "node": "8.2.1",
+    "npm": "6.1.0"
+  },
+  "scripts": {
+    "install-all": "npm install && npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armaandh/interlinereader.git"
+  },
+  "author": "Armaan Dhanji",
+  "license": "CC BY-NC-ND 3.0",
+  "bugs": {
+    "url": "https://github.com/armaandh/interlinereader/issues"
+  },
+  "homepage": "https://github.com/armaandh/interlinereader#readme",
+  "dependencies": {
+    "@material-ui/icons": "^3.0.1",
+    "async": "^2.6.1",
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^3.5.1",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.2.1",
+    "jwt-simple": "^0.5.1",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.0.17",
+    "nodemon": "^1.18.2",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "re-resizable": "^4.9.0",
+    "react-resizable": "^1.7.5",
+    "react-search-input": "^0.11.3",
+    "sendgrid": "^5.2.3",
+    "validator": "^10.1.0"
+  }
+}
