@@ -16,7 +16,7 @@ import Landing from './components/layout/Landing';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import EmailVerification from './components/auth/EmailVerification';
-import Dashboard from './components/dashboard/Dashboard';
+import DashboardContainer from './components/dashboard/DashboardContainer';
 import ForgotPassword from './components/reset-password/ForgotPassword';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
@@ -56,7 +56,7 @@ class App extends Component {
               <Route path="/success" component={Success} />
               <Route path="/about" component={About} />
               <Switch>
-                <PrivateRoute path="/dashboard" component={Dashboard} />
+                <PrivateRoute path="/dashboard" component={DashboardContainer} />
                 <PrivateRoute path='/story/:storyName' component={Story}/>
                 <PrivateRoute path='/instructor' component={Instructor}/>
               </Switch>

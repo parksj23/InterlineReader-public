@@ -1,47 +1,52 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { sendEmailVerification } from '../../actions/auth';
-import {dashboardInit} from '../../actions/dashboard';
 import Grid from "@material-ui/core/Grid";
-import '../../Dashboard.css';
+//import '../Dashboard.css';
+import ClassCard from './classCard';
+import { withStyles } from '@material-ui/core/styles';
+
+
+const styles = {
+  cardContainer: {
+    padding: "18px"
+  }
+
+}
 
 class Dashboard extends Component {
 
-  onDeleteClick = (e) => {
-    //this.props.deleteAccount();
-  }
-
   componentWillMount(){
-    this.props.dashboardInit();
-  }
-
-  handleSendEmailVerification = () => {
-    const { id } = this.props.auth.user;
-    this.props.sendEmailVerification({ id }, this.props.history);
   }
 
   renderClassStories = (name, stories, classIndex) => {
-
+    const {classes} = this.props
     return (
       <Grid container key={'class_' + classIndex}>
         <Grid className="classNameHeader" item xs={12}>{name}</Grid>
         {stories.map((aStory,index) => {
           let storyName = aStory.slice(0, aStory.indexOf("_logo"))
           return (
+<<<<<<< Updated upstream:client/src/components/dashboard/Dashboard.js
 
             <Grid className="book" item xs={2} key={'story_badge' + index}>
               <Link to={`/story/${storyName}`}>
                 <img src={require(`../../../public/images/korn/${name}/badges/png/${aStory}`)} alt="img" />
+=======
+            <Grid
+              classes={{
+                item: classes.cardContainer
+              }}
+              item xs={4} key={'story_badge' + index}>
+              <Link to={`/story/${storyName}`}>
+                <ClassCard storyName={storyName} style={{width: "100%"}}/>
+>>>>>>> Stashed changes:client/src/components/dashboard/components/Dashboard.js
               </Link>
             </Grid>
           
             
           )
-
         })}
-
       </Grid>
     )
   }
@@ -76,14 +81,4 @@ Dashboard.propTypes = {
   auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-  dashboard: state.dashboard
-});
-
-const mapDispatchToProps = ({
-  sendEmailVerification,
-  dashboardInit
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+export default withStyles(styles)(Dashboard);
