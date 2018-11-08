@@ -27,12 +27,6 @@ class Dashboard extends Component {
         {stories.map((aStory,index) => {
           let storyName = aStory.slice(0, aStory.indexOf("_logo"))
           return (
-<<<<<<< Updated upstream:client/src/components/dashboard/Dashboard.js
-
-            <Grid className="book" item xs={2} key={'story_badge' + index}>
-              <Link to={`/story/${storyName}`}>
-                <img src={require(`../../../public/images/korn/${name}/badges/png/${aStory}`)} alt="img" />
-=======
             <Grid
               classes={{
                 item: classes.cardContainer
@@ -40,11 +34,9 @@ class Dashboard extends Component {
               item xs={4} key={'story_badge' + index}>
               <Link to={`/story/${storyName}`}>
                 <ClassCard storyName={storyName} style={{width: "100%"}}/>
->>>>>>> Stashed changes:client/src/components/dashboard/components/Dashboard.js
               </Link>
             </Grid>
-          
-            
+
           )
         })}
       </Grid>
