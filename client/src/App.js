@@ -20,7 +20,7 @@ import DashboardContainer from './components/dashboard/DashboardContainer';
 import ForgotPassword from './components/reset-password/ForgotPassword';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
-import About from "./components/About/About";
+import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructor';
 

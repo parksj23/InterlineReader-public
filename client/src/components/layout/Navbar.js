@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/auth';
-import  SideBar from '../common/sideBar/sideBar';
+import  SideBar from '../common/sideBar/sideBarContainer';
 
 class Navbar extends Component {
 

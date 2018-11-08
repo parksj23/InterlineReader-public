@@ -1,6 +1,15 @@
 .drawerContainer {
     top: 70px!important;
 }
+
+.close-button-container {
+    float: right;
+    margin-right: 15px;
+    margin-top: 15px;
+    font-size: 36px;
+    cursor: pointer;
+}
+
 #DrawerContainer .__resizable_base__{
     left: 0!important;
 }

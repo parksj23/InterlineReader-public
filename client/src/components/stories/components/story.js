@@ -24,7 +24,7 @@ const Story = (props) => {
     <div>
       <Paper elevation={1} style={sideBar && sideBar.isSideBarOpen ? {marginLeft: sideBar.drawerSize.width+ "px"} : null}>
         {text ?
-          <StoryText text={text} searchWord={searchWord}/>
+          <StoryText text={text} searchWord={searchWord || "!@F$@%F"}/>
           : null}
       </Paper>
       <div className='translateContainer'>

@@ -14,7 +14,7 @@ class StoryText extends Component {
   render() {
     return (
       <Grid container>
-        <Grid item xs={0} md={1} />
+        <Grid item md={1} />
         <Grid item xs={12} md={10}>
           <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeader">
             <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
@@ -29,7 +29,7 @@ class StoryText extends Component {
             {
               this.props.text.map((aSegment,index) => {
                 return (
-                  <div>
+                  <div key={"storySeg_" + index}>
                     <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>{ReactHtmlParser(aSegment.text)[0]}</Highlight>
                     <br/><br/>
                   </div>
