@@ -32,7 +32,7 @@ class Dashboard extends Component {
                 item: classes.cardContainer
               }}
               item xs={4} key={'story_badge' + index}>
-              <Link to={`/story/${storyName}`}>
+              <Link to={`/story/${storyName}`} className={'card-link'}>
                 <ClassCard storyName={storyName} style={{width: "100%"}}/>
               </Link>
             </Grid>
