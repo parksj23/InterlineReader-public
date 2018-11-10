@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import InstructorMenu from '../component/InstructorMenu';
 import '../style/instructor.css';
 
+
 class Instructor extends Component {
 
   componentWillMount(){
@@ -16,8 +17,8 @@ class Instructor extends Component {
   render() {
     return (
       <div className="instructor">
-        <Grid container style={{height: "100%"}}>
-          <Grid item xs={12}>
+        <Grid container style={{height: "100%", flexGrow: 1}}>
+          <Grid item xs={12} style={{height: "100%"}}>
                 {
                   this.props.children
                 }

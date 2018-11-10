@@ -24,30 +24,28 @@ class InstructorContainer extends Component {
     return (
       <div className="instructor">
         <Paper style={{height: "calc(100vh - 90px - 70px)"}}>
-        <Grid container>
+        <Grid container style={{height: "100%", overflow: "scroll"}}>
           <Grid item xs={12}>
             <div className='instructor-heading'>
               <h2>Instructor's Dashboard</h2>
               <Divider/>
             </div>
           </Grid>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={3} style={{height: "100%"}}>
-                <div>
+          <Grid item xs={12} style={{flex: "1 0 0"}}>
+            <Grid container  style={{height: "100%"}}>
+                <div style={{height: "100%", display: 'flex'}}>
                   <InstructorMenu history={this.props.history}/>
                 </div>
+              <div style={{flex:1}}>
+                <Instructor>
+                    <Switch>
+                      <Route path="/instructor/analytics" component={Analytics} />
+                      <Route path="/instructor/stories" component={Stories} />
+                      <Route path="/instructor/addStory" component={AddStoryWizard} />
+                    </Switch>
+                </Instructor>
+              </div>
               </Grid>
-              <Grid item xs={9}>
-              <Instructor>
-                  <Switch>
-                    <Route path="/instructor/analytics" component={Analytics} />
-                    <Route path="/instructor/stories" component={Stories} />
-                    <Route path="/instructor/addStory" component={AddStoryWizard} />
-                  </Switch>
-              </Instructor>
-              </Grid>
-          </Grid>
           </Grid>
         </Grid>
         </Paper>
