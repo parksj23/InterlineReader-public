@@ -1,27 +1,19 @@
 import React, {Component} from "react";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import {connect} from "react-redux";
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Tooltip from '@material-ui/core/Tooltip';
-import {getSavedWords, handleStatusClose, toggleSideBar} from "../../../actions/sideBar";
-import {updateDrawerSize} from "../../../actions/dashboard";
+import {withStyles} from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import './styles/collapsableTabs.css';
+import Button from "@material-ui/core/Button";
 
-class CollapsableTabs extends Component {
+const styles = {
+
+}
 
 
-  render() {
+const CollapsableTabs = (props) => {
 
     return (
       <div className={'collapsableTabContainer'}>
@@ -45,7 +37,7 @@ class CollapsableTabs extends Component {
             </ExpansionPanel>
           </ListItem>
           <ListItem button disableGutters divider classes={{root: 'list-item', button:'list-item'}}>
-            <ExpansionPanel classes={{root: 'menu-tab'}}>
+            <ExpansionPanel classes={{root: 'menu-tab'}} onChange={()=> props.handleChangeTab("addStory")}>
               <ExpansionPanelSummary>
                 Add
               </ExpansionPanelSummary>
@@ -64,15 +56,8 @@ class CollapsableTabs extends Component {
         </List>
       </div>
     )
-  }
 }
 
-const mapStateToProps = state => ({
-  stories: state.stories
-})
-
-const mapDispatchToProps = ({
-})
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (CollapsableTabs);
+export default withStyles(styles)(CollapsableTabs);

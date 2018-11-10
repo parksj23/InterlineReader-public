@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
-import CollapsableTabs from '../common/collapsableTabs/collapsableTabs'
+import InstructorMenu from '../component/InstructorMenu';
+import '../style/instructor.css';
 
 class Instructor extends Component {
 
@@ -15,19 +16,11 @@ class Instructor extends Component {
   render() {
     return (
       <div className="instructor">
-        <Grid container>
+        <Grid container style={{height: "100%"}}>
           <Grid item xs={12}>
-            <Paper elevation={1}>
-              <Grid item xs={12}>
-                <div className='instructor-heading'>
-                  <h2>Instructor's Dashboard</h2>
-                  <Divider/>
-                </div>
-              </Grid>
-              <Grid item xs={3}>
-                <CollapsableTabs/>
-              </Grid>
-            </Paper>
+                {
+                  this.props.children
+                }
           </Grid>
 
         </Grid>
@@ -40,6 +33,7 @@ class Instructor extends Component {
 
 
 const mapStateToProps = state => ({
+  instructor: state.instructor
 });
 
 const mapDispatchToProps = ({

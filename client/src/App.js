@@ -22,7 +22,7 @@ import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
-import Instructor from './components/instructor/instructor';
+import Instructor from './components/instructor/instructorContainer';
 
 
 
