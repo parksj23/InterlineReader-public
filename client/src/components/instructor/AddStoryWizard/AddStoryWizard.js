@@ -27,6 +27,22 @@ class AddStoryWizard extends Component {
     });
   };
 
+  handleOnSave = () => {
+
+    let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
+      .replace("<br/>", "\\n");
+    stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
+
+
+
+    stringToSave.replace(/font-family: Batang, serif;">(.+?)<\/span>/ugi , (match, ci) => {
+        console.log(ci)
+      });
+
+
+
+  }
+
   render(){
     const {editorState} = this.state;
 
@@ -39,7 +55,7 @@ class AddStoryWizard extends Component {
             </Grid>
             <Grid item xs={7}/>
             <Grid item xs={2}>
-              <Button style={{float: "right"}}>Save</Button>
+              <Button style={{float: "right"}} onClick={()=>this.handleOnSave()}>Save</Button>
             </Grid>
 
           </Grid>
