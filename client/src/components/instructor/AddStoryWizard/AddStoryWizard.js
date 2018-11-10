@@ -8,6 +8,9 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import ReactHtmlParser from 'react-html-parser';
+import {addToStory, changeSelectedMenu} from '../../../actions/instructor';
+import { connect } from 'react-redux';
+
 
 
 
@@ -33,11 +36,25 @@ class AddStoryWizard extends Component {
       .replace("<br/>", "\\n");
     stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
+    let textToSend = [];
+    let order_id = 1;
+
 
 
     stringToSave.replace(/font-family: Batang, serif;">(.+?)<\/span>/ugi , (match, ci) => {
-        console.log(ci)
+        let textObj = {
+            order_id: order_id,
+            text: ci
+        };
+
+        textToSend.push(textObj);
+        order_id++
+
       });
+
+
+
+    this.props.addToStory(textToSend, "korean");
 
 
 
@@ -96,4 +113,11 @@ class AddStoryWizard extends Component {
 
 }
 
-export default AddStoryWizard;
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = ({
+  addToStory
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddStoryWizard);

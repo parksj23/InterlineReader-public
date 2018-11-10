@@ -1,4 +1,4 @@
-import {CHANGE_INSTRUCTOR_SELECTED_MENU} from "../constants/action-types";
+import {CHANGE_INSTRUCTOR_SELECTED_MENU,ADD_NEW_STORY} from "../constants/action-types";
 
 const initialState = {
   selectedMenu: "Analytics"
@@ -10,6 +10,10 @@ export default (state = initialState, action) => {
       return{
         ...state,
         selectedMenu: action.payload
+      }
+    case ADD_NEW_STORY:
+      return{
+        ...state
       }
     default:
       return state;
