@@ -11,10 +11,6 @@ import ReactHtmlParser from 'react-html-parser';
 import {addToStory, changeSelectedMenu} from '../../../actions/instructor';
 import { connect } from 'react-redux';
 
-
-
-
-
 class AddStoryWizard extends Component {
   constructor(props){
     super(props)
@@ -31,33 +27,40 @@ class AddStoryWizard extends Component {
   };
 
   handleOnSave = () => {
-
-    let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
-      .replace("<br/>", "\\n");
-    stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
-
+    let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())).replace("<br/>", "\\n");
     let textToSend = [];
     let order_id = 1;
+    let styleArr = []
 
+    stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
+    stringToSave.replace(/<(.+?)<\/p>/ugi , (match, ci) => {
+      ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
+        let styles = c2.split(";")
+        styles.map(aStyleProp => {
+          let propArr = aStyleProp.split(':');
+          let prop = {};
+          prop[propArr[0]] = propArr[1]
+          styleArr.push(prop)
+        })
+      })
+      styleArr = styleArr.reduce(function(acc, x) {
+        for (var key in x) acc[key] = x[key];
+        return acc;
+      }, {});
+       ci.replace(/<span(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>(.+?)<\/span>/ugi, (matches, t) => {
+           t.split("\\n").map(finalText => {
+             textToSend.push({
+               text: finalText,
+               order_id,
+               style: styleArr
+             })
+             order_id++
+           })
+         })
 
-    stringToSave.replace(/font-family: Batang, serif;">(.+?)<\/span>/ugi , (match, ci) => {
-        let textObj = {
-            order_id: order_id,
-            text: ci
-        };
-
-        textToSend.push(textObj);
-        order_id++
-
-      });
-
-
-
+    })
     this.props.addToStory(textToSend, "korean");
-
-
-
   }
 
   render(){

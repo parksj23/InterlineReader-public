@@ -10,11 +10,22 @@ exports.addNewStory =(req,res) => {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db("ubcreadertesting");
-        dbo.collection(`KORN410_POKTEKPANG_STORY_${language.toUpperCase()}_TEST`).insertMany(text);
-        res.json({
-          status: 'Success!'
-        });
-      client.close();
+      dbo.collection(`KORN410_POKTEKPANG_STORY_${language.toUpperCase()}`).deleteMany().then(success => {
+        if(success.result.ok){
+          dbo.collection(`KORN410_POKTEKPANG_STORY_${language.toUpperCase()}`).insertMany(text);
+          res.json({
+            status: 'Success!'
+          });
+          client.close();
+        }
+        else{
+          res.json({
+            status: 'fail'
+          });
+          client.close();
+        }
+      });
+
     })
   }
 

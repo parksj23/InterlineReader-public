@@ -18,7 +18,6 @@ class InstructorContainer extends Component {
   componentWillMount(){
   }
 
-
   render() {
     const {selected} = this.props;
     return (
@@ -31,7 +30,7 @@ class InstructorContainer extends Component {
               <Divider/>
             </div>
           </Grid>
-          <Grid item xs={12} style={{flex: "1 0 0"}}>
+          <Grid item xs={12} style={{flex: "1 0 0", height: "100%"}}>
             <Grid container  style={{height: "100%"}}>
                 <div style={{height: "100%", display: 'flex'}}>
                   <InstructorMenu history={this.props.history}/>
@@ -39,6 +38,7 @@ class InstructorContainer extends Component {
               <div style={{flex:1}}>
                 <Instructor>
                     <Switch>
+                      <Route exact path="/instructor" component={Analytics} />
                       <Route path="/instructor/analytics" component={Analytics} />
                       <Route path="/instructor/stories" component={Stories} />
                       <Route path="/instructor/addStory" component={AddStoryWizard} />
