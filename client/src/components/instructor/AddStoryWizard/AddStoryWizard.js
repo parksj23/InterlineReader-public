@@ -11,6 +11,14 @@ import ReactHtmlParser from 'react-html-parser';
 import {addToStory, changeSelectedMenu} from '../../../actions/instructor';
 import { connect } from 'react-redux';
 
+const styleProperties = {
+  "text-align": "textAlign",
+  "font-family": "fontFamily",
+  "font-size": "fontSize"
+
+
+}
+
 class AddStoryWizard extends Component {
   constructor(props){
     super(props)
@@ -36,15 +44,16 @@ class AddStoryWizard extends Component {
 
     stringToSave.replace(/<(.+?)<\/p>/ugi , (match, ci) => {
       ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
-        let styles = c2.split(";")
-        styles.map(aStyleProp => {
-          let propArr = aStyleProp.split(':');
-          let prop = {};
-          prop[propArr[0]] = propArr[1]
-          styleArr.push(prop)
-        })
+          let styles = c2.split(";")
+          styles.map(aStyleProp => {
+            let propArr = aStyleProp.split(':');
+            let prop = {};
+            prop[styleProperties[propArr[0]]] = propArr[1]
+            styleArr.push(prop)
+          })
       })
-      styleArr = styleArr.reduce(function(acc, x) {
+
+      let styleObj = styleArr.reduce(function(acc, x) {
         for (var key in x) acc[key] = x[key];
         return acc;
       }, {});
@@ -53,7 +62,7 @@ class AddStoryWizard extends Component {
              textToSend.push({
                text: finalText,
                order_id,
-               style: styleArr
+               style: styleObj
              })
              order_id++
            })
