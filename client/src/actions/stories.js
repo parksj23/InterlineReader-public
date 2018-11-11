@@ -26,11 +26,26 @@ export const getVocabforStory = (story) => dispatch => {
 }
 
 export const initStory = (story) => dispatch => {
-  dispatch({
-    type: INIT_STORY,
-    payload: story
-  })
+  const params = {
+    responseType: 'application/json',
+    storyTitle: story
+  }
 
+  axios.get(`/api/stories/${story}/storyText`, {params}).then(res => {
+    let storyTextKorn = res.data.storyTextKorn;
+    let storyTextEngl = res.data.storyTextEngl
+    storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id > b.order_id) ? 1 : (a.order_id < b.order_id) ? -1 : 0)
+    storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < a.order_id) ? 1 : (a.order_id < b.order_id) ? -1 : 0)
+    dispatch({
+      type: INIT_STORY,
+      payload: {
+        story,
+        storyTextKorn: storyTextKorn,
+        storyTextEngl: storyTextEngl
+      }
+    })
+
+  })
 }
 
 export const leaveStories = () => dispatch => {

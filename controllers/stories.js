@@ -26,3 +26,30 @@ exports.getVocAndGram = (req, res) => {
       });
     }     
 };
+
+exports.getStoryText = (req,res) => {
+  console.log(req.params)
+  let story = req.params.story.toUpperCase();
+
+  if(story) {
+    MongoClient.connect(url, function (err, client) {
+      if (err) throw err;
+      var dbo = client.db("ubcreadertesting");
+      var query = {};
+      dbo.collection(`KORN410_${story}_STORY_KOREAN`).find(query).toArray(function (err, story_result_korean) {
+        if (err) throw err;
+        dbo.collection(`KORN410_${story}_STORY_ENGLISH`).find(query).toArray(function (err, story_result_english) {
+          res.json({
+            storyTextKorn: story_result_korean,
+            storyTextEngl: story_result_english
+          });
+          client.close();
+        });
+      });
+
+
+    })
+  }
+
+
+}

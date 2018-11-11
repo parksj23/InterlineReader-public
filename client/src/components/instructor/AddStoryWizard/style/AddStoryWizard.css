@@ -1,0 +1,34 @@
+.addStoryContainer {
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 100%;
+}
+
+.editor-area{
+    height: 100%;
+}
+
+.action-area{
+    float: right
+}
+
+.editor-editor{
+    border: 1px solid #F1F1F1 !important;
+    padding: 5px !important;
+    border-radius: 2px !important;
+    height: 80% !important;
+}
+
+.editor-wrapper{
+    margin-top: 50px !important;
+    display: block !important;
+    height: 400px !important;
+
+}
+
+.preview-container{
+    padding-left: 15px;
+    padding-right: 15px;
+    overflow: scroll;
+    max-height: 300px;
+}

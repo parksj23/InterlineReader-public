@@ -51,26 +51,6 @@ footer {
   bottom: 0;
 }
 
-.book, .book img, .book::after,
-.book::before {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  height: stretch;
-}
-
-.book {
-  cursor: pointer;
-  display: block;
-  width: 150px;
-  height: 220px;
-  position: relative;
-  background: white;
-  z-index: 1;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 9px 20px 0 rgba(0, 0, 0, 0.25);
-  overflow: hidden;
-  transition: box-shadow .3s linear;
-}
-
 .classNameHeader {
   font-size: 40px;
 }
