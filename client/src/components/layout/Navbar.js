@@ -3,6 +3,11 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/auth';
+import {updateDrawerSize} from '../../actions/dashboard';
+import {toggleSideBar} from "../../actions/sideBar";
+import SideBarButton from './common/sideBarButton';
+
+
 import  SideBar from '../common/sideBar/sideBarContainer';
 
 class Navbar extends Component {
@@ -11,6 +16,24 @@ class Navbar extends Component {
     e.preventDefault();
     this.props.logoutUser();
   }
+
+  toggleDrawer = (side, open) => () => {
+    let width = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10) : "30vw"
+    let height = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').clientHeight : "100vh"
+
+
+    let size = {
+      width,
+      height
+    }
+
+
+
+    this.props.toggleSideBar(open, size);
+    this.setState({
+      [side]: open,
+    });
+  };
 
 
   render() {
@@ -47,47 +70,44 @@ class Navbar extends Component {
     );
 
     return (
-      <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-        {
-          stories && stories.storyTitle? <div className='sideBarContainer'>
-            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
-          </div> : null
-        }
-        <div className="container">
-          <Link className="navbar-brand" to="/">
-            Interline Reader
-          </Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#mobile-nav"
-          >
-            <span className="navbar-toggler-icon" />
-          </button>
-
-          <div className="collapse navbar-collapse" id="mobile-nav">
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/dashboard">
-                  Stories
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                  About
-                </Link>
-              </li>
-              {(Object.keys(user).length>=1 && !user.isStudent) && (
+      <div>
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+          <SideBarButton toggleDrawer={this.toggleDrawer} />
+          <div className="container">
+            <Link className="navbar-brand" to="/">
+              Interline Reader
+            </Link>
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#mobile-nav"
+            >
+              <span className="navbar-toggler-icon" />
+            </button>
+            <div className="collapse navbar-collapse" id="mobile-nav">
+              <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/instructor"> Instructor Panel</Link>
-                </li>)
-              }
-            </ul>
-            {isAuthenticated ? authLinks : guestLinks}
+                  <Link className="nav-link" to="/dashboard">
+                    Stories
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/about">
+                    About
+                  </Link>
+                </li>
+                {(Object.keys(user).length>=1 && !user.isStudent) && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/instructor"> Instructor Panel</Link>
+                  </li>)
+                }
+              </ul>
+              {isAuthenticated ? authLinks : guestLinks}
+            </div>
           </div>
-        </div>
-      </nav>
+        </nav>
+      </div>
     );
   }
 }
@@ -102,4 +122,10 @@ const mapStateToProps = state => ({
   stories: state.stories
 });
 
-export default connect(mapStateToProps, { logoutUser})(Navbar);
+const mapDispatchToPRops = {
+  logoutUser,
+  toggleSideBar,
+  updateDrawerSize
+}
+
+export default connect(mapStateToProps, mapDispatchToPRops)(Navbar);

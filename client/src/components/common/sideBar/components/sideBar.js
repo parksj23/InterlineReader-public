@@ -38,11 +38,7 @@ const SideBar = (props) => {
   const{story, vocab, grammar, left, classes, tab} = props;
   return (
     <div className={story}>
-      <Tooltip disableFocusListener title="Open Drawer">
-        <Button classes={{root: classes.menuButton}} onClick={props.toggleDrawer('left', true)}>
-          <i className="material-icons" style={{zoom: "1.5"}}>menu</i>
-        </Button></Tooltip>
-      <Drawer id={"DrawerContainer"} variant="persistent" open={left} onClose={props.toggleDrawer('left', false)}>
+      <Drawer id={"DrawerContainer"} variant="persistent" open={left} onClose={()=>props.toggleDrawer('left', false)}>
         <Resizable
           defaultSize={{
             width: "40vw",
@@ -59,7 +55,7 @@ const SideBar = (props) => {
                 <Grid item xs={8}/>
                 <Grid item xs={2}>
                   <div className={'close-button-container'}>
-                    <i style={{fontSize: "36px"}} className="material-icons" onClick={props.toggleDrawer('left', false)}>close</i></div>
+                    <i style={{fontSize: "36px"}} className="material-icons" onClick={()=>props.toggleDrawer('left', false)}>close</i></div>
                 </Grid>
               </Grid>
             </div>

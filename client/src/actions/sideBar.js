@@ -16,7 +16,6 @@ export const toggleSideBar = (isOpened, size) => dispatch => {
     isOpened,
     size
   }
-
   dispatch({
     type: TOGGLE_SIDEBAR,
     payload
@@ -24,6 +23,22 @@ export const toggleSideBar = (isOpened, size) => dispatch => {
 
 
 }
+
+export const toggleDrawer = (side, open) => dispatch => {
+  let size = {
+    width: document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10) :  "30vw",
+    height: document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').clientHeight : "100vh"
+  }
+  let payload = {
+    isOpened: open,
+    size
+  }
+
+  dispatch({
+    type: TOGGLE_SIDEBAR,
+    payload
+  })
+};
 
 export const getListOfSavedWords = (userId, story) => dispatch => {
   let params = {
