@@ -48,11 +48,6 @@ class Navbar extends Component {
 
     return (
       <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-        {
-          stories && stories.storyTitle? <div className='sideBarContainer'>
-            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
-          </div> : null
-        }
         <div className="container">
           <Link className="navbar-brand" to="/">
             Interline Reader

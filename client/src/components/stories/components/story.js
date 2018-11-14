@@ -22,7 +22,7 @@ const Story = (props) => {
   const {text, searchWord, sideBar, classes} = props;
   return(
     <div>
-      <Paper elevation={1} style={sideBar && sideBar.isSideBarOpen ? {marginLeft: sideBar.drawerSize.width+ "px"} : null}>
+      <Paper elevation={1} style={props.sideBar && props.sideBar.isSideBarOpen ? {marginLeft: props.sideBar.drawerSize.width+ "px"} : null}>
         {text ?
           <StoryText text={text} searchWord={searchWord || "!@F$@%F"}/>
           : null}

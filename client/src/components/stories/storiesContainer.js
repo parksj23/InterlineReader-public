@@ -4,6 +4,7 @@ import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
 import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
 import Story from './components/story';
+import SideBar from '../common/sideBar/sideBarContainer'
 
 class StoriesContainer extends Component {
 
@@ -56,7 +57,8 @@ class StoriesContainer extends Component {
     }
     return (
       <div className={'story-container'}>
-        <Story text={text} searchWord={searchWord} sidebar={sideBar} handleTranslate={this.handleTranslate}/>
+        <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
+        <Story text={text} searchWord={searchWord} sideBar={sideBar} handleTranslate={this.handleTranslate}/>
       </div>
     );
   }

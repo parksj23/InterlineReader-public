@@ -69,7 +69,6 @@ class SideBarContainer extends Component {
     let {value} = this.state;
     const {vocab, grammar} = this.props;
     return (
-      <div >
         <SideBar vocab={vocab}
                  tab={value || 0}
                  grammar={grammar}
@@ -84,9 +83,6 @@ class SideBarContainer extends Component {
                  handleStatusClose={this.props.handleStatusClose}
                  handleTabChange={this.handleTabChange.bind(this)}
         />
-      </div>
-
-
     )
   }
 }
