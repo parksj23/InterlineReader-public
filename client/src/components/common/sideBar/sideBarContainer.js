@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import './styles/sideBar.css';
 import {updateDrawerSize} from '../../../actions/dashboard';
 import SideBar from './components/sideBar';
-import {toggleSideBar, getSavedWords, handleStatusClose} from "../../../actions/sideBar";
+import {toggleSideBar, getSavedWords, handleStatusClose, toggleDrawer} from "../../../actions/sideBar";
 
 class SideBarContainer extends Component {
 
@@ -12,7 +12,7 @@ class SideBarContainer extends Component {
     this.state = {
       left: false,
       value: 0,
-      openStatus: false
+      openStatus: false,
     }
 
     this.handleAddVocab.bind(this)
@@ -22,7 +22,15 @@ class SideBarContainer extends Component {
     this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, [204])
   }
 
-  toggleDrawer = (side, open) => () => {
+  componentDidUpdate(prevProps) {
+    if(prevProps.sideBar.isSideBarOpen !== this.props.sideBar.isSideBarOpen) {
+      this.setState({
+        left: this.props.sideBar.isSideBarOpen
+      })
+    }
+  }
+
+  /*toggleDrawer = (side, open) => () => {
     let size = {
       width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10),
       height: document.getElementById('resizeContainer').clientHeight
@@ -31,7 +39,7 @@ class SideBarContainer extends Component {
     this.setState({
       [side]: open,
     });
-  };
+  };*/
 
   handleTabChange = (event, value) => {
     this.setState({value});
@@ -74,7 +82,7 @@ class SideBarContainer extends Component {
                  grammar={grammar}
                  onResize={this.onResize}
                  left={this.state.left}
-                 toggleDrawer={this.toggleDrawer}
+                 toggleDrawer={this.props.toggleDrawer}
                  handleChange={this.handleTabChange}
                  handleAddVocab={this.handleAddVocab}
                  story={this.props.story}
@@ -94,10 +102,11 @@ const mapStateToProps = state => (
     stories: state.stories,
     userId: state.auth.user.id,
     openStatus: state.stories.openStatus,
-    statusMessage: state.stories.statusMessage
+    statusMessage: state.stories.statusMessage,
+    sideBar: state.sideBar
   }
 )
 
-const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose, updateDrawerSize})
+const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose, updateDrawerSize, toggleDrawer})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBarContainer);

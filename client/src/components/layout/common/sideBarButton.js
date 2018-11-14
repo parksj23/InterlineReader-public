@@ -9,7 +9,7 @@ const styles = {
   }
 }
 
-const SideBarMenu = (props) => {
+const SideBarButton = (props) => {
   const {classes} = props
   return(
     <Tooltip disableFocusListener title="Open Drawer">
@@ -21,4 +21,4 @@ const SideBarMenu = (props) => {
 
 
 }
-export default withStyles(styles)(SideBarMenu)
+export default withStyles(styles)(SideBarButton)
