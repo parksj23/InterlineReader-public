@@ -25,7 +25,7 @@ class StoryText extends Component {
               <h3>Hwang Sun-won</h3>
             </span>
             </div>
-            <Divider/>
+            <Divider style={{marginBottom: "0.5rem"}}/>
             {
               this.props.text.map((aSegment,index) => {
                 const childComponent = (
