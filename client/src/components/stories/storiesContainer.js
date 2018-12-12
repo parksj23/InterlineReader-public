@@ -11,7 +11,8 @@ class StoriesContainer extends Component {
   state = {
     applicationDescription: "",
     storyTitle: "",
-    language: "korean"
+    language: "korean",
+    storyInfo: null
   }
 
   componentWillMount() {
@@ -47,20 +48,32 @@ class StoriesContainer extends Component {
     const {sideBar, stories, vocab} = this.props;
     let text;
     let searchWord = "";
-    if(this.state.language === 'korean') {
-      text = stories.storyTextKorn
-      searchWord = vocab.highlightedWord.korean
-    }
-    else {
-      text = stories.storyTextEngl
-      searchWord = vocab.highlightedWord.english
-    }
-    return (
-      <div className={'story-container'}>
-        <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
-        <Story text={text} searchWord={searchWord} sideBar={sideBar} handleTranslate={this.handleTranslate}/>
-      </div>
-    );
+    let title = "";
+    let author ="";
+      if (this.state.language === 'korean') {
+        text = stories.storyTextKorn
+        searchWord = vocab.highlightedWord.korean
+        if(stories.storyInfo){
+          title = stories.storyInfo.titleKorn;
+            author = stories.storyInfo.authorKorn
+        }
+      }
+      else {
+        text = stories.storyTextEngl
+        searchWord = vocab.highlightedWord.english
+
+        if(stories.storyInfo){
+          title = stories.storyInfo.titleEng
+          author = stories.storyInfo.authorRom
+        }
+      }
+      return (
+        <div className={'story-container'}>
+          <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
+          {stories.storyInfo ? <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
+                 handleTranslate={this.handleTranslate}/>: null}
+        </div>
+      );
   }
 }
 

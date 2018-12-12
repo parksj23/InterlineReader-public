@@ -20,21 +20,21 @@ class Dashboard extends Component {
   }
 
   renderClassStories = (name, stories, classIndex) => {
+    console.log(stories)
     const {classes} = this.props
     return (
       <Grid container key={'class_' + classIndex}>
         <Grid className="classNameHeader" item xs={12}>{name}</Grid>
         {stories.map((aStory,index) => {
-          let storyName = aStory.slice(0, aStory.indexOf("_logo"))
           return (
             <Grid
               classes={{
                 item: classes.cardContainer
               }}
               item xs={4} key={'story_badge' + index}>
-              <Link to={`/story/${storyName}`} className={'card-link'}>
-                <ClassCard storyName={storyName} style={{width: "100%"}}/>
-              </Link>
+             { <Link to={`/story/${aStory.storyName}`} className={'card-link'}>
+                <ClassCard story={aStory} style={{width: "100%"}}/>
+              </Link>}
             </Grid>
 
           )
@@ -46,7 +46,7 @@ class Dashboard extends Component {
 
 
   render() {
-    const sections = this.props.dashboard.badges;
+    const sections = this.props.dashboard.storyList;
     let classNames;
 
     if(sections){
@@ -58,8 +58,6 @@ class Dashboard extends Component {
       <div className="dashboard">
         { <Grid container >
           {classNames ? classNames.map((aClass,classIndex) => {
-            var index = sections[aClass].indexOf(".DS_Store");
-            if(index > -1) sections[aClass].splice(index, 1);
             return this.renderClassStories(aClass, sections[aClass], classIndex)
           }) : <p>Loading</p>}
         </Grid> }

@@ -31,20 +31,32 @@ export const initStory = (story) => dispatch => {
     storyTitle: story
   }
 
-  axios.get(`/api/stories/${story}/storyText`, {params}).then(res => {
+ let payload = {};
+  let storyInitPromise = []
+
+  storyInitPromise.push(axios.get(`/api/stories/${story}/storyText`, {params}).then(res => {
     let storyTextKorn = res.data.storyTextKorn;
     let storyTextEngl = res.data.storyTextEngl
     storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id > b.order_id) ? 1 : (a.order_id < b.order_id) ? -1 : 0)
     storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < a.order_id) ? 1 : (a.order_id < b.order_id) ? -1 : 0)
+    payload["story"] = story;
+    payload["storyTextEngl"] = storyTextEngl;
+    payload["storyTextKorn"] = storyTextKorn
+    return
+  })
+  )
+
+  storyInitPromise.push(axios.get(`/api/stories/${story}/storyInfo`, {params}).then(res => {
+    payload["storyInfo"] = res.data.storyInfo[0]
+    return
+  }))
+
+  Promise.all(storyInitPromise).then(resp => {
+    console.log(payload)
     dispatch({
       type: INIT_STORY,
-      payload: {
-        story,
-        storyTextKorn: storyTextKorn,
-        storyTextEngl: storyTextEngl
-      }
+      payload: payload
     })
-
   })
 }
 

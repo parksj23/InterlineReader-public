@@ -28,7 +28,6 @@ exports.getVocAndGram = (req, res) => {
 };
 
 exports.getStoryText = (req,res) => {
-  console.log(req.params)
   let story = req.params.story.toUpperCase();
 
   if(story) {
@@ -51,5 +50,25 @@ exports.getStoryText = (req,res) => {
     })
   }
 
+
+}
+
+exports.getStoryInfo = (req,res) => {
+  let story = req.params.story.toLowerCase();
+  console.log("Story Title: " + story)
+  if(story){
+    MongoClient.connect(url, function (err, client) {
+      if (err) throw err;
+      var dbo = client.db("ubcreadertesting");
+      var query = {storyName: story};
+      dbo.collection(`KORN410B_STORY_LIST`).find(query).toArray(function (err, story_info) {
+        if (err) throw err;
+          res.json({
+           storyInfo: story_info,
+          });
+          client.close();
+        });
+      });
+  }
 
 }

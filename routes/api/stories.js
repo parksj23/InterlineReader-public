@@ -15,5 +15,6 @@ const story = require('../../controllers/stories');
 
 router.get('/:story', (req, res) => story.getVocAndGram(req, res));
 router.get('/:story/storyText', (req,res) => story.getStoryText(req,res));
+router.get('/:story/storyInfo', (req,res) => story.getStoryInfo(req,res));
 
 module.exports = router;

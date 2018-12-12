@@ -19,10 +19,10 @@ class StoryText extends Component {
           <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeader">
             <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
             <span style={{textAlign: 'left', width: "50%"}}>
-              <h3> Rain Shower </h3>
+              <h3> {this.props.title} </h3>
             </span>
             <span style={{textAlign: 'Right', width: "50%"}}>
-              <h3>Hwang Sun-won</h3>
+              <h3>{this.props.author}</h3>
             </span>
             </div>
             <Divider style={{marginBottom: "0.5rem"}}/>
@@ -33,8 +33,6 @@ class StoryText extends Component {
                     {ReactHtmlParser(aSegment.text)[0]}
                   </Highlight>
                 )
-
-
                 return (
                   <div key={"storySeg_" + index}>
                     {
