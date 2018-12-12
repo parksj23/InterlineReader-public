@@ -10,7 +10,8 @@ export default (state = initialState, action) => {
     case GET_DASHBOARD_SUCCESS:
       return {
         ...state,
-        badges: action.payload,
+        storyList: action.payload,
+
       };
     case GET_DASHBOARD_ASSET:
     default:

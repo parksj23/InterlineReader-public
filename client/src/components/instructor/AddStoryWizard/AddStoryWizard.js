@@ -28,7 +28,9 @@ class AddStoryWizard extends Component {
 
     this.state = {
       editorState: EditorState.createEmpty(),
-      tabValue: 0
+      tabValue: 0,
+      storyTitle: "",
+      storyAuth: ""
     };
   }
 
@@ -80,6 +82,13 @@ class AddStoryWizard extends Component {
     this.setState({tabValue: value});
   }
 
+  handleOnChangeField = name => event => {
+    this.setState({
+      [name]: event.target.value
+    })
+
+  }
+
   render() {
     const {editorState, tabValue} = this.state;
 
@@ -115,39 +124,92 @@ class AddStoryWizard extends Component {
           {
             tabValue === 0 ?
               <Grid container>
-                <Grid item xs={5}>
+                <Grid item xs={3}>
                   <TextField
                     required
-                    id="outlined-required"
-                    label="Story Name"
+                    id="story-name"
+                    label="Story Title"
                     margin="normal"
                     variant="outlined"
+                    onChange={this.handleOnChangeField("storyTitle")}
+                    style={{whiteSpace: "noWrap"}}
                   />
                 </Grid>
-                <Grid item xs={2}/>
-              <Grid item xs={5}>
-              <TextField
-              required
-              id="outlined-required"
-              label="Story Author"
-              margin="normal"
-              variant="outlined"
-              />
-              </Grid>
-              <Grid item xs={12}>
-                <div>
-                  <Editor
-                    editorState={editorState}
-                    wrapperClassName="editor-wrapper"
-                    editorClassName="editor-editor"
-                    onEditorStateChange={this.onEditorStateChange}
-                    localization={{
-                      locale: 'ko',
-                    }}
+                <Grid item xs={1}/>
+                <Grid item xs={3}>
+                  <TextField
+                    required
+                    id="story-author"
+                    label="Story Author"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleOnChangeField("storyAuthor")}
+                    style={{whiteSpace: "noWrap"}}
                   />
-                </div>
-              </Grid>
-              </Grid>:
+                </Grid>
+                <Grid item xs={1}/>
+                <Grid item xs={3}>
+                  <TextField
+                    required
+                    id="class"
+                    label="Class"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleOnChangeField("class")}
+                    style={{whiteSpace: "noWrap"}}
+                  />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    required
+                    id="story-name-romanization"
+                    label="Story Name (Romanization)"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleOnChangeField("storyNameRomanize")}
+                    style={{whiteSpace: "noWrap"}}
+                  />
+                </Grid>
+                <Grid item xs={1}/>
+                <Grid item xs={3}>
+                  <TextField
+                    required
+                    id="story-author-romanize"
+                    label="Story Author (Romanization)"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleOnChangeField("storyAuthorRomanize")}
+                    style={{whiteSpace: "noWrap"}}
+                  />
+                </Grid>
+                <Grid item xs={1}/>
+                <Grid item xs={3}>
+                  <TextField
+                    required
+                    id="story-title-english"
+                    label="Story Title (English)"
+                    margin="normal"
+                    variant="outlined"
+                    onChange={this.handleOnChangeField("storyClassEnglish")}
+                    style={{whiteSpace: "noWrap"}}
+
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <div>
+                    <Editor
+                      editorState={editorState}
+                      wrapperClassName="editor-wrapper"
+                      editorClassName="editor-editor"
+                      onEditorStateChange={this.onEditorStateChange}
+                      localization={{
+                        locale: 'ko',
+                      }}
+                    />
+                  </div>
+                </Grid>
+              </Grid> :
               <div style={{overflow: 'scroll'}}>
                 <div>
                   <h2>Preview</h2>

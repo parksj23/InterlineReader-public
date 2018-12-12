@@ -10,7 +10,8 @@ export const dashboardInit = () => dispatch => {
     classType: 'all'
   }
   const initPromises = [];
-  initPromises.push(axios.get("/api/dashboard/assetNames", {params}).then(res=>{
+  initPromises.push(axios.get("/api/dashboard/", {params}).then(res=>{
+    console.log(res.data);
     dispatch({
       type: GET_DASHBOARD_SUCCESS,
       payload: res.data
