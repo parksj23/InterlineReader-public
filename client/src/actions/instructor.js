@@ -1,4 +1,4 @@
-import {CHANGE_INSTRUCTOR_SELECTED_MENU, INSTRUCTOR_INIT, ADD_NEW_STORY} from '../constants/action-types';
+import {CHANGE_INSTRUCTOR_SELECTED_MENU, INSTRUCTOR_INIT, ADD_NEW_STORY, ADD_STORY_INFO} from '../constants/action-types';
 import axios from 'axios';
 
 
@@ -32,6 +32,20 @@ export const addToStory = (text, language) => dispatch => {
 
 
 
+
+
+}
+
+export const addStoryInfo = (storyInfo) => dispatch => {
+  let params = {
+    storyInfo
+  }
+  axios.put('/api/instructor/addStoryInfo', params).then(res => {
+    dispatch({
+      type: ADD_STORY_INFO,
+      payload: null
+    })
+  })
 
 
 }

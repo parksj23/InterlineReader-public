@@ -17,5 +17,10 @@ router.put('/addStory', (req,res) => {
   instructor.addNewStory(req.body,res)
 
 })
+router.put('/addStoryInfo', (req,res) => {
+  instructor.addStoryInfo(req.body, res);
+
+
+})
 
 module.exports = router;

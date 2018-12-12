@@ -25,8 +25,45 @@ exports.addNewStory =(req,res) => {
           client.close();
         }
       });
-
     })
   }
+}
+
+exports.addStoryInfo = (req,res) => {
+  if(req){
+    MongoClient.connect(url, function (err, client) {
+      if (err) throw err;
+      var dbo = client.db("ubcreadertesting");
+      dbo.collection(`KORN410B_STORY_LIST`).find(req).toArray( function(err,document) {
+        if(document.length === 0){
+          dbo.collection(`KORN410B_STORY_LIST`).insertOne(req.storyInfo).then(success => {
+            if(success.result.ok){
+              res.json({
+                status: 'success'
+              });
+              client.close();
+            }
+            else{
+              res.json({
+                status: 'fail'
+              });
+              client.close();
+            }
+          });
+        }
+        else{
+          res.json({
+            status: 'fail - Story already exist'
+          });
+          client.close();
+        }
+        }
+
+      )
+    })
+
+  }
+
+
 
 }

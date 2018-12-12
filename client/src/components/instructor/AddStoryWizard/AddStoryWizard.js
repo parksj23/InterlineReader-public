@@ -9,10 +9,11 @@ import {EditorState, convertToRaw, ContentState} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import ReactHtmlParser from 'react-html-parser';
-import {addToStory, changeSelectedMenu} from '../../../actions/instructor';
+import {addToStory, changeSelectedMenu, addStoryInfo} from '../../../actions/instructor';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const styleProperties = {
   "text-align": "textAlign",
@@ -22,6 +23,17 @@ const styleProperties = {
 
 }
 
+const languages = [
+{
+  value: "Korean",
+    label: "Korean"
+},
+  {
+    value: "English",
+    label: "English"
+  }
+]
+
 class AddStoryWizard extends Component {
   constructor(props) {
     super(props)
@@ -30,7 +42,11 @@ class AddStoryWizard extends Component {
       editorState: EditorState.createEmpty(),
       tabValue: 0,
       storyTitle: "",
-      storyAuth: ""
+      storyAuthor: "",
+      language: "Korean",
+      storyAuthorRomanize: "",
+      storyNameRomanize: "",
+      storyTitleEnglish: ""
     };
   }
 
@@ -45,6 +61,16 @@ class AddStoryWizard extends Component {
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
+    let storyInfo = {
+      "authorKorn": this.state.storyAuthor,
+      "titleKorn": this.state.storyTitle,
+      "authorRom": this.state.storyAuthorRomanize,
+      "titleRom": this.state.storyNameRomanize,
+      "titleEng": this.state.storyTitleEnglish,
+      "storyName": this.state.storyNameRomanize
+    }
+
+    console.log(storyInfo)
 
     stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
@@ -76,6 +102,7 @@ class AddStoryWizard extends Component {
 
     })
     this.props.addToStory(textToSend, "korean");
+    this.props.addStoryInfo(storyInfo);
   }
 
   handleOnChangeTab = (event, value) => {
@@ -86,7 +113,6 @@ class AddStoryWizard extends Component {
     this.setState({
       [name]: event.target.value
     })
-
   }
 
   render() {
@@ -190,10 +216,27 @@ class AddStoryWizard extends Component {
                     label="Story Title (English)"
                     margin="normal"
                     variant="outlined"
-                    onChange={this.handleOnChangeField("storyClassEnglish")}
+                    onChange={this.handleOnChangeField("storyTitleEnglish")}
                     style={{whiteSpace: "noWrap"}}
 
                   />
+                </Grid>
+                <Grid item xs={3}>
+                  <TextField
+                    id="story-language"
+                    select
+                    label="Language"
+                    value={this.state.language}
+                    onChange={this.handleOnChangeField('language')}
+                    helperText="Please select your Language"
+                    margin="normal"
+                  >
+                    {languages.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
 
                 <Grid item xs={12}>
@@ -238,7 +281,8 @@ class AddStoryWizard extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  addToStory
+  addToStory,
+  addStoryInfo
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddStoryWizard);
