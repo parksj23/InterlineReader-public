@@ -13,3 +13,7 @@
 #DrawerContainer .__resizable_base__{
     left: 0!important;
 }
+
+#resizeContainer {
+    overflow-x: hidden;
+}

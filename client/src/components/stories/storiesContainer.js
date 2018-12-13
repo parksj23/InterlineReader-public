@@ -5,6 +5,7 @@ import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
+import ContentLoader, { Facebook } from 'react-content-loader'
 
 class StoriesContainer extends Component {
 
@@ -58,7 +59,28 @@ class StoriesContainer extends Component {
     return (
       <div className={'story-container'}>
         <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
-        <Story text={text} searchWord={searchWord} sideBar={sideBar} handleTranslate={this.handleTranslate}/>
+        {text === undefined? 
+          <ContentLoader
+            height={700}
+            width={800}
+            speed={1}
+            primaryColor="#F4F5F6"
+            secondaryColor="#ececf1"> 
+            <rect x="0" y="0" rx="3" ry="3" width="10%" height="13" />
+            <rect x="75%" y="0" rx="3" ry="3" width="25%" height="13" />
+            <rect x="0" y="30" rx="3" ry="3" width="30%" height="10" />
+            <rect x="32%" y="30" rx="3" ry="3" width="55%" height="10" />
+            <rect x="89%" y="30" rx="3" ry="3" width="10%" height="10" />
+            <rect x="0" y="60" rx="3" ry="3" width="30%" height="10" />
+            <rect x="32%" y="60" rx="3" ry="3" width="55%" height="10" />
+            <rect x="89%" y="60" rx="3" ry="3" width="10%" height="10" />
+            <rect x="0" y="90" rx="3" ry="3" width="30%" height="10" />
+            <rect x="32%" y="90" rx="3" ry="3" width="55%" height="10" />
+            <rect x="89%" y="90" rx="3" ry="3" width="10%" height="10" />
+            <rect x="0" y="130" rx="3" ry="3" width="100%" height="10" />
+          </ContentLoader>
+          : <Story text={text} searchWord={searchWord} sideBar={sideBar} handleTranslate={this.handleTranslate}/>}
+        
       </div>
     );
   }
