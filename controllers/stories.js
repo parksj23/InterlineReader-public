@@ -6,7 +6,6 @@ const Story = mongoose.model('stories');
 
 exports.getVocAndGram = (req, res) => {
     let story = (req.params.story).toUpperCase();
-    console.log("the story is" + story);
     if(story) {
       MongoClient.connect(url, function(err, client) {
         if (err) throw err;
@@ -55,7 +54,6 @@ exports.getStoryText = (req,res) => {
 
 exports.getStoryInfo = (req,res) => {
   let story = req.params.story.toLowerCase();
-  console.log("Story Title: " + story)
   if(story){
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;

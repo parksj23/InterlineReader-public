@@ -17,10 +17,11 @@ export const changeSelectedMenu =(newMenu) => dispatch => {
   })
 }
 
-export const addToStory = (text, language) => dispatch => {
+export const addToStory = (text, language, storyInfo) => dispatch => {
   let params = {
     text,
-    language: language
+    language: language,
+    storyInfo
   }
 
   axios.put('/api/instructor/addStory', params).then( res => {

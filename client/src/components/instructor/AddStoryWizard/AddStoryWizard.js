@@ -34,6 +34,18 @@ const languages = [
   }
 ]
 
+const classes = [
+  {
+    value: "410A",
+    label: "410A"
+  },
+  {
+    value: "410B",
+    label: "410B"
+  }
+
+]
+
 class AddStoryWizard extends Component {
   constructor(props) {
     super(props)
@@ -67,10 +79,9 @@ class AddStoryWizard extends Component {
       "authorRom": this.state.storyAuthorRomanize,
       "titleRom": this.state.storyNameRomanize,
       "titleEng": this.state.storyTitleEnglish,
-      "storyName": this.state.storyNameRomanize
+      "storyName": this.state.storyNameRomanize,
+      "class": this.state.class
     }
-
-    console.log(storyInfo)
 
     stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
@@ -101,7 +112,8 @@ class AddStoryWizard extends Component {
       })
 
     })
-    this.props.addToStory(textToSend, "korean");
+    console.log(textToSend)
+    this.props.addToStory(textToSend, "korean", storyInfo);
     this.props.addStoryInfo(storyInfo);
   }
 
@@ -176,14 +188,20 @@ class AddStoryWizard extends Component {
                 <Grid item xs={1}/>
                 <Grid item xs={3}>
                   <TextField
-                    required
-                    id="class"
+                    id="story-class"
+                    select
                     label="Class"
+                    value={this.state.class}
+                    onChange={this.handleOnChangeField('class')}
                     margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("class")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
+                    style={{width: "100%"}}
+                  >
+                    {classes.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </TextField>
                 </Grid>
                 <Grid item xs={3}>
                   <TextField
