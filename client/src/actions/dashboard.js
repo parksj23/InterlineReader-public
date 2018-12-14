@@ -11,7 +11,6 @@ export const dashboardInit = () => dispatch => {
   }
   const initPromises = [];
   initPromises.push(axios.get("/api/dashboard/", {params}).then(res=>{
-    console.log(res.data);
     dispatch({
       type: GET_DASHBOARD_SUCCESS,
       payload: res.data

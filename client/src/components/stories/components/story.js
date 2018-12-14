@@ -19,7 +19,7 @@ const styles ={
 
 
 const Story = (props) => {
-  const {text, searchWord, sideBar, classes, title, author} = props;
+  const {text, searchWord, classes, title, author} = props;
   return(
     <div>
       <Paper elevation={1} style={props.sideBar && props.sideBar.isSideBarOpen ? {marginLeft: props.sideBar.drawerSize.width+ "px"} : null}>

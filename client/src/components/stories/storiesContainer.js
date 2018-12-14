@@ -17,13 +17,26 @@ class StoriesContainer extends Component {
 
   componentWillMount() {
     let pathname = this.props.location.pathname;
+
+    let paths = this.props.location.pathname.split("/")
+
+    let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1);
-    this.props.initStory(storyTitle);
-    this.props.getVocabforStory(storyTitle);
-    this.props.getListOfSavedWords(this.props.userId, storyTitle)
-    this.setState({
-      storyTitle,
-    })
+    let storyInfo = this.props.dashboard.storyList ? this.props.dashboard.storyList[storyClass].find(function(aStory) {
+      return aStory.storyName === storyTitle
+    }) : null
+
+    if(storyInfo) {
+      this.props.initStory(storyTitle, storyInfo);
+      this.props.getVocabforStory(storyTitle);
+      this.props.getListOfSavedWords(this.props.userId, storyTitle)
+      this.setState({
+        storyTitle,
+      })
+    }
+    else{
+      //TODO handle case if storyInfo is not found in Redux Store
+    }
   }
 
   componentDidMount() {
@@ -82,7 +95,8 @@ const mapStateToProps = state => (
     stories: state.stories,
     vocab: state.vocab,
     userId: state.auth.user.id,
-    sideBar: state.sideBar
+    sideBar: state.sideBar,
+    dashboard: state.dashboard
   }
 )
 

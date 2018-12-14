@@ -8,7 +8,6 @@ import {toggleSideBar} from "../../actions/sideBar";
 import SideBarButton from './common/sideBarButton';
 
 
-import  SideBar from '../common/sideBar/sideBarContainer';
 
 class Navbar extends Component {
 
@@ -39,7 +38,6 @@ class Navbar extends Component {
   render() {
 
     const { isAuthenticated, user } = this.props.auth;
-    const {stories} = this.props;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">

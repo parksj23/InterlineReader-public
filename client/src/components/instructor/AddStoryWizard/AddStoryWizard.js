@@ -1,3 +1,10 @@
+/*TODO: disable save button if story already exist in database
+  TODO: Extend preview screen to fit entire window
+  TODO: Create another preview tab so user cans witch between english and korean previews
+  TODO: Cleanly unmount componeont
+*/
+
+
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Divider from "@material-ui/core/Divider";
@@ -112,7 +119,6 @@ class AddStoryWizard extends Component {
       })
 
     })
-    console.log(textToSend)
     this.props.addToStory(textToSend, "korean", storyInfo);
     this.props.addStoryInfo(storyInfo);
   }

@@ -20,7 +20,6 @@ class Dashboard extends Component {
   }
 
   renderClassStories = (name, stories, classIndex) => {
-    console.log(stories)
     const {classes} = this.props
     return (
       <Grid container key={'class_' + classIndex}>
@@ -32,7 +31,7 @@ class Dashboard extends Component {
                 item: classes.cardContainer
               }}
               item xs={4} key={'story_badge' + index}>
-             { <Link to={`/story/${aStory.storyName}`} className={'card-link'}>
+             { <Link to={`/story/${name}/${aStory.storyName}`} className={'card-link'}>
                 <ClassCard story={aStory} style={{width: "100%"}}/>
               </Link>}
             </Grid>
