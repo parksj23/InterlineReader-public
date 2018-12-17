@@ -5,6 +5,7 @@ import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
+import ContentLoader, { Facebook } from 'react-content-loader'
 
 class StoriesContainer extends Component {
 

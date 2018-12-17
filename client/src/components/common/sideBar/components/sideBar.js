@@ -29,8 +29,6 @@ const styles ={
     backgroundColor: "#212529",
     overflow:'scroll'
   }
-
-
 }
 
 const SideBar = (props) => {
