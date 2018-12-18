@@ -1,4 +1,4 @@
-import {CHANGE_INSTRUCTOR_SELECTED_MENU, INSTRUCTOR_INIT, ADD_NEW_STORY, ADD_STORY_INFO} from '../constants/action-types';
+import {CHANGE_INSTRUCTOR_SELECTED_MENU, ADD_NEW_STORY, GET_STORY_LIST, ADD_STORY_INFO, CLOSE_STATUS_BAR} from '../constants/action-types';
 import axios from 'axios';
 
 
@@ -25,9 +25,20 @@ export const addToStory = (text, language, storyInfo) => dispatch => {
   }
 
   axios.put('/api/instructor/addStory', params).then( res => {
+    let message;
+    if(res.data.status === 200){
+      message = "Story added Successfully!"
+    }
+    else{
+      message = "Error adding story. Story not saved."
+    }
+
     dispatch({
       type: ADD_NEW_STORY,
-      payload: null
+      payload: {
+        status: res.data.status === 200,
+        message
+      }
     })
   })
 
@@ -49,4 +60,23 @@ export const addStoryInfo = (storyInfo) => dispatch => {
   })
 
 
+}
+
+export const getStoryList = () => dispatch => {
+  axios.get('/api/instructor/getStories').then(res => {
+    dispatch({
+      type: GET_STORY_LIST,
+      payload: res.data
+    })
+  })
+
+
+
+}
+
+export const handleStatusClose =() => dispatch => {
+  dispatch({
+    type: CLOSE_STATUS_BAR,
+    payload: null
+  })
 }

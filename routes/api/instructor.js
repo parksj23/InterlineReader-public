@@ -19,8 +19,10 @@ router.put('/addStory', (req,res) => {
 })
 router.put('/addStoryInfo', (req,res) => {
   instructor.addStoryInfo(req.body, res);
+})
 
-
+router.get('/getStories', (req,res) => {
+  instructor.getAllStories(req,res);
 })
 
 module.exports = router;

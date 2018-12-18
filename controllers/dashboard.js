@@ -51,7 +51,6 @@ exports.init = async (req, res) => {
     default:
   }
   Promise.all(storiesPromises).then(resp => {
-    console.log(resp[0])
     res.json(resp[0])
   })
 }
@@ -133,7 +132,4 @@ getAllStories = function(){
   }catch(err){
     console.log(err);
   }
-
-
-
 }

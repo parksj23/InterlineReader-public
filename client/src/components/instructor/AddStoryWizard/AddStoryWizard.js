@@ -16,11 +16,13 @@ import {EditorState, convertToRaw, ContentState} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import ReactHtmlParser from 'react-html-parser';
-import {addToStory, changeSelectedMenu, addStoryInfo} from '../../../actions/instructor';
+import {addToStory, changeSelectedMenu, addStoryInfo,handleStatusClose} from '../../../actions/instructor';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import MenuItem from '@material-ui/core/MenuItem';
+import StatusMessage from '../../common/statusMessage/statusMessage';
+
 
 const styleProperties = {
   "text-align": "textAlign",
@@ -32,11 +34,11 @@ const styleProperties = {
 
 const languages = [
 {
-  value: "Korean",
+  value: "korean",
     label: "Korean"
 },
   {
-    value: "English",
+    value: "english",
     label: "English"
   }
 ]
@@ -62,10 +64,13 @@ class AddStoryWizard extends Component {
       tabValue: 0,
       storyTitle: "",
       storyAuthor: "",
-      language: "Korean",
+      language: "korean",
       storyAuthorRomanize: "",
       storyNameRomanize: "",
-      storyTitleEnglish: ""
+      storyTitleEnglish: "",
+      class: "410B",
+      openStatus: false,
+      statusMessage: ""
     };
   }
 
@@ -87,40 +92,73 @@ class AddStoryWizard extends Component {
       "titleRom": this.state.storyNameRomanize,
       "titleEng": this.state.storyTitleEnglish,
       "storyName": this.state.storyNameRomanize,
-      "class": this.state.class
+      "class": this.state.class,
+      "language": this.state.language
     }
 
-    stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
+    if(this.doesStoryExist(storyInfo).length > 0){
+      //Warning
+      console.log("Story Exist!")
+    }
+    else {
+      if(this.state.language !== "english") {
+        stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
-    stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
-      ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
-        let styles = c2.split(";")
-        styles.map(aStyleProp => {
-          let propArr = aStyleProp.split(':');
-          let prop = {};
-          prop[styleProperties[propArr[0]]] = propArr[1]
-          styleArr.push(prop)
-        })
-      })
-
-      let styleObj = styleArr.reduce(function (acc, x) {
-        for (var key in x) acc[key] = x[key];
-        return acc;
-      }, {});
-      ci.replace(/<span(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>(.+?)<\/span>/ugi, (matches, t) => {
-        t.split("\\n").map(finalText => {
-          textToSend.push({
-            text: finalText,
-            order_id,
-            style: styleObj
+        stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
+          ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
+            let styles = c2.split(";")
+            styles.map(aStyleProp => {
+              let propArr = aStyleProp.split(':');
+              let prop = {};
+              prop[styleProperties[propArr[0]]] = propArr[1]
+              styleArr.push(prop)
+            })
           })
-          order_id++
-        })
-      })
 
-    })
-    this.props.addToStory(textToSend, "korean", storyInfo);
-    this.props.addStoryInfo(storyInfo);
+          let styleObj = styleArr.reduce(function (acc, x) {
+            for (var key in x) acc[key] = x[key];
+            return acc;
+          }, {});
+          ci.replace(/<span(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>(.+?)<\/span>/ugi, (matches, t) => {
+            t.split("\\n").map(finalText => {
+              textToSend.push({
+                text: finalText,
+                order_id,
+                style: styleObj
+              })
+              order_id++
+            })
+          })
+
+        })
+      }
+      else{
+        stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
+          let lineSegment = {};
+          match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
+            let styles = c2.split(";")
+            styles.map(aStyleProp => {
+              let propArr = aStyleProp.split(':');
+              let prop = {};
+              prop[styleProperties[propArr[0]]] = propArr[1]
+              styleArr.push(prop)
+            })
+            let styleObj = styleArr.reduce(function (acc, x) {
+              for (var key in x) acc[key] = x[key];
+              return acc;
+            }, {});
+            lineSegment["style"] = styleObj
+          })
+          ci.replace(/>(.+)/ugi, (match, c3) => {
+            lineSegment["text"] = c3
+          })
+          textToSend.push(lineSegment)
+        })
+        console.log(textToSend)
+      }
+      this.props.addToStory(textToSend, this.state.language, storyInfo);
+      this.props.addStoryInfo(storyInfo);
+    }
   }
 
   handleOnChangeTab = (event, value) => {
@@ -130,6 +168,28 @@ class AddStoryWizard extends Component {
   handleOnChangeField = name => event => {
     this.setState({
       [name]: event.target.value
+    })
+  }
+
+  doesStoryExist = (storyInfo) => {
+    let {instructor} = this.props;
+    console.log(storyInfo)
+    return instructor.storyList.filter(aStory =>{
+      console.log(aStory)
+      return (
+        storyInfo.authorKorn === aStory.authorKorn &&
+          storyInfo.titleKorn === aStory.titleKorn &&
+          storyInfo.authorRom === aStory.authorRom &&
+          storyInfo.titleRom === aStory.titleRom &&
+          storyInfo.titleEng === aStory.titleEng &&
+          aStory[this.state.language] === true
+      )
+    })
+  }
+
+  handleStatusClose = () => {
+    this.setState({
+      openStatus: false
     })
   }
 
@@ -273,6 +333,10 @@ class AddStoryWizard extends Component {
                       localization={{
                         locale: 'ko',
                       }}
+                      handlePastedText={(text, html, editorState) => {
+                        console.log(text)
+                        true
+                      }}
                     />
                   </div>
                 </Grid>
@@ -291,6 +355,7 @@ class AddStoryWizard extends Component {
 
           }
         </div>
+        <StatusMessage status="success" open={this.props.instructor.addNewStory} message={this.props.instructor.addNewStoryMessage} handleClose={this.props.handleStatusClose}/>
       </div>
 
 
@@ -302,11 +367,14 @@ class AddStoryWizard extends Component {
 
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  instructor: state.instructor
+});
 
 const mapDispatchToProps = ({
   addToStory,
-  addStoryInfo
+  addStoryInfo,
+  handleStatusClose
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddStoryWizard);
