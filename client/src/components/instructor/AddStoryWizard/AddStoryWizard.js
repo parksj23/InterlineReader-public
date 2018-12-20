@@ -62,15 +62,18 @@ class AddStoryWizard extends Component {
     this.state = {
       editorState: EditorState.createEmpty(),
       tabValue: 0,
-      storyTitle: "",
-      storyAuthor: "",
-      language: "korean",
-      storyAuthorRomanize: "",
-      storyNameRomanize: "",
-      storyTitleEnglish: "",
-      class: "410B",
+      storyForm: {
+        storyTitle: "",
+        storyAuthor: "",
+        language: "korean",
+        storyAuthorRomanize: "",
+        storyNameRomanize: "",
+        storyTitleEnglish: "",
+        class: "410B",
+      },
       openStatus: false,
-      statusMessage: ""
+      statusMessage: "",
+      saveDisabled: true
     };
   }
 
@@ -79,6 +82,16 @@ class AddStoryWizard extends Component {
       editorState,
     });
   };
+
+  checkDisabled = (storyForm) => {
+    let keys = Object.keys(storyForm)
+    for(let aKey of keys){
+      if (!storyForm[aKey]){
+        return true
+      }
+    }
+    return false
+  }
 
   handleOnSave = () => {
     let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())).replace("<br/>", "\\n");
@@ -154,7 +167,6 @@ class AddStoryWizard extends Component {
           })
           textToSend.push(lineSegment)
         })
-        console.log(textToSend)
       }
       this.props.addToStory(textToSend, this.state.language, storyInfo);
       this.props.addStoryInfo(storyInfo);
@@ -166,8 +178,12 @@ class AddStoryWizard extends Component {
   }
 
   handleOnChangeField = name => event => {
+    let storyForm = this.state.storyForm;
+    storyForm[name] = event.target.value
     this.setState({
-      [name]: event.target.value
+      storyForm,
+      saveDisabled: this.checkDisabled(storyForm)
+
     })
   }
 
@@ -177,12 +193,7 @@ class AddStoryWizard extends Component {
     return instructor.storyList.filter(aStory =>{
       console.log(aStory)
       return (
-        storyInfo.authorKorn === aStory.authorKorn &&
-          storyInfo.titleKorn === aStory.titleKorn &&
-          storyInfo.authorRom === aStory.authorRom &&
-          storyInfo.titleRom === aStory.titleRom &&
-          storyInfo.titleEng === aStory.titleEng &&
-          aStory[this.state.language] === true
+        storyInfo === aStory
       )
     })
   }
@@ -205,7 +216,7 @@ class AddStoryWizard extends Component {
             </Grid>
             <Grid item xs={7}/>
             <Grid item xs={2}>
-              <Button style={{float: "right"}} onClick={() => this.handleOnSave()}>Save</Button>
+              <Button style={{float: "right"}} onClick={() => this.handleOnSave()} disabled={this.state.saveDisabled}>Save</Button>
             </Grid>
 
           </Grid>
@@ -257,7 +268,7 @@ class AddStoryWizard extends Component {
                     id="story-class"
                     select
                     label="Class"
-                    value={this.state.class}
+                    value={this.state.storyForm.class}
                     onChange={this.handleOnChangeField('class')}
                     margin="normal"
                     style={{width: "100%"}}
@@ -310,7 +321,7 @@ class AddStoryWizard extends Component {
                     id="story-language"
                     select
                     label="Language"
-                    value={this.state.language}
+                    value={this.state.storyForm.language}
                     onChange={this.handleOnChangeField('language')}
                     helperText="Please select your Language"
                     margin="normal"
