@@ -4,12 +4,14 @@ import axios from "axios";
 import {GET_VOCAB_AND_GRAMMAR_SUCCESS, INIT_STORY, LEAVE_STORY} from "../constants/action-types";
 
 
-export const getVocabforStory = (story) => dispatch => {
+export const getVocabforStory = (story, storyInfo) => dispatch => {
+  console.log(storyInfo)
   const params = {
     responseType: 'application/json',
-    classType: 'all'
+    classType: 'all',
+    storyInfo
   }
-  axios.get(`/api/stories/${story}`, {params}).then(res=>{
+  axios.get(`/api/stories/${storyInfo.class}/${story}`, {params}).then(res=>{
     res.data.vocab.sort(function(a,b){
       return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)
     })

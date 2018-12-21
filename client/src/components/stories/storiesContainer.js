@@ -29,7 +29,7 @@ class StoriesContainer extends Component {
 
     if(storyInfo) {
       this.props.initStory(storyTitle, storyInfo);
-      this.props.getVocabforStory(storyTitle);
+      this.props.getVocabforStory(storyTitle,storyInfo);
       this.props.getListOfSavedWords(this.props.userId, storyTitle)
       this.setState({
         storyTitle,

@@ -6,14 +6,15 @@ const Story = mongoose.model('stories');
 
 exports.getVocAndGram = (req, res) => {
     let story = (req.params.story).toUpperCase();
+    console.log(story)
     if(story) {
       MongoClient.connect(url, function(err, client) {
         if (err) throw err;
         var dbo = client.db("ubcreadertesting");
         var query = {};
-        dbo.collection(`KORN410_${story}_VOC`).find(query).toArray(function(err, voc_result) {
+        dbo.collection(`KORN410B_${story}_VOC`).find(query).toArray(function(err, voc_result) {
           if (err) throw err;
-            dbo.collection(`KORN410_${story}_GRAM`).find(query).toArray(function(err, gram_result) {
+            dbo.collection(`KORN410B_${story}_GRAM`).find(query).toArray(function(err, gram_result) {
               if (err) throw err;
               res.json({
                 vocab: voc_result,
