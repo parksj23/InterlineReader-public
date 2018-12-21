@@ -100,7 +100,7 @@ class AddStoryWizard extends Component {
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
-    
+
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
       console.log("Story Exist!")
@@ -188,7 +188,7 @@ class AddStoryWizard extends Component {
 
   doesStoryExist = (storyInfo) => {
     let {instructor} = this.props;
-    console.log(storyInfo)
+    if(!instructor.storyList) return false;
     return instructor.storyList.filter(aStory =>{
       console.log(aStory)
       return (
