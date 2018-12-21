@@ -55,6 +55,7 @@ const classes = [
 
 ]
 
+
 class AddStoryWizard extends Component {
   constructor(props) {
     super(props)
@@ -63,13 +64,14 @@ class AddStoryWizard extends Component {
       editorState: EditorState.createEmpty(),
       tabValue: 0,
       storyForm: {
-        storyTitle: "",
-        storyAuthor: "",
-        language: "korean",
-        storyAuthorRomanize: "",
-        storyNameRomanize: "",
-        storyTitleEnglish: "",
+        authorKorn: "",
+        authorRom: "",
+        titleKorn: "",
+        titleRom: "",
+        titleEng: "",
+        storyName: "",
         class: "410B",
+        language: "korean",
       },
       openStatus: false,
       statusMessage: "",
@@ -98,18 +100,8 @@ class AddStoryWizard extends Component {
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
-    let storyInfo = {
-      "authorKorn": this.state.storyAuthor,
-      "titleKorn": this.state.storyTitle,
-      "authorRom": this.state.storyAuthorRomanize,
-      "titleRom": this.state.storyNameRomanize,
-      "titleEng": this.state.storyTitleEnglish,
-      "storyName": this.state.storyNameRomanize,
-      "class": this.state.class,
-      "language": this.state.language
-    }
-
-    if(this.doesStoryExist(storyInfo).length > 0){
+    
+    if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
       console.log("Story Exist!")
     }
@@ -168,8 +160,11 @@ class AddStoryWizard extends Component {
           textToSend.push(lineSegment)
         })
       }
-      this.props.addToStory(textToSend, this.state.language, storyInfo);
-      this.props.addStoryInfo(storyInfo);
+
+      console.log(textToSend)
+      console.log(this.state.storyForm)
+      this.props.addToStory(textToSend, this.state.language, this.state.storyForm);
+      this.props.addStoryInfo(this.state.storyForm);
     }
   }
 
@@ -179,7 +174,11 @@ class AddStoryWizard extends Component {
 
   handleOnChangeField = name => event => {
     let storyForm = this.state.storyForm;
+    console.log(storyForm)
     storyForm[name] = event.target.value
+    if(name ==="titleRom") {
+      storyForm["storyName"] = event.target.value
+    }
     this.setState({
       storyForm,
       saveDisabled: this.checkDisabled(storyForm)
@@ -246,7 +245,7 @@ class AddStoryWizard extends Component {
                     label="Story Title"
                     margin="normal"
                     variant="outlined"
-                    onChange={this.handleOnChangeField("storyTitle")}
+                    onChange={this.handleOnChangeField("titleKorn")}
                     style={{whiteSpace: "noWrap"}}
                   />
                 </Grid>
@@ -258,7 +257,7 @@ class AddStoryWizard extends Component {
                     label="Story Author"
                     margin="normal"
                     variant="outlined"
-                    onChange={this.handleOnChangeField("storyAuthor")}
+                    onChange={this.handleOnChangeField("authorKorn")}
                     style={{whiteSpace: "noWrap"}}
                   />
                 </Grid>
@@ -287,7 +286,7 @@ class AddStoryWizard extends Component {
                     label="Story Name (Romanization)"
                     margin="normal"
                     variant="outlined"
-                    onChange={this.handleOnChangeField("storyNameRomanize")}
+                    onChange={this.handleOnChangeField("titleRom")}
                     style={{whiteSpace: "noWrap"}}
                   />
                 </Grid>
@@ -299,7 +298,7 @@ class AddStoryWizard extends Component {
                     label="Story Author (Romanization)"
                     margin="normal"
                     variant="outlined"
-                    onChange={this.handleOnChangeField("storyAuthorRomanize")}
+                    onChange={this.handleOnChangeField("authorRom")}
                     style={{whiteSpace: "noWrap"}}
                   />
                 </Grid>
@@ -311,7 +310,7 @@ class AddStoryWizard extends Component {
                     label="Story Title (English)"
                     margin="normal"
                     variant="outlined"
-                    onChange={this.handleOnChangeField("storyTitleEnglish")}
+                    onChange={this.handleOnChangeField("titleEng")}
                     style={{whiteSpace: "noWrap"}}
 
                   />
