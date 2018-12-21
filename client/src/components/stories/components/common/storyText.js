@@ -30,7 +30,7 @@ class StoryText extends Component {
               this.props.text.map((aSegment,index) => {
                 const childComponent = (
                   <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                    {ReactHtmlParser(aSegment.text)[0]}
+                    {ReactHtmlParser(aSegment.text)}
                   </Highlight>
                 )
                 return (

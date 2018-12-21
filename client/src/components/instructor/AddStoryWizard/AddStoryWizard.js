@@ -158,11 +158,12 @@ class AddStoryWizard extends Component {
           })
           ci.replace(/>(.+)/ugi, (match, c3) => {
             lineSegment["text"] = c3
+            lineSegment["order_id"] = order_id
+            order_id++
           })
           textToSend.push(lineSegment)
         })
       }
-
       this.props.addToStory(textToSend, this.state.storyForm);
       this.props.addStoryInfo(this.state.storyForm);
     }

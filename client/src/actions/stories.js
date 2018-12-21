@@ -40,8 +40,8 @@ export const initStory = (story, storyInfo) => dispatch => {
     axios.get(`/api/stories/${storyInfo.class}/${story}/storyText`, {params: params}).then(res => {
       let storyTextKorn = res.data.storyTextKorn;
       let storyTextEngl = res.data.storyTextEngl
-      storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id > b.order_id) ? 1 : (a.order_id < b.order_id) ? -1 : 0)
-      storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id) ? 1 : (a.order_id < b.order_id) ? -1 : 0)
+      storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+      storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
       payload["story"] = story;
       payload["storyTextEngl"] = storyTextEngl;
       payload["storyTextKorn"] = storyTextKorn;
