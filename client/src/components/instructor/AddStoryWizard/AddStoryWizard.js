@@ -80,8 +80,10 @@ class AddStoryWizard extends Component {
   }
 
   onEditorStateChange = (editorState) => {
+
     this.setState({
       editorState,
+      saveDisabled: this.checkDisabled(this.state.storyForm) || !editorState.getCurrentContent().hasText()
     });
   };
 
@@ -100,7 +102,6 @@ class AddStoryWizard extends Component {
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
-    console.log(stringToSave)
 
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
@@ -139,7 +140,6 @@ class AddStoryWizard extends Component {
         })
       }
       else{
-        console.log(stringToSave)
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           let lineSegment = {};
           match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
@@ -174,14 +174,13 @@ class AddStoryWizard extends Component {
 
   handleOnChangeField = name => event => {
     let storyForm = this.state.storyForm;
-    console.log(storyForm)
     storyForm[name] = event.target.value
     if(name ==="titleRom") {
       storyForm["storyName"] = event.target.value
     }
     this.setState({
       storyForm,
-      saveDisabled: this.checkDisabled(storyForm)
+      saveDisabled: this.checkDisabled(storyForm) || this.state.editorState.getCurrentContent().hasText()
 
     })
   }
@@ -190,7 +189,6 @@ class AddStoryWizard extends Component {
     let {instructor} = this.props;
     if(!instructor.storyList) return false;
     return instructor.storyList.filter(aStory =>{
-      console.log(aStory)
       return (
         storyInfo === aStory
       )
@@ -344,7 +342,6 @@ class AddStoryWizard extends Component {
                         locale: 'ko',
                       }}
                       handlePastedText={(text, html, editorState) => {
-                        console.log(text)
                         true
                       }}
                     />
