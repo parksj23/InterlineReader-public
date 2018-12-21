@@ -17,15 +17,15 @@ export const changeSelectedMenu =(newMenu) => dispatch => {
   })
 }
 
-export const addToStory = (text, language, storyInfo) => dispatch => {
+export const addToStory = (text,storyInfo) => dispatch => {
   let params = {
     text,
-    language: language,
     storyInfo
   }
 
   axios.put('/api/instructor/addStory', params).then( res => {
     let message;
+    console.log(res.data)
     if(res.data.status === 200){
       message = "Story added Successfully!"
     }

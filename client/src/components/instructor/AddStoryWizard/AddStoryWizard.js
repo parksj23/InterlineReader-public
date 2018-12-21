@@ -100,13 +100,14 @@ class AddStoryWizard extends Component {
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
+    console.log(stringToSave)
 
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
       console.log("Story Exist!")
     }
     else {
-      if(this.state.language !== "english") {
+      if(this.state.storyForm.language !== "english") {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
@@ -138,6 +139,7 @@ class AddStoryWizard extends Component {
         })
       }
       else{
+        console.log(stringToSave)
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           let lineSegment = {};
           match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
@@ -161,9 +163,7 @@ class AddStoryWizard extends Component {
         })
       }
 
-      console.log(textToSend)
-      console.log(this.state.storyForm)
-      this.props.addToStory(textToSend, this.state.language, this.state.storyForm);
+      this.props.addToStory(textToSend, this.state.storyForm);
       this.props.addStoryInfo(this.state.storyForm);
     }
   }
