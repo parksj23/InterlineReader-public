@@ -73,7 +73,7 @@ class AddStoryWizard extends Component {
       },
       openStatus: false,
       statusMessage: "",
-      saveDisabled: false
+      saveDisabled: true
     };
   }
 
@@ -154,7 +154,8 @@ class AddStoryWizard extends Component {
             lineSegment["style"] = styleObj
           })
           ci.replace(/>(.+)/ugi, (match, c3) => {
-            lineSegment["text"] = c3
+            lineSegment["text"] = c3.replace("&amp;nbsp;", "")
+            lineSegment["text"] = lineSegment["text"].replace("&nbsp;", "")
             lineSegment["order_id"] = order_id
             order_id++
           })

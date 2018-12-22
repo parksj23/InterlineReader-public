@@ -28,7 +28,6 @@ class StoryText extends Component {
             <Divider style={{marginBottom: "0.5rem"}}/>
             {
               this.props.text.map((aSegment,index) => {
-                console.log(aSegment.text)
                 const childComponent = (
                   <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
                     {aSegment.text}

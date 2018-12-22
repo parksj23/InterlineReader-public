@@ -14,7 +14,7 @@ class SavedWordsContainer extends Component {
   }
 
   componentWillUnmount(){
-      if(this.props.stories.vocabList) {
+    if(this.props.stories.vocabList) {
         let vocabList = this.props.stories.vocabList.vocabList;
 
 
@@ -28,10 +28,6 @@ class SavedWordsContainer extends Component {
   }
 
   componentWillUpdate(prevProps){
-    console.log("prevProps:")
-    console.log(prevProps)
-    console.log("state:")
-    console.log(this.state)
   }
 
   shouldComponentUpdate(nextProps,nextState){

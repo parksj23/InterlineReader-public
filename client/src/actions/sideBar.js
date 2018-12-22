@@ -98,6 +98,7 @@ export const deleteSavedWord = vocab => dispatch => {
 }
 
 export const updateSavedWords = params => dispatch => {
+  console.log("updating Saved Words")
   axios.put(`/api/savedWords/updateSavedWords`, params).then(res=>{
     console.log(res.data)
     dispatch({
