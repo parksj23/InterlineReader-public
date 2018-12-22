@@ -52,9 +52,7 @@ const classes = [
     value: "410B",
     label: "410B"
   }
-
 ]
-
 
 class AddStoryWizard extends Component {
   constructor(props) {
@@ -75,7 +73,7 @@ class AddStoryWizard extends Component {
       },
       openStatus: false,
       statusMessage: "",
-      saveDisabled: true
+      saveDisabled: false
     };
   }
 
@@ -121,22 +119,21 @@ class AddStoryWizard extends Component {
               styleArr.push(prop)
             })
           })
+          let cleanLine = [];
+          ci.replace(/<span\b[^>]*>(.+?)<\/span>/ugi, (match, c3) => {
+            cleanLine.push(c3.replace("\\n", ""))
+          })
 
           let styleObj = styleArr.reduce(function (acc, x) {
             for (var key in x) acc[key] = x[key];
             return acc;
           }, {});
-          ci.replace(/<span(?:[^>=]|='[^']*'|="[^"]*"|=[^'"][^\s>]*)*>(.+?)<\/span>/ugi, (matches, t) => {
-            t.split("\\n").map(finalText => {
-              textToSend.push({
-                text: finalText,
-                order_id,
-                style: styleObj
-              })
-              order_id++
-            })
+          textToSend.push({
+            text: cleanLine.join(""),
+            order_id,
+            style: styleObj
           })
-
+          order_id++
         })
       }
       else{
@@ -334,18 +331,28 @@ class AddStoryWizard extends Component {
 
                 <Grid item xs={12}>
                   <div>
-                    <Editor
-                      editorState={editorState}
-                      wrapperClassName="editor-wrapper"
-                      editorClassName="editor-editor"
-                      onEditorStateChange={this.onEditorStateChange}
-                      localization={{
-                        locale: 'ko',
-                      }}
-                      handlePastedText={(text, html, editorState) => {
-                        true
-                      }}
-                    />
+                    {
+                      this.state.storyForm.language === "english" ?
+                      <Editor
+                        editorState={editorState}
+                        wrapperClassName="editor-wrapper"
+                        editorClassName="editor-editor"
+                        onEditorStateChange={this.onEditorStateChange}
+                        localization={{
+                          locale: 'ko',
+                        }}
+                        handlePastedText={(text, html, editorState) => {
+                         return false
+                        }} /> :
+                        <Editor
+                          editorState={editorState}
+                          wrapperClassName="editor-wrapper"
+                          editorClassName="editor-editor"
+                          onEditorStateChange={this.onEditorStateChange}
+                          localization={{
+                            locale: 'ko',
+                          }}/>
+                    }
                   </div>
                 </Grid>
               </Grid> :

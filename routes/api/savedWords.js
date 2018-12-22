@@ -20,7 +20,6 @@ router.get('/', (req, res) => {
     savedWords: req.query.savedWords,
   }
   params["class"] = req.query.class
-  console.log(req.query)
   savedWords.getSavedWords(params, res)
 });
 
