@@ -5,7 +5,6 @@ const url = keys.mongoURI;
 
 exports.getSavedWords = (params, res) => {
   let {userId, story, savedWords} = params;
-  console.log(params)
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
@@ -39,7 +38,6 @@ exports.getListOfSavedWords = (params, res) => {
         userId,
         story
       };
-      console.log(query)
       dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
         // create a new document if not found
         if(voc_list.length == 0) {
