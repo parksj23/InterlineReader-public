@@ -5,6 +5,7 @@ const url = keys.mongoURI;
 
 exports.getSavedWords = (params, res) => {
   let {userId, story, savedWords} = params;
+  console.log(params)
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
@@ -16,7 +17,7 @@ exports.getSavedWords = (params, res) => {
             order_id: parseInt(orderId)
           })
         })
-        dbo.collection(`KORN410_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
+        dbo.collection(`KORN410B_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
           if (err) throw err;
           res.json({
             savedVocab: voc_result,
@@ -38,6 +39,7 @@ exports.getListOfSavedWords = (params, res) => {
         userId,
         story
       };
+      console.log(query)
       dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
         // create a new document if not found
         if(voc_list.length == 0) {
@@ -75,9 +77,7 @@ exports.updateSavedWords = (params,res) => {
       };
       dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
           voc_list[0].vocabList = vocabList
-          console.log(voc_list[0])
           dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).updateOne(query,{$set: voc_list[0]}, {upsert:true});
-
           if (err) throw err;
           res.json({
             vocabList: voc_list[0],

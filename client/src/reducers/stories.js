@@ -12,7 +12,8 @@ const initialState = {
   isSideBarOpen: false,
   storyTitle: "",
   openStatus: false,
-  statusMessage:''
+  statusMessage:'',
+  vocabList: []
 };
 
 export default (state = initialState, action) => {

@@ -5,7 +5,6 @@ import {GET_VOCAB_AND_GRAMMAR_SUCCESS, INIT_STORY, LEAVE_STORY} from "../constan
 
 
 export const getVocabforStory = (story, storyInfo) => dispatch => {
-  console.log(storyInfo)
   const params = {
     responseType: 'application/json',
     classType: 'all',

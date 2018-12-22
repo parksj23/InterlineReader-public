@@ -83,10 +83,15 @@ class StoriesContainer extends Component {
       }
       return (
         <div className={'story-container'}>
-          <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
-          {stories.storyInfo ? <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
-                 handleTranslate={this.handleTranslate}/>: null}
-        </div>
+          <div>
+            {this.props.stories.storyInfo ? <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle}
+                      onResize={this.onResize}/> : null
+            }
+          </div>
+          {stories.storyInfo ?
+            <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
+                                      handleTranslate={this.handleTranslate}/>: null}
+          </div>
       );
   }
 }
