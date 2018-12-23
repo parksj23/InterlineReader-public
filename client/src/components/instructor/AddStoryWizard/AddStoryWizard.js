@@ -109,7 +109,11 @@ class AddStoryWizard extends Component {
       if(this.state.storyForm.language !== "english") {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
+
+        // Grab all text within <p> tags
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
+
+          //Grab all styles within tag
           ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
             let styles = c2.split(";")
             styles.map(aStyleProp => {
@@ -120,6 +124,7 @@ class AddStoryWizard extends Component {
             })
           })
           let cleanLine = [];
+          //grab all text within <span> tag
           ci.replace(/<span\b[^>]*>(.+?)<\/span>/ugi, (match, c3) => {
             cleanLine.push(c3.replace("\\n", ""))
           })
@@ -128,8 +133,20 @@ class AddStoryWizard extends Component {
             for (var key in x) acc[key] = x[key];
             return acc;
           }, {});
+
+          //join array with spaces, then capture all segments where a whtiespace from joining is not needed
+          // such as a comma or period
+          let finalText = cleanLine.filter(segment => segment !== " ").join(" ").replace(/([\u3131-\uD79D]\s[^\w\s|^\u3131-\uD79D])/ugi, (match, c4)=>{
+            return c4.replace(/\s+/, "").trim()
+          })
+
+          // handle whitespace around quotations
+          finalText = finalText.replace(/[\s]"\s/ugi, (match, c5)=>{
+            return ' "'
+          })
+
           textToSend.push({
-            text: cleanLine.join(""),
+            text: finalText,
             order_id,
             style: styleObj
           })
