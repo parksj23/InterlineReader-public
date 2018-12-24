@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
-import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
+import {getListOfSavedWords, getSavedWords, updateSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
@@ -55,6 +55,17 @@ class StoriesContainer extends Component {
   }
 
   componentWillUnmount() {
+   /* if(this.props.stories.vocabList) {
+      let vocabList = this.props.stories.vocabList.vocabList;
+
+
+      let params = {
+        userId: this.props.userId,
+        storyTitle: this.props.stories.storyTitle,
+        vocabList
+      }
+      this.props.updateSavedWords(params);
+    }*/
     this.props.leaveStories();
   }
 
@@ -106,6 +117,6 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories})
+const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories, updateSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

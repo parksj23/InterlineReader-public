@@ -33,9 +33,6 @@ export const initStory = (story, storyInfo) => dispatch => {
   }
 
  let payload = {};
-
-  console.log(storyInfo)
-
     axios.get(`/api/stories/${storyInfo.class}/${story}/storyText`, {params: params}).then(res => {
       let storyTextKorn = res.data.storyTextKorn;
       let storyTextEngl = res.data.storyTextEngl
@@ -53,6 +50,7 @@ export const initStory = (story, storyInfo) => dispatch => {
 }
 
 export const leaveStories = () => dispatch => {
+
   dispatch({
     type: LEAVE_STORY,
     payload: {}

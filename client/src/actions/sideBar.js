@@ -64,7 +64,6 @@ export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch
   }
 
   params["class"] = storyClass
-  console.log(params)
   if(savedWords && savedWords.length > 0){
     axios.get(`/api/savedWords`, {params}).then(res=>{
       dispatch({
@@ -98,9 +97,7 @@ export const deleteSavedWord = vocab => dispatch => {
 }
 
 export const updateSavedWords = params => dispatch => {
-  console.log("updating Saved Words")
   axios.put(`/api/savedWords/updateSavedWords`, params).then(res=>{
-    console.log(res.data)
     dispatch({
       type: UPDATE_SAVED_WORDS,
       payload: res.data.vocabList

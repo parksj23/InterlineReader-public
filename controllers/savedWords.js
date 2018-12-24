@@ -40,6 +40,7 @@ exports.getListOfSavedWords = (params, res) => {
       };
       dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
         // create a new document if not found
+        if (err) throw err;
         if(voc_list.length == 0) {
           dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).insert(
             {
@@ -51,10 +52,11 @@ exports.getListOfSavedWords = (params, res) => {
             vocabList: [],
           });
         }
-        if (err) throw err;
-        res.json({
-          vocabList: voc_list[0],
-        });
+        else{
+          res.json({
+            vocabList: voc_list[0],
+          });
+        }
         client.close();
       });
     })
@@ -75,7 +77,8 @@ exports.updateSavedWords = (params,res) => {
       };
       dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
           voc_list[0].vocabList = vocabList
-          dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).updateOne(query,{$set: voc_list[0]}, {upsert:true});
+          console.log(voc_list[0])
+          dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).replaceOne(query,voc_list[0], {upsert:true});
           if (err) throw err;
           res.json({
             vocabList: voc_list[0],
@@ -90,7 +93,6 @@ exports.updateSavedWords = (params,res) => {
 
 exports.deleteSavedWords = (params,res) => {
   let {userId,storyTitle} = params;
-  console.log(params);
   if(userId && storyTitle) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
