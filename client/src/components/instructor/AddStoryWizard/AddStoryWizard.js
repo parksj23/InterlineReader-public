@@ -101,6 +101,8 @@ class AddStoryWizard extends Component {
     let order_id = 1;
     let styleArr = []
 
+    stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">");
+
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
       console.log("Story Exist!")
@@ -171,16 +173,17 @@ class AddStoryWizard extends Component {
             lineSegment["style"] = styleObj
           })
           ci.replace(/>(.+)/ugi, (match, c3) => {
-            lineSegment["text"] = c3.replace("&amp;nbsp;", "")
-            lineSegment["text"] = lineSegment["text"].replace("&nbsp;", "")
+            console.log(c3)
+            lineSegment["text"] = c3.replace(/(&amp;|[&*]nbsp;)/ugi, "");
             lineSegment["order_id"] = order_id
             order_id++
           })
           textToSend.push(lineSegment)
         })
       }
-      this.props.addToStory(textToSend, this.state.storyForm);
-      this.props.addStoryInfo(this.state.storyForm);
+      console.log(textToSend)
+      //this.props.addToStory(textToSend, this.state.storyForm);
+      //this.props.addStoryInfo(this.state.storyForm);
     }
   }
 
