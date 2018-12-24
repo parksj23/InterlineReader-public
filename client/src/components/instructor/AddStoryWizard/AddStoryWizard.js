@@ -101,7 +101,7 @@ class AddStoryWizard extends Component {
     let order_id = 1;
     let styleArr = []
 
-    stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">");
+    stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">").replace(/(&amp;|[&*]nbsp;)/ugi, "");
 
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
@@ -181,9 +181,8 @@ class AddStoryWizard extends Component {
           textToSend.push(lineSegment)
         })
       }
-      console.log(textToSend)
-      //this.props.addToStory(textToSend, this.state.storyForm);
-      //this.props.addStoryInfo(this.state.storyForm);
+      this.props.addToStory(textToSend, this.state.storyForm);
+      this.props.addStoryInfo(this.state.storyForm);
     }
   }
 
