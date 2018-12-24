@@ -10,6 +10,7 @@ var Highlight = require('react-highlighter');
 class StoryText extends Component {
 
   handleInlineTags = (phrase, tagArray) => {
+    console.log(phrase)
     let highligherComponents = []
 
     while(tagArray && tagArray.length > 0){
@@ -27,7 +28,13 @@ class StoryText extends Component {
       }
       else{
         let plainText = phrase.slice(phrase.indexOf(tagArray[0]) +tagArray[0].length, phrase.indexOf(tagArray[1]));
+        console.log(plainText)
         let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
+        if(openTag.indexOf(" ") >= 0){
+          openTag = openTag.split(" ")[0]
+          console.log(openTag)
+        }
+        console.log(openTag)
         let highlight = (
           <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
             {plainText}
@@ -61,75 +68,79 @@ class StoryText extends Component {
             {
               this.props.text.map((aSegment, index) => {
                 let text = aSegment.text
-                let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
+                  let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
 
-                if (textSection) {
-                  let phraseArr = []
-                  if(text.indexOf("<") > 0) {
-                    let plainText = text.slice(0, text.indexOf("<"));
+                  if (textSection) {
+                    let phraseArr = []
+                    if (text.indexOf("<") > 0) {
+                      let plainText = text.slice(0, text.indexOf("<"));
 
-                    let childComponent = (
-                      <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                        {plainText}
-                      </Highlight>
-                    )
-                    phraseArr.push(React.createElement('span',aSegment.style, childComponent))
-                  }
-                  textSection.map(phrase => {
-                      let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
-
-                      //if there are two or more inline HTML tags
-                      if (numberOfInlineTags.length > 2) {
-                        phraseArr = this.handleInlineTags(phrase,numberOfInlineTags)
-                      }
-                      else {
-                        //if there is text before the first HTML tag
-                        let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
-                        let phraseText = phrase.slice(phrase.indexOf(">") + 1, phrase.lastIndexOf("<"))
-                        const HighlightComponent = (
-                          <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                            {phraseText}
-                          </Highlight>
-                        )
-                        let childHTML = React.createElement(`${openTag}`, aSegment.style, HighlightComponent)
-                        let parentHTML = React.createElement('span', {style: aSegment.style}, childHTML)
-                        phraseArr.push(parentHTML)
-                      }
+                      let childComponent = (
+                        <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
+                          {plainText}
+                        </Highlight>
+                      )
+                      phraseArr.push(React.createElement('span', aSegment.style, childComponent))
                     }
-                  )
-                  if(text.lastIndexOf(">") < text.length-1) {
+                    textSection.map(phrase => {
+                        let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
 
-                    let plainText = text.slice(text.lastIndexOf(">")+1);
+                        //if there are two or more inline HTML tags
+                        if (numberOfInlineTags.length > 2) {
+                          phraseArr = this.handleInlineTags(phrase, numberOfInlineTags)
+                        }
+                        else {
+                          //if there is text before the first HTML tag
+                          let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
+                          if(openTag.indexOf(" ") >= 0){
+                            openTag = openTag.split(" ")[0]
+                            console.log(openTag)
+                          }
+                          let phraseText = phrase.slice(phrase.indexOf(">") + 1, phrase.lastIndexOf("<"))
+                          const HighlightComponent = (
+                            <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
+                              {phraseText}
+                            </Highlight>
+                          )
+                          let childHTML = React.createElement(`${openTag}`, aSegment.style, HighlightComponent)
+                          let parentHTML = React.createElement('span', {style: aSegment.style}, childHTML)
+                          phraseArr.push(parentHTML)
+                        }
+                      }
+                    )
+                    if (text.lastIndexOf(">") < text.length - 1) {
+
+                      let plainText = text.slice(text.lastIndexOf(">") + 1);
+                      let childComponent = (
+                        <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
+                          {plainText}
+                        </Highlight>
+                      )
+                      phraseArr.push(React.createElement('span', aSegment.style, childComponent))
+                    }
+                    return (
+                      <div key={"storySeg_" + index}>
+                        {
+                          React.createElement('p', {style: aSegment.style}, phraseArr)
+                        }
+                      </div>
+                    )
+                  }
+
+                  else {
                     let childComponent = (
                       <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                        {plainText}
+                        {aSegment.text}
                       </Highlight>
                     )
-                    phraseArr.push(React.createElement('span', aSegment.style, childComponent))
+                    return (
+                      <div key={"storySeg_" + index}>
+                        {
+                          React.createElement('p', {style: aSegment.style}, childComponent)
+                        }
+                      </div>
+                    )
                   }
-                  return (
-                    <div key={"storySeg_" + index}>
-                      {
-                        React.createElement('p', {style: aSegment.style}, phraseArr)
-                      }
-                    </div>
-                  )
-                }
-
-                else {
-                  let childComponent = (
-                    <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                      {aSegment.text}
-                    </Highlight>
-                  )
-                  return (
-                    <div key={"storySeg_" + index}>
-                      {
-                        React.createElement('p', {style: aSegment.style}, childComponent)
-                      }
-                    </div>
-                  )
-                }
               })
             }
               </div>
