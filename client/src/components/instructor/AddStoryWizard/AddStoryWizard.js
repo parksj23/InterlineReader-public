@@ -101,7 +101,7 @@ class AddStoryWizard extends Component {
     let order_id = 1;
     let styleArr = []
 
-    stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">").replace(/(&amp;|[&*]nbsp;)/ugi, "");
+    stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">").replace(/(&amp;|&*nbsp;)/ugi, "");
 
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
