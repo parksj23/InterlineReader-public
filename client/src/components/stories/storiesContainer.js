@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
-import {getListOfSavedWords, getSavedWords} from "../../actions/sideBar";
+import {getListOfSavedWords, getSavedWords, updateSavedWords} from "../../actions/sideBar";
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
@@ -12,18 +12,32 @@ class StoriesContainer extends Component {
   state = {
     applicationDescription: "",
     storyTitle: "",
-    language: "korean"
+    language: "korean",
+    storyInfo: null
   }
 
   componentWillMount() {
     let pathname = this.props.location.pathname;
+
+    let paths = this.props.location.pathname.split("/")
+
+    let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1);
-    this.props.initStory(storyTitle);
-    this.props.getVocabforStory(storyTitle);
-    this.props.getListOfSavedWords(this.props.userId, storyTitle)
-    this.setState({
-      storyTitle,
-    })
+    let storyInfo = this.props.dashboard.storyList ? this.props.dashboard.storyList[storyClass].find(function(aStory) {
+      return aStory.storyName === storyTitle
+    }) : null
+
+    if(storyInfo) {
+      this.props.initStory(storyTitle, storyInfo);
+      this.props.getVocabforStory(storyTitle,storyInfo);
+      this.props.getListOfSavedWords(this.props.userId, storyTitle)
+      this.setState({
+        storyTitle,
+      })
+    }
+    else{
+      //TODO handle case if storyInfo is not found in Redux Store
+    }
   }
 
   componentDidMount() {
@@ -41,6 +55,17 @@ class StoriesContainer extends Component {
   }
 
   componentWillUnmount() {
+   /* if(this.props.stories.vocabList) {
+      let vocabList = this.props.stories.vocabList.vocabList;
+
+
+      let params = {
+        userId: this.props.userId,
+        storyTitle: this.props.stories.storyTitle,
+        vocabList
+      }
+      this.props.updateSavedWords(params);
+    }*/
     this.props.leaveStories();
   }
 
@@ -48,41 +73,37 @@ class StoriesContainer extends Component {
     const {sideBar, stories, vocab} = this.props;
     let text;
     let searchWord = "";
-    if(this.state.language === 'korean') {
-      text = stories.storyTextKorn
-      searchWord = vocab.highlightedWord.korean
-    }
-    else {
-      text = stories.storyTextEngl
-      searchWord = vocab.highlightedWord.english
-    }
-    return (
-      <div className={'story-container'}>
-        <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle} onResize={this.onResize}/>
-        {text === undefined? 
-          <ContentLoader
-            height={700}
-            width={800}
-            speed={1}
-            primaryColor="#F4F5F6"
-            secondaryColor="#ececf1"> 
-            <rect x="0" y="0" rx="3" ry="3" width="10%" height="13" />
-            <rect x="75%" y="0" rx="3" ry="3" width="25%" height="13" />
-            <rect x="0" y="30" rx="3" ry="3" width="30%" height="10" />
-            <rect x="32%" y="30" rx="3" ry="3" width="55%" height="10" />
-            <rect x="89%" y="30" rx="3" ry="3" width="10%" height="10" />
-            <rect x="0" y="60" rx="3" ry="3" width="30%" height="10" />
-            <rect x="32%" y="60" rx="3" ry="3" width="55%" height="10" />
-            <rect x="89%" y="60" rx="3" ry="3" width="10%" height="10" />
-            <rect x="0" y="90" rx="3" ry="3" width="30%" height="10" />
-            <rect x="32%" y="90" rx="3" ry="3" width="55%" height="10" />
-            <rect x="89%" y="90" rx="3" ry="3" width="10%" height="10" />
-            <rect x="0" y="130" rx="3" ry="3" width="100%" height="10" />
-          </ContentLoader>
-          : <Story text={text} searchWord={searchWord} sideBar={sideBar} handleTranslate={this.handleTranslate}/>}
-        
-      </div>
-    );
+    let title = "";
+    let author ="";
+      if (this.state.language === 'korean') {
+        text = stories.storyTextKorn
+        searchWord = vocab.highlightedWord.korean
+        if(stories.storyInfo){
+          title = stories.storyInfo.titleKorn;
+            author = stories.storyInfo.authorKorn
+        }
+      }
+      else {
+        text = stories.storyTextEngl
+        searchWord = vocab.highlightedWord.english
+
+        if(stories.storyInfo){
+          title = stories.storyInfo.titleEng
+          author = stories.storyInfo.authorRom
+        }
+      }
+      return (
+        <div className={'story-container'}>
+          <div>
+            {this.props.stories.storyInfo ? <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle}
+                      onResize={this.onResize}/> : null
+            }
+          </div>
+          {stories.storyInfo ?
+            <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
+                                      handleTranslate={this.handleTranslate}/>: null}
+          </div>
+      );
   }
 }
 
@@ -91,10 +112,11 @@ const mapStateToProps = state => (
     stories: state.stories,
     vocab: state.vocab,
     userId: state.auth.user.id,
-    sideBar: state.sideBar
+    sideBar: state.sideBar,
+    dashboard: state.dashboard
   }
 )
 
-const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories})
+const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories, updateSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

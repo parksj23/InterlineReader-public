@@ -19,12 +19,12 @@ const styles ={
 
 
 const Story = (props) => {
-  const {text, searchWord, sideBar, classes} = props;
+  const {text, searchWord, classes, title, author} = props;
   return(
     <div>
       <Paper elevation={1} style={props.sideBar && props.sideBar.isSideBarOpen ? {marginLeft: props.sideBar.drawerSize.width+ "px"} : null}>
         {text ?
-          <StoryText text={text} searchWord={searchWord || "!@F$@%F"}/>
+          <StoryText title={title} author={author} text={text} searchWord={searchWord || "!@F$@%F"}/>
           : null}
       </Paper>
       <div className='translateContainer'>

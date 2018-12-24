@@ -9,24 +9,39 @@ class SavedWordsContainer extends Component {
   }
 
   componentWillMount(){
+    this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList, this.props.stories.storyInfo.class)
+
   }
 
   componentWillUnmount(){
-    let vocabList = this.props.stories.vocabList.vocabList;
+    if(this.props.stories.vocabList) {
+        let vocabList = this.props.stories.vocabList.vocabList;
 
-    let params = {
-      userId: this.props.userId,
-      storyTitle: this.props.stories.storyTitle,
-      vocabList
+
+        let params = {
+          userId: this.props.userId,
+          storyTitle: this.props.stories.storyTitle,
+          vocabList
+        }
+        this.props.updateSavedWords(params);
+      }
+  }
+
+  componentWillUpdate(prevProps){
+  }
+
+  shouldComponentUpdate(nextProps,nextState){
+    if(this.props.stories.vocabList){
+      return this.props.stories.vocabList.vocabList === nextProps.stories.vocabList.vocabList
     }
-    this.props.updateSavedWords(params);
+    return false
   }
 
   handleDelete = (vocabWord) => {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) !== -1){
       this.props.deleteSavedWord(vocabWord);
-      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList)
+      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList,this.props.stories.storyInfo)
     }
 
 

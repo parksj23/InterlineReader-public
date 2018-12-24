@@ -12,7 +12,8 @@ const initialState = {
   isSideBarOpen: false,
   storyTitle: "",
   openStatus: false,
-  statusMessage:''
+  statusMessage:'',
+  vocabList: []
 };
 
 export default (state = initialState, action) => {
@@ -23,7 +24,8 @@ export default (state = initialState, action) => {
         ...state,
         storyTitle: action.payload.story,
         storyTextKorn: action.payload.storyTextKorn,
-        storyTextEngl: action.payload.storyTextEngl
+        storyTextEngl: action.payload.storyTextEngl,
+        storyInfo: action.payload.storyInfo
       })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {

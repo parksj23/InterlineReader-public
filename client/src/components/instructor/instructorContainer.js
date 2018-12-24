@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {Route, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import Instructor from './component/Instructor';
-import{changeSelectedMenu} from "../../actions/instructor";
+import{changeSelectedMenu, getStoryList} from "../../actions/instructor";
 import AddStoryWizard from './AddStoryWizard/AddStoryWizard';
 import Analytics from './analytics/Analytics';
 import Stories from './stories/Stories';
@@ -16,6 +16,7 @@ import Paper from '@material-ui/core/Paper';
 class InstructorContainer extends Component {
 
   componentWillMount(){
+    this.props.getStoryList();
   }
 
   render() {
@@ -61,7 +62,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-  changeSelectedMenu
+  changeSelectedMenu,
+  getStoryList
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InstructorContainer);

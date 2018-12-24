@@ -1,5 +1,10 @@
 const path = require("path");
 const fs = require('fs');
+const MongoClient = require('mongodb').MongoClient;
+const keys = require('../config/keys');
+const url = keys.mongoURI;
+
+
 
 exports.init = async (req, res) => {
   const classType = req.query.classType
@@ -36,9 +41,8 @@ exports.init = async (req, res) => {
       storiesPromises.push(new Promise((resolve, reject) => {
         try {
           getAllStories().then(resp => {
-            stories = resp
-            resolve(stories)
-          })
+            resolve(resp)
+          });
         }
         catch (err) {
         }
@@ -47,7 +51,7 @@ exports.init = async (req, res) => {
     default:
   }
   Promise.all(storiesPromises).then(resp => {
-    res.json(stories)
+    res.json(resp[0])
   })
 }
 
@@ -89,7 +93,7 @@ const getStories = function (className) {
   })
 }
 
-const getAllStories = function () {
+/*const getAllStories = function () {
   return new Promise((resolve, reject) => {
     let pathToStoriesDir = path.join(__dirname, `../public/images/korn`);
     let storyResult = {};
@@ -107,4 +111,25 @@ const getAllStories = function () {
       resolve(storyResult)
     })
   })
+}*/
+
+getAllStories = function(){
+  let allStories = {};
+  try{
+    return new Promise((resolve, reject) =>{
+      MongoClient.connect(url, function(err, client) {
+        if (err) throw err;
+        var dbo = client.db("ubcreadertesting");
+        var query = {};
+        dbo.collection(`KORN410B_STORY_LIST`).find(query).toArray(function(err, documents) {
+          if (err) throw err;
+          allStories["410B"] = documents;
+          resolve(allStories)
+          client.close();
+        });
+      });
+    })
+  }catch(err){
+    console.log(err);
+  }
 }

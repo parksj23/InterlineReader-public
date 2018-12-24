@@ -9,6 +9,7 @@ import {
   ADD_SAVED_WORD, DELETE_SAVED_WORD,
   RESET_STATUS
 } from "../constants/action-types";
+import qs from "qs";
 
 
 export const toggleSideBar = (isOpened, size) => dispatch => {
@@ -55,13 +56,15 @@ export const getListOfSavedWords = (userId, story) => dispatch => {
   })
 }
 
-export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
+export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch => {
   const params = {
     userId,
     story,
     savedWords
   }
-  if(savedWords.length > 0){
+
+  params["class"] = storyClass
+  if(savedWords && savedWords.length > 0){
     axios.get(`/api/savedWords`, {params}).then(res=>{
       dispatch({
         type: GET_SAVED_WORDS,
@@ -72,7 +75,7 @@ export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
   else{
     dispatch({
       type: GET_SAVED_WORDS,
-      payload: savedWords
+      payload: []
     })
   }
 }

@@ -17,9 +17,9 @@ router.get('/', (req, res) => {
   let params =  {
     userId: req.query.userId,
     story: req.query.story,
-    savedWords: req.query.savedWords
-
+    savedWords: req.query.savedWords,
   }
+  params["class"] = req.query.class
   savedWords.getSavedWords(params, res)
 });
 

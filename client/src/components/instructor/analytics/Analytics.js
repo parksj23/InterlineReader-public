@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
-import Grid from '@material-ui/core/Grid';
 
 class Analytics extends Component {
-  constructor(props){
-    super(props)
-  }
-
   render(){
 
     return (

@@ -1,7 +1,8 @@
-import {CHANGE_INSTRUCTOR_SELECTED_MENU,ADD_NEW_STORY} from "../constants/action-types";
+import {CHANGE_INSTRUCTOR_SELECTED_MENU,ADD_NEW_STORY,GET_STORY_LIST,CLOSE_STATUS_BAR} from "../constants/action-types";
 
 const initialState = {
-  selectedMenu: "Analytics"
+  selectedMenu: "Analytics",
+  addNewStory: false
 }
 
 export default (state = initialState, action) => {
@@ -13,7 +14,21 @@ export default (state = initialState, action) => {
       }
     case ADD_NEW_STORY:
       return{
-        ...state
+        ...state,
+        addNewStory: action.payload.status,
+        addNewStoryMessage: action.payload.message
+
+      }
+    case GET_STORY_LIST:
+      return {
+        ...state,
+        storyList: action.payload
+      }
+    case CLOSE_STATUS_BAR:
+      return {
+        ...state,
+        addNewStory: false,
+        message: ""
       }
     default:
       return state;

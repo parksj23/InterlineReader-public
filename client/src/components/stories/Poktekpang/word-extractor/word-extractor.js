@@ -74,7 +74,7 @@ walk('/Users/alfredhong/Desktop/InterlineReader/InterlineReader/client/src/compo
     var dbo = client.db("ubcreadertesting");
 
     wordsArray.map((aSegment, index) => {
-      dbo.collection(`KORN410_POKTEKPANG_STORY_ENGLISH`).insert(aSegment)
+      dbo.collection(`KORN410_POKTEKPANG_STORY_ENGLISH`).insertOne(aSegment)
 
     });
     client.close();
