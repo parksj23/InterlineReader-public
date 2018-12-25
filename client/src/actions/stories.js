@@ -1,5 +1,3 @@
-
-
 import axios from "axios";
 import {GET_VOCAB_AND_GRAMMAR_SUCCESS, INIT_STORY, LEAVE_STORY} from "../constants/action-types";
 
@@ -10,8 +8,8 @@ export const getVocabforStory = (story, storyInfo) => dispatch => {
     classType: 'all',
     storyInfo
   }
-  axios.get(`/api/stories/${storyInfo.class}/${story}`, {params}).then(res=>{
-    res.data.vocab.sort(function(a,b){
+  axios.get(`/api/stories/${storyInfo.class}/${story}`, {params}).then(res => {
+    res.data.vocab.sort(function (a, b) {
       return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)
     })
 
@@ -26,27 +24,42 @@ export const getVocabforStory = (story, storyInfo) => dispatch => {
   })
 }
 
-export const initStory = (story, storyInfo) => dispatch => {
+export const initStory = (storyTitle, className) => dispatch => {
   let params = {
     responseType: 'application/json',
-    storyInfo
+    storyTitle,
+    className
   }
 
- let payload = {};
-    axios.get(`/api/stories/${storyInfo.class}/${story}/storyText`, {params: params}).then(res => {
+  let payload = {};
+
+  let promiseAll = []
+  axios.get(`/api/stories/${className}/${storyTitle}`, {params}).then(res => {
+      payload["storyInfo"] = res.data.storyInfo
+      payload["storyTitle"] = storyTitle
+      payload["vocab"] = res.data.vocab
+      payload["grammar"] = res.data.grammar
+    return res.data.storyInfo
+    }).then( storyInfo => {
+    axios.get(`/api/stories/${className}/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
       let storyTextKorn = res.data.storyTextKorn;
       let storyTextEngl = res.data.storyTextEngl
       storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
       storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-      payload["story"] = story;
       payload["storyTextEngl"] = storyTextEngl;
       payload["storyTextKorn"] = storyTextKorn;
-      payload["storyInfo"] = storyInfo;
+
       dispatch({
         type: INIT_STORY,
-        payload: payload
+        payload
       })
     })
+
+
+  })
+
+
+
 }
 
 export const leaveStories = () => dispatch => {

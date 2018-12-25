@@ -13,10 +13,8 @@ const story = require('../../controllers/stories');
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
-router.get('/:class/:story', (req, res) => story.getVocAndGram(req, res));
-router.get('/:class/:story/storyText', (req,res) => {
-  story.getStoryText(req,res)
-});
+router.get('/:class/:story', (req, res) => story.initStory(req, res));
+router.get('/:class/:story/storyText', (req,res) => {story.getStoryText(req,res)});
 router.get('/:story/storyInfo', (req,res) => story.getStoryInfo(req,res));
 
 module.exports = router;

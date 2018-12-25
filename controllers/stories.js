@@ -4,6 +4,42 @@ const keys = require('../config/keys');
 const url = keys.mongoURI;
 const Story = mongoose.model('stories');
 
+exports.initStory = (req,res) => {
+  let storyTitle = req.query.storyTitle.toUpperCase();
+  let {className} = req.query;
+  let vocab ={};
+  let grammar ={};
+  let query = {}
+  let storyInfo = {};
+
+  if(storyTitle){
+    MongoClient.connect(url, function (err, client) {
+      let dbo = client.db("ubcreadertesting");
+
+      if (err) throw err;
+      query = {storyName: storyTitle.toLowerCase()};
+      dbo.collection(`KORN${className}_STORY_LIST`).find(query).toArray(function (err, story_info) {
+        if (err) throw err;
+        storyInfo = story_info[0]
+        dbo.collection(`KORN${className}_${storyTitle}_VOC`).find().toArray(function (err, voc_result) {
+          if (err) throw err;
+          dbo.collection(`KORN${className}_${storyTitle}_GRAM`).find().toArray(function (err, gram_result) {
+            if (err) throw err;
+            vocab = voc_result;
+            grammar = gram_result;
+            res.json({
+              vocab,
+              grammar,
+              storyInfo
+            })
+            client.close();
+          });
+        });
+      });
+    });
+  }
+}
+
 exports.getVocAndGram = (req, res) => {
   let story = (req.params.story).toUpperCase();
   if (story) {
@@ -71,3 +107,4 @@ exports.getStoryInfo = (req, res) => {
   }
 
 }
+

@@ -25,7 +25,9 @@ export default (state = initialState, action) => {
         storyTitle: action.payload.story,
         storyTextKorn: action.payload.storyTextKorn,
         storyTextEngl: action.payload.storyTextEngl,
-        storyInfo: action.payload.storyInfo
+        storyInfo: action.payload.storyInfo,
+        vocab: action.payload.vocab,
+        grammar: action.payload.grammar
       })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {
