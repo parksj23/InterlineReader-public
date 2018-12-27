@@ -17,17 +17,13 @@ class StoriesContainer extends Component {
   }
 
   componentWillMount() {
-    console.log("Component mounting")
     let pathname = this.props.location.pathname;
 
     let paths = this.props.location.pathname.split("/")
 
     let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
-    console.log(storyTitle)
       this.props.initStory(storyTitle, storyClass);
-     /* this.props.getVocabforStory(storyTitle,storyInfo);
-      this.props.getListOfSavedWords(this.props.userId, storyTitle)*/
       this.setState({
         storyTitle,
       })
@@ -48,18 +44,6 @@ class StoriesContainer extends Component {
   }
 
   componentWillUnmount() {
-   /* if(this.props.stories.vocabList) {
-      let vocabList = this.props.stories.vocabList.vocabList;
-
-
-      let params = {
-        userId: this.props.userId,
-        storyTitle: this.props.stories.storyTitle,
-        vocabList
-      }
-      this.props.updateSavedWords(params);
-    }*/
-    console.log("component unmounting")
     this.props.leaveStories();
   }
 
