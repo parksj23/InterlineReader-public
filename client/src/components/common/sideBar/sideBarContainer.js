@@ -27,8 +27,9 @@ class SideBarContainer extends Component {
     let {storyInfo, vocabList}  = this.props.stories
     if(storyInfo && vocabList && storyInfo.class){
       console.log("component did mount")
+      console.log(vocabList)
 
-      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, vocabList.vocabList, storyInfo.class)
+      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, vocabList, storyInfo.class)
     }
   }
 

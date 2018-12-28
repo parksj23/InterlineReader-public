@@ -25,7 +25,6 @@ const Story = (props) => {
         {text ?
           <StoryText title={title} author={author} text={text} searchWord={searchWord || "!@F$@%F"}/>
           : null}
-          {console.log(text)}
       </Paper>
       <div className='translateContainer'>
         <Button variant="contained" className={"translateButton"} classes={{root: classes.button}} color="primary" aria-label="Translate" onClick={props.handleTranslate}>Translate</Button>

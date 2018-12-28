@@ -23,7 +23,7 @@ export default (state = initialState, action) => {
     case INIT_STORY:
       return({
         ...state,
-        storyTitle: action.payload.story,
+        storyTitle: action.payload.storyTitle,
         storyTextKorn: action.payload.storyTextKorn,
         storyTextEngl: action.payload.storyTextEngl,
         storyInfo: action.payload.storyInfo,
@@ -65,7 +65,9 @@ export default (state = initialState, action) => {
         statusMessage: "Deleted Vocab"
       }
     case LEAVE_STORY:
-      return initialState
+      return {
+        ...initialState
+      }
     case RESET_STATUS:
       return {
         ...state,
@@ -74,7 +76,7 @@ export default (state = initialState, action) => {
       }
     case RESET_STORIES:
       return {
-        initialState
+        ...initialState
       }
 
     default:

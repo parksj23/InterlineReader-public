@@ -39,7 +39,7 @@ export default (state = initialState, action) => {
       }
     case RESET_SIDEBAR:
       return{
-        initialState
+        ...initialState
       }
     default:
       return state;
