@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {GET_DASHBOARD_SUCCESS, UPDATE_DRAWER_SIZE} from "../constants/action-types";
+import {GET_DASHBOARD_SUCCESS, UPDATE_DRAWER_SIZE, TOGGLE_SIDEBAR_BUTTON} from "../constants/action-types";
 
 
 export const dashboardInit = () => dispatch => {
@@ -26,7 +26,19 @@ export const updateDrawerSize = (size) => dispatch => {
     type: UPDATE_DRAWER_SIZE,
     payload: size
   })
+}
 
+export const toggleSideBarButton = disabled => dispatch =>{
+  dispatch({
+    tyoe: TOGGLE_SIDEBAR_BUTTON,
+    payload: !disabled
+  })
+}
 
+export const disableSideBarButton = () => dispatch => {
+  dispatch({
+    type: TOGGLE_SIDEBAR_BUTTON,
+    payload: true
+  })
 }
 

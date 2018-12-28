@@ -10,15 +10,14 @@ const styles = {
 }
 
 const SideBarButton = (props) => {
-  const {classes} = props
+  const {classes, isDisabled} = props
   return(
     <Tooltip disableFocusListener title="Open Drawer">
-      <Button classes={{root: classes.menuButton}} onClick={props.toggleDrawer('left', true)}>
+      <Button classes={{root: classes.menuButton}} onClick={props.toggleDrawer('left', true)} disabled={isDisabled}>
         <i className="material-icons" style={{zoom: "1.5"}}>menu</i>
       </Button>
     </Tooltip>
   )
-
 
 }
 export default withStyles(styles)(SideBarButton)

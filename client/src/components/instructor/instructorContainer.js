@@ -4,6 +4,7 @@ import {Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Instructor from './component/Instructor';
 import{changeSelectedMenu, getStoryList} from "../../actions/instructor";
+import {disableSideBarButton} from '../../actions/dashboard';
 import AddStoryWizard from './AddStoryWizard/AddStoryWizard';
 import Analytics from './analytics/Analytics';
 import Stories from './stories/Stories';
@@ -17,6 +18,7 @@ class InstructorContainer extends Component {
 
   componentWillMount(){
     this.props.getStoryList();
+    this.props.disableSideBarButton();
   }
 
   render() {
@@ -63,7 +65,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
   changeSelectedMenu,
-  getStoryList
+  getStoryList,
+  disableSideBarButton
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InstructorContainer);
