@@ -57,7 +57,7 @@ const SideBar = (props) => {
                 </Grid>
               </Grid>
             </div>
-            <AppBar position="static" classes={{root: classes.appBarRoot}}>
+            <AppBar id="appbar" position="static" classes={{root: classes.appBarRoot}}>
               <Tabs classes={{root: classes.tabsRoot}} tab={props.tab} onChange={props.handleTabChange} scrollable
                     scrollButtons='auto'>
                 <Tab label="어휘"/>

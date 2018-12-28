@@ -23,6 +23,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="https://hypothes.is/embed.js" async></script>
     <script>
+
+      function changeScrollBar() {
+        document.querySelectorAll('[role="tablist"]')[0].style.overflowX = "unset"
+      } 
       setTimeout(function() { // wait for hypothesis to load first
     var rootPar = $("hypothesis-adder")[0];
     var rootPar2 = rootPar.shadowRoot.querySelector(".annotator-adder-actions");
