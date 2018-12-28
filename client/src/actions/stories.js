@@ -33,8 +33,9 @@ export const initStory = (storyTitle, className) => dispatch => {
 
   let payload = {};
 
-  let promiseAll = []
   axios.get(`/api/stories/${className}/${storyTitle}`, {params}).then(res => {
+    res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
+    res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
       payload["storyInfo"] = res.data.storyInfo
       payload["storyTitle"] = storyTitle
       payload["vocab"] = res.data.vocab

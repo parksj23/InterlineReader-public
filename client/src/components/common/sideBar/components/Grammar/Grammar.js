@@ -29,7 +29,8 @@ const Grammar = (props) => {
         {grammarList.map((grammar, index) => {
           return (
             <TableRow key={"grammar_" + index}>
-              <TableCell style={pointerButton} classes={{root: classes.cursor}}
+              <TableCell classes={{root: classes.cursor}}
+                         style={{cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}}
                          onClick={() => props.updateHighlightWord(grammar.sentence, "grammar")}>{grammar.sentence}</TableCell>
               <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.pattern}</TableCell>
               <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.here}</TableCell>
