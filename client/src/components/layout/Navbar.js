@@ -69,7 +69,7 @@ class Navbar extends Component {
 
     return (
       <div>
-        <nav className="navbar navbar-expand-md navbar-dark dark-bg mb-4">
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
           <SideBarButton toggleDrawer={this.toggleDrawer} isDisabled={this.props.sideBar.isButtonDisabled}/>
           <div className="container">
             <Link className="navbar-brand" to="/">
