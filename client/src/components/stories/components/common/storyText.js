@@ -122,7 +122,7 @@ class StoryText extends Component {
                     return (
                       <div key={"storySeg_" + index}>
                         {
-                          React.createElement('p', {style: aSegment.style}, phraseArr)
+                          React.createElement('p', {style: {textAlign: "left", fontSize: "14pt", fontFamily: "'Nanum Myeongjo'"}}, phraseArr)
                         }
                       </div>
                     )
@@ -137,7 +137,8 @@ class StoryText extends Component {
                     return (
                       <div key={"storySeg_" + index}>
                         {
-                          React.createElement('p', {style: aSegment.style}, childComponent)
+                          //armaandh: Added font size changes here
+                          React.createElement('p', {style: {textAlign: "left", fontSize: "14pt", fontFamily: "'Nanum Myeongjo'"}}, childComponent)
                         }
                       </div>
                     )

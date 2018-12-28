@@ -14,6 +14,13 @@ const styles ={
   }
 }
 
+const scrollToPos = () => {
+  setTimeout(() =>{
+    let highlightedPos = document.getElementsByClassName("highlight")[0]
+    highlightedPos.scrollIntoView({ block: 'start',  behavior: 'smooth' })
+  },1000)
+}
+
 const Vocab = (props) =>{
   const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
   const{vocab, classes} = props;
@@ -31,7 +38,7 @@ const Vocab = (props) =>{
           vocab.map((aVocab, index) => {
             return (
               <TableRow key={'vocab' + index}>
-                <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => props.updateHighlightWord(aVocab.korean, "vocab")}>{aVocab.korean}</TableCell>
+                <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean, "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
                 <TableCell style={pointerButton}>{aVocab.english}</TableCell>
                 <TableCell onClick={ ()=> props.handleAddSavedWord(aVocab)}><Tooltip disableFocusListener title="Save Vocab"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
             </TableRow>)
