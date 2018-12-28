@@ -70,7 +70,7 @@ class Navbar extends Component {
     return (
       <div>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark mb-4">
-          <SideBarButton toggleDrawer={this.toggleDrawer} />
+          <SideBarButton toggleDrawer={this.toggleDrawer} isDisabled={this.props.sideBar.isButtonDisabled}/>
           <div className="container">
             <Link className="navbar-brand" to="/">
               Interline Reader
@@ -117,7 +117,8 @@ Navbar.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  stories: state.stories
+  stories: state.stories,
+  sideBar: state.sideBar
 });
 
 const mapDispatchToPRops = {

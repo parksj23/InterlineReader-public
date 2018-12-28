@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getVocabforStory, initStory, leaveStories} from '../../actions/stories';
-import {getListOfSavedWords, getSavedWords, updateSavedWords} from "../../actions/sideBar";
+import {getVocabforStory, initStory, leaveStories, resetSTories} from '../../actions/stories';
+import {getListOfSavedWords, getSavedWords, updateSavedWords, enableSideBarButton, resetSideBar} from "../../actions/sideBar";
+import {disableSideBarButton} from '../../actions/dashboard';
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
@@ -24,6 +25,7 @@ class StoriesContainer extends Component {
     let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
       this.props.initStory(storyTitle, storyClass);
+      this.props.enableSideBarButton();
       this.setState({
         storyTitle,
       })
@@ -45,6 +47,10 @@ class StoriesContainer extends Component {
 
   componentWillUnmount() {
     this.props.leaveStories();
+    this.props.resetSTories();
+    this.props.resetSideBar();
+    this.props.disableSideBarButton();
+
   }
 
   render() {
@@ -95,6 +101,8 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory, getSavedWords, leaveStories, updateSavedWords})
+const mapDispatchToProps = ({getVocabforStory, getListOfSavedWords, initStory,
+  getSavedWords, leaveStories, updateSavedWords, enableSideBarButton,resetSTories,resetSideBar,
+  disableSideBarButton})
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

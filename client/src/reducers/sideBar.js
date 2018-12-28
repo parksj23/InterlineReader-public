@@ -1,9 +1,12 @@
-import {GET_SAVED_WORDS, TOGGLE_SIDEBAR, UPDATE_DRAWER_SIZE} from '../constants/action-types';
+import {GET_SAVED_WORDS,
+  TOGGLE_SIDEBAR, UPDATE_DRAWER_SIZE, TOGGLE_SIDEBAR_BUTTON,
+  ENABLE_SIDEBAR_BUTTON, RESET_SIDEBAR} from '../constants/action-types';
 
 const initialState = {
   savedWords: [],
   drawerSize: {width: "0vw", height: "100vh"},
-  isSideBarOpen: false
+  isSideBarOpen: false,
+  isButtonDisabled: true
 };
 
 export default (state = initialState, action) => {
@@ -23,6 +26,20 @@ export default (state = initialState, action) => {
         ...state,
         isSideBarOpen: action.payload.isOpened,
         drawerSize: action.payload.size
+      }
+    case TOGGLE_SIDEBAR_BUTTON:
+      return{
+        ...state,
+        isButtonDisabled: action.payload
+      }
+    case ENABLE_SIDEBAR_BUTTON:
+      return {
+        ...state,
+        isButtonDisabled: false
+      }
+    case RESET_SIDEBAR:
+      return{
+        initialState
       }
     default:
       return state;

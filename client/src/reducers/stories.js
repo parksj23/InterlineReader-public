@@ -4,7 +4,8 @@ import {
   INIT_STORY,
   UPDATE_SAVED_WORDS,
   ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY,
-  RESET_STATUS
+  RESET_STATUS,
+  RESET_STORIES
 } from '../constants/action-types';
 
 const initialState = {
@@ -70,6 +71,10 @@ export default (state = initialState, action) => {
         ...state,
         openStatus: false,
         statusMessage: ""
+      }
+    case RESET_STORIES:
+      return {
+        initialState
       }
 
     default:

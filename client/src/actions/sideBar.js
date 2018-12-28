@@ -7,7 +7,9 @@ import {
   GET_LIST_OF_SAVED_WORDS,
   UPDATE_SAVED_WORDS,
   ADD_SAVED_WORD, DELETE_SAVED_WORD,
-  RESET_STATUS
+  RESET_STATUS,
+  ENABLE_SIDEBAR_BUTTON,
+  RESET_SIDEBAR
 } from "../constants/action-types";
 import qs from "qs";
 
@@ -113,3 +115,17 @@ export const handleStatusClose = () => dispatch => {
   })
 }
 
+export const enableSideBarButton = () => dispatch =>{
+  dispatch({
+    type: ENABLE_SIDEBAR_BUTTON,
+    payload: false
+  })
+}
+
+export const resetSideBar = () => dispatch => {
+  dispatch({
+    type: RESET_SIDEBAR,
+    payload: null
+  })
+
+}
