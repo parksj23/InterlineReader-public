@@ -71,11 +71,10 @@ class StoriesContainer extends Component {
     let author ="";
       if (this.state.language === 'korean') {
         text = stories.storyTextKorn
-        searchWord = vocab.kind==="grammar"? vocab.highlightedWord: vocab.highlightedWord.korean
-
+        searchWord = vocab.highlightedWord.korean
         if(stories.storyInfo){
           title = stories.storyInfo.titleKorn;
-          author = stories.storyInfo.authorKorn
+            author = stories.storyInfo.authorKorn
         }
       }
       else {
@@ -108,7 +107,6 @@ const mapStateToProps = state => (
     vocab: state.vocab,
     userId: state.auth.user.id,
     sideBar: state.sideBar,
-    kind: state.kind,
     dashboard: state.dashboard
   }
 )
