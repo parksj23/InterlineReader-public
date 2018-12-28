@@ -25,6 +25,7 @@ class StoriesContainer extends Component {
     let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
       this.props.initStory(storyTitle, storyClass);
+      this.props.getListOfSavedWords(this.props.userId, storyTitle);
       this.props.enableSideBarButton();
       this.setState({
         storyTitle,
