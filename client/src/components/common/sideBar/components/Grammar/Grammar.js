@@ -29,6 +29,7 @@ const Grammar = (props) => {
           return (
             <TableRow key={"grammar_" + index}>
               <TableCell classes={{root: classes.cursor}}
+                         style={{cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}}
                          onClick={() => props.updateHighlightWord(grammar.sentence, "grammar")}>{grammar.sentence}</TableCell>
               <TableCell classes={{root: classes.cursor}}>{grammar.pattern}</TableCell>
               <TableCell classes={{root: classes.cursor}}>{grammar.here}</TableCell>

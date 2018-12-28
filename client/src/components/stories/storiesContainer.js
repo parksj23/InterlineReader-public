@@ -50,12 +50,12 @@ class StoriesContainer extends Component {
   render() {
     const {sideBar, stories, vocab} = this.props;
     let text;
-    let searchWord = "";
+    let searchWord = null;
     let title = "";
     let author ="";
       if (this.state.language === 'korean') {
         text = stories.storyTextKorn
-        searchWord = vocab.highlightedWord.korean
+        searchWord = vocab.highlightedWord
         if(stories.storyInfo){
           title = stories.storyInfo.titleKorn;
             author = stories.storyInfo.authorKorn
@@ -63,7 +63,7 @@ class StoriesContainer extends Component {
       }
       else {
         text = stories.storyTextEngl
-        searchWord = vocab.highlightedWord.english
+        searchWord = vocab.highlightedWord
 
         if(stories.storyInfo){
           title = stories.storyInfo.titleEng
