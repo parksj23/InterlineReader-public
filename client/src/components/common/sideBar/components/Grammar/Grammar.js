@@ -12,6 +12,7 @@ const styles = {
   }
 }
 
+// scrolling by word click
 const scrollToPos = () => {
   setTimeout(() =>{
     let highlightedPos = document.getElementsByClassName("highlight")[0]
