@@ -173,7 +173,6 @@ class AddStoryWizard extends Component {
             lineSegment["style"] = styleObj
           })
           ci.replace(/>(.+)/ugi, (match, c3) => {
-            console.log(c3)
             lineSegment["text"] = c3.replace(/(&amp;|[&*]nbsp;)/ugi, "");
             lineSegment["order_id"] = order_id
             order_id++
@@ -194,7 +193,7 @@ class AddStoryWizard extends Component {
     let storyForm = this.state.storyForm;
     storyForm[name] = event.target.value
     if(name ==="titleRom") {
-      storyForm["storyName"] = event.target.value
+      storyForm["storyName"] = event.target.value.toLowerCase();
     }
     this.setState({
       storyForm,
