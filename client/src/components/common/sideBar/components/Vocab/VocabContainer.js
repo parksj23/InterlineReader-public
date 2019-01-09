@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {updateHighlightedWord} from '../../../../../actions/vocab';
-import {addSavedWord, updateSavedWords} from "../../../../../actions/sideBar";
+import {addSavedWord, updateSavedWords, addToSavedWords} from "../../../../../actions/sideBar";
 import Vocab from './Vocab';
 
 const styles ={
@@ -21,6 +21,7 @@ class VocabContainer extends Component {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) === -1){
       this.props.addSavedWord(vocabWord)
+      this.props.addToSavedWords(vocabWord)
       this.props.addWord('success');
     }
   }
@@ -38,7 +39,7 @@ class VocabContainer extends Component {
         storyTitle: this.props.stories.storyTitle,
         vocabList
       }
-      this.props.updateSavedWords(params);
+      //this.props.updateSavedWords(params);
     }
   }
   render(){
@@ -62,6 +63,6 @@ const mapStateToProps = state => (
   }
 )
 
-const mapDispatchToProps = ({updateHighlightedWord, addSavedWord, updateSavedWords})
+const mapDispatchToProps = ({updateHighlightedWord, addSavedWord, updateSavedWords, addToSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(VocabContainer);
