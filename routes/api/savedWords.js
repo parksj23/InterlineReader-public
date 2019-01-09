@@ -18,8 +18,8 @@ router.get('/', (req, res) => {
     userId: req.query.userId,
     story: req.query.story,
     savedWords: req.query.savedWords,
+    storyClass: req.query.storyClass
   }
-  params["class"] = req.query.class
   savedWords.getSavedWords(params, res)
 });
 

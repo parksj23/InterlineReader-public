@@ -58,7 +58,7 @@ const SideBar = (props) => {
               </Grid>
             </div>
             <AppBar id="appbar" position="static" classes={{root: classes.appBarRoot}}>
-              <Tabs classes={{root: classes.tabsRoot}} tab={props.tab} onChange={props.handleTabChange} scrollable
+              <Tabs classes={{root: classes.tabsRoot}} value={props.tab} onChange={props.handleTabChange} scrollable
                     scrollButtons='auto'>
                 <Tab label="어휘"/>
                 <Tab label="문법"/>
@@ -67,11 +67,11 @@ const SideBar = (props) => {
                 <Tab label="사전"/>
               </Tabs>
             </AppBar>
-            {tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAddVocab}/></div>}
-            {tab === 1 && <div><Grammar grammar={grammar}/></div>}
-            {tab === 2 && <div><SavedWords story={props.story}/></div>}
-            {tab === 3 && <div><GrammarSearch/></div>}
-            {tab === 4 && <div><Dictionary/></div>}
+            {props.tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAddVocab}/></div>}
+            {props.tab === 1 && <div><Grammar grammar={grammar}/></div>}
+            {props.tab === 2 && <div><SavedWords story={props.story}/></div>}
+            {props.tab === 3 && <div><GrammarSearch/></div>}
+            {props.tab === 4 && <div><Dictionary/></div>}
           </div>
         </Resizable>
       </Drawer>

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../../../actions/sideBar";
+import {getSavedWords, deleteSavedWord, updateSavedWords, deleteSidebarSavedWord} from "../../../../../actions/sideBar";
 import SavedWords from './SavedWords';
 
 class SavedWordsContainer extends Component {
@@ -9,12 +9,12 @@ class SavedWordsContainer extends Component {
   }
 
   componentWillMount(){
-    this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList, this.props.stories.storyInfo.class)
+    //this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList, this.props.stories.storyInfo.class)
 
   }
 
   componentWillUnmount(){
-    if(this.props.stories.vocabList) {
+   /* if(this.props.stories.vocabList) {
         let vocabList = this.props.stories.vocabList.vocabList;
 
 
@@ -24,7 +24,7 @@ class SavedWordsContainer extends Component {
           vocabList
         }
         this.props.updateSavedWords(params);
-      }
+      }*/
   }
 
   componentWillUpdate(prevProps){
@@ -41,7 +41,8 @@ class SavedWordsContainer extends Component {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) !== -1){
       this.props.deleteSavedWord(vocabWord);
-      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList,this.props.stories.storyInfo)
+      this.props.deleteSidebarSavedWord(vocabWord);
+      //this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList,this.props.stories.storyInfo)
     }
 
 
@@ -75,7 +76,8 @@ const mapStateToProps = state => (
 const mapDispatchToProps = ({
   getSavedWords,
   deleteSavedWord,
-  updateSavedWords
+  updateSavedWords,
+  deleteSidebarSavedWord
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedWordsContainer);

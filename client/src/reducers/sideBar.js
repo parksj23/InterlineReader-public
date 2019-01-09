@@ -1,6 +1,8 @@
-import {GET_SAVED_WORDS,
+import {
+  GET_SAVED_WORDS,
   TOGGLE_SIDEBAR, UPDATE_DRAWER_SIZE, TOGGLE_SIDEBAR_BUTTON,
-  ENABLE_SIDEBAR_BUTTON, RESET_SIDEBAR} from '../constants/action-types';
+  ENABLE_SIDEBAR_BUTTON, RESET_SIDEBAR, ADD_SAVED_WORD, ADD_TO_SAVED_WORD,  REMOVE_FROM_SAVED_WORD
+} from '../constants/action-types';
 
 const initialState = {
   savedWords: [],
@@ -10,6 +12,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
+  let savedWords;
   switch (action.type) {
     case GET_SAVED_WORDS:
       return{
@@ -40,6 +43,24 @@ export default (state = initialState, action) => {
     case RESET_SIDEBAR:
       return{
         ...initialState
+      }
+    case ADD_TO_SAVED_WORD:
+      savedWords = state.savedWords;
+      savedWords.push(action.payload);
+      return{
+        ...state,
+        savedWords
+
+      }
+    case REMOVE_FROM_SAVED_WORD:
+      savedWords = state.savedWords;
+      let index = savedWords.indexOf(action.payload);
+      if(index > -1){
+        savedWords.splice(index,1)
+      }
+      return{
+        ...state,
+        savedWords
       }
     default:
       return state;

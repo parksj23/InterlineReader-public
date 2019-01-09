@@ -4,7 +4,7 @@ const keys = require('../config/keys');
 const url = keys.mongoURI;
 
 exports.getSavedWords = (params, res) => {
-  let {userId, story, savedWords} = params;
+  let {userId, story, savedWords, storyClass} = params;
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
@@ -16,7 +16,7 @@ exports.getSavedWords = (params, res) => {
             order_id: parseInt(orderId)
           })
         })
-        dbo.collection(`KORN410B_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
+        dbo.collection(`KORN${storyClass}_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
           if (err) throw err;
           res.json({
             savedVocab: voc_result,
@@ -35,9 +35,10 @@ exports.getListOfSavedWords = (params, res) => {
       if (err) throw err;
       var dbo = client.db("ubcreadertesting");
       let query = {
-        userId,
-        story
+        userId
       };
+
+      console.log(userId)
       dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
         // create a new document if not found
         if (err) throw err;
@@ -46,13 +47,15 @@ exports.getListOfSavedWords = (params, res) => {
             {
               userId: userId,
               story: story,
-              vocabList: []
+              vocabList: [-1]
             })
           res.json({
-            vocabList: [],
+            vocabList: [-1],
           });
         }
         else{
+          console.log("user vocab list exists!")
+          console.log(voc_list)
           res.json({
             vocabList: voc_list[0],
           });
