@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { sendEmailVerification } from '../../actions/auth';
-import {dashboardInit, disableSideBarButton} from '../../actions/dashboard';
-import Dashboard from './components/Dashboard'
+import {dashboardInit, disableSideBarButton, enableDashboardLoading, disableDashboardLoading} from '../../actions/dashboard';
+import Dashboard from './components/Dashboard';
+
 
 class DashboardContainer extends Component {
 
   componentWillMount(){
-    this.props.dashboardInit();
+    this.props.enableDashboardLoading();
+    this.props.dashboardInit().then( resp => {
+      this.props.disableDashboardLoading();
+    });
     this.props.disableSideBarButton();
   }
 
@@ -34,7 +38,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = ({
   sendEmailVerification,
   dashboardInit,
-  disableSideBarButton
+  disableSideBarButton,
+  enableDashboardLoading,
+  disableDashboardLoading
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardContainer);

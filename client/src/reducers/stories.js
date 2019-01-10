@@ -5,7 +5,9 @@ import {
   UPDATE_SAVED_WORDS,
   ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY,
   RESET_STATUS,
-  RESET_STORIES
+  RESET_STORIES,
+  STORY_IS_LOADING,
+  STORY_IS_NOT_LOADING
 } from '../constants/action-types';
 
 const initialState = {
@@ -14,7 +16,8 @@ const initialState = {
   storyTitle: "",
   openStatus: false,
   statusMessage:'',
-  vocabList: []
+  vocabList: [],
+  isStoryLoading: false
 };
 
 export default (state = initialState, action) => {
@@ -78,7 +81,16 @@ export default (state = initialState, action) => {
       return {
         ...initialState
       }
-
+    case STORY_IS_LOADING:
+      return {
+        ...state,
+        isStoryLoading: true
+      }
+    case STORY_IS_NOT_LOADING:
+      return {
+        ...state,
+        isStoryLoading: false
+      }
 
     default:
       return state;

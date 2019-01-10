@@ -32,9 +32,6 @@ class StatusMessage extends Component {
           message={this.props.message}
           ContentProps ={{style: status === 'success' ? successStyles : failStyles}}
           action={[
-            <Button key="undo" color="primary" size="small" onClick={this.handleClose}>
-              undo
-            </Button>,
             <IconButton
               key="close"
               aria-label="Close"

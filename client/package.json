@@ -49,6 +49,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
     "react-search-input": "^0.11.3",
+    "react-spinners": "^0.5.1",
     "react-svg": "^6.0.12",
     "redux": "^4.0.0",
     "redux-thunk": "^2.2.0",
@@ -104,7 +105,8 @@
   "babel": {
     "presets": [
       "react-app"
-    ]
+    ],
+    "plugins": ["emotion"]
   },
   "eslintConfig": {
     "extends": "react-app"

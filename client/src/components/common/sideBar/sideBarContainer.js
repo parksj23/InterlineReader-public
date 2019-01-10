@@ -24,12 +24,6 @@ class SideBarContainer extends Component {
 
   componentDidMount(){
     window.changeScrollBar();
-    let {storyInfo, vocabList}  = this.props.stories
-    if(storyInfo && vocabList && storyInfo.class){
-      console.log("component did mount")
-
-      //this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, vocabList, storyInfo.class)
-    }
   }
 
   componentDidUpdate(prevProps) {
