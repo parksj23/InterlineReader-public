@@ -50,14 +50,19 @@ export const getListOfSavedWords = (userId, story) => dispatch => {
     userId,
     story
   }
-  axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
-    if (res.data) {
-      dispatch({
-        type: GET_LIST_OF_SAVED_WORDS,
-        payload: res.data.vocabList
-      })
-    }
+
+  return new Promise ((resolve, reject) => {
+    resolve(axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
+      if (res.data) {
+        dispatch({
+          type: GET_LIST_OF_SAVED_WORDS,
+          payload: res.data.vocabList
+        })
+      }
+      return res.data
+    }))
   })
+
 }
 
 export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch => {
@@ -67,23 +72,24 @@ export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch
     savedWords,
     storyClass
   }
-
-  console.log("in saved words")
-  console.log(savedWords)
-  if(savedWords && savedWords.length > 0){
-    axios.get(`/api/savedWords`, {params}).then(res=>{
+  return new Promise ((resolve,reject) => {
+    if(savedWords && savedWords.length > 0){
+      resolve(axios.get(`/api/savedWords`, {params}).then(res=>{
+        dispatch({
+          type: GET_SAVED_WORDS,
+          payload: res.data
+        })
+        return res.data
+      }))
+    }
+    else{
       dispatch({
         type: GET_SAVED_WORDS,
-        payload: res.data
+        payload: []
       })
-    })
-  }
-  else{
-    dispatch({
-      type: GET_SAVED_WORDS,
-      payload: []
-    })
-  }
+    }
+    resolve([])
+  })
 }
 
 export const addSavedWord = vocab => dispatch => {

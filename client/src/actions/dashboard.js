@@ -1,7 +1,12 @@
 
 
 import axios from "axios";
-import {GET_DASHBOARD_SUCCESS, UPDATE_DRAWER_SIZE, TOGGLE_SIDEBAR_BUTTON} from "../constants/action-types";
+import {
+  GET_DASHBOARD_SUCCESS,
+  UPDATE_DRAWER_SIZE,
+  TOGGLE_SIDEBAR_BUTTON,
+  DASHBOARD_IS_LOADING, DASHBOARD_IS_NOT_LOADING
+} from "../constants/action-types";
 
 
 export const dashboardInit = () => dispatch => {
@@ -9,29 +14,22 @@ export const dashboardInit = () => dispatch => {
     responseType: 'application/json',
     classType: 'all'
   }
-  const initPromises = [];
-  initPromises.push(axios.get("/api/dashboard/", {params}).then(res=>{
-    dispatch({
-      type: GET_DASHBOARD_SUCCESS,
-      payload: res.data
+
+  return new Promise((resolve, reject) => {
+    axios.get("/api/dashboard/", {params}).then(res => {
+      dispatch({
+        type: GET_DASHBOARD_SUCCESS,
+        payload: res.data
+      })
+      resolve(res.data)
     })
-  }))
-
-
-
+  })
 }
 
 export const updateDrawerSize = (size) => dispatch => {
   dispatch({
     type: UPDATE_DRAWER_SIZE,
     payload: size
-  })
-}
-
-export const toggleSideBarButton = disabled => dispatch =>{
-  dispatch({
-    tyoe: TOGGLE_SIDEBAR_BUTTON,
-    payload: !disabled
   })
 }
 
@@ -42,3 +40,16 @@ export const disableSideBarButton = () => dispatch => {
   })
 }
 
+export const enableDashboardLoading = () => dispatch => {
+  dispatch({
+    type: DASHBOARD_IS_LOADING,
+    payload: null
+  })
+}
+
+export const disableDashboardLoading =() => dispatch => {
+  dispatch({
+    type: DASHBOARD_IS_NOT_LOADING,
+    payload: null
+  })
+}

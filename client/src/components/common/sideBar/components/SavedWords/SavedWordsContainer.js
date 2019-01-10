@@ -9,8 +9,6 @@ class SavedWordsContainer extends Component {
   }
 
   componentWillMount(){
-    //this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList, this.props.stories.storyInfo.class)
-
   }
 
   componentWillUnmount(){

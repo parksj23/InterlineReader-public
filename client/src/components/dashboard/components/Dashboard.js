@@ -5,6 +5,8 @@ import Grid from "@material-ui/core/Grid";
 //import '../Dashboard.css';
 import ClassCard from './classCard';
 import { withStyles } from '@material-ui/core/styles';
+import { ClipLoader } from 'react-spinners';
+
 
 
 const styles = {
@@ -55,10 +57,18 @@ class Dashboard extends Component {
     return (
 
       <div className="dashboard">
+        <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
+          <ClipLoader
+            sizeUnit={"px"}
+            size={150}
+            color={'#36D7B7'}
+            loading={this.props.dashboard.isDashboardLoading}
+          />
+        </div>
         { <Grid container >
           {classNames ? classNames.map((aClass,classIndex) => {
             return this.renderClassStories(aClass, sections[aClass], classIndex)
-          }) : <p>Loading</p>}
+          }) : null}
         </Grid> }
       </div>  
     );

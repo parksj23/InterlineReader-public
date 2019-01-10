@@ -38,7 +38,6 @@ exports.getListOfSavedWords = (params, res) => {
         userId
       };
 
-      console.log(userId)
       dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
         // create a new document if not found
         if (err) throw err;
@@ -54,8 +53,6 @@ exports.getListOfSavedWords = (params, res) => {
           });
         }
         else{
-          console.log("user vocab list exists!")
-          console.log(voc_list)
           res.json({
             vocabList: voc_list[0],
           });
