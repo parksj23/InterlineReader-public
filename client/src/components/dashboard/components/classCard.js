@@ -13,18 +13,26 @@ const styles = {
   },
   headerTitle: {
     color: "#FFFFFF"
+  },
+  subHeaderTitle: {
+    color: "#FFFFFF"
+  },
+  content: {
+    color: "#0f0F0F"
   }
 
 }
 
 const ClassCard = (props) => {
+  let storyInfo = props.story;
   const {classes} = props
  return (
   <Card style={{width: "100%"}}>
-      <CardHeader title={props.storyName} classes={{root: classes.headerRoot, title: classes.headerTitle}}></CardHeader>
-      <CardContent>
+      <CardHeader title={storyInfo.titleKorn} subheader={storyInfo.titleEng} classes={{root: classes.headerRoot, title: classes.headerTitle, subheader: classes.subHeaderTitle}}>
+      </CardHeader>
+      <CardContent classes={{root: classes.content}}>
         <div>
-          Description of story
+          <p>Author: {storyInfo.authorKorn} ({storyInfo.authorRom})</p>
         </div>
       </CardContent>
       <Divider/>

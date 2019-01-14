@@ -21,6 +21,9 @@ class GrammarSearch extends Component {
     this.updateSearchTerm.bind(this);
   }
 
+  componentWillUnmount(){
+  }
+
   renderVocab = (vocabWord) => {
     return(
       <TableRow>

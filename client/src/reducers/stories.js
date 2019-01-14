@@ -4,7 +4,10 @@ import {
   INIT_STORY,
   UPDATE_SAVED_WORDS,
   ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY,
-  RESET_STATUS
+  RESET_STATUS,
+  RESET_STORIES,
+  STORY_IS_LOADING,
+  STORY_IS_NOT_LOADING
 } from '../constants/action-types';
 
 const initialState = {
@@ -12,7 +15,9 @@ const initialState = {
   isSideBarOpen: false,
   storyTitle: "",
   openStatus: false,
-  statusMessage:''
+  statusMessage:'',
+  vocabList: [],
+  isStoryLoading: false
 };
 
 export default (state = initialState, action) => {
@@ -21,9 +26,12 @@ export default (state = initialState, action) => {
     case INIT_STORY:
       return({
         ...state,
-        storyTitle: action.payload.story,
+        storyTitle: action.payload.storyTitle,
         storyTextKorn: action.payload.storyTextKorn,
-        storyTextEngl: action.payload.storyTextEngl
+        storyTextEngl: action.payload.storyTextEngl,
+        storyInfo: action.payload.storyInfo,
+        vocab: action.payload.vocab,
+        grammar: action.payload.grammar
       })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {
@@ -60,12 +68,28 @@ export default (state = initialState, action) => {
         statusMessage: "Deleted Vocab"
       }
     case LEAVE_STORY:
-      return initialState
+      return {
+        ...initialState
+      }
     case RESET_STATUS:
       return {
         ...state,
         openStatus: false,
         statusMessage: ""
+      }
+    case RESET_STORIES:
+      return {
+        ...initialState
+      }
+    case STORY_IS_LOADING:
+      return {
+        ...state,
+        isStoryLoading: true
+      }
+    case STORY_IS_NOT_LOADING:
+      return {
+        ...state,
+        isStoryLoading: false
       }
 
     default:

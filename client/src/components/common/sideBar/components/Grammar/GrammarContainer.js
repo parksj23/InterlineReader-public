@@ -10,6 +10,9 @@ class GrammarContainer extends Component {
     this.updateHighlightWord.bind(this);
   }
 
+  componentWillUnmount(){
+  }
+
   updateHighlightWord = (vocabWord, type) =>{
     this.props.updateHighlightedWord(vocabWord, type)
 

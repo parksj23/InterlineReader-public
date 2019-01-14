@@ -34,6 +34,5 @@ export const updateHighlightedWord = (vocabWord, kind) => dispatch =>{
     kind: kind
   })
 
-
 }
 

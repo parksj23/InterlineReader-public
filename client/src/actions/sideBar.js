@@ -7,8 +7,13 @@ import {
   GET_LIST_OF_SAVED_WORDS,
   UPDATE_SAVED_WORDS,
   ADD_SAVED_WORD, DELETE_SAVED_WORD,
-  RESET_STATUS
+  RESET_STATUS,
+  ENABLE_SIDEBAR_BUTTON,
+  RESET_SIDEBAR,
+  ADD_TO_SAVED_WORD,
+  REMOVE_FROM_SAVED_WORD
 } from "../constants/action-types";
+import qs from "qs";
 
 
 export const toggleSideBar = (isOpened, size) => dispatch => {
@@ -45,36 +50,46 @@ export const getListOfSavedWords = (userId, story) => dispatch => {
     userId,
     story
   }
-  axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
-    if (res.data) {
-      dispatch({
-        type: GET_LIST_OF_SAVED_WORDS,
-        payload: res.data.vocabList
-      })
-    }
+
+  return new Promise ((resolve, reject) => {
+    resolve(axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
+      if (res.data) {
+        dispatch({
+          type: GET_LIST_OF_SAVED_WORDS,
+          payload: res.data.vocabList
+        })
+      }
+      return res.data
+    }))
   })
+
 }
 
-export const getSavedWords = (userId, story, savedWords=[]) => dispatch => {
+export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch => {
   const params = {
     userId,
     story,
-    savedWords
+    savedWords,
+    storyClass
   }
-  if(savedWords.length > 0){
-    axios.get(`/api/savedWords`, {params}).then(res=>{
+  return new Promise ((resolve,reject) => {
+    if(savedWords && savedWords.length > 0){
+      resolve(axios.get(`/api/savedWords`, {params}).then(res=>{
+        dispatch({
+          type: GET_SAVED_WORDS,
+          payload: res.data
+        })
+        return res.data
+      }))
+    }
+    else{
       dispatch({
         type: GET_SAVED_WORDS,
-        payload: res.data
+        payload: []
       })
-    })
-  }
-  else{
-    dispatch({
-      type: GET_SAVED_WORDS,
-      payload: savedWords
-    })
-  }
+    }
+    resolve([])
+  })
 }
 
 export const addSavedWord = vocab => dispatch => {
@@ -110,3 +125,32 @@ export const handleStatusClose = () => dispatch => {
   })
 }
 
+export const enableSideBarButton = () => dispatch =>{
+  dispatch({
+    type: ENABLE_SIDEBAR_BUTTON,
+    payload: false
+  })
+}
+
+export const resetSideBar = () => dispatch => {
+  dispatch({
+    type: RESET_SIDEBAR,
+    payload: null
+  })
+
+}
+
+export const addToSavedWords = (vocab) => dispatch => {
+  dispatch({
+    type: ADD_TO_SAVED_WORD,
+    payload: vocab
+
+  })
+}
+
+export const deleteSidebarSavedWord = (vocab) => dispatch => {
+  dispatch({
+    type: REMOVE_FROM_SAVED_WORD,
+    payload: vocab
+  })
+}

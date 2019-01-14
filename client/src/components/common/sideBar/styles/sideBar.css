@@ -6,10 +6,19 @@
     float: right;
     margin-right: 15px;
     margin-top: 15px;
-    font-size: 36px;
+    font-size: 13px;
     cursor: pointer;
 }
 
 #DrawerContainer .__resizable_base__{
     left: 0!important;
 }
+
+#resizeContainer {
+    overflow-x: hidden;
+}
+
+button[aria-selected="true"]{
+    border-bottom: 3px solid #f28374 !important;
+}
+button:focus {outline:0;}

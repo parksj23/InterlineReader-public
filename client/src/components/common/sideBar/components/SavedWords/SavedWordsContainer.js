@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../../../actions/sideBar";
+import {getSavedWords, deleteSavedWord, updateSavedWords, deleteSidebarSavedWord} from "../../../../../actions/sideBar";
 import SavedWords from './SavedWords';
 
 class SavedWordsContainer extends Component {
@@ -12,21 +12,35 @@ class SavedWordsContainer extends Component {
   }
 
   componentWillUnmount(){
-    let vocabList = this.props.stories.vocabList.vocabList;
+   /* if(this.props.stories.vocabList) {
+        let vocabList = this.props.stories.vocabList.vocabList;
 
-    let params = {
-      userId: this.props.userId,
-      storyTitle: this.props.stories.storyTitle,
-      vocabList
+
+        let params = {
+          userId: this.props.userId,
+          storyTitle: this.props.stories.storyTitle,
+          vocabList
+        }
+        this.props.updateSavedWords(params);
+      }*/
+  }
+
+  componentWillUpdate(prevProps){
+  }
+
+  shouldComponentUpdate(nextProps,nextState){
+    if(this.props.stories.vocabList){
+      return this.props.stories.vocabList.vocabList === nextProps.stories.vocabList.vocabList
     }
-    this.props.updateSavedWords(params);
+    return false
   }
 
   handleDelete = (vocabWord) => {
     let vocabList = this.props.stories.vocabList.vocabList;
     if(vocabList.indexOf(vocabWord.order_id) !== -1){
       this.props.deleteSavedWord(vocabWord);
-      this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList)
+      this.props.deleteSidebarSavedWord(vocabWord);
+      //this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, this.props.stories.vocabList.vocabList,this.props.stories.storyInfo)
     }
 
 
@@ -60,7 +74,8 @@ const mapStateToProps = state => (
 const mapDispatchToProps = ({
   getSavedWords,
   deleteSavedWord,
-  updateSavedWords
+  updateSavedWords,
+  deleteSidebarSavedWord
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedWordsContainer);

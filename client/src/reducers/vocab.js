@@ -1,7 +1,7 @@
 import {UPDATE_HIGHLIGHT_WORD, GET_VOCAB_SUCCESS} from '../constants/action-types';
 
 const initialState = {
-  highlightedWord: {}
+  highlightedWord: "!F#%GWF#$"
 };
 
 export default (state = initialState, action) => {

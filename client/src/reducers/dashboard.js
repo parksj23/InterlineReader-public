@@ -1,8 +1,9 @@
-import {GET_DASHBOARD_ASSET, GET_DASHBOARD_SUCCESS} from '../constants/action-types';
+import {GET_DASHBOARD_SUCCESS,DASHBOARD_IS_LOADING, DASHBOARD_IS_NOT_LOADING} from '../constants/action-types';
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  isDashboardLoading: false
 };
 
 export default (state = initialState, action) => {
@@ -10,9 +11,19 @@ export default (state = initialState, action) => {
     case GET_DASHBOARD_SUCCESS:
       return {
         ...state,
-        badges: action.payload,
+        storyList: action.payload,
+
       };
-    case GET_DASHBOARD_ASSET:
+    case DASHBOARD_IS_LOADING:
+      return {
+        ...state,
+        isDashboardLaoding: true
+      }
+    case DASHBOARD_IS_NOT_LOADING:
+      return {
+        ...state,
+        isDashboardLoading: false
+      }
     default:
       return state;
   }

@@ -18,8 +18,12 @@ class SideBarContainer extends Component {
     this.handleAddVocab.bind(this)
   }
 
+  componentWillMount(){
+   
+  }
+
   componentDidMount(){
-    this.props.getSavedWords(this.props.userId, this.props.stories.storyTitle, [204])
+    window.changeScrollBar();
   }
 
   componentDidUpdate(prevProps) {
@@ -30,16 +34,6 @@ class SideBarContainer extends Component {
     }
   }
 
-  /*toggleDrawer = (side, open) => () => {
-    let size = {
-      width: document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10),
-      height: document.getElementById('resizeContainer').clientHeight
-    }
-    this.props.toggleSideBar(open, size);
-    this.setState({
-      [side]: open,
-    });
-  };*/
 
   handleTabChange = (event, value) => {
     this.setState({value});

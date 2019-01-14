@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Grid from "@material-ui/core/Grid";
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
-import InstructorMenu from '../component/InstructorMenu';
 import '../style/instructor.css';
 
 
