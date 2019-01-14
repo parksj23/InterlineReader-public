@@ -26,9 +26,16 @@ const styles ={
     overflow: 'hidden'
   },
   tabsRoot: {
-    backgroundColor: "#212529",
+    backgroundColor: "#343a40",
     overflow:'scroll'
-  }
+  },
+  flexContainer: {
+    flexWrap: 'wrap'
+  },
+  indicator: {
+    backgroundColor: '#343a40'
+  },
+
 }
 
 const SideBar = (props) => {
@@ -46,25 +53,23 @@ const SideBar = (props) => {
           onResize={props.onResize}
         >
           <div tabIndex={0} role="button">
-            <div>
+            {/* <div>
               <Grid container>
-                <Grid item xs={2}>
-                </Grid>
-                <Grid item xs={8}/>
                 <Grid item xs={2}>
                   <div className={'close-button-container'}>
                     <i style={{fontSize: "36px"}} className="material-icons" onClick={()=>props.toggleDrawer('left', false)}>close</i></div>
                 </Grid>
               </Grid>
-            </div>
+            </div> */}
             <AppBar id="appbar" position="static" classes={{root: classes.appBarRoot}}>
-              <Tabs classes={{root: classes.tabsRoot}} value={props.tab} onChange={props.handleTabChange} scrollable
+              <Tabs className="sideBar-tabs" classes={{root: classes.tabsRoot, flexContainer: classes.flexContainer, indicator: classes.indicator}} value={props.tab} onChange={props.handleTabChange} 
                     scrollButtons='auto'>
                 <Tab label="어휘"/>
                 <Tab label="문법"/>
-                <Tab label="저장한 단어" href="#basic-tabs"/>
+                <Tab label="저장한 단어"/>
                 <Tab label="문법검색"/>
                 <Tab label="사전"/>
+                <i style={{cursor:"pointer", fontSize: "28px", position:"absolute", "bottom":"0", "right": "0"}} className="material-icons" onClick={()=>props.toggleDrawer('left', false)}>arrow_back_ios</i>
               </Tabs>
             </AppBar>
             {props.tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAddVocab}/></div>}
