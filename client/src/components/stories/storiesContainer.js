@@ -1,18 +1,21 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getVocabforStory, initStory, leaveStories, resetSTories, enableLoading, disableLoading} from '../../actions/stories';
+import {getVocabforStory, initStory, leaveStories, resetSTories, enableLoading, disableLoading,saveHypothesisLink} from '../../actions/stories';
 import {
   getListOfSavedWords,
   getSavedWords,
   enableSideBarButton,
   resetSideBar,
-  updateSavedWords,
+  updateSavedWords
 } from "../../actions/sideBar";
 import {disableSideBarButton} from '../../actions/dashboard';
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
+import ReactDOM from 'react-dom';
+import Script from "react-load-script";
+import * as jq from 'jquery';
 
 class StoriesContainer extends Component {
 
@@ -23,7 +26,39 @@ class StoriesContainer extends Component {
     storyInfo: null
   }
 
+
   componentWillMount() {
+    /*console.log('StoriesContainer Will Mount')
+    let hypothesisScript = document.getElementById("hypothesis-script");
+    console.log(hypothesisScript)
+    if(hypothesisScript) {
+      hypothesisScript.remove();
+    }
+    let htmlCollection = document.querySelectorAll(".annotator-frame,.annotator-outer,.annotator-collapsed");
+    console.log(htmlCollection)
+    for(let anElement of htmlCollection) {
+      console.log(anElement)
+      anElement.remove()
+    }
+      // document.getElementsByClassName("annotator-frame annotator-outer annotator-collapsed")[0].remove();
+    let hypothesisAdder = document.getElementsByTagName("hypothesis-adder");
+    if(hypothesisAdder){
+      for(let anElement of hypothesisAdder) {
+        console.log(anElement)
+        anElement.remove()
+      }
+    }
+
+    let newHypothesisScript = document.createElement('script');
+    newHypothesisScript.src = "https://hypothes.is/embed.js";
+    newHypothesisScript.id = "hypothesis-script";
+    newHypothesisScript.type = "text/javascript";
+    newHypothesisScript.setAttribute("async", "true");
+    document.getElementsByTagName("body")[0].appendChild(newHypothesisScript);*/
+
+
+
+
     this.props.enableLoading();
     let pathname = this.props.location.pathname;
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
@@ -37,7 +72,16 @@ class StoriesContainer extends Component {
     let paths = this.props.location.pathname.split("/")
     let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
-    this.props.initStory(storyTitle, storyClass).then(resp => {
+
+    let iframes = [].slice.apply(document.querySelectorAll('iframe'));
+    for (let anIframe of iframes) {
+      if (anIframe.src.startsWith("https://hypothes.is")) {
+        anIframe.src = anIframe.src.split("&")[0]
+      }
+    }
+
+
+      this.props.initStory(storyTitle, storyClass).then(resp => {
       this.props.getListOfSavedWords(this.props.userId, storyTitle).then(resp => {
         this.props.enableSideBarButton();
         this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
@@ -47,6 +91,8 @@ class StoriesContainer extends Component {
     });
   }
 
+
+
   handleTranslate = () => {
     this.setState({
       language: this.state.language === 'korean' ? 'english' : 'korean'
@@ -54,6 +100,13 @@ class StoriesContainer extends Component {
   }
 
   componentWillUnmount() {
+    let iframes = [].slice.apply(document.querySelectorAll('iframe'));
+    let hypothesisURL ="";
+    for (let anIframe of iframes) {
+      if (anIframe.src.startsWith("https://hypothes.is")) {
+        anIframe.src = anIframe.src.split("&")[0]
+      }
+    }
     let vocabList = this.props.stories.vocabList.vocabList;
     let params = {
       userId: this.props.userId,
@@ -62,14 +115,25 @@ class StoriesContainer extends Component {
     }
     this.props.updateSavedWords(params);
     this.props.leaveStories();
-    this.props.resetSTories();
+    this.props.resetSTories(hypothesisURL.split("&")[0] + `&${Math.floor(Math.random()*100000)}`);
     this.props.resetSideBar();
     this.props.disableSideBarButton();
+
 
   }
 
   render() {
     const {sideBar, stories, vocab} = this.props;
+    let iframes = [].slice.apply(document.querySelectorAll('iframe'));
+    for (let anIframe of iframes) {
+      if (anIframe.src.startsWith("https://hypothes.is")) {
+        anIframe.src += "&";
+        anIframe.src = anIframe.src.split("&")[0]
+      }
+
+    }
+
+
     let text;
     let searchWord = null;
     let title = "";
@@ -128,7 +192,7 @@ const mapStateToProps = state => (
 const mapDispatchToProps = ({
   getVocabforStory, getListOfSavedWords, initStory,
   getSavedWords, leaveStories, enableSideBarButton, resetSTories, resetSideBar,
-  disableSideBarButton, updateSavedWords,enableLoading, disableLoading
+  disableSideBarButton, updateSavedWords,enableLoading, disableLoading,saveHypothesisLink
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);
