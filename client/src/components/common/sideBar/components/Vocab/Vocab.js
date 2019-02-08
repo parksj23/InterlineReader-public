@@ -30,6 +30,7 @@ const Vocab = (props) =>{
         <TableRow>
           <TableCell style={{maxWidth: "116px", paddingRight: "25px"}}> 한국어 </TableCell>
           <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 영어 </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 한자 </TableCell>
           <TableCell> </TableCell>
         </TableRow>
       </TableHead>
@@ -40,6 +41,7 @@ const Vocab = (props) =>{
               <TableRow key={'vocab' + index}>
                 <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean, "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
                 <TableCell style={pointerButton}>{aVocab.english}</TableCell>
+                  <TableCell style={pointerButton}>{aVocab.hanja}</TableCell>
                 <TableCell onClick={ ()=> props.handleAddSavedWord(aVocab)}><Tooltip disableFocusListener title="Save Vocab"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
             </TableRow>)
           }) : <TableRow/>}

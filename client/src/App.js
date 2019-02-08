@@ -20,6 +20,7 @@ import DashboardContainer from './components/dashboard/DashboardContainer';
 import ForgotPassword from './components/reset-password/ForgotPassword';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Success from './components/common/Success';
+import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
@@ -55,6 +56,7 @@ class App extends Component {
               <Route path="/register/verify_email/:id/:token" component={EmailVerification} />
               <Route path="/success" component={Success} />
               <Route path="/about" component={About} />
+                <Route path="/cleaner" component={Cleaner} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                 <PrivateRoute path='/story/:class/:storyName' component={Story}/>
