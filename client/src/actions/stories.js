@@ -4,7 +4,8 @@ import {
   INIT_STORY,
   LEAVE_STORY,
   RESET_STORIES,
-  STORY_IS_LOADING, STORY_IS_NOT_LOADING
+  STORY_IS_LOADING, STORY_IS_NOT_LOADING,
+  SAVE_HYPOTHESIS
 } from "../constants/action-types";
 
 
@@ -75,10 +76,10 @@ export const leaveStories = () => dispatch => {
   })
 }
 
-export const resetSTories = () => dispatch => {
+export const resetSTories = (url) => dispatch => {
   dispatch({
     type: RESET_STORIES,
-    payload: null
+    payload: url
   })
 }
 
@@ -93,5 +94,12 @@ export const disableLoading = () => dispatch => {
   dispatch({
     type: STORY_IS_NOT_LOADING,
     payload: null
+  })
+}
+
+export const saveHypothesisLink = (url) => dispatch => {
+  dispatch({
+    type: SAVE_HYPOTHESIS,
+    payload: url
   })
 }

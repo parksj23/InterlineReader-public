@@ -7,7 +7,8 @@ import {
   RESET_STATUS,
   RESET_STORIES,
   STORY_IS_LOADING,
-  STORY_IS_NOT_LOADING
+  STORY_IS_NOT_LOADING,
+  SAVE_HYPOTHESIS
 } from '../constants/action-types';
 
 const initialState = {
@@ -79,7 +80,8 @@ export default (state = initialState, action) => {
       }
     case RESET_STORIES:
       return {
-        ...initialState
+        ...initialState,
+        hypothesisURL: action.payload
       }
     case STORY_IS_LOADING:
       return {
@@ -90,6 +92,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isStoryLoading: false
+      }
+    case SAVE_HYPOTHESIS:
+      return {
+        ...state,
+        hypothesisURL: action.payload
       }
 
     default:
