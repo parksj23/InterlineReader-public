@@ -4,11 +4,6 @@ import {updateHighlightedWord} from '../../../../../actions/vocab';
 import {addSavedWord, updateSavedWords, addToSavedWords} from "../../../../../actions/sideBar";
 import Vocab from './Vocab';
 
-const styles ={
-  root: {
-    maxWidth: "100%"
-  }
-}
 
 class VocabContainer extends Component {
   constructor(props) {

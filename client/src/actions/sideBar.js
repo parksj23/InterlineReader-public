@@ -13,7 +13,6 @@ import {
   ADD_TO_SAVED_WORD,
   REMOVE_FROM_SAVED_WORD
 } from "../constants/action-types";
-import qs from "qs";
 
 
 export const toggleSideBar = (isOpened, size) => dispatch => {
@@ -53,6 +52,7 @@ export const getListOfSavedWords = (userId, story) => dispatch => {
 
   return new Promise ((resolve, reject) => {
     resolve(axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
+      console.log(res.data)
       if (res.data) {
         dispatch({
           type: GET_LIST_OF_SAVED_WORDS,
@@ -75,9 +75,10 @@ export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch
   return new Promise ((resolve,reject) => {
     if(savedWords && savedWords.length > 0){
       resolve(axios.get(`/api/savedWords`, {params}).then(res=>{
+         console.log(res.data)
         dispatch({
           type: GET_SAVED_WORDS,
-          payload: res.data
+          payload: res.data.savedVocab
         })
         return res.data
       }))

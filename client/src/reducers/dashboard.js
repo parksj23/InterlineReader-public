@@ -12,12 +12,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         storyList: action.payload,
-
       };
     case DASHBOARD_IS_LOADING:
       return {
         ...state,
-        isDashboardLaoding: true
+        isDashboardLoading: true
       }
     case DASHBOARD_IS_NOT_LOADING:
       return {

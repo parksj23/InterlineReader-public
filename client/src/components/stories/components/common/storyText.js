@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Divider from "@material-ui/core/Divider";
 import "../../styles/stories.css";
-import ReactHtmlParser from 'react-html-parser';
 import Grid from '@material-ui/core/Grid';
 
 
@@ -14,12 +13,9 @@ class StoryText extends Component {
     let highligherComponents = []
 
     while(tagArray && tagArray.length > 0){
-      console.log(phrase)
-
       //if there is text before the first inline HTML tag
       if(phrase.indexOf(tagArray[0]) !== 0){
         let plainText = phrase.slice(0, phrase.indexOf(tagArray[0]))
-        console.log("plainText: ", plainText)
         let highlight = (
           <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
             {plainText}
@@ -30,7 +26,6 @@ class StoryText extends Component {
       }
       else{
         let plainText = phrase.slice(phrase.indexOf(tagArray[0]) +tagArray[0].length, phrase.indexOf(tagArray[1]));
-        console.log(plainText)
         let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
         if(openTag.indexOf(" ") >= 0){
           openTag = openTag.split(" ")[0]
@@ -74,8 +69,6 @@ class StoryText extends Component {
                     let phraseArr = []
                     if (text.indexOf("<") > 0) {
                       let plainText = text.slice(0, text.indexOf("<"));
-                      console.log(plainText)
-
                       let childComponent = (
                         <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
                           {plainText}
@@ -118,7 +111,6 @@ class StoryText extends Component {
                       )
                       phraseArr.push(React.createElement('span', aSegment.style, childComponent))
                     }
-                    console.log(phraseArr)
                     return (
                       <div key={"storySeg_" + index}>
                         {

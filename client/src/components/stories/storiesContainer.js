@@ -13,9 +13,6 @@ import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
-import ReactDOM from 'react-dom';
-import Script from "react-load-script";
-import * as jq from 'jquery';
 
 class StoriesContainer extends Component {
 
@@ -82,12 +79,12 @@ class StoriesContainer extends Component {
 
 
       this.props.initStory(storyTitle, storyClass).then(resp => {
-      this.props.getListOfSavedWords(this.props.userId, storyTitle).then(resp => {
-        this.props.enableSideBarButton();
-        this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
-          this.props.disableLoading();
+        this.props.getListOfSavedWords(this.props.userId, storyTitle).then(resp => {
+          this.props.enableSideBarButton();
+          this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
+            this.props.disableLoading();
+          })
         })
-      })
     });
   }
 

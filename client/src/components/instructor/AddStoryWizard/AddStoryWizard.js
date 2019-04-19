@@ -12,11 +12,11 @@ import TextField from '@material-ui/core/TextField';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style/AddStoryWizard.css';
 import Button from '@material-ui/core/Button'
-import {EditorState, convertToRaw, ContentState} from 'draft-js';
+import {EditorState, convertToRaw} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import ReactHtmlParser from 'react-html-parser';
-import {addToStory, changeSelectedMenu, addStoryInfo,handleStatusClose} from '../../../actions/instructor';
+import {addToStory, addStoryInfo,handleStatusClose} from '../../../actions/instructor';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

@@ -22,7 +22,6 @@ class InstructorContainer extends Component {
   }
 
   render() {
-    const {selected} = this.props;
     return (
       <div className="instructor">
         <Paper style={{height: "calc(100vh - 90px - 70px)"}}>

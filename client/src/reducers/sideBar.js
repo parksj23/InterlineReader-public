@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
     case GET_SAVED_WORDS:
       return{
         ...state,
-        savedWords: action.payload.savedVocab
+        savedWords: action.payload
       }
     case UPDATE_DRAWER_SIZE:
         return {

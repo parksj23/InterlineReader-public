@@ -53,6 +53,8 @@ exports.getListOfSavedWords = (params, res) => {
           });
         }
         else{
+          let vocabList = voc_list[0]
+          if( vocabList.vocabList === null) vocabList.vocabList = []
           res.json({
             vocabList: voc_list[0],
           });
