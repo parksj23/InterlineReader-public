@@ -6,7 +6,7 @@ import Instructor from './component/Instructor';
 import{changeSelectedMenu, getStoryList} from "../../actions/instructor";
 import {disableSideBarButton} from '../../actions/dashboard';
 import AddStoryWizard from './AddStoryWizard/AddStoryWizard';
-import Analytics from './analytics/Analytics';
+import AnalyticsContainer from './analytics/AnalyticsContainer';
 import Stories from './stories/Stories';
 import InstructorMenu from './component/InstructorMenu';
 import Grid from "@material-ui/core/Grid"
@@ -40,8 +40,8 @@ class InstructorContainer extends Component {
               <div style={{flex:1}}>
                 <Instructor>
                     <Switch>
-                      <Route exact path="/instructor" component={Analytics} />
-                      <Route path="/instructor/analytics" component={Analytics} />
+                      <Route exact path="/instructor" component={AnalyticsContainer} />
+                      <Route path="/instructor/analytics" component={AnalyticsContainer} />
                       <Route path="/instructor/stories" component={Stories} />
                       <Route path="/instructor/addStory" component={AddStoryWizard} />
                     </Switch>

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {getVocabforStory, initStory, leaveStories, resetSTories, enableLoading, disableLoading,saveHypothesisLink} from '../../actions/stories';
+import {endGrammarSearchSession} from '../../actions/analytics'
+
 import {
   getListOfSavedWords,
   getSavedWords,
@@ -88,8 +90,6 @@ class StoriesContainer extends Component {
     });
   }
 
-
-
   handleTranslate = () => {
     this.setState({
       language: this.state.language === 'korean' ? 'english' : 'korean'
@@ -111,6 +111,7 @@ class StoriesContainer extends Component {
       vocabList
     }
     this.props.updateSavedWords(params);
+    this.props.endGrammarSearchSession();
     this.props.leaveStories();
     this.props.resetSTories(hypothesisURL.split("&")[0] + `&${Math.floor(Math.random()*100000)}`);
     this.props.resetSideBar();
@@ -189,7 +190,8 @@ const mapStateToProps = state => (
 const mapDispatchToProps = ({
   getVocabforStory, getListOfSavedWords, initStory,
   getSavedWords, leaveStories, enableSideBarButton, resetSTories, resetSideBar,
-  disableSideBarButton, updateSavedWords,enableLoading, disableLoading,saveHypothesisLink
+  disableSideBarButton, updateSavedWords,enableLoading, disableLoading,saveHypothesisLink,
+  endGrammarSearchSession
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

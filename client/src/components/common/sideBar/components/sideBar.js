@@ -72,7 +72,7 @@ const SideBar = (props) => {
             {props.tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAddVocab}/></div>}
             {props.tab === 1 && <div><Grammar grammar={grammar}/></div>}
             {props.tab === 2 && <div><SavedWords story={props.story}/></div>}
-            {props.tab === 3 && <div><GrammarSearch/></div>}
+            {props.tab === 3 && <div><GrammarSearch story={props.story}/></div>}
             <div style={{display: props.tab === 4 ? 'block' : 'none'}}><Dictionary/></div>
           </div>
         </Resizable>

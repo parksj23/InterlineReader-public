@@ -9,6 +9,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TableRow from "@material-ui/core/TableRow";
 import { getVocabforStory } from "../../../../../actions/vocab";
+import {updateGrammarSearch,startGrammarSearch,endGrammarSearch} from '../../../../../actions/analytics'
 import Grid from "@material-ui/core/Grid";
 
 class GrammarSearch extends Component {
@@ -35,7 +36,13 @@ class GrammarSearch extends Component {
     this.updateSearchTerm.bind(this);
   }
 
-  componentWillUnmount() {}
+  componentWillMount(){
+    this.props.startGrammarSearch(this.props.story);
+  }
+
+  componentWillUnmount() {
+    this.props.endGrammarSearch
+  }
 
   renderVocab = vocabWord => {
     return (
@@ -130,6 +137,9 @@ class GrammarSearch extends Component {
               );
             }}
             fuseOptions={this.state.fuseOptions}
+            onChange={(item) => {
+              this.props.updateGrammarSearch(item.entryName)
+            }}
           />
         </Grid>
       </div>
@@ -140,7 +150,10 @@ class GrammarSearch extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = {
-  getVocabforStory
+  getVocabforStory,
+  updateGrammarSearch,
+  startGrammarSearch,
+  endGrammarSearch
 };
 
 export default connect(
