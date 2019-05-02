@@ -37,6 +37,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/images')))
 app.use('/api/stories', require('./routes/api/stories'));
 app.use('/api/savedWords', require('./routes/api/savedWords'));
 app.use('/api/instructor', require("./routes/api/instructor"));
+app.use('/api/analytics', require("./routes/api/analytics"));
 
 app.use(handleErrors);
 

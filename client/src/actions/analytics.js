@@ -2,18 +2,21 @@ import {
   ANALYTICS_START_GRAMMAR_SEARCH_SESSION,
   ANALYTICS_END_GRAMMAR_SEARCH_SESSION,
   ANALYTICS_UPDATE_GRAMMAR_SEARCH,
+  ANALYTICS_INIT_OVERVIEW
 } from "../constants/action-types";
+import axios from 'axios'
 
 
 export const startGrammarSearch = (story) => dispatch => {
   const date = new Date();
   const payload = {
-      story,
+      story: story.storyName,
+      class: story.class,
       startSession: date.getTime(),
       endSession: null,
       searchHistory: [],
       grammarFrequency: {},
-      mostFrequentWord: null
+      mostFrequentWord: []
   }
   dispatch({
     type: ANALYTICS_START_GRAMMAR_SEARCH_SESSION,
@@ -45,5 +48,23 @@ export const endGrammarSearchSession = () => dispatch => {
   dispatch({
     type: ANALYTICS_END_GRAMMAR_SEARCH_SESSION,
     payload: date.getTime()
+  })
+}
+
+export const initOverview = (className,storyName) => dispatch => {
+  let date = new Date();
+  let overViewPromiseArray = []
+  overViewPromiseArray.push(axios.get(`/api/analytics/userActivity?className=${className}&storyName=${storyName}&date=${date.getTime()}`))
+  overViewPromiseArray.push(axios.get(`/api/analytics/mostFrequentGrammar?className=${className}&storyName=${storyName}&date=${date.getTime()}`))
+  let overView = []
+  Promise.all(overViewPromiseArray).then(resp => {
+    resp.map(aResult => {
+      console.log(aResult)
+      overView.push(...aResult.data)
+    })
+    dispatch({
+      type: ANALYTICS_INIT_OVERVIEW,
+      payload: overView
+    })
   })
 }

@@ -37,7 +37,7 @@ class GrammarSearch extends Component {
   }
 
   componentWillMount(){
-    this.props.startGrammarSearch(this.props.story);
+    this.props.startGrammarSearch(this.props.storyInfo);
   }
 
   componentWillUnmount() {

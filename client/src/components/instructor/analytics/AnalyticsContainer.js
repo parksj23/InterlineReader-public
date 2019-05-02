@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid'
-import ClassCard from './components/classCard';
 import {connect} from "react-redux";
-import { Link } from 'react-router-dom';
-import {dashboardInit} from "../../../actions/dashboard";
 import Analytics from './components/Analytics'
 import OverviewContainer from './components/OverviewContainer/OverviewContainer'
 import {Route, Switch } from 'react-router-dom';
-import Stories from "../stories/Stories";
-import AddStoryWizard from "../AddStoryWizard/AddStoryWizard";
+
 
 
 
@@ -17,7 +13,6 @@ import AddStoryWizard from "../AddStoryWizard/AddStoryWizard";
 class AnalyticsContainer extends Component {
 
   componentWillMount(){
-    this.props.dashboardInit()
   }
 
   renderAnalytics = () => {
@@ -27,18 +22,22 @@ class AnalyticsContainer extends Component {
   render(){
     const sections = this.props.dashboard.storyList;
     let classNames;
+    let pathnames = this.props.location.pathname.split("/");
+
+
     if(sections) classNames = Object.keys(sections)
     return (
         <div className={'instructor-analytics-container'}>
           <div style={{paddingLeft: "12px", borderBottom: "solid 1px #000"}}>
             <Grid container style={{marginTop: "12px"}}>
-              <Grid item xs={3}>
-                <h3 style={{float: "left"}}>Analytics</h3>
+              <Grid item xs={4}>
+                <h3 style={{float: "left"}}>{`${pathnames[pathnames.length-1]} - Overview`}</h3>
               </Grid>
             </Grid>
             <Grid container style={{marginTop: "12px"}}>
               <Switch>
                 <Route exact path="/instructor" component={this.renderAnalytics} />
+                <Route exact path="/instructor/analytics" component={this.renderAnalytics} />
                 <Route path={`/instructor/analytics/overview`} component={OverviewContainer} />
               </Switch>
               <Grid item xs={2}>
@@ -62,7 +61,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-  dashboardInit,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AnalyticsContainer);
