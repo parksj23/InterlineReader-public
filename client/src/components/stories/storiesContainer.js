@@ -15,6 +15,8 @@ import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
+import Modal from '@material-ui/core/Modal'
+import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
 
 class StoriesContainer extends Component {
 
@@ -22,42 +24,12 @@ class StoriesContainer extends Component {
     applicationDescription: "",
     storyTitle: "",
     language: "korean",
-    storyInfo: null
+    storyInfo: null,
+    showFlashCardModal: false
   }
 
 
   componentWillMount() {
-    /*console.log('StoriesContainer Will Mount')
-    let hypothesisScript = document.getElementById("hypothesis-script");
-    console.log(hypothesisScript)
-    if(hypothesisScript) {
-      hypothesisScript.remove();
-    }
-    let htmlCollection = document.querySelectorAll(".annotator-frame,.annotator-outer,.annotator-collapsed");
-    console.log(htmlCollection)
-    for(let anElement of htmlCollection) {
-      console.log(anElement)
-      anElement.remove()
-    }
-      // document.getElementsByClassName("annotator-frame annotator-outer annotator-collapsed")[0].remove();
-    let hypothesisAdder = document.getElementsByTagName("hypothesis-adder");
-    if(hypothesisAdder){
-      for(let anElement of hypothesisAdder) {
-        console.log(anElement)
-        anElement.remove()
-      }
-    }
-
-    let newHypothesisScript = document.createElement('script');
-    newHypothesisScript.src = "https://hypothes.is/embed.js";
-    newHypothesisScript.id = "hypothesis-script";
-    newHypothesisScript.type = "text/javascript";
-    newHypothesisScript.setAttribute("async", "true");
-    document.getElementsByTagName("body")[0].appendChild(newHypothesisScript);*/
-
-
-
-
     this.props.enableLoading();
     let pathname = this.props.location.pathname;
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
@@ -78,8 +50,6 @@ class StoriesContainer extends Component {
         anIframe.src = anIframe.src.split("&")[0]
       }
     }
-
-
       this.props.initStory(storyTitle, storyClass).then(resp => {
         this.props.getListOfSavedWords(this.props.userId, storyTitle).then(resp => {
           this.props.enableSideBarButton();
@@ -93,6 +63,18 @@ class StoriesContainer extends Component {
   handleTranslate = () => {
     this.setState({
       language: this.state.language === 'korean' ? 'english' : 'korean'
+    })
+  }
+
+  handleFlashCards = () => {
+    this.setState({
+      showFlashCardModal: true
+    })
+  }
+
+  handleClose = () => {
+    this.setState({
+      showFlashCardModal: false
     })
   }
 
@@ -116,8 +98,6 @@ class StoriesContainer extends Component {
     this.props.resetSTories(hypothesisURL.split("&")[0] + `&${Math.floor(Math.random()*100000)}`);
     this.props.resetSideBar();
     this.props.disableSideBarButton();
-
-
   }
 
   render() {
@@ -128,10 +108,7 @@ class StoriesContainer extends Component {
         anIframe.src += "&";
         anIframe.src = anIframe.src.split("&")[0]
       }
-
     }
-
-
     let text;
     let searchWord = null;
     let title = "";
@@ -155,6 +132,15 @@ class StoriesContainer extends Component {
     }
     return (
       <div className={'story-container'}>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.showFlashCardModal}
+          onClose={this.handleClose}
+        >
+          <FlashCardsContainer/>
+        </Modal>
+
         <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
           <ClipLoader
             sizeUnit={"px"}
@@ -171,7 +157,10 @@ class StoriesContainer extends Component {
         </div>
         {stories.storyInfo ?
           <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
-                 handleTranslate={this.handleTranslate}/> : null}
+                 handleTranslate={this.handleTranslate}
+                 handleFlashCards={this.handleFlashCards}
+
+          /> : null}
       </div>
     );
   }

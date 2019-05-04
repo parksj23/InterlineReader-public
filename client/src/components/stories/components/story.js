@@ -7,13 +7,16 @@ import { withStyles } from '@material-ui/core/styles';
 
 
 const styles ={
-  button: {
+  buttonContainer: {
     containedPrimary: "translateButton",
     position: "fixed",
     right: "2vw",
     bottom: "2vh",
     zIndex: "100",
     backgroundColor: "#42b35b"
+  },
+  button:{
+    margin: '6px'
   }
 }
 
@@ -26,8 +29,9 @@ const Story = (props) => {
           <StoryText title={title} author={author} text={text} searchWord={searchWord || "!@F$@%F"}/>
           : null}
       </Paper>
-      <div className='translateContainer'>
-        <Button variant="contained" className={"translateButton"} classes={{root: classes.button}} color="primary" aria-label="Translate" onClick={props.handleTranslate}>Translate</Button>
+      <div className='translateContainer' classes={{root: classes.buttonContainer}}>
+        <Button variant="contained" className={"translateButton"} classes={{root: classes.button}}  color="primary" aria-label="Translate" onClick={props.handleTranslate}>Translate</Button>
+        <Button variant="contained" className={"translateButton"} classes={{root: classes.button}} color="primary" aria-label="Translate" onClick={props.handleFlashCards}>Flash Cards</Button>
       </div>
     </div>
   )
