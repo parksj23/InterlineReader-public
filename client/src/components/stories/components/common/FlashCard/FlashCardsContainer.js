@@ -16,7 +16,8 @@ class FlashCardContainer extends Component {
       vocabQueue: [],
       answeredQuestions: [],
       score: 0,
-      answeredCurrentQuestion: false
+      answeredCurrentQuestion: false,
+      answeredCorrectly: null
     })
     this.answeredQuestion.bind(this)
   }
@@ -43,74 +44,94 @@ class FlashCardContainer extends Component {
           isAnswer: false
         })
       }
-      // Swap correct answer with a random option
         let rotate = Math.floor((Math.random() * options.length+1))
         for( let i = 0 ; i < rotate; i++){
           options.push(options[0])
           options.splice(0,1);
         }
-
-
-
       vocabQueue.push({
         vocabKor: aVocab.korean,
         vocabEng: aVocab.english,
         options: options
       })
     })
-
     this.setState({
       vocabQueue
     })
-
   }
 
-  answeredQuestion = (answer, question) => {
+  answeredQuestion = (answer, question, isAnswer) => {
     this.setState({
       answeredCurrentQuestion: true,
-      score: answer === question.vocabEng? this.state.score+1: this.state.score
+      score: answer === question.vocabEng? this.state.score+1: this.state.score,
+      answeredCorrectly: isAnswer
     })
 }
 
   handleNextQuestion = (question) => {
+
     let {vocabQueue, answeredQuestions} = this.state
     vocabQueue.splice(0,1)
     answeredQuestions.push(question)
+
     this.setState({
       answeredCurrentQuestion: false,
+      answeredCorrectly: null,
       vocabQueue,
-      answeredQuestions
+      answeredQuestions,
     })
   }
 
 
   render(){
     let question = this.state.vocabQueue[0]
-    console.log(question)
     return(
-      <Card style={{position: 'fixed', top: '20vh', left: '25vw', height: '450px', width: '850px'}}>
-        <Grid container>
-          <Grid item xs={1}/>
-          <Grid item xs={10}>
-            <div className={'Flashcards-title'} style={{marginTop: '8px', float: 'left'}}><h2>Flash Card Study</h2></div>
-            <Divider />
-            <FlashCard question={question}
-                       answeredQuestion={this.answeredQuestion}
-                       answeredCurrentQuestion={this.state.answeredCurrentQuestion}
-                       handleNextQuestion={this.handleNextQuestion}
-            />
+      <Card style={{position: 'fixed', top: '20vh', left: '10vw', height: '450px', width: '850px'}}>
+        <Grid container style={{height: '100%'}} justify={'center'}>
+          <Grid item xs={12}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  height: '8%',
+                  backgroundColor: this.state.answeredCorrectly? 'rgba(66,179,91,0.1)' : this.state.answeredCorrectly === false ? 'rgba(255,0,0,0.1)' : null}}>
+            <span style={{margin: '0', fontSize: '1.5rem'}}>
+              {this.state.answeredCorrectly ? 'Correct' : this.state.answeredCorrectly === false ? 'Incorrect' : ' '}
+            </span>
+          </Grid>
+          <Grid container style={{height: '92%', margin:'16px'}}>
+            <Grid container className={'Flashcards-title'} style={{borderBottom: 'solid 1px rgba(0,0,0,0.12', height: '10%'}}>
+                <Grid item xs={6}>
+                   <h2>Flash Card Study</h2>
+                </Grid>
+                <Grid item xs={6} style={{textAlign: 'right'}}>
+                    <h2>{`Score: ${this.state.score}/${this.state.answeredQuestions.length}`}</h2>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} justify={'center'} style={{height: '65%'}}>
+                <FlashCard question={question}
+                           answeredQuestion={this.answeredQuestion}
+                           answeredCurrentQuestion={this.state.answeredCurrentQuestion}
+                           handleNextQuestion={this.handleNextQuestion}
+                           style={{width: '100%', height: '80%'}}
+                />
+            </Grid>
+            <Grid item xs={12}>
+                <Divider />
+                <div className={'Flashcards-question-count'} style={{marginTop: '8px', float: 'left'}}>
+                  <h4>{`Question ${this.state.answeredQuestions.length}/${this.state.vocabQueue.length + this.state.answeredQuestions.length}` }</h4>
+                </div>
+                <div style={{float: 'right'}}>
+                  <Button disabled={!this.state.answeredCurrentQuestion} className={ 'Flashcard-options-button-next'} variant="outlined" color="primary" style={{margin: '6px'}} onClick={()=>this.handleNextQuestion(question)}> NEXT </Button>
+                </div>
+            </Grid>
 
-            <div className={'Flashcards-title'} style={{marginTop: '8px', float: 'right'}}>
-              <h4>{`Question ${this.state.answeredQuestions.length}/${this.state.vocabQueue.length + this.state.answeredQuestions.length}` }</h4>
-            </div>
           </Grid>
         </Grid>
       </Card>
     )
   }
-
-
-
 }
 
 const mapStatetoProps = state => ({
