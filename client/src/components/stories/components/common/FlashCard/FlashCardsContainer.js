@@ -69,11 +69,9 @@ class FlashCardContainer extends Component {
 }
 
   handleNextQuestion = (question) => {
-
     let {vocabQueue, answeredQuestions} = this.state
     vocabQueue.splice(0,1)
     answeredQuestions.push(question)
-
     this.setState({
       answeredCurrentQuestion: false,
       answeredCorrectly: null,
@@ -106,7 +104,7 @@ class FlashCardContainer extends Component {
                    <h2>Flash Card Study</h2>
                 </Grid>
                 <Grid item xs={6} style={{textAlign: 'right'}}>
-                    <h2>{`Score: ${this.state.score}/${this.state.answeredQuestions.length}`}</h2>
+                    <h2>{`Score: ${this.state.score}/${this.state.answeredQuestions.length+1}`}</h2>
                 </Grid>
             </Grid>
             <Grid item xs={12} justify={'center'} style={{height: '65%'}}>
