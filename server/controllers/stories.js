@@ -1,3 +1,4 @@
+/*
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
@@ -108,3 +109,4 @@ exports.getStoryInfo = (req, res) => {
 
 }
 
+*/

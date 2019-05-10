@@ -1,30 +1,10 @@
 <img src="https://github.com/armaandh/InterlineReader/blob/master/ILReader_Logo-with-tagline2.png" height="150">
 
-A literature reading-aid application targetted towards upper-level courses at The University of British Columbia.
+#Server
 
-## Regular Usage
-Visit [www.interlinereader.com](www.interlinereader.com) to use the latest version.
+## Refactoring
 
-## Developer Usage
+### In progress
 
-Install the dependencies
-
-```sh
-$ npm run install-all
-```
-
-Run app
-
-```sh
-$ npm run dev
-```
-## Technologies
-
-- Express
-- Mongoose
-- Passport
-- JsonWebToken
-- SendGrid
-- Gravatar
-- React
-- Redux
+- Moving code from `/controllers` to coresponding `/routes/api/` routers to improve readability.
+Using `async/await` to avoid passing data down into promise hell like before. 

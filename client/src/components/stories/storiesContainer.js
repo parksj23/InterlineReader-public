@@ -93,7 +93,7 @@ class StoriesContainer extends Component {
       vocabList
     }
     this.props.updateSavedWords(params);
-    this.props.endGrammarSearchSession();
+    if(this.props.analytics.sessions.length > 0)this.props.endGrammarSearchSession();
     this.props.leaveStories();
     this.props.resetSTories(hypothesisURL.split("&")[0] + `&${Math.floor(Math.random()*100000)}`);
     this.props.resetSideBar();
@@ -172,7 +172,8 @@ const mapStateToProps = state => (
     vocab: state.vocab,
     userId: state.auth.user.id,
     sideBar: state.sideBar,
-    dashboard: state.dashboard
+    dashboard: state.dashboard,
+    analytics: state.analytics
   }
 )
 

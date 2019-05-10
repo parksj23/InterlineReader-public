@@ -41,7 +41,7 @@ class GrammarSearch extends Component {
   }
 
   componentWillUnmount() {
-    this.props.endGrammarSearch
+      if(this.props.analytics.sessions.length > 0) this.props.endGrammarSearch;
   }
 
   renderVocab = vocabWord => {
@@ -147,7 +147,9 @@ class GrammarSearch extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    analytics: state.analytics
+});
 
 const mapDispatchToProps = {
   getVocabforStory,

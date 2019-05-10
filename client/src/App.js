@@ -60,11 +60,13 @@ class App extends Component {
   }
 
   unload = (e) => {
-    endGrammarSearchSession();
+
     let state = store.getState()
     let {analytics, auth} = state;
     let promiseArr = []
     let date = new Date();
+
+    if(analytics.sessions.length > 0) endGrammarSearchSession();
 
     if(auth.user.isStudent || true){
 

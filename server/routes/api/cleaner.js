@@ -7,8 +7,5 @@ const catchErrors = require('../../helpers/catchErrors');
 // @route   GET api/users/cleaner/getLogo
 // @desc    Serve up interline logo
 // @access  Public
-router.get(
-  "/getLogo",
-  catchErrors(cleaner.serveLogo));
-
+router.get("/getLogo", catchErrors(cleaner.serveLogo));
 module.exports = router;

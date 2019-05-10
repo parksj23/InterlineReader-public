@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-
-const catchErrors = require('../../helpers/catchErrors');
 const analytics = require('../../controllers/analytics');
 
 // @route   GET api/stories/current
@@ -13,10 +10,10 @@ const analytics = require('../../controllers/analytics');
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
-router.get('/userActivity', (req, res) => analytics.getUserActivity(req.query, res));
-router.get('/mostFrequentGrammar', (req, res) => analytics.getMostFrequentGrammar(req.query, res));
+router.get('/userActivity', (req, res, next) => analytics.getUserActivity(req.query, res, next));
+router.get('/mostFrequentGrammar', (req, res, next) => analytics.getMostFrequentGrammar(req.query, res, next));
 
-router.get('/:class/:story/grammarSearch/', (req, res) => analytics.getAnalyticsGrammarSearch(req, res));
-router.put('/addSessions', (req,res ) => analytics.addGrammarSearchSession(req.body,res));
+router.get('/:class/:story/grammarSearch/', (req, res, next) => analytics.getAnalyticsGrammarSearch(req, res, next));
+router.put('/addSessions', (req,res,next ) => analytics.addGrammarSearchSession(req.body,res,next));
 
 module.exports = router;

@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-
-const catchErrors = require('../../helpers/catchErrors');
 const savedWords = require('../../controllers/savedWords');
 
 // @route   GET api/stories/current
@@ -13,36 +10,36 @@ const savedWords = require('../../controllers/savedWords');
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   let params =  {
     userId: req.query.userId,
     story: req.query.story,
     savedWords: req.query.savedWords,
     storyClass: req.query.storyClass
   }
-  savedWords.getSavedWords(params, res)
+  savedWords.getSavedWords(params, res, next)
 });
 
-router.get('/getListOfSavedWords', (req, res) => {
+router.get('/getListOfSavedWords', (req, res, next) => {
   let params =  {
     userId: req.query.userId,
     story: req.query.story
   }
-  savedWords.getListOfSavedWords(params, res)
+  savedWords.getListOfSavedWords(params, res, next)
 });
 
-router.put('/addSavedWord', (req,res) => {
-  savedWords.addToSavedWords(req.body,res)
+router.put('/addSavedWord', (req,res, next) => {
+  savedWords.addToSavedWords(req.body,res, next)
 
 })
 
-router.put('/deleteSavedWord', (req,res) => {
-  savedWords.deleteSavedWords(req.body,res)
+router.put('/deleteSavedWord', (req,res, next) => {
+  savedWords.deleteSavedWords(req.body,res, next)
 
 })
 
-router.put('/updateSavedWords', (req,res) => {
-  savedWords.updateSavedWords(req.body, res)
+router.put('/updateSavedWords', (req,res, next) => {
+  savedWords.updateSavedWords(req.body, res, next)
 })
 
 module.exports = router;

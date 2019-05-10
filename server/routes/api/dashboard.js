@@ -1,10 +1,33 @@
 const express = require('express');
 const router = express.Router();
-const dashboard = require('../../controllers/dashboard');
+const MongoClient = require('mongodb').MongoClient;
+const keys = require('../../config/keys');
+const url = keys.mongoURI;
 
-const catchErrors = require('../../helpers/catchErrors');
+router.get("/", async (req, res, next) => {
+    try {
+        MongoClient.connect(url, async function (err, client) {
+            let allStories ={};
+            const db = client.db("ubcreadertesting");
+            const findAllStories = () => {
+                return new Promise((resolve,reject) => {
+                    db.collection(`KORN410B_STORY_LIST`).find().toArray(function (err, documents) {
+                        if (err) reject(err);
+                        allStories["410B"] = documents;
+                        resolve(allStories);
+                    });
+                });
+            };
+            var result = await findAllStories();
+            client.close();
+            res.send(result);
+        })
+    }
+    catch (err) {
+        next(err);
+    }
+});
 
-router.get("/", catchErrors(dashboard.init))
 module.exports = router;
 
-router.get('/assetNames', catchErrors(dashboard.getAssetNames))
+

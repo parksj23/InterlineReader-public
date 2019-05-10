@@ -1,13 +1,13 @@
+/*
 const path = require("path");
 const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const url = keys.mongoURI;
 
-
-
-exports.init = async (req, res) => {
+exports.init = async (req, res, next) => {
   const classType = req.query.classType
+  console.log(classType)
   let stories = {};
   let storiesPromises = [];
   switch (classType) {
@@ -20,9 +20,8 @@ exports.init = async (req, res) => {
           })
         }
         catch (err) {
-
+          reject(err)
         }
-
       }))
       break;
     case "410B":
@@ -51,39 +50,20 @@ exports.init = async (req, res) => {
     default:
   }
   Promise.all(storiesPromises).then(resp => {
+    console.log(resp)
     res.json(resp[0])
+    next();
+  }).catch( err => {
+    console.log(err)
+    next();
   })
 }
-
-exports.getAssetNames = async(req,res) => {
-  const classType = req.query.classType;
-  const pathToAssets = path.join(__dirname, )
-  let assetNames = {};
-  switch (classType) {
-    case "410A":
-      assetNames["410A"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410A/badges/png'))
-      break;
-    case "410B":
-      assetNames["410B"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410B/badges/png'))
-      break;
-    case "all":
-      assetNames["410A"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410A/badges/png'))
-      assetNames["410B"] = fs.readdirSync(path.join(__dirname, '../public/images/korn/410B/badges/png'))
-      break;
-    default:
-  }
-  res.send(assetNames)
-
-
-}
-
 
 
 const getStories = function (className) {
   return new Promise((resolve, reject) => {
     let pathToStories = path.join(__dirname, `../public/images/korn/${className}/badges/png`);
     let stories = []
-
     fs.readdir(pathToStories, function (err, items) {
       items.map((aFile) => {
         stories.push(fs.readFileSync(pathToStories + "/" + aFile, 'utf8'))
@@ -92,26 +72,6 @@ const getStories = function (className) {
     })
   })
 }
-
-/*const getAllStories = function () {
-  return new Promise((resolve, reject) => {
-    let pathToStoriesDir = path.join(__dirname, `../public/images/korn`);
-    let storyResult = {};
-    let classNames = fs.readdirSync(pathToStoriesDir);
-    let storyPromise = []
-
-    classNames.shift()
-    classNames.map(aClassName => {
-      storyPromise.push(getStories(aClassName))
-    })
-    Promise.all(storyPromise).then(resp => {
-      classNames.map((aClassName, index) => {
-        storyResult[aClassName] = resp[index];
-      })
-      resolve(storyResult)
-    })
-  })
-}*/
 
 getAllStories = function(){
   let allStories = {};
@@ -133,3 +93,4 @@ getAllStories = function(){
     console.log(err);
   }
 }
+*/

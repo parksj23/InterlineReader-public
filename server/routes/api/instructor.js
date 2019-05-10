@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const passport = require('passport');
-
-const catchErrors = require('../../helpers/catchErrors');
 const instructor = require('../../controllers/instructor');
 // @route   GET api/stories/current
 // @desc    Return current story
@@ -13,16 +10,16 @@ const instructor = require('../../controllers/instructor');
 // );
 
 
-router.put('/addStory', (req,res) => {
-  instructor.addNewStory(req.body,res)
+router.put('/addStory', (req,res, next) => {
+  instructor.addNewStory(req.body,res, next)
 
 })
-router.put('/addStoryInfo', (req,res) => {
-  instructor.addStoryInfo(req.body, res);
+router.put('/addStoryInfo', (req,res, next) => {
+  instructor.addStoryInfo(req.body, res, next);
 })
 
-router.get('/getStories', (req,res) => {
-  instructor.getAllStories(req,res);
+router.get('/getStories', (req,res, next) => {
+  instructor.getAllStories(req,res, next);
 })
 
 module.exports = router;
