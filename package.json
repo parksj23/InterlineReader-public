@@ -1,0 +1,28 @@
+{
+  "name": "interlinereader",
+  "version": "2.0.0",
+  "description": "Platform for reading foreign literary texts",
+  "main": "server.js",
+  "engines": {
+    "node": "8.2.1",
+    "npm": "6.1.0"
+  },
+  "scripts": {
+    "install-all": "npm install --prefix server&& npm install --prefix client",
+    "start": "cd server && node server.js",
+    "server": "nodemon server.js",
+    "client": "npm start --prefix ../client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/armaandh/interlinereader.git"
+  },
+  "author": "Armaan Dhanji",
+  "license": "CC BY-NC-ND 3.0",
+  "bugs": {
+    "url": "https://github.com/armaandh/interlinereader/issues"
+  },
+  "homepage": "https://github.com/armaandh/interlinereader#readme",
+}
