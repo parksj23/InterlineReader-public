@@ -28,10 +28,10 @@ const UserSchema = new Schema({
 		type: Date,
 		default: Date.now,
 	},
-	role: {type: String, enum: ['STUDENT', 'INSTRUCTOR', 'ADMIN'], default: 'STUDENT'}
+	role: { type: String, enum: ['STUDENT', 'INSTRUCTOR', 'ADMIN'], default: 'STUDENT' }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
 	if (!this.isModified('password')) {
 		return next();
 	}
@@ -49,4 +49,5 @@ UserSchema.methods.comparePassword = async function comparePassword(
 	return await bcrypt.compare(candidatePassword, this.password);
 };
 
-module.exports = User = mongoose.model('users', UserSchema);
+var User = mongoose.model('users', UserSchema);
+module.exports = { User: User };
