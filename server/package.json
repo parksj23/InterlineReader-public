@@ -9,8 +9,8 @@
   },
   "scripts": {
     "install-all": "npm install && npm install --prefix client",
-    "start": "node server.js",
-    "server": "nodemon server.js",
+    "start": "babel-node server.js",
+    "server": "babel-node server.js",
     "client": "npm start --prefix ../client",
     "dev": "npm run server & npm run client",
     "heroku-postbuild": "npm install && cd ../client && npm install && npm run build"
@@ -28,6 +28,9 @@
   "dependencies": {
     "all": "0.0.0",
     "async": "^2.6.1",
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
     "concurrently": "^3.5.1",
     "express": "^4.16.4",
