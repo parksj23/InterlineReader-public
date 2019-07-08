@@ -66,16 +66,14 @@
     "babel-preset-react-app": "^3.1.1",
     "babel-runtime": "6.26.0",
     "jest": "^24.8.0"
-
   },
-  "devDependencies": {
-      },
+  "devDependencies": {},
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
-  "proxy": "http://127.0.0.1:5050",
+  "proxy": "https:localhost:5050",
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
