@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from './actions/auth';
-import {addGrammarSearch, endGrammarSearchSession } from './actions/analytics'
+import { addGrammarSearch, endGrammarSearchSession } from './actions/analytics'
 import setAuthToken from './utils/setAuthToken';
 
 
@@ -31,30 +31,30 @@ import Instructor from './components/instructor/instructorContainer';
 
 
 import './App.css';
-import sort from "fast-sort";
+import sort from "fast-sort/sort.es5.min";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
   const decoded = jwt_decode(localStorage.jwtToken);
   store.dispatch(setCurrentUser(decoded));
   const currentTime = Date.now() / 1000;
-  if(decoded.exp < currentTime) {
+  if (decoded.exp < currentTime) {
     store.dispatch(logoutUser());
     window.location.href = '/login';
   };
 };
 
 class App extends Component {
-  constructor(){
+  constructor() {
     super()
     this.unload.bind(this)
   }
 
-  componentDidMount(){
+  componentDidMount() {
     window.addEventListener("beforeunload", this.unload);
 
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log(store)
     window.removeEventListener("beforeunload", this.unload);
   }
@@ -62,30 +62,30 @@ class App extends Component {
   unload = (e) => {
 
     let state = store.getState()
-    let {analytics, auth} = state;
+    let { analytics, auth } = state;
     let promiseArr = []
     let date = new Date();
 
-    if(analytics.sessions.length > 0) endGrammarSearchSession();
+    if (analytics.sessions.length > 0) endGrammarSearchSession();
 
-    if(auth.user.isStudent || true){
+    if (auth.user.isStudent || true) {
 
       let lastSession = analytics.sessions[analytics.sessions.length - 1];
       lastSession.endSession = date.getTime()
 
       let sortedFrequentWords = []
-      for(let anEntry in lastSession.grammarFrequency) {
+      for (let anEntry in lastSession.grammarFrequency) {
         sortedFrequentWords.push({
           entryName: anEntry,
           frequency: lastSession.grammarFrequency[anEntry]
         })
       }
       sort(sortedFrequentWords).asc(u => u.frequency);
-      let max = sortedFrequentWords[sortedFrequentWords.length-1].frequency
+      let max = sortedFrequentWords[sortedFrequentWords.length - 1].frequency
       let mostFrequentWords = [];
-      for(let index = sortedFrequentWords.length-1; index >=0 ; index--){
-        if(sortedFrequentWords[index].frequency === max) mostFrequentWords.push(sortedFrequentWords[index].entryName);
-        else{ break;}
+      for (let index = sortedFrequentWords.length - 1; index >= 0; index--) {
+        if (sortedFrequentWords[index].frequency === max) mostFrequentWords.push(sortedFrequentWords[index].entryName);
+        else { break; }
       }
 
       lastSession.mostFrequentWord = mostFrequentWords;
@@ -119,11 +119,11 @@ class App extends Component {
               <Route path="/register/verify_email/:id/:token" component={EmailVerification} />
               <Route path="/success" component={Success} />
               <Route path="/about" component={About} />
-                <Route path="/cleaner" component={Cleaner} />
+              <Route path="/cleaner" component={Cleaner} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
-                <PrivateRoute path='/story/:class/:storyName' component={Story}/>
-                <PrivateRoute path='/instructor' component={Instructor}/>
+                <PrivateRoute path='/story/:class/:storyName' component={Story} />
+                <PrivateRoute path='/instructor' component={Instructor} />
               </Switch>
             </div>
             <Footer />
