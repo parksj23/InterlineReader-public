@@ -78,8 +78,7 @@ exports.getMostFrequentGrammar = async (req, res) => {
               return a > b ? 1 : a < b ? -1 : 0
             })
             resolve(
-              //es6 [...result]
-              [result]
+              [...result]
             )
           }
         })
@@ -131,7 +130,7 @@ exports.addGrammarSearchSession = async (req, res) => {
       sessions.map(aSession => {
         let entry = {
           userId: id,
-          //es6...aSession
+          ...aSession
         }
         console.log(`ANALYTICS_${aSession.class}_${aSession.story.toUpperCase()}_SESSIONS`)
         dbo.collection(`ANALYTICS_${aSession.class}_${aSession.story.toUpperCase()}_SESSIONS`).insertOne(entry)
