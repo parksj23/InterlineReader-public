@@ -7,7 +7,7 @@ Visit [www.interlinereader.com](www.interlinereader.com) to use the latest versi
 
 ## Developer Usage
 
-Install the dependencies
+Install the dependencies..
 
 ```sh
 $ npm run install-all
