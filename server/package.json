@@ -9,8 +9,8 @@
   },
   "scripts": {
     "install-all": "npm install && npm install --prefix client",
-    "start": "babel-node server.js",
-    "server": "babel-node server.js",
+    "start": "node server.js",
+    "server": "node server.js",
     "client": "npm start --prefix ../client",
     "dev": "npm run server & npm run client",
     "heroku-postbuild": "npm install && cd ../client && npm install && npm run build"
