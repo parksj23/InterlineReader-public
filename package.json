@@ -10,8 +10,8 @@
   "scripts": {
     "install-all": "npm install --prefix server && npm install --prefix client",
     "start": "npm install -g babel-cli && npm run server & npm run client",
-    "server": "cd server && babel-node server.js",
-    "client": "npm start --prefix ./client",
+    "server": "cd server && npm run server",
+    "client": "cd client && npm run start",
     "dev": "npm run server & npm run client",
     "heroku-postbuild": "cd server && npm install && cd ../client && npm install && npm run build"
   },
