@@ -53,13 +53,8 @@ class SavedWordsContainer extends Component {
       <div>
         <SavedWords savedWords={savedWords} handleDelete={this.handleDelete}/>
       </div>
-
     )
-
   }
-
-
-
 }
 
 

@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import FusePicker from "../../../../../../node_modules/react-fuse-picker/lib/components/FusePicker";
 import { connect } from "react-redux";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Typography from "@material-ui/core/Typography";
-import TableHead from "@material-ui/core/TableHead";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TableRow from "@material-ui/core/TableRow";
 import { getVocabforStory } from "../../../../../actions/vocab";
-import SearchInput from "react-search-input";
+import {updateGrammarSearch,startGrammarSearch,endGrammarSearch} from '../../../../../actions/analytics'
 import Grid from "@material-ui/core/Grid";
 
 class GrammarSearch extends Component {
@@ -39,7 +36,13 @@ class GrammarSearch extends Component {
     this.updateSearchTerm.bind(this);
   }
 
-  componentWillUnmount() {}
+  componentWillMount(){
+    this.props.startGrammarSearch(this.props.storyInfo);
+  }
+
+  componentWillUnmount() {
+      if(this.props.analytics.sessions.length > 0) this.props.endGrammarSearch;
+  }
 
   renderVocab = vocabWord => {
     return (
@@ -134,6 +137,9 @@ class GrammarSearch extends Component {
               );
             }}
             fuseOptions={this.state.fuseOptions}
+            onChange={(item) => {
+              this.props.updateGrammarSearch(item.entryName)
+            }}
           />
         </Grid>
       </div>
@@ -141,10 +147,15 @@ class GrammarSearch extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    analytics: state.analytics
+});
 
 const mapDispatchToProps = {
-  getVocabforStory
+  getVocabforStory,
+  updateGrammarSearch,
+  startGrammarSearch,
+  endGrammarSearch
 };
 
 export default connect(

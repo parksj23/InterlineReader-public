@@ -1,17 +1,14 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Grid from "@material-ui/core/Grid";
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Tooltip from '@material-ui/core/Tooltip';
 import Vocab from './Vocab/VocabContainer';
 import Grammar from './Grammar/GrammarContainer';
 import SavedWords from './SavedWords/SavedWordsContainer';
 import GrammarSearch from './GrammarSearch/GrammarSearch';
 import Dictionary from './Dictionary/Dictionary';
-import Button from "@material-ui/core/Button";
 import Resizable from 're-resizable';
 import StatusMessage from '../../statusMessage/statusMessage';
 
@@ -40,7 +37,7 @@ const styles ={
 
 const SideBar = (props) => {
 
-  const{story, vocab, grammar, left, classes, tab} = props;
+  const{story, vocab, grammar, left, classes} = props;
   return (
     <div className={story}>
       <Drawer id={"DrawerContainer"} variant="persistent" open={left} onClose={()=>props.toggleDrawer('left', false)}>
@@ -75,7 +72,7 @@ const SideBar = (props) => {
             {props.tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAddVocab}/></div>}
             {props.tab === 1 && <div><Grammar grammar={grammar}/></div>}
             {props.tab === 2 && <div><SavedWords story={props.story}/></div>}
-            {props.tab === 3 && <div><GrammarSearch/></div>}
+            {props.tab === 3 && <div><GrammarSearch story={props.story} storyInfo={props.storyInfo}/></div>}
             <div style={{display: props.tab === 4 ? 'block' : 'none'}}><Dictionary/></div>
           </div>
         </Resizable>

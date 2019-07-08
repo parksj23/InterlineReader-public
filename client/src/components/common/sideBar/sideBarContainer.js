@@ -84,6 +84,7 @@ class SideBarContainer extends Component {
                  statusMessage={this.props.statusMessage}
                  handleStatusClose={this.props.handleStatusClose}
                  handleTabChange={this.handleTabChange.bind(this)}
+                 storyInfo={this.props.stories.storyInfo}
         />
     )
   }

@@ -30,7 +30,7 @@ class Dashboard extends Component {
                 item: classes.cardContainer
               }}
               item xs={4} key={'story_badge' + index}>
-             { <Link to={`/story/${name}/${aStory.storyName}`} className={'card-link'}>
+              { <Link to={`/instructor/analytics/overview/${name}/${aStory.storyName}`} className={'card-link'}>
                 <ClassCard story={aStory} style={{width: "100%"}}/>
               </Link>}
             </Grid>
@@ -63,7 +63,7 @@ class Dashboard extends Component {
             return this.renderClassStories(aClass, sections[aClass], classIndex)
           }) : null}
         </Grid> }
-      </div>  
+      </div>
     );
   }
 }

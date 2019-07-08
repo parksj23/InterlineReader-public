@@ -1,0 +1,18 @@
+.flashcard-options-button-correct {
+    color: #42b35b;
+    border: #42b35b
+}
+
+.flashcard-options-button-correct {
+    color: red;
+    border: red
+}
+
+.Flashcards-question-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
+}

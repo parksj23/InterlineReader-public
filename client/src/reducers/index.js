@@ -7,6 +7,7 @@ import vocab from './vocab';
 import stories from './stories';
 import sideBar from './sideBar';
 import instructor from './instructor';
+import analytics from './analytics'
 
 
 export default combineReducers({
@@ -17,5 +18,6 @@ export default combineReducers({
   vocab,
   stories,
   sideBar,
-  instructor
+  instructor,
+  analytics
 });

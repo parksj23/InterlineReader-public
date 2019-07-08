@@ -6,15 +6,21 @@ import { logoutUser } from '../../actions/auth';
 import {updateDrawerSize} from '../../actions/dashboard';
 import {toggleSideBar} from "../../actions/sideBar";
 import SideBarButton from './common/sideBarButton';
+import store from "../../store";
 
 
 
 class Navbar extends Component {
+  constructor(){
+    super()
+  }
 
   onLogoutClick = (e) => {
     e.preventDefault();
     this.props.logoutUser();
   }
+
+
 
   toggleDrawer = (side, open) => () => {
     let width = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10) : "30vw"

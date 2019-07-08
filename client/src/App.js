@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from './actions/auth';
+import {addGrammarSearch, endGrammarSearchSession } from './actions/analytics'
 import setAuthToken from './utils/setAuthToken';
+
 
 import { Provider } from 'react-redux';
 import store from './store';
+import axios from 'axios'
 
 
 import PrivateRoute from './components/common/PrivateRoute';
@@ -28,6 +31,7 @@ import Instructor from './components/instructor/instructorContainer';
 
 
 import './App.css';
+import sort from "fast-sort";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -41,6 +45,65 @@ if (localStorage.jwtToken) {
 };
 
 class App extends Component {
+  constructor(){
+    super()
+    this.unload.bind(this)
+  }
+
+  componentDidMount(){
+    window.addEventListener("beforeunload", this.unload);
+
+  }
+  componentWillUnmount(){
+    console.log(store)
+    window.removeEventListener("beforeunload", this.unload);
+  }
+
+  unload = (e) => {
+
+    let state = store.getState()
+    let {analytics, auth} = state;
+    let promiseArr = []
+    let date = new Date();
+
+    if(analytics.sessions.length > 0) endGrammarSearchSession();
+
+    if(auth.user.isStudent || true){
+
+      let lastSession = analytics.sessions[analytics.sessions.length - 1];
+      lastSession.endSession = date.getTime()
+
+      let sortedFrequentWords = []
+      for(let anEntry in lastSession.grammarFrequency) {
+        sortedFrequentWords.push({
+          entryName: anEntry,
+          frequency: lastSession.grammarFrequency[anEntry]
+        })
+      }
+      sort(sortedFrequentWords).asc(u => u.frequency);
+      let max = sortedFrequentWords[sortedFrequentWords.length-1].frequency
+      let mostFrequentWords = [];
+      for(let index = sortedFrequentWords.length-1; index >=0 ; index--){
+        if(sortedFrequentWords[index].frequency === max) mostFrequentWords.push(sortedFrequentWords[index].entryName);
+        else{ break;}
+      }
+
+      lastSession.mostFrequentWord = mostFrequentWords;
+
+      let params = {
+        id: auth.user.id,
+        sessions: analytics.sessions
+      }
+      axios.put('/api/analytics/addSessions', params).then(resp => {
+        console.log(e)
+      })
+    }
+
+    e.preventDefault();
+    return e.returnValue = "See you next time!"
+  }
+
+
   render() {
     return (
       <Provider store={store}>
