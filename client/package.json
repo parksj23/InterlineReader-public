@@ -74,7 +74,12 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
-  "proxy": "http://127.0.0.1:5050",
+  "proxy": {
+    "/api": {
+      "target": "https://127.0.0.1:5050",
+      "secure": false
+    }
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
