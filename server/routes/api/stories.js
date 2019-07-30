@@ -17,7 +17,7 @@ router.get('/:class/:story', async (req, res, next) => {
     let {className} = req.query;
     try {
         MongoClient.connect(url, async function (err, client) {
-            const db = client.db("ubcreadertesting");
+            const db = client.db("testdb");
             if (err) throw err;
             let query = {storyName: storyTitle.toLowerCase()};
 
@@ -67,7 +67,7 @@ router.get('/:class/:story/storyText', async (req, res, next) => {
     try {
         MongoClient.connect(url, async function (err, client) {
             if (err) throw err;
-            const db = client.db("ubcreadertesting");
+            const db = client.db("testdb");
             const query = {};
 
             const findStoryKorean = () => {
@@ -107,7 +107,7 @@ router.get('/:story/storyInfo', async (req, res, next) =>{
     try{
         MongoClient.connect(url, async function (err, client) {
             if (err) throw err;
-            var db = client.db("ubcreadertesting");
+            var db = client.db("testdb");
             var query = {storyName: story};
 
             const findStoryInfo = () => {

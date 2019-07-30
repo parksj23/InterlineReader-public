@@ -9,7 +9,7 @@ exports.addNewStory = (req, res) => {
   if (text && storyInfo) {
     MongoClient.connect(url, function (err, client) {
         if (err) throw err;
-        var dbo = client.db("ubcreadertesting");
+        var dbo = client.db("testdb");
         dbo.collection(`KORN${storyInfo.class}_${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
           if (success.result.ok) {
             dbo.collection(`KORN${storyInfo.class}_${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
@@ -37,7 +37,7 @@ exports.addStoryInfo = (req, res) => {
 
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("ubcreadertesting");
+      var dbo = client.db("testdb");
       dbo.collection(`KORN410B_STORY_LIST`).find(req.storyInfo).toArray(function (err, document) {
 
           if (document.length === 0) {
@@ -94,7 +94,7 @@ exports.getAllStories = (req, res) => {
     return new Promise((resolve, reject) => {
       MongoClient.connect(url, function (err, client) {
         if (err) throw err;
-        var dbo = client.db("ubcreadertesting");
+        var dbo = client.db("testdb");
         var query = {};
         dbo.collection(`KORN410B_STORY_LIST`).find(query).toArray(function (err, documents) {
           if (err) throw err;

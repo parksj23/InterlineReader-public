@@ -8,7 +8,7 @@ router.get("/", async (req, res, next) => {
     try {
         MongoClient.connect(url, async function (err, client) {
             let allStories ={};
-            const db = client.db("ubcreadertesting");
+            const db = client.db("testdb");
             const findAllStories = () => {
                 return new Promise((resolve,reject) => {
                     db.collection(`KORN410B_STORY_LIST`).find().toArray(function (err, documents) {

@@ -69,9 +69,9 @@ walk('/Users/alfredhong/Desktop/InterlineReader/InterlineReader/client/src/compo
 
     //console.log(wordsArray);
 
-  MongoClient.connect('mongodb://ubcreader:britishcolumbia1324!@ds155862.mlab.com:55862/ubcreadertesting', function (err, client) {
+  MongoClient.connect('mongodb+srv://ubcreader:britishcolumbia1324!@cluster0-j9y3z.mongodb.net/test?retryWrites=true&w=majority', function (err, client) {
     if (err) throw err;
-    var dbo = client.db("ubcreadertesting");
+    var dbo = client.db("testdb");
 
     wordsArray.map((aSegment, index) => {
       dbo.collection(`KORN410_POKTEKPANG_STORY_ENGLISH`).insertOne(aSegment)

@@ -8,7 +8,7 @@ exports.getSavedWords = (params, res) => {
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("ubcreadertesting");
+      var dbo = client.db("testdb");
       let query = [];
       if(savedWords && savedWords.length > 0) {
         savedWords.map(orderId => {
@@ -33,7 +33,7 @@ exports.getListOfSavedWords = (params, res) => {
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("ubcreadertesting");
+      var dbo = client.db("testdb");
       let query = {
         userId
       };
@@ -73,7 +73,7 @@ exports.updateSavedWords = (params,res) => {
   if(userId && storyTitle) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("ubcreadertesting");
+      var dbo = client.db("testdb");
       let query = {
         userId: userId
       };
@@ -98,7 +98,7 @@ exports.deleteSavedWords = (params,res) => {
   if(userId && storyTitle) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("ubcreadertesting");
+      var dbo = client.db("testdb");
       let query = {
         userId
       };
