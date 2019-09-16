@@ -1,7 +1,14 @@
+
+@font-face{
+  font-family: "source-han-serif-korean";
+  src: url("SourceHanSerifKR-Regular-subset.woff2") format("woff2"),
+       url("SourceHanSerifKR-Regular-subset.woff") format("woff"),
+       url("SourceHanSerifKR-Regular-subset.otf") format("opentype");
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Rubik', sans-serif; 
+  font-family: 'source-han-serif-korean', sans-serif;
   /* made global font change here */
 }
-

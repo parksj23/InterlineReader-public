@@ -9,9 +9,15 @@
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo" rel="stylesheet"> -->
     <link href="https://fonts.googleapis.com/css?family=Rubik" rel="stylesheet">
-    
+    <style>
+@font-face {
+  font-family: Cute Font;
+  src: url("./CuteFont-Regular.ttf");
+}
+</style>
+
     <title>Interline Reader</title>
   </head>
   <body>
@@ -26,7 +32,7 @@
     <script>
       function changeScrollBar() {
         document.querySelectorAll('[role="tablist"]')[0].style.overflowX = "unset"
-      } 
+      }
       setTimeout(function() { // wait for hypothesis to load first
         var rootPar = $("hypothesis-adder")[0];
         var rootPar2 = rootPar.shadowRoot.querySelector(".annotator-adder-actions");
@@ -37,7 +43,7 @@
             .addClass("h-icon-annotate")
             .click(function() {
               var text = "";
-              
+
               if (window.getSelection) {
                   text = window.getSelection().toString();
                 $.ajax({
@@ -48,7 +54,7 @@
                     new Audio(res[0].audio_url).play();
                   }
               });
-              
+
               } else if (document.selection && document.selection.type != "Control") {
                 text = document.selection.createRange().text;
                 $.ajax({
@@ -60,7 +66,7 @@
                   }
               });
               }
-              
+
             }).appendTo(rootPar2);
       }, 5000)
     </script>
