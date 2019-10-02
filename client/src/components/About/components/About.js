@@ -32,9 +32,11 @@ const About = (props) => {
 
       <Divider/>
       <Grid item xs={12} className={"about-section"}>
-        <h1>Contributors (Click to contact by email)</h1>
+        <h1>Contributors</h1>
+          <h2>(Click to contact by email)</h2>
         <div><p style={{fontWeight: "700"}}><a href="mailto:dhanjiarmaan@gmail.com" target="_top">Software Development: Armaan Dhanji</a></p></div>
         <div><p style={{fontWeight: "700"}}><a href="mailto:dawndkim@alumni.ubc.ca" target="_top">Site Design &amp; Project Co-ordinator: Dawn Kim</a></p></div>
+          <div><p style={{fontWeight: "700"}}><a href="mailto:amy.george@ubc.ca" target="_top">Project Co-ordinator: Amy George</a></p></div>
         <div><p style={{fontWeight: "700"}}><a href="mailto:Ross.King@ubc.ca" target="_top">Principal Investigator: Dr. Ross King</a></p></div>
       </Grid>
     </Paper>
