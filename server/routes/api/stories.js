@@ -23,7 +23,7 @@ router.get('/:class/:story', async (req, res, next) => {
 
             const findStoryInfo = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`KORN${className}_STORY_LIST`).find(query).limit(1).toArray(function (err, story_info) {
+                    db.collection(`STORY_LIST`).find(query).limit(1).toArray(function (err, story_info) {
                         if (err) reject(err);
                         resolve(story_info[0])
                     })
@@ -31,7 +31,7 @@ router.get('/:class/:story', async (req, res, next) => {
             }
             const findStoryVocab = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`KORN${className}_${storyTitle}_VOC`).find().toArray(function (err, voc_result) {
+                    db.collection(`${storyTitle}_VOC`).find().toArray(function (err, voc_result) {
                         if (err) reject(err)
                         resolve(voc_result)
                     })
@@ -39,7 +39,7 @@ router.get('/:class/:story', async (req, res, next) => {
             }
             const findStoryGrammar = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`KORN${className}_${storyTitle}_GRAM`).find().toArray(function (err, gram_result) {
+                    db.collection(`${storyTitle}_GRAM`).find().toArray(function (err, gram_result) {
                         if (err) reject(err)
                         resolve(gram_result)
                     })
@@ -72,7 +72,7 @@ router.get('/:class/:story/storyText', async (req, res, next) => {
 
             const findStoryKorean = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`KORN${storyInfo.class}_${storyName}_STORY_KOREAN`).find(query).toArray(function (err, story_result_korean) {
+                    db.collection(`${storyName}_STORY_KOREAN`).find(query).toArray(function (err, story_result_korean) {
                         if (err) reject(err);
                         resolve(story_result_korean);
                     })
@@ -80,7 +80,7 @@ router.get('/:class/:story/storyText', async (req, res, next) => {
             }
             const findStoryEnglish = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`KORN${storyInfo.class}_${storyName}_STORY_ENGLISH`).find(query).toArray(function (err, story_result_english) {
+                    db.collection(`${storyName}_STORY_ENGLISH`).find(query).toArray(function (err, story_result_english) {
                         if (err) reject(err);
                         resolve(story_result_english)
                     })
@@ -112,7 +112,7 @@ router.get('/:story/storyInfo', async (req, res, next) =>{
 
             const findStoryInfo = () => {
                 return new Promise((resolve,reject) => {
-                    db.collection(`KORN410B_STORY_LIST`).find(query).limit(1).toArray(function (err, story_info) {
+                    db.collection(`STORY_LIST`).find(query).limit(1).toArray(function (err, story_info) {
                         if(err) reject(err)
                         resolve(story_info)
                     })

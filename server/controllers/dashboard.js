@@ -81,7 +81,7 @@ getAllStories = function(){
         if (err) throw err;
         var dbo = client.db("ubcreadertesting");
         var query = {};
-        dbo.collection(`KORN410B_STORY_LIST`).find(query).toArray(function(err, documents) {
+        dbo.collection(`STORY_LIST`).find(query).toArray(function(err, documents) {
           if (err) throw err;
           allStories["410B"] = documents;
           resolve(allStories)

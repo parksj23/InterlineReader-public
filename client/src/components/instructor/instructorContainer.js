@@ -12,14 +12,35 @@ import InstructorMenu from './component/InstructorMenu';
 import Grid from "@material-ui/core/Grid"
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
-
+import Button from '@material-ui/core/Button'
+import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
 
 class InstructorContainer extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      oldName: null
+    }
+  }
 
   componentWillMount(){
     this.props.getStoryList();
     this.props.disableSideBarButton();
   }
+
+  renameCollections =() => {
+    let params = {
+      oldName: this.state.oldName
+    }
+    axios.put('/api/instructor/renameCollection', params).then(res => {})
+  }
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value
+    })
+  };
 
   render() {
     return (
@@ -69,3 +90,13 @@ const mapDispatchToProps = ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InstructorContainer);
+
+//If need to rename collection, add this
+/* <TextField
+  id="standard-name"
+  label="Name"
+  value={this.state.oldName}
+  onChange={this.handleChange('oldName')}
+  margin="normal"
+/>
+<Button onClick={this.renameCollections}> RENAME </Button>*/

@@ -18,25 +18,17 @@ class Dashboard extends Component {
   componentWillMount(){
   }
 
-  renderClassStories = (name, stories, classIndex) => {
+  renderClassStories = (name, aStory, classIndex) => {
     const {classes} = this.props
     return (
-      <Grid container key={'class_' + classIndex}>
-        <Grid className="classNameHeader" item xs={12}>{name}</Grid>
-        {stories.map((aStory,index) => {
-          return (
-            <Grid
-              classes={{
-                item: classes.cardContainer
-              }}
-              item xs={4} key={'story_badge' + index}>
-              { <Link to={`/instructor/analytics/overview/${name}/${aStory.storyName}`} className={'card-link'}>
-                <ClassCard story={aStory} style={{width: "100%"}}/>
-              </Link>}
-            </Grid>
-
-          )
-        })}
+      <Grid
+        classes={{
+          item: classes.cardContainer
+        }}
+        item xs={4} key={'story_badge' + classIndex}>
+        { <Link to={`/instructor/analytics/overview/${name}/${aStory.storyName}`} className={'card-link'}>
+          <ClassCard story={aStory} style={{width: "100%"}}/>
+        </Link>}
       </Grid>
     )
   }
@@ -47,6 +39,7 @@ class Dashboard extends Component {
     const sections = this.props.dashboard.storyList;
     let classNames;
     if(sections) classNames = Object.keys(sections)
+    console.log(sections)
     return (
 
       <div className="dashboard">
@@ -59,10 +52,10 @@ class Dashboard extends Component {
           />
         </div>
         { <Grid container >
-          {classNames ? classNames.map((aClass,classIndex) => {
-            return this.renderClassStories(aClass, sections[aClass], classIndex)
+          {sections ? sections.map((aClass,classIndex) => {
+            return this.renderClassStories("Stories", aClass, classIndex)
           }) : null}
-        </Grid> }
+          </Grid> }
       </div>
     );
   }

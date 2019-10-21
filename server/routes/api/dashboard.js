@@ -11,9 +11,10 @@ router.get("/", async (req, res, next) => {
             const db = client.db("testdb");
             const findAllStories = () => {
                 return new Promise((resolve,reject) => {
-                    db.collection(`KORN410B_STORY_LIST`).find().toArray(function (err, documents) {
+                    db.collection(`STORY_LIST`).find().toArray(function (err, documents) {
                         if (err) reject(err);
-                        allStories["410B"] = documents;
+                        allStories = documents;
+                        console.log(allStories)
                         resolve(allStories);
                     });
                 });

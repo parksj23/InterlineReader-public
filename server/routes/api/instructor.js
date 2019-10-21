@@ -22,4 +22,8 @@ router.get('/getStories', (req,res, next) => {
   instructor.getAllStories(req,res, next);
 })
 
+router.put('/renameCollection', (req,res,next) => {
+  instructor.renameCollections(req.body,res,next)
+})
+
 module.exports = router;

@@ -99,9 +99,9 @@ exports.getAnalyticsGrammarSearch = async (req, res) => {
     MongoClient.connect(analyticsURL, function (err, client) {
       if (err) throw err;
       var dbo = client.db("testdb");
-      dbo.collection(`KORN${storyInfo.class}_${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
+      dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
         if (success.result.ok) {
-          dbo.collection(`KORN${storyInfo.class}_${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
+          dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
             res.json({
               status: 200
             });
@@ -148,3 +148,4 @@ exports.addGrammarSearchSession = async (req, res) => {
 
 
 }
+

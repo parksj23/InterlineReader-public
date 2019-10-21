@@ -48,9 +48,9 @@ exports.getVocAndGram = (req, res) => {
       if (err) throw err;
       var dbo = client.db("ubcreadertesting");
       var query = {};
-      dbo.collection(`KORN410B_${story}_VOC`).find(query).toArray(function (err, voc_result) {
+      dbo.collection(`${story}_VOC`).find(query).toArray(function (err, voc_result) {
         if (err) throw err;
-        dbo.collection(`KORN410B_${story}_GRAM`).find(query).toArray(function (err, gram_result) {
+        dbo.collection(`${story}_GRAM`).find(query).toArray(function (err, gram_result) {
           if (err) throw err;
           res.json({
             vocab: voc_result,
@@ -72,9 +72,9 @@ exports.getStoryText = (req, res) => {
       if (err) throw err;
       var dbo = client.db("ubcreadertesting");
       var query = {};
-      dbo.collection(`KORN${storyInfo.class}_${storyName}_STORY_KOREAN`).find(query).toArray(function (err, story_result_korean) {
+      dbo.collection(`${storyName}_STORY_KOREAN`).find(query).toArray(function (err, story_result_korean) {
         if (err) throw err;
-        dbo.collection(`KORN${storyInfo.class}_${storyName}_STORY_ENGLISH`).find(query).toArray(function (err, story_result_english) {
+        dbo.collection(`${storyName}_STORY_ENGLISH`).find(query).toArray(function (err, story_result_english) {
           res.json({
             storyTextKorn: story_result_korean,
             storyTextEngl: story_result_english
@@ -97,7 +97,7 @@ exports.getStoryInfo = (req, res) => {
       if (err) throw err;
       var dbo = client.db("ubcreadertesting");
       var query = {storyName: story};
-      dbo.collection(`KORN410B_STORY_LIST`).find(query).toArray(function (err, story_info) {
+      dbo.collection(`STORY_LIST`).find(query).toArray(function (err, story_info) {
         if (err) throw err;
         res.json({
           storyInfo: story_info,

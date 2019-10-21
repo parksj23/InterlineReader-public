@@ -10,9 +10,9 @@ exports.addNewStory = (req, res) => {
     MongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var dbo = client.db("testdb");
-        dbo.collection(`KORN${storyInfo.class}_${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
+        dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
           if (success.result.ok) {
-            dbo.collection(`KORN${storyInfo.class}_${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
+            dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
               res.json({
                 status: 200
               });
@@ -38,11 +38,11 @@ exports.addStoryInfo = (req, res) => {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db("testdb");
-      dbo.collection(`KORN410B_STORY_LIST`).find(req.storyInfo).toArray(function (err, document) {
+      dbo.collection(`STORY_LIST`).find(req.storyInfo).toArray(function (err, document) {
 
           if (document.length === 0) {
             req.storyInfo[language] = true
-            dbo.collection(`KORN410B_STORY_LIST`).insertOne(req.storyInfo).then(success => {
+            dbo.collection(`STORY_LIST`).insertOne(req.storyInfo).then(success => {
               if (success.result.ok) {
                 res.json({
                   status: 'success'
@@ -61,7 +61,7 @@ exports.addStoryInfo = (req, res) => {
             let oldDoc = document[0]
             let updateField = {}
             updateField[language] = true
-            dbo.collection(`KORN410B_STORY_LIST`).replaceOne(oldDoc, {$set: updateField}, {upsert:true}).then(success => {
+            dbo.collection(`STORY_LIST`).replaceOne(oldDoc, {$set: updateField}, {upsert:true}).then(success => {
               if (success.result.ok) {
                 res.json({
                   status: 'success'
@@ -96,7 +96,7 @@ exports.getAllStories = (req, res) => {
         if (err) throw err;
         var dbo = client.db("testdb");
         var query = {};
-        dbo.collection(`KORN410B_STORY_LIST`).find(query).toArray(function (err, documents) {
+        dbo.collection(`STORY_LIST`).find(query).toArray(function (err, documents) {
           if (err) throw err;
           allStories = documents;
           res.json(allStories)
@@ -107,4 +107,25 @@ exports.getAllStories = (req, res) => {
   } catch (err) {
     console.log(err);
   }
+}
+
+exports.renameCollections = (req,res) => {
+  MongoClient.connect(url, function (err, client) {
+      if (err) throw err;
+      let dbo = client.db("testdb");
+      console.log(req)
+      let oldName = req.oldName;
+      let newName = oldName.substring(9)
+    dbo.renameCollection(`${oldName}`,`${newName}`).then(err => {
+      client.close();
+    })
+     /* dbo.collection(oldName).rename(newName, function (err, newColl) {
+        if(err) console.log(err)
+        res.json({
+          status: "ok"
+        })
+        client.close()
+      })*/
+    }
+  )
 }
