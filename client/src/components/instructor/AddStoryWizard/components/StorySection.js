@@ -9,6 +9,7 @@ import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Divider from "@material-ui/core/Divider";
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import '../style/AddStoryWizard.css';
 import {EditorState, convertToRaw} from 'draft-js';
@@ -239,7 +240,8 @@ class StorySection extends Component {
     return (
       <div className={'addStoryContainer'}>
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={2}/>
+            <Grid item xs={8}>
               <Tabs
                 value={this.state.tabValue}
                 onChange={this.handleOnChangeTab}
@@ -250,6 +252,9 @@ class StorySection extends Component {
                 <Tab label="EDIT"/>
                 <Tab label="PREVIEW"/>
               </Tabs>
+            </Grid>
+            <Grid item xs={2}>
+              <Button key={this.props.key} className={'story-section-save-button'} style={{float: "right"}} onClick={() => this.handleOnSave()} disabled={this.state.saveDisabled}>Save</Button>
             </Grid>
           </Grid>
           {

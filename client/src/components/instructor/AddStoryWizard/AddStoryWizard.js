@@ -9,6 +9,7 @@ import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import SectionDivider from './components/SectionDivider';
+import StatusMessage from '../../common/statusMessage/statusMessage';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style/AddStoryWizard.css';
 import {EditorState, convertToRaw} from 'draft-js';
@@ -45,7 +46,7 @@ class AddStoryWizard extends Component {
       },
       openStatus: false,
       statusMessage: "",
-      saveDisabled: true,
+      saveDisabled: false,
       numOfSections: 1
     };
   }
@@ -181,6 +182,14 @@ class AddStoryWizard extends Component {
     })
   }
 
+  handleSaveAll =() => {
+    let sectionSaveButtons = document.getElementsByClassName('story-section-save-button');
+    for(let aSection of sectionSaveButtons){
+      console.log(aSection)
+      aSection.click();
+    }
+  }
+
   doesStoryExist = (storyInfo) => {
     let {instructor} = this.props;
     if(!instructor.storyList) return false;
@@ -201,11 +210,12 @@ class AddStoryWizard extends Component {
     let sections = []
 
     for(let i = 0; i < this.state.numOfSections ; i++){
-      sections.push(<StorySection key={i}/>);
+      sections.push(<StorySection key={`story-section-${i}`}/>);
       sections.push(<SectionDivider key={i}/>);
     }
     return sections;
   }
+
 
   render() {
     return (
@@ -217,7 +227,7 @@ class AddStoryWizard extends Component {
             </Grid>
             <Grid item xs={5}/>
             <Grid item xs={4}>
-              <Button style={{float: "right"}} onClick={() => this.handleOnSave()} disabled={this.state.saveDisabled}>Save</Button>
+              <Button style={{float: "right"}} onClick={() => this.handleSaveAll()} disabled={this.state.saveDisabled}>Save All</Button>
               <Button style={{float: "right"}} onClick={() => this.handleAddSection()} disabled={this.state.numOfSections >= 4}>Add Section</Button>
             </Grid>
           </Grid>
