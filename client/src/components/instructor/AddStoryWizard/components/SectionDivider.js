@@ -4,10 +4,15 @@ import Divider from "@material-ui/core/Divider";
 
 const styles = {
   root: {
-    marginTop: "16px",
-    marginBottom: "16px"
+    marginTop: "24px",
+    marginBottom: "24px",
+    backgroundColor: "#000000",
+    borderRadius: "21px",
+    width: "85%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    height: "3px"
   }
-
 }
 
 const SectionDivider = (props) => {
