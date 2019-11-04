@@ -222,10 +222,7 @@ class AddStoryWizard extends Component {
       <div className={'addStoryContainer'}>
         <div style={{paddingLeft: "12px", display: "flex", borderBottom: "solid 1px #000"}}>
           <Grid container style={{marginTop: "12px"}}>
-            <Grid item xs={3}>
-              <h3 style={{float: "left"}}>ADD STORY</h3>
-            </Grid>
-            <Grid item xs={5}/>
+            <Grid item xs={8}/>
             <Grid item xs={4}>
               <Button style={{float: "right"}} onClick={() => this.handleSaveAll()} disabled={this.state.saveDisabled}>Save All</Button>
               <Button style={{float: "right"}} onClick={() => this.handleAddSection()} disabled={this.state.numOfSections >= 4}>Add Section</Button>

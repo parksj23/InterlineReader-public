@@ -1,0 +1,15 @@
+.translateContainer {
+    position: fixed;
+    right: 2vw;
+    bottom: 2vh;
+    z-index: 100;
+}
+
+.storyHeader {
+    padding-top: 28px;
+    font-family: "'Cute Font', serif";
+}
+
+mark:hover{
+    cursor: pointer;
+}

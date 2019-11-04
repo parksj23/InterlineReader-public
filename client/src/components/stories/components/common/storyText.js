@@ -9,7 +9,6 @@ var Highlight = require('react-highlighter');
 class StoryText extends Component {
 
   handleInlineTags = (phrase, tagArray) => {
-    console.log(phrase)
     let highligherComponents = []
 
     while(tagArray && tagArray.length > 0){

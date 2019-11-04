@@ -2,6 +2,32 @@ const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const url = keys.mongoURI;
+const ObjectID = require("mongodb").ObjectID
+
+exports.initialize = (req,res,next) => {
+  try {
+    MongoClient.connect(url, async function (err, client) {
+      let allStories ={};
+      const db = client.db("testdb");
+      const findAllStories = () => {
+        return new Promise((resolve,reject) => {
+          db.collection(`STORY_LIST`).find().toArray(function (err, documents) {
+            if (err) reject(err);
+            allStories = documents;
+            console.log(allStories)
+            resolve(allStories);
+          });
+        });
+      };
+      var result = await findAllStories();
+      client.close();
+      res.send(result);
+    })
+  }
+  catch (err) {
+    next(err);
+  }
+}
 
 exports.addNewStory = (req, res) => {
 
@@ -128,4 +154,138 @@ exports.renameCollections = (req,res) => {
       })*/
     }
   )
+}
+
+exports.getVocabulary = (req,res) => {
+  MongoClient.connect(url, async function(err,client){
+    if(err) throw err;
+    let db = client.db('testdb')
+    let storyInfo = req.storyInfo
+    const findStoryVocab = () => {
+      return new Promise((resolve, reject) => {
+        db.collection(`${storyInfo.storyTitle}_VOC`).find().toArray(function (err, voc_result) {
+          if (err) reject(err)
+          resolve(voc_result)
+        })
+      })
+    }
+    const vocabList = await findStoryVocab();
+    client.close();
+    res.send({
+      status: "200OK",
+      vocabList
+    })
+  })
+}
+
+exports.getGrammar = (req,res) => {
+  MongoClient.connect(url, async function(err,client){
+    if(err) throw err;
+    let db = client.db('testdb')
+    let storyInfo = req.storyInfo
+    const findStoryGrammar = () => {
+      return new Promise((resolve, reject) => {
+        db.collection(`${storyInfo.storyTitle}_GRAM`).find().toArray(function (err, voc_result) {
+          if (err) reject(err)
+          resolve(voc_result)
+        })
+      })
+    }
+    const GrammarList = await findStoryGrammar();
+    client.close();
+    res.send({
+      status: "200OK",
+      GrammarList
+    })
+  })
+}
+
+exports.addVocab =(req, res, next) => {
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw err;
+    var dbo = client.db("testdb");
+    let {vocab, storyTitle} = req
+
+    dbo.collection(`${storyTitle.toUpperCase()}_VOC`).updateMany({"order_id": {$gte:vocab.order_id}}, {$inc:{"order_id": 1}}, function(err, result){
+      if (err) throw err
+      console.log(result)
+      dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertOne(vocab, function(err,result){
+        if(err) throw err
+        res.send({
+          vocab
+        })
+      })
+    })
+
+    /*dbo.collection(`${storyTitle.toUpperCase()}_VOC`).remove({}, function (err, result) {
+      if (err) throw err
+      vocabList.map((aDoc) => {
+        delete aDoc["_id"];
+      })
+      console.log("VocabList: ")
+      console.log(vocabList.length)
+      dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertMany(vocabList, function (err, result) {
+        if (err) throw err
+        res.send({
+          status: "OK",
+          vocabList: vocabList
+        });
+        client.close();
+      })
+    });*/
+
+
+    /*dbo.createCollection(`${storyTitle.toUpperCase()}_VOC`, function(err,result){
+        dbo.collection(`${storyTitle.toUpperCase()}_VOC_COPY`).find({}).toArray(function(err, result){
+          dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertMany(result, function(err, result){
+            console.log(result)
+          })
+        })
+      })*/
+  })
+}
+
+exports.updateVocab =(req,res,next) => {
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw err;
+    var dbo = client.db("testdb");
+    let {vocab, storyTitle} = req
+    let query = {
+      "_id": ObjectID(vocab._id)
+    }
+
+    let updatedDocument  = {
+      "korean": vocab.korean,
+      "hanja": vocab.hanja,
+      "english": vocab.english,
+      "order_id": vocab.order_id
+    }
+    dbo.collection(`${storyTitle.toUpperCase()}_VOC`).updateOne(query, {$set: updatedDocument}, function(err, result){
+        if(err) throw err
+      console.log(result)
+        res.send({
+          vocab
+        })
+        client.close();
+    })
+  })
+}
+
+exports.deleteVocab = (req, res, next) => {
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw err;
+    var dbo = client.db("testdb");
+    let {vocab, storyTitle} = req
+    let query = {
+      "_id": ObjectID(vocab._id)
+    }
+    dbo.collection(`${storyTitle.toUpperCase()}_VOC`).deleteOne(query, function (err, result) {
+      if (err) throw err
+      console.log(result)
+      res.send({
+        vocab
+      })
+      client.close();
+    })
+  })
 }

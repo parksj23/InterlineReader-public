@@ -1,0 +1,18 @@
+.edit-Vocabulary-form-container{
+     position: fixed;
+}
+
+.edit-vocab-form-title {
+    text-align: center;
+}
+
+.edit-vocab-form-label-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.edit-vocab-form-label{
+    margin-left: 8px;
+    margin-right: 8px;
+}

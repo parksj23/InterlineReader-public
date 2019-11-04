@@ -9,6 +9,7 @@ import setAuthToken from './utils/setAuthToken';
 import { Provider } from 'react-redux';
 import store from './store';
 import axios from 'axios'
+import Grid from '@material-ui/core/Grid';
 
 
 import PrivateRoute from './components/common/PrivateRoute';
@@ -111,7 +112,7 @@ class App extends Component {
           <div className="App">
             <Navbar />
             <Route exact path='/' component={Landing} />
-            <div id={'mainContainer'} className="container">
+            <div id={'mainContainer'} className="mainContainer">
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route path="/login/forgot" component={ForgotPassword} />
@@ -125,6 +126,7 @@ class App extends Component {
                 <PrivateRoute path='/story/:class/:storyName' component={Story} />
                 <PrivateRoute path='/instructor' component={Instructor} />
               </Switch>
+
             </div>
             <Footer />
           </div>
