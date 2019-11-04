@@ -369,7 +369,7 @@ class StorySection extends Component {
                           }}
                           handlePastedText={(text, html, editorState) => {
                             return false
-                          }} /> :
+                          }} /> : this.state.storyForm.language === "korean" ?
                         <Editor
                           editorState={editorState}
                           wrapperClassName="editor-wrapper"
@@ -377,7 +377,51 @@ class StorySection extends Component {
                           onEditorStateChange={this.onEditorStateChange}
                           localization={{
                             locale: 'ko',
-                          }}/>
+                          }}
+                          toolbar={{
+                            fontFamily: {
+                              options: ['NanumBarunGothic YetHangul','Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+                              className: undefined,
+                              component: undefined,
+                              dropdownClassName: undefined,
+                            }
+                          }}
+                        /> : this.state.storyForm.language === "middleKorean" ?
+                          <Editor
+                            editorState={editorState}
+                            wrapperClassName="editor-wrapper"
+                            editorClassName="editor-editor"
+                            onEditorStateChange={this.onEditorStateChange}
+                            localization={{
+                              locale: 'ko',
+                            }}
+                            toolbar={{
+                              fontFamily: {
+                                options: ['NanumBarunGothic YetHangul'],
+                                className: undefined,
+                                component: undefined,
+                                dropdownClassName: undefined,
+                              }
+                            }}
+                          /> :
+                          <Editor
+                            editorState={editorState}
+                            wrapperClassName="editor-wrapper"
+                            editorClassName="editor-editor"
+                            onEditorStateChange={this.onEditorStateChange}
+                            localization={{
+                              locale: 'ko',
+                            }}
+                            toolbar={{
+                              fontFamily: {
+                                options: ['NanumBarunGothic YetHangul','Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+                                className: undefined,
+                                component: undefined,
+                                dropdownClassName: undefined,
+                              }
+                            }}
+                          />
+
                     }
                   </div>
                 </Grid>

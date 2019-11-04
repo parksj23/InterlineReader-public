@@ -3,18 +3,19 @@ import {Route, Switch } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 import Instructor from './component/Instructor';
-import{changeSelectedMenu, getStoryList} from "../../actions/instructor";
+import{changeSelectedMenu, initInstructor} from "../../actions/instructor";
 import {disableSideBarButton} from '../../actions/dashboard';
 import AddStoryWizard from './AddStoryWizard/AddStoryWizard';
 import AnalyticsContainer from './analytics/AnalyticsContainer';
+import EditGrammarContainer from './EditGrammar/EditGrammarContainer';
+import EditVocabContainer from './EditVocab/EditVocabContainer';
 import Stories from './stories/Stories';
 import InstructorMenu from './component/InstructorMenu';
 import Grid from "@material-ui/core/Grid"
 import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button'
 import axios from 'axios';
-import TextField from '@material-ui/core/TextField';
+import "./style/instructor.css";
 
 class InstructorContainer extends Component {
   constructor(props){
@@ -25,7 +26,7 @@ class InstructorContainer extends Component {
   }
 
   componentWillMount(){
-    this.props.getStoryList();
+    this.props.initInstructor();
     this.props.disableSideBarButton();
   }
 
@@ -44,19 +45,19 @@ class InstructorContainer extends Component {
 
   render() {
     return (
-      <div className="instructor">
+      <div className="instructorContainer">
         <Paper style={{height: "calc(100vh - 90px - 70px)"}}>
         <Grid container style={{height: "100%", overflow: "scroll"}}>
           <Grid item xs={12}>
             <div className='instructor-heading'>
-              <h2>Instructor's Dashboard</h2>
+              <h2>{this.props.headerName}</h2>
               <Divider/>
             </div>
           </Grid>
           <Grid item xs={12} style={{flex: "1 0 0", height: "100%"}}>
             <Grid container  style={{height: "100%"}}>
                 <div style={{height: "100%", display: 'flex'}}>
-                  <InstructorMenu history={this.props.history}/>
+                  <InstructorMenu history={this.props.history} changeSelectedMenu={this.props.changeSelectedMenu}/>
                 </div>
               <div style={{flex:1}}>
                 <Instructor>
@@ -65,6 +66,8 @@ class InstructorContainer extends Component {
                       <Route path="/instructor/analytics" component={AnalyticsContainer} />
                       <Route path="/instructor/stories" component={Stories} />
                       <Route path="/instructor/addStory" component={AddStoryWizard} />
+                      <Route path="/instructor/editGrammar" component={EditGrammarContainer}/>
+                      <Route path="/instructor/editVocab" component={EditVocabContainer}/>
                     </Switch>
                 </Instructor>
               </div>
@@ -80,12 +83,13 @@ class InstructorContainer extends Component {
 
 
 const mapStateToProps = state => ({
-  selected: state.instructor.selectedMenu
+  selected: state.instructor.selectedMenu,
+  headerName: state.instructor.headerName
 });
 
 const mapDispatchToProps = ({
   changeSelectedMenu,
-  getStoryList,
+  initInstructor,
   disableSideBarButton
 })
 

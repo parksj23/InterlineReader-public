@@ -159,7 +159,6 @@ class StoriesContainer extends Component {
           <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
-
           /> : null}
       </div>
     );

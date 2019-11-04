@@ -41,7 +41,7 @@ export const initStory = (storyTitle, className) => dispatch => {
   let payload = {};
 
   return new Promise( (resolve,reject) => {
-    axios.get(`/api/stories/${className}/${storyTitle}`, {params}).then(res => {
+    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
       res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
       res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
       payload["storyInfo"] = res.data.storyInfo
@@ -50,13 +50,20 @@ export const initStory = (storyTitle, className) => dispatch => {
       payload["grammar"] = res.data.grammar
       return res.data.storyInfo
     }).then( storyInfo => {
-      axios.get(`/api/stories/${className}/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
+      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
         let storyTextKorn = res.data.storyTextKorn;
         let storyTextEngl = res.data.storyTextEngl
+        let storyTextMidKorean = res.data.storyTextMidKorean
+        let storyTextHanmun = res.data.storyTextHanmun
         storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
         storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+        storyTextMidKorean = storyTextMidKorean.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+        storyTextHanmun = storyTextHanmun.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+
         payload["storyTextEngl"] = storyTextEngl;
         payload["storyTextKorn"] = storyTextKorn;
+        payload["storyTextMidKorean"] = storyTextMidKorean
+        payload["storyTextHanmun"] = storyTextHanmun
 
         dispatch({
           type: INIT_STORY,

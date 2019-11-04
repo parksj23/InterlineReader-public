@@ -12,9 +12,8 @@ const url = keys.mongoURI;
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
-router.get('/:class/:story', async (req, res, next) => {
+router.get('/:story', async (req, res, next) => {
     let storyTitle = req.query.storyTitle.toUpperCase();
-    let {className} = req.query;
     try {
         MongoClient.connect(url, async function (err, client) {
             const db = client.db("testdb");
@@ -31,7 +30,7 @@ router.get('/:class/:story', async (req, res, next) => {
             }
             const findStoryVocab = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`${storyTitle}_VOC`).find().toArray(function (err, voc_result) {
+                    db.collection(`${storyTitle.toUpperCase()}_VOC`).find().toArray(function (err, voc_result) {
                         if (err) reject(err)
                         resolve(voc_result)
                     })
@@ -61,7 +60,7 @@ router.get('/:class/:story', async (req, res, next) => {
     }
 });
 
-router.get('/:class/:story/storyText', async (req, res, next) => {
+router.get('/:story/storyText', async (req, res, next) => {
     let storyInfo = JSON.parse(req.query.storyInfo);
     let storyName = storyInfo.storyName.toUpperCase();
     try {
@@ -86,14 +85,34 @@ router.get('/:class/:story/storyText', async (req, res, next) => {
                     })
                 })
             }
+            const findStoryMiddleKorean = () => {
+            return new Promise((resolve, reject) => {
+              db.collection(`${storyName}_STORY_MIDDLEKOREAN`).find(query).toArray(function (err, story_result_middleKorean) {
+                if (err) reject(err);
+                resolve(story_result_middleKorean)
+              })
+            })
+          }
+            const findStoryHanmun = () => {
+            return new Promise((resolve, reject) => {
+              db.collection(`${storyName}_STORY_HANMUN`).find(query).toArray(function (err, story_result_Hanmun) {
+                if (err) reject(err);
+                resolve(story_result_Hanmun)
+              })
+            })
+          }
 
             const storyTextKorn = await findStoryKorean();
             const storyTextEngl = await findStoryEnglish();
+            const storyTextMidKorean = await findStoryMiddleKorean();
+            const storyTextHanmun = await findStoryHanmun();
 
             client.close();
             res.send({
                 storyTextKorn,
-                storyTextEngl
+                storyTextEngl,
+                storyTextMidKorean,
+                storyTextHanmun
             })
         })
     }

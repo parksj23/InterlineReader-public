@@ -96,54 +96,48 @@ class InstructorMenu extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-
-        <Drawer
-          variant="permanent"
-          className={classNames(classes.drawer, {
-            [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open,
-          })}
-          classes={{
-            paper: classNames({
-              [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open,
-            }),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbar}>
-            {
-              this.state.open ?  <IconButton onClick={this.handleDrawerClose}>
-                  {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
-                :<IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerOpen}
-                className={classNames(classes.menuButton, {
-                  [classes.hide]: this.state.open,
-                })}
-              >
-                <MenuIcon />
-              </IconButton>
-            }
-          </div>
-          <Divider />
           <List>
-            <ListItem button key={'analytics'} onClick={()=> this.props.history.push('/instructor/analytics')}>
+            <ListItem button key={'analytics'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/analytics');
+                        this.props.changeSelectedMenu("Analytics")
+                      }}>
               <ListItemIcon><i className="material-icons">bar_chart</i></ListItemIcon>
               <ListItemText primary={'Analytics'} />
             </ListItem>
-            <ListItem button key={'stories'} onClick={()=> this.props.history.push('/instructor/stories')}>
+            <ListItem button key={'stories'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/stories');
+                        this.props.changeSelectedMenu("Stories")
+                      }}>
               <ListItemIcon><i className="material-icons">library_books</i></ListItemIcon>
               <ListItemText primary={'Stories'} />
             </ListItem>
-            <ListItem button key={'addStory'} onClick={()=> this.props.history.push('/instructor/addStory')}>
+            <ListItem button key={'addStory'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/addStory')
+                        this.props.changeSelectedMenu("Add Story")
+                      }}>
               <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
               <ListItemText primary={'Add Story'} />
             </ListItem>
+            <ListItem button key={'editVocab'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/editVocab');
+                        this.props.changeSelectedMenu("Edit Vocabulary")
+                      }}>
+              <ListItemIcon><i className="material-icons">sort_by_alpha</i></ListItemIcon>
+              <ListItemText primary={'Edit Vocabulary'} />
+            </ListItem>
+            <ListItem button key={'editGrammar'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/editGrammar');
+                        this.props.changeSelectedMenu("Edit Grammar")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Edit Grammar'} />
+            </ListItem>
           </List>
-        </Drawer>
       </div>
     );
   }

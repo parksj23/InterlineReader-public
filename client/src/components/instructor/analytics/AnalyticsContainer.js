@@ -28,12 +28,6 @@ class AnalyticsContainer extends Component {
     if(sections) classNames = Object.keys(sections)
     return (
         <div className={'instructor-analytics-container'}>
-          <div style={{paddingLeft: "12px", borderBottom: "solid 1px #000"}}>
-            <Grid container style={{marginTop: "12px"}}>
-              <Grid item xs={4}>
-                <h3 style={{float: "left"}}>{`${pathnames[pathnames.length-1]} - Overview`}</h3>
-              </Grid>
-            </Grid>
             <Grid container style={{marginTop: "12px"}}>
               <Switch>
                 <Route exact path="/instructor" component={this.renderAnalytics} />
@@ -42,9 +36,7 @@ class AnalyticsContainer extends Component {
               </Switch>
               <Grid item xs={2}>
               </Grid>
-
             </Grid>
-          </div>
         </div>
     )
 

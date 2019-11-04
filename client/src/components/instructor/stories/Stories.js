@@ -10,9 +10,6 @@ class Stories extends Component {
 
     return (
       <Grid item xs={8}>
-        <div style={{paddingLeft: "12px"}}>
-          <h1>STORIES</h1>
-        </div>
       </Grid>
     )
 
