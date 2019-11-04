@@ -11,9 +11,9 @@ class StoryText extends Component {
   handleInlineTags = (phrase, tagArray) => {
     let highligherComponents = []
 
-    while(tagArray && tagArray.length > 0){
+    while (tagArray && tagArray.length > 0) {
       //if there is text before the first inline HTML tag
-      if(phrase.indexOf(tagArray[0]) !== 0){
+      if (phrase.indexOf(tagArray[0]) !== 0) {
         let plainText = phrase.slice(0, phrase.indexOf(tagArray[0]))
         let highlight = (
           <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
@@ -23,10 +23,10 @@ class StoryText extends Component {
         highligherComponents.push(React.createElement('span', {}, highlight))
         phrase = phrase.substring(phrase.indexOf(tagArray[0]))
       }
-      else{
-        let plainText = phrase.slice(phrase.indexOf(tagArray[0]) +tagArray[0].length, phrase.indexOf(tagArray[1]));
+      else {
+        let plainText = phrase.slice(phrase.indexOf(tagArray[0]) + tagArray[0].length, phrase.indexOf(tagArray[1]));
         let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
-        if(openTag.indexOf(" ") >= 0){
+        if (openTag.indexOf(" ") >= 0) {
           openTag = openTag.split(" ")[0]
         }
         let highlight = (
@@ -37,7 +37,7 @@ class StoryText extends Component {
         highligherComponents.push(React.createElement(openTag, {}, highlight))
 
         phrase = phrase.substring(phrase.indexOf(tagArray[1]) + tagArray[1].length)
-        tagArray.splice(0,2)
+        tagArray.splice(0, 2)
       }
     }
     return highligherComponents
@@ -59,9 +59,10 @@ class StoryText extends Component {
             </span>
             </div>
             <Divider style={{marginBottom: "0.5rem"}}/>
-            {
-              this.props.text.map((aSegment, index) => {
-                let text = aSegment.text
+            <div style={{fontFamily: this.props.language === 'middleKorean' ? "NanumBarunGothicOTF YetHangul" : "inherit"}}>
+              {
+                this.props.text.map((aSegment, index) => {
+                  let text = aSegment.text
                   let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
 
                   if (textSection) {
@@ -85,7 +86,7 @@ class StoryText extends Component {
                         else {
                           //if there is text before the first HTML tag
                           let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
-                          if(openTag.indexOf(" ") >= 0){
+                          if (openTag.indexOf(" ") >= 0) {
                             openTag = openTag.split(" ")[0]
                           }
                           let phraseText = phrase.slice(phrase.indexOf(">") + 1, phrase.lastIndexOf("<"))
@@ -134,13 +135,14 @@ class StoryText extends Component {
                       </div>
                     )
                   }
-              })
-            }
-              </div>
-              </Grid>
-              </Grid>
-              )
-            }
-            }
+                })
+              }
+            </div>
+          </div>
+        </Grid>
+      </Grid>
+    )
+  }
+}
 
-            export default StoryText;
+export default StoryText;
