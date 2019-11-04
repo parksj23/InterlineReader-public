@@ -19,14 +19,21 @@ import Modal from '@material-ui/core/Modal'
 import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
 
 class StoriesContainer extends Component {
+  constructor(props){
+    super(props)
 
-  state = {
-    applicationDescription: "",
-    storyTitle: "",
-    language: "korean",
-    storyInfo: null,
-    showFlashCardModal: false
+    this.state = {
+      applicationDescription: "",
+      storyTitle: "",
+      language: "korean",
+      storyInfo: null,
+      showFlashCardModal: false,
+      isSpeedDialOpen: false
+    }
+    this.handleTranslate.bind(this)
+    this.handleFlashCards.bind(this)
   }
+
 
 
   componentWillMount() {
@@ -60,15 +67,30 @@ class StoriesContainer extends Component {
     });
   }
 
-  handleTranslate = () => {
+  handleTranslate = (language) => {
+    console.log(language)
     this.setState({
-      language: this.state.language === 'korean' ? 'english' : 'korean'
+      language: language,
+      isSpeedDialOpen: false
+    })
+  }
+
+  handleOpenSpeedDial = () => {
+    this.setState({
+      isSpeedDialOpen: true
+    })
+  }
+
+  handleCloseSpeedDial = () => {
+    this.setState({
+      isSpeedDialOpen: false
     })
   }
 
   handleFlashCards = () => {
     this.setState({
-      showFlashCardModal: true
+      showFlashCardModal: true,
+      isSpeedDialOpen: false
     })
   }
 
@@ -121,15 +143,34 @@ class StoriesContainer extends Component {
         author = stories.storyInfo.authorKorn
       }
     }
-    else {
+    else if(this.state.language === 'english') {
       text = stories.storyTextEngl
       searchWord = vocab.highlightedWord
-
       if (stories.storyInfo) {
         title = stories.storyInfo.titleEng
         author = stories.storyInfo.authorRom
       }
     }
+    else if(this.state.language === 'middleKorean') {
+      text = stories.storyTextMidKorn
+      searchWord = vocab.highlightedWord
+      if (stories.storyInfo) {
+        title = stories.storyInfo.titleKorn
+        author = stories.storyInfo.authorKorn
+      }
+    }
+    else {
+      text = stories.storyTextHanmun
+      searchWord = vocab.highlightedWord
+      if (stories.storyInfo) {
+        title = stories.storyInfo.titleKorn
+        author = stories.storyInfo.authorKorn
+      }
+    }
+
+
+
+
     return (
       <div className={'story-container'}>
         <Modal
@@ -156,9 +197,11 @@ class StoriesContainer extends Component {
           }
         </div>
         {stories.storyInfo ?
-          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar}
+          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.language} isSpeedDialOpen={this.state.isSpeedDialOpen}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
+                 handleOpenSpeedDial={this.handleOpenSpeedDial}
+                 handleCloseSpeedDial={this.handleCloseSpeedDial}
           /> : null}
       </div>
     );

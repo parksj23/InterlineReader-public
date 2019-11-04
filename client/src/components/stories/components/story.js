@@ -5,37 +5,86 @@ import Button from "@material-ui/core/Button";
 import { withStyles } from '@material-ui/core/styles';
 
 
-
-const styles ={
-  buttonContainer: {
-    containedPrimary: "translateButton",
-    position: "fixed",
-    right: "2vw",
-    bottom: "2vh",
-    zIndex: "100",
-    backgroundColor: "#42b35b"
-  },
-  button:{
-    margin: '6px'
-  }
-}
+import SpeedDial, { SpeedDialItem, SpeedDialLabel, SpeedDialBackdrop } from '@smollweide/material-ui-speed-dial';
+import presetFixedBottomRight from '@smollweide/material-ui-speed-dial/dist/presets/presetFixedBottomRight';
 
 const Story = (props) => {
-  const {text, searchWord, classes, title, author} = props;
+  const {text, searchWord, classes, title, author, language, handleTranslate, handleFlashCards, isSpeedDialOpen, handleOpenSpeedDial, handleCloseSpeedDial} = props;
   return(
     <div>
       <Paper elevation={1} style={props.sideBar && props.sideBar.isSideBarOpen ? {marginLeft: props.sideBar.drawerSize.width+ "px"} : null}>
         {text ?
-          <StoryText title={title} author={author} text={text} searchWord={searchWord || "!@F$@%F"}/>
+          <StoryText title={title}
+                     author={author}
+                     text={text}
+                     searchWord={searchWord || "!@F$@%F"}
+                     language={language}
+                     />
           : null}
       </Paper>
       <div className='translateContainer' classes={{root: classes.buttonContainer}}>
-        <Button variant="contained" className={"translateButton"} classes={{root: classes.button}}  color="primary" aria-label="Translate" onClick={props.handleTranslate}>Translate</Button>
-        <Button variant="contained" className={"translateButton"} classes={{root: classes.button}} color="primary" aria-label="Translate" onClick={props.handleFlashCards}>Flash Cards</Button>
+
+        <SpeedDial
+          isOpen={isSpeedDialOpen}
+          preset={classes}
+          renderButton={(props, propsIcon) => (
+            <Button {...props} variant="fab" color="primary" aria-label="add" onClick={handleOpenSpeedDial}>
+              <i className="material-icons">
+                add
+              </i>
+            </Button>
+          )}
+          renderOpenedButton={(props, propsIcon) => (
+            <Button {...props} variant="fab" color="secondary" aria-label="edit" onClick={handleCloseSpeedDial}>
+              <i className="material-icons">
+                clear
+              </i>
+            </Button>
+          )}
+          renderList={props => <ul {...props} />}
+          renderBackdrop={(props) => <SpeedDialBackdrop {...props} />}
+        >
+          {props => [
+            <SpeedDialItem
+              {...props}
+              key="e"
+              onClick={() => handleTranslate("korean")}
+            >
+            {propsLabel => <SpeedDialLabel {...propsLabel} text="Modern Korean" />}
+            </SpeedDialItem>,
+            <SpeedDialItem
+              {...props}
+              key="d"
+              onClick={() => handleTranslate("english")}
+            >
+              {propsLabel => <SpeedDialLabel {...propsLabel} text="English" />}
+            </SpeedDialItem>,
+            <SpeedDialItem
+              {...props}
+              key="c"
+              onClick={() => handleTranslate("middleKorean")}
+            >
+              {propsLabel => <SpeedDialLabel {...propsLabel} text="Middle Korean" />}
+            </SpeedDialItem>,
+            <SpeedDialItem
+              {...props}
+              key="b"
+              onClick={() => handleTranslate("hanmun")}
+            >
+              {propsLabel => <SpeedDialLabel {...propsLabel} text="Hanmun" />}
+            </SpeedDialItem>,
+            <SpeedDialItem {...{ ...props, className: `${props.className} ${classes.firstItem}` }}
+                           key="a"
+                           onClick={handleFlashCards}
+            >
+              {propsLabel => <SpeedDialLabel {...propsLabel} text="Flashcards" />}
+            </SpeedDialItem>,
+          ]}
+        </SpeedDial>
       </div>
     </div>
   )
 
 }
 
-export default withStyles(styles)(Story);
+export default withStyles(presetFixedBottomRight)(Story);

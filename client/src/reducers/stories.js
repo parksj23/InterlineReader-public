@@ -30,6 +30,8 @@ export default (state = initialState, action) => {
         storyTitle: action.payload.storyTitle,
         storyTextKorn: action.payload.storyTextKorn,
         storyTextEngl: action.payload.storyTextEngl,
+        storyTextMidKorn: action.payload.storyTextMidKorean,
+        storyTextHanmun: action.payload.storyTextHanmun,
         storyInfo: action.payload.storyInfo,
         vocab: action.payload.vocab,
         grammar: action.payload.grammar
