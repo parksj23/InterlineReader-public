@@ -53,10 +53,17 @@ export const initStory = (storyTitle, className) => dispatch => {
       axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
         let storyTextKorn = res.data.storyTextKorn;
         let storyTextEngl = res.data.storyTextEngl
+        let storyTextMidKorean = res.data.storyTextMidKorean
+        let storyTextHanmun = res.data.storyTextHanmun
         storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
         storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+        storyTextMidKorean = storyTextMidKorean.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+        storyTextHanmun = storyTextHanmun.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+
         payload["storyTextEngl"] = storyTextEngl;
         payload["storyTextKorn"] = storyTextKorn;
+        payload["storyTextMidKorean"] = storyTextMidKorean
+        payload["storyTextHanmun"] = storyTextHanmun
 
         dispatch({
           type: INIT_STORY,

@@ -85,14 +85,34 @@ router.get('/:story/storyText', async (req, res, next) => {
                     })
                 })
             }
+            const findStoryMiddleKorean = () => {
+            return new Promise((resolve, reject) => {
+              db.collection(`${storyName}_STORY_MIDDLEKOREAN`).find(query).toArray(function (err, story_result_middleKorean) {
+                if (err) reject(err);
+                resolve(story_result_middleKorean)
+              })
+            })
+          }
+            const findStoryHanmun = () => {
+            return new Promise((resolve, reject) => {
+              db.collection(`${storyName}_STORY_HANMUN`).find(query).toArray(function (err, story_result_Hanmun) {
+                if (err) reject(err);
+                resolve(story_result_Hanmun)
+              })
+            })
+          }
 
             const storyTextKorn = await findStoryKorean();
             const storyTextEngl = await findStoryEnglish();
+            const storyTextMidKorean = await findStoryMiddleKorean();
+            const storyTextHanmun = await findStoryHanmun();
 
             client.close();
             res.send({
                 storyTextKorn,
-                storyTextEngl
+                storyTextEngl,
+                storyTextMidKorean,
+                storyTextHanmun
             })
         })
     }
