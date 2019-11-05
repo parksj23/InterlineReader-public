@@ -7,6 +7,7 @@ import {
   INSTRUCTOR_GET_GRAMMAR,
   INSTRUCTOR_GET_VOCAB,
   INIT_EDIT_VOCAB,
+  INIT_EDIT_GRAMMAR,
   INSTRUCTOR_EDIT_VOCAB_UPDATE_SELECTED_VOCAB,
   INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
   INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
@@ -14,6 +15,7 @@ import {
   INSTRUCTOR_UPDATE_VOCAB, INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
+  INSTRUCTOR_RESET_EDIT_GRAMMAR,
   INSTRUCTOR_DELETE_VOCAB
 } from '../constants/action-types';
 import axios from 'axios';
@@ -46,6 +48,7 @@ export const initEditVocab = (storyTitle) => dispatch => {
       let vocabSearch = {}
       res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
       res.data.vocab.map(aVocab => {
+
         if(aVocab.korean.indexOf("(") >= -1 || aVocab.korean.indexOf(")") >= -1){
           let temp = aVocab.korean
           let cleanVocab = temp.replace("(", "\(");
@@ -98,6 +101,13 @@ export const resetEditVocab =() => dispatch => {
   })
 }
 
+export const resetEditGrammar = () => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_RESET_EDIT_GRAMMAR,
+    payload: null
+  })
+}
+
 export const initEditGrammar = (storyTitle) => dispatch => {
   let params = {
     responseType: 'application/json',
@@ -106,21 +116,51 @@ export const initEditGrammar = (storyTitle) => dispatch => {
   let payload = {};
   return new Promise( (resolve,reject) => {
     axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
+      let grammarSearch = {}
+      res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
+      res.data.grammar.map(aGrammar => {
+        if(aGrammar.sentence.indexOf("(") >= -1 || aGrammar.korean.indexOf(")") >= -1){
+          let temp = aGrammar.sentence
+          let cleanGrammar = temp.replace("(", "\\(");
+          cleanGrammar= cleanGrammar.replace(")", "\\)");
+          cleanGrammar = cleanGrammar.replace(".", "\\.")
+          grammarSearch[cleanGrammar] = aGrammar;
+          console.log(cleanGrammar)
+        }
+        else{
+          aGrammar = aGrammar.replace(".", "\\.")
+          grammarSearch[aGrammar.sentence] = aGrammar;
+        }
+      })
+
       payload["storyInfo"] = res.data.storyInfo
       payload["storyTitle"] = storyTitle
       payload["grammarList"] = res.data.grammar
+      payload["grammarSearch"] = grammarSearch
       return res.data.storyInfo
     }).then( storyInfo => {
       axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
         let storyTextKorn = res.data.storyTextKorn;
         let storyTextEngl = res.data.storyTextEngl
+
         storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
         storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+
+        let rawKoreanText = ""
+        storyTextKorn.map(aText => {
+          rawKoreanText = rawKoreanText.concat(aText.text)
+        })
         payload["storyTextEngl"] = storyTextEngl;
         payload["storyTextKorn"] = storyTextKorn;
+
+        payload["selectedGrammar"] = null
+        payload["userHighlightedText"] = null
+        payload['rawKoreanText'] = rawKoreanText
+        payload['highlightTextUpdating'] = false
+        payload['editGrammarUpdating'] = false
+
         dispatch({
-          type: INIT_EDIT_VOCAB,
+          type: INIT_EDIT_GRAMMAR,
           payload
         })
       })

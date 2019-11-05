@@ -8,6 +8,7 @@ import {
   INSTRUCTOR_GET_VOCAB,
   INSTRUCTOR_GET_GRAMMAR,
   INIT_EDIT_VOCAB,
+  INIT_EDIT_GRAMMAR,
   INSTRUCTOR_EDIT_VOCAB_UPDATE_SELECTED_VOCAB,
   INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
   INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
@@ -17,6 +18,7 @@ import {
   INSTRUCTOR_SAVE_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
+  INSTRUCTOR_RESET_EDIT_GRAMMAR,
   INSTRUCTOR_DELETE_VOCAB
 } from "../constants/action-types";
 
@@ -29,6 +31,12 @@ const initialState = {
     userHighlightedText: null,
     highlightTextUpdating: false,
     editVocabUpdating: false
+  },
+  editGrammar: {
+    selectedGrammar: null,
+    userHighlightedText: null,
+    highlightTextUpdating: false,
+    editGrammarUpdating: false
   }
 }
 
@@ -45,6 +53,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         editVocab: action.payload
+      }
+    case INIT_EDIT_GRAMMAR:
+      return {
+        ...state,
+        editGrammar: action.payload
       }
     case CHANGE_INSTRUCTOR_SELECTED_MENU:
       return{
@@ -181,6 +194,11 @@ export default (state = initialState, action) => {
       return{
         ...state,
         editVocab: initialState.editVocab
+      }
+    case INSTRUCTOR_RESET_EDIT_GRAMMAR:
+      return {
+        ...state,
+        editGrammar: initialState.editGrammar
       }
     case INSTRUCTOR_DELETE_VOCAB:
       newEditVocab = state.editVocab
