@@ -1,12 +1,18 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper';
 import StoryText from './common/storyText';
-import Button from "@material-ui/core/Button";
 import { withStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 
-
-import SpeedDial, { SpeedDialItem, SpeedDialLabel, SpeedDialBackdrop } from '@smollweide/material-ui-speed-dial';
-import presetFixedBottomRight from '@smollweide/material-ui-speed-dial/dist/presets/presetFixedBottomRight';
+const styles = {
+  fab: {
+    marginTop: '4px',
+    marginBottom: '4px',
+    width: '48px',
+    height: '48px'
+  }
+}
 
 const Story = (props) => {
   const {text, searchWord, classes, title, author, language, handleTranslate, handleFlashCards, isSpeedDialOpen, handleOpenSpeedDial, handleCloseSpeedDial} = props;
@@ -22,69 +28,36 @@ const Story = (props) => {
                      />
           : null}
       </Paper>
-      <div className='translateContainer' classes={{root: classes.buttonContainer}}>
-
-        <SpeedDial
-          isOpen={isSpeedDialOpen}
-          preset={classes}
-          renderButton={(props, propsIcon) => (
-            <Button {...props} variant="fab" color="primary" aria-label="add" onClick={handleOpenSpeedDial}>
-              <i className="material-icons">
-                add
-              </i>
-            </Button>
-          )}
-          renderOpenedButton={(props, propsIcon) => (
-            <Button {...props} variant="fab" color="secondary" aria-label="edit" onClick={handleCloseSpeedDial}>
-              <i className="material-icons">
-                clear
-              </i>
-            </Button>
-          )}
-          renderList={props => <ul {...props} />}
-          renderBackdrop={(props) => <SpeedDialBackdrop {...props} />}
-        >
-          {props => [
-            <SpeedDialItem
-              {...props}
-              key="e"
-              onClick={() => handleTranslate("korean")}
-            >
-            {propsLabel => <SpeedDialLabel {...propsLabel} text="Modern Korean" />}
-            </SpeedDialItem>,
-            <SpeedDialItem
-              {...props}
-              key="d"
-              onClick={() => handleTranslate("english")}
-            >
-              {propsLabel => <SpeedDialLabel {...propsLabel} text="English" />}
-            </SpeedDialItem>,
-            <SpeedDialItem
-              {...props}
-              key="c"
-              onClick={() => handleTranslate("middleKorean")}
-            >
-              {propsLabel => <SpeedDialLabel {...propsLabel} text="Middle Korean" />}
-            </SpeedDialItem>,
-            <SpeedDialItem
-              {...props}
-              key="b"
-              onClick={() => handleTranslate("hanmun")}
-            >
-              {propsLabel => <SpeedDialLabel {...propsLabel} text="Hanmun" />}
-            </SpeedDialItem>,
-            <SpeedDialItem {...{ ...props, className: `${props.className} ${classes.firstItem}` }}
-                           key="a"
-                           onClick={handleFlashCards}
-            >
-              {propsLabel => <SpeedDialLabel {...propsLabel} text="Flashcards" />}
-            </SpeedDialItem>,
-          ]}
-        </SpeedDial>
+      <div className='translateContainer' >
+        <Tooltip title="Modern Korean" aria-label="Flashcard" placement="left">
+          <Fab color="primary" aria-label="add" className={classes.fab} onClick={()=> handleTranslate("korean")}>
+            Kor
+          </Fab>
+        </Tooltip>
+        <Tooltip title="English" placement="left">
+          <Fab color="primary" className={classes.fab}  onClick={()=> handleTranslate("english")}>
+            Eng
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Middle Korean" placement="left">
+          <Fab color="primary" className={classes.fab} onClick={()=> handleTranslate("middleKorean")}>
+            Mid
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Hanmun" placement="left" onClick={()=> handleTranslate("hanmun")}>
+          <Fab color="primary" className={classes.fab}>
+            Han
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Flashcard" placement="left" onClick={handleFlashCards}>
+          <Fab color="primary" className={classes.fab}>
+            FC
+          </Fab>
+        </Tooltip>
       </div>
     </div>
   )
 
 }
 
-export default withStyles(presetFixedBottomRight)(Story);
+export default withStyles(styles)(Story);

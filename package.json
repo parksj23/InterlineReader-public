@@ -27,6 +27,7 @@
   "homepage": "https://github.com/armaandh/interlinereader#readme",
   "dependencies": {
     "@openfonts/nanum-gothic_korean": "^1.44.0",
-    "fuzzy-search": "^3.0.2"
+    "fuzzy-search": "^3.0.2",
+    "react-floating-button-menu": "^2.0.6"
   }
 }

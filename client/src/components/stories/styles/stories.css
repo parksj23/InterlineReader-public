@@ -3,6 +3,8 @@
     right: 2vw;
     bottom: 2vh;
     z-index: 100;
+    display:flex;
+    flex-direction: column;
 }
 
 .translateContainer .translateButton {
