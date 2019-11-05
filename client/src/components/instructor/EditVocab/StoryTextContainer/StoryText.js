@@ -30,15 +30,15 @@ class StoryText extends Component {
     if (typeof window.getSelection != "undefined") {
       text = window.getSelection().toString();
       if(text !== ""){
-        this.props.startUpdatingHighlightedText();
-        this.props.updateUserHighlightedText(text);
+        this.props.startUpdatingHighlightedText("Vocab");
+        this.props.updateUserHighlightedText(text, "Vocab");
       }
       else this.props.handleSelectHighlight(e.target.innerHTML)
     } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
       text = document.selection.createRange().text;
       if(text !== ""){
-        this.props.startUpdatingHighlightedText();
-        this.props.updateUserHighlightedText(text);
+        this.props.startUpdatingHighlightedText("Vocab");
+        this.props.updateUserHighlightedText(text, "Vocab");
       }
       else this.props.handleSelectHighlight(e.target.innerHTML)
     }
@@ -89,7 +89,7 @@ class StoryText extends Component {
       <Grid container>
         <Grid item md={1}/>
         <Grid item xs={12} md={10}>
-          <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeader" onClick={this.handleWordClick}>
+          <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeaderVocab" onClick={this.handleWordClick.bind(this)}>
             <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
             <span style={{textAlign: 'left', width: "50%"}}>
               <h3> {this.props.editVocab.storyInfo.titleKorn} </h3>

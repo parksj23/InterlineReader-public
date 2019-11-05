@@ -9,9 +9,11 @@ import {
   INIT_EDIT_VOCAB,
   INIT_EDIT_GRAMMAR,
   INSTRUCTOR_EDIT_VOCAB_UPDATE_SELECTED_VOCAB,
+  INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR,
   INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
   INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
   INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
+  INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
   INSTRUCTOR_UPDATE_VOCAB, INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
@@ -123,12 +125,9 @@ export const initEditGrammar = (storyTitle) => dispatch => {
           let temp = aGrammar.sentence
           let cleanGrammar = temp.replace("(", "\\(");
           cleanGrammar= cleanGrammar.replace(")", "\\)");
-          cleanGrammar = cleanGrammar.replace(".", "\\.")
           grammarSearch[cleanGrammar] = aGrammar;
-          console.log(cleanGrammar)
         }
         else{
-          aGrammar = aGrammar.replace(".", "\\.")
           grammarSearch[aGrammar.sentence] = aGrammar;
         }
       })
@@ -277,6 +276,13 @@ export const updateSelectedVocab = selectedVocab => dispatch => {
   })
 }
 
+export const updateSelectedGrammar = (selectedGrammar) => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR,
+    payload: selectedGrammar
+  })
+}
+
 export const clearSelectedVocab= () => dispatch => {
   dispatch({
     type: INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
@@ -284,17 +290,21 @@ export const clearSelectedVocab= () => dispatch => {
   })
 }
 
-export const updateUserHighlightedText = text => dispatch => {
+export const updateUserHighlightedText = (text, component) => dispatch => {
+  let payload = {
+    text,
+    component
+  }
   dispatch({
     type: INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
-    payload: text
+    payload
   })
 }
 
-export const startUpdatingHighlightedText = () => dispatch => {
+export const startUpdatingHighlightedText = (component) => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
-    payload: null
+    payload: component
   })
 }
 
@@ -315,6 +325,13 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
 export const startUpdatingEditVocab = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
+    payload: null
+  })
+}
+
+export const startUpdatingEditGrammar = () => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
     payload: null
   })
 }

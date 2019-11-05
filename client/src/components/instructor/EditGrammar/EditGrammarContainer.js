@@ -15,7 +15,8 @@ class EditGrammarContainer extends Component {
   }
 
   componentWillUnmount(){
-    this.props.resetEditGrammar()
+    console.log("unmounting")
+    //this.props.resetEditGrammar()
   }
 
   renderStoryList = () => {

@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {
-  initEditGrammar,
+  initEditGrammar, updateSelectedGrammar, startUpdatingHighlightedText, updateUserHighlightedText
 } from "../../../actions/instructor";
-
+import "./EditGrammar.css"
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
+import EditGrammarFormContainer from './EditGrammarFormContainer/EditGrammarFormContainer';
+import NewGrammarFormContainer from './EditGrammarFormContainer/NewGrammarFormContainer';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -25,27 +27,13 @@ class EditGrammar extends Component {
 
   componentWillUnmount(){
   }
-
-  /*  handleSelectHighlight = (selectedText) => {
-    let selectedVocabInfo = this.props.editVocab.vocabSearch[selectedText]
-    this.props.updateSelectedVocab(selectedVocabInfo);
-  }*/
-
-  /*handleUserHighlightText = () => {
-    let text = null;
-    if (typeof window.getSelection != "undefined") {
-      text = window.getSelection().toString();
-      this.props.updateUserHighlightedText(text);
-    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
-      text = document.selection.createRange().text;
-      this.props.updateUserHighlightedText(text);
-    }
-  }*/
+  handleSelectHighlight = (selectedText) => {
+    let selectedGrammarInfo = this.props.editGrammar.grammarSearch[selectedText]
+    this.props.updateSelectedGrammar(selectedGrammarInfo);
+  }
 
   render() {
     let grammarSearch = this.props.editGrammar && this.props.editGrammar.grammarSearch ? new RegExp(Object.keys(this.props.editGrammar.grammarSearch).join("|"), "g") : null;
-
-    console.log(grammarSearch)
     let {editGrammar} = this.props
     return (
       <div className="edit-Vocabulary">
@@ -63,25 +51,25 @@ class EditGrammar extends Component {
           }
           </Grid>
           <Grid item xs={6}>
-           {/* {
-              editVocab.selectedVocab && !this.props.editVocab.editVocabUpdating ?
-                <EditVocabFormContainer
-                  vocabList={this.props.editVocab.vocabList}
-                  selectedVocab={editVocab.selectedVocab}
-                  storyTitle={this.props.editVocab.storyTitle}
-                  updateVocab={this.props.updateVocab}
-                  deleteVocab={this.props.deleteVocab}
+           {
+              editGrammar.selectedGrammar && !this.props.editGrammar.editGrammarUpdating ?
+                <EditGrammarFormContainer
+                  grammarList={this.props.editGrammar.grammarList}
+                  selectedGrammar={editGrammar.selectedGrammar}
+                  storyTitle={this.props.editGrammar.storyTitle}
+                  //updateVocab={this.props.updateVocab}
+                  //deleteVocab={this.props.deleteVocab}
 
                 /> : null
             }
             {
-              this.props.editVocab.userHighlightedText && !this.props.editVocab.highlightTextUpdating ?
-                <NewVocabFormContainer
-                  editVocab={this.props.editVocab}
-                  userHighlightedText={this.props.editVocab.userHighlightedText}
-                  storyTitle={this.props.editVocab.storyTitle}
+              this.props.editGrammar.userHighlightedText && !this.props.editGrammar.highlightTextUpdating ?
+                <NewGrammarFormContainer
+                  editGrammar={this.props.editGrammar}
+                  userHighlightedText={this.props.editGrammar.userHighlightedText}
+                  storyTitle={this.props.editGrammar.storyTitle}
                 /> : null
-            }*/}
+            }
           </Grid>
         </Grid>
       </div>
@@ -95,10 +83,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = ({
-  initEditGrammar
+  initEditGrammar,
+  updateSelectedGrammar,
+  startUpdatingHighlightedText,
+  updateUserHighlightedText
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditGrammar);
-
-
 

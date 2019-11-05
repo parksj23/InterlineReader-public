@@ -15,11 +15,12 @@ import {
   INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
   INSTRUCTOR_UPDATE_VOCAB,
   INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
+  INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
   INSTRUCTOR_SAVE_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
-  INSTRUCTOR_DELETE_VOCAB
+  INSTRUCTOR_DELETE_VOCAB, INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR
 } from "../constants/action-types";
 
 const initialState = {
@@ -43,6 +44,8 @@ const initialState = {
 export default (state = initialState, action) => {
   let newEditVocab;
   let newVocabList;
+  let newEditGrammar;
+  let newGrammarList;
   switch (action.type) {
     case INSTRUCTOR_INIT:
       return{
@@ -123,15 +126,36 @@ export default (state = initialState, action) => {
         ...state,
         editVocab: newEditVocab
       }
-    case INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT:
-      let userHighlightedText = action.payload
-      newEditVocab = state.editVocab
-      newEditVocab.userHighlightedText = userHighlightedText
-      newEditVocab.selectedVocab = null
-      newEditVocab.highlightTextUpdating = false
+    case INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR:
+      newEditGrammar = state.editGrammar
+      newEditGrammar.selectedGrammar = action.payload
+      newEditGrammar.userHighlightedText = null
       return {
         ...state,
-        editVocab: newEditVocab
+        editGrammar: newEditGrammar
+      }
+    case INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT:
+      let userHighlightedText = action.payload.text
+      
+      if(action.payload.component === "Vocab") {
+        newEditVocab = state.editVocab
+        newEditVocab.userHighlightedText = userHighlightedText
+        newEditVocab.selectedVocab = null
+        newEditVocab.highlightTextUpdating = false
+        return {
+          ...state,
+          editVocab: newEditVocab
+        }
+      }
+      else{
+        newEditGrammar = state.editGrammar
+        newEditGrammar.userHighlightedText = userHighlightedText
+        newEditGrammar.selectedGrammar = null
+        newEditGrammar.highlightTextUpdating = false
+        return {
+          ...state,
+          editGrammar: newEditGrammar
+        }
       }
     case INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB:
       let editVocabClear = state.editVocab
@@ -145,11 +169,21 @@ export default (state = initialState, action) => {
 
       }
     case INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT:
-      newEditVocab = state.editVocab
-      newEditVocab.highlightTextUpdating = true
-      return {
-        ...state,
-        editVocab: newEditVocab
+      if(action.payload === "Vocab"){
+        newEditVocab = state.editVocab
+        newEditVocab.highlightTextUpdating = true
+        return {
+          ...state,
+          editVocab: newEditVocab
+        }
+      }
+      else{
+        newEditGrammar = state.editGrammar
+        newEditGrammar.highlightTextUpdating = true
+        return {
+          ...state,
+          editGrammar: newEditGrammar
+        }
       }
     case INSTRUCTOR_UPDATE_VOCAB:
       newEditVocab = state.editVocab
@@ -169,6 +203,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         editVocab: newEditVocab
+      }
+    case INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR:
+      newEditGrammar = state.editGrammar
+      newEditGrammar.editGrammarUpdating = true
+      return {
+        ...state,
+        editGrammar: newEditGrammar
       }
     case INSTRUCTOR_SAVE_VOCAB:
       return{

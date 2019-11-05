@@ -13,7 +13,6 @@ const StoryTextContainer = (props) => {
                      text={props.text}
                      searchWord={searchWord || "!@F$@%F"}
                      handleSelectHighlight={props.handleSelectHighlight}
-                     handleUserHighlightText={props.handleUserHighlightText}
                      updateUserHighlightedText={props.updateUserHighlightedText}
                      startUpdatingHighlightedText={props.startUpdatingHighlightedText}
                      editGrammar={props.editGrammar}

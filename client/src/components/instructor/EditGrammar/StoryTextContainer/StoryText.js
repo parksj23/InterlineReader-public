@@ -14,7 +14,6 @@ class StoryText extends Component {
       //if there is text before the first inline HTML tag
       if (phrase.indexOf(tagArray[0]) !== 0) {
         let plainText = phrase.slice(0, phrase.indexOf(tagArray[0]))
-        console.log(plainText)
         let highlight = (
           <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
             {plainText}
@@ -25,7 +24,6 @@ class StoryText extends Component {
       }
       else {
         let plainText = phrase.slice(phrase.indexOf(tagArray[0]) + tagArray[0].length, phrase.indexOf(tagArray[1]));
-        console.log(plainText)
         let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
         if (openTag.indexOf(" ") >= 0) {
           openTag = openTag.split(" ")[0]
@@ -45,12 +43,35 @@ class StoryText extends Component {
 
   }
 
+  handleWordClick = (e) => {
+    let text =  null;
+    if (typeof window.getSelection != "undefined") {
+      text = window.getSelection().toString();
+      if(text !== ""){
+        this.props.startUpdatingHighlightedText("Grammar");
+        this.props.updateUserHighlightedText(text, "Grammar");
+      }
+      else this.props.handleSelectHighlight(e.target.innerHTML)
+    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+      text = document.selection.createRange().text;
+      if(text !== ""){
+        this.props.startUpdatingHighlightedText("Grammar");
+        this.props.updateUserHighlightedText(text, "Grammar");
+      }
+      else this.props.handleSelectHighlight(e.target.innerHTML)
+    }
+    else{
+      this.props.handleSelectHighlight(e.target.innerHTML)
+    }
+
+  }
+
   render() {
     return (
       <Grid container>
         <Grid item md={1}/>
         <Grid item xs={12} md={10}>
-          <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeader">
+          <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeaderGrammar" onClick={this.handleWordClick.bind(this)}>
             <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
             <span style={{textAlign: 'left', width: "50%"}}>
               <h3> {this.props.editGrammar.storyInfo.titleKorn} </h3>
@@ -92,7 +113,6 @@ class StoryText extends Component {
                             openTag = openTag.split(" ")[0]
                           }
                           let phraseText = phrase.slice(phrase.indexOf(">") + 1, phrase.lastIndexOf("<"))
-                          console.log(phraseText)
                           const HighlightComponent = (
                             <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
                               {phraseText}

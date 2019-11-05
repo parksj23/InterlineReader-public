@@ -1,0 +1,18 @@
+.edit-Grammar-form-container{
+     position: fixed;
+}
+
+.edit-grammar-form-title {
+    text-align: center;
+}
+
+.edit-grammar-form-label-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.edit-grammar-form-label{
+    margin-left: 8px;
+    margin-right: 8px;
+}

@@ -24,7 +24,6 @@ class EditVocab extends Component {
       userHighlightedText: null
     }
     this.handleSelectHighlight.bind(this)
-    this.handleUserHighlightText.bind(this)
   }
 
   componentWillMount() {
@@ -38,17 +37,6 @@ class EditVocab extends Component {
   handleSelectHighlight = (selectedText) => {
     let selectedVocabInfo = this.props.editVocab.vocabSearch[selectedText]
     this.props.updateSelectedVocab(selectedVocabInfo);
-  }
-
-  handleUserHighlightText = () => {
-    let text = null;
-    if (typeof window.getSelection != "undefined") {
-      text = window.getSelection().toString();
-      this.props.updateUserHighlightedText(text);
-    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
-      text = document.selection.createRange().text;
-      this.props.updateUserHighlightedText(text);
-    }
   }
 
   render() {
