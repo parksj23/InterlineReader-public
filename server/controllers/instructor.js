@@ -289,3 +289,28 @@ exports.deleteVocab = (req, res, next) => {
     })
   })
 }
+
+exports.updateGrammar =(req,res,next) => {
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw err;
+    var dbo = client.db("testdb");
+    let {grammar, storyTitle} = req
+    let query = {
+      "_id": ObjectID(grammar._id)
+    }
+
+    let updatedDocument  = {
+      "sentence": grammar.sentence,
+      "pattern": grammar.pattern,
+      "here": grammar.here,
+      "order_id": grammar.order_id
+    }
+    dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).updateOne(query, {$set: updatedDocument}, function(err, result){
+      if(err) throw err
+      res.send({
+        grammar
+      })
+      client.close();
+    })
+  })
+}

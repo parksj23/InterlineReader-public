@@ -14,7 +14,9 @@ import {
   INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
   INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
   INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
-  INSTRUCTOR_UPDATE_VOCAB, INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
+  INSTRUCTOR_UPDATE_VOCAB,
+  INSTRUCTOR_UPDATE_GRAMMAR,
+  INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
@@ -320,6 +322,22 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
       payload: resp.data.vocab
     })
   })
+}
+
+export const updateGrammar = (grammar, storyTitle) => dispatch => {
+  let params = {
+    grammar,
+    storyTitle
+  }
+
+  axios.put('/api/instructor/editGrammar/updateGrammar', params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_GRAMMAR,
+      payload: resp.data.grammar
+    })
+  })
+
+
 }
 
 export const startUpdatingEditVocab = () => dispatch => {

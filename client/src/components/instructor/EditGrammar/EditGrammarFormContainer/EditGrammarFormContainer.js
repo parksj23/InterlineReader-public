@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import {startUpdatingEditVocab} from '../../../../actions/instructor';
+import {startUpdatingEditGrammar} from '../../../../actions/instructor';
 
 class EditGrammarFormContainer extends Component {
   constructor(props) {
@@ -63,7 +63,7 @@ class EditGrammarFormContainer extends Component {
       here: this.state.here,
       order_id: this.state.order_id
     }
-    //this.props.updateGrammar(newGrammar, this.props.storyTitle);
+    this.props.updateGrammar(newGrammar, this.props.storyTitle);
   }
 
   handleDeleteGrammar = () => {
@@ -176,7 +176,6 @@ class EditGrammarFormContainer extends Component {
                     color="primary"
                     onClick={this.handleEditGrammar}
                     disabled={this.state.disableEditButton}
-
             >Edit</Button>
             <Button style={{marginLeft: '4px'}}
                     variant="contained"
@@ -193,7 +192,7 @@ class EditGrammarFormContainer extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  startUpdatingEditVocab
+  startUpdatingEditGrammar
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditGrammarFormContainer);

@@ -14,6 +14,7 @@ import {
   INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
   INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
   INSTRUCTOR_UPDATE_VOCAB,
+  INSTRUCTOR_UPDATE_GRAMMAR,
   INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
   INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
   INSTRUCTOR_SAVE_VOCAB,
@@ -88,7 +89,6 @@ export default (state = initialState, action) => {
       let allAnalytics = []
       action.payload.map(anAnalytic => {
         let analytic = anAnalytic.data
-        console.log(anAnalytic)
         analytic = analytic.map(anEntry => {
           if(anEntry.date){
             let legibleDate = new Date(anEntry.date);
@@ -196,6 +196,18 @@ export default (state = initialState, action) => {
       return{
         ...state,
         editVocab: newEditVocab
+      }
+    case INSTRUCTOR_UPDATE_GRAMMAR:
+      newEditGrammar = state.editGrammar
+      newGrammarList = state.editGrammar.grammarList;
+      newGrammarList.splice(action.payload.order_id-1,1,action.payload)
+      newEditGrammar.grammarList = newGrammarList
+      newEditGrammar.selectedGrammar = action.payload
+      newEditGrammar.grammarSearch[action.payload.sentence] = action.payload
+      newEditGrammar.editGrammarUpdating = false
+      return{
+        ...state,
+        editGrammar: newEditGrammar
       }
     case INSTRUCTOR_START_UPDATING_EDIT_VOCAB:
       newEditVocab = state.editVocab
