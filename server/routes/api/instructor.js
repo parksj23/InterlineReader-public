@@ -54,5 +54,9 @@ router.put('/editGrammar/updateGrammar', (req,res,next)=>{
   instructor.updateGrammar(req.body,res,next);
 })
 
+router.put('/editGrammar/deleteGrammar', (req,res,next) => {
+  instructor.deleteGrammar(req.body,res,next);
+})
+
 
 module.exports = router;

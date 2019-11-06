@@ -21,7 +21,9 @@ import {
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
-  INSTRUCTOR_DELETE_VOCAB, INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR
+  INSTRUCTOR_DELETE_VOCAB,
+  INSTRUCTOR_DELETE_GRAMMAR,
+  INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR
 } from "../constants/action-types";
 
 const initialState = {
@@ -270,6 +272,24 @@ export default (state = initialState, action) => {
       return{
         ...state,
         editVocab: newEditVocab
+      }
+    case INSTRUCTOR_DELETE_GRAMMAR:
+      newEditGrammar = state.editGrammar
+      newGrammarList = state.editGrammar.grammarList
+      newGrammarList.map((aGrammar, index) => {
+        if(aGrammar >= action.payload.order_id){
+          aGrammar.order_id--
+        }
+      })
+      newGrammarList.splice(newGrammarList.indexOf(action.payload),1);
+
+      newEditGrammar.grammarList = newGrammarList
+      newEditGrammar.editGrammarUpdating = false
+      newEditGrammar.selectedGrammar = null
+      delete newEditGrammar.grammarSearch[action.payload.sentence];
+      return{
+        ...state,
+        editGrammar: newEditGrammar
       }
 
     default:

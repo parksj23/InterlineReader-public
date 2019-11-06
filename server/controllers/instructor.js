@@ -217,24 +217,6 @@ exports.addVocab =(req, res, next) => {
       })
     })
 
-    /*dbo.collection(`${storyTitle.toUpperCase()}_VOC`).remove({}, function (err, result) {
-      if (err) throw err
-      vocabList.map((aDoc) => {
-        delete aDoc["_id"];
-      })
-      console.log("VocabList: ")
-      console.log(vocabList.length)
-      dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertMany(vocabList, function (err, result) {
-        if (err) throw err
-        res.send({
-          status: "OK",
-          vocabList: vocabList
-        });
-        client.close();
-      })
-    });*/
-
-
     /*dbo.createCollection(`${storyTitle.toUpperCase()}_VOC`, function(err,result){
         dbo.collection(`${storyTitle.toUpperCase()}_VOC_COPY`).find({}).toArray(function(err, result){
           dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertMany(result, function(err, result){
@@ -307,6 +289,24 @@ exports.updateGrammar =(req,res,next) => {
     }
     dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).updateOne(query, {$set: updatedDocument}, function(err, result){
       if(err) throw err
+      res.send({
+        grammar
+      })
+      client.close();
+    })
+  })
+}
+
+exports.deleteGrammar = (req, res, next) => {
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw err;
+    var dbo = client.db("testdb");
+    let {grammar, storyTitle} = req
+    let query = {
+      "_id": ObjectID(grammar._id)
+    }
+    dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).deleteOne(query, function (err, result) {
+      if (err) throw err
       res.send({
         grammar
       })

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {
-  initEditGrammar, updateSelectedGrammar, startUpdatingHighlightedText, updateUserHighlightedText, updateGrammar
+  initEditGrammar, updateSelectedGrammar, startUpdatingHighlightedText, updateUserHighlightedText, updateGrammar, deleteGrammar
 } from "../../../actions/instructor";
 import "./EditGrammar.css"
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
@@ -58,7 +58,7 @@ class EditGrammar extends Component {
                   selectedGrammar={editGrammar.selectedGrammar}
                   storyTitle={this.props.editGrammar.storyTitle}
                   updateGrammar={this.props.updateGrammar}
-                  //deleteVocab={this.props.deleteVocab}
+                  deleteGrammar={this.props.deleteGrammar}
 
                 /> : null
             }
@@ -87,7 +87,8 @@ const mapDispatchToProps = ({
   updateSelectedGrammar,
   startUpdatingHighlightedText,
   updateUserHighlightedText,
-  updateGrammar
+  updateGrammar,
+  deleteGrammar
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditGrammar);

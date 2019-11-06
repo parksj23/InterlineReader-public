@@ -20,7 +20,8 @@ import {
   INSTRUCTOR_ADD_NEW_VOCAB,
   INSTRUCTOR_RESET_EDIT_VOCAB,
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
-  INSTRUCTOR_DELETE_VOCAB
+  INSTRUCTOR_DELETE_VOCAB,
+  INSTRUCTOR_DELETE_GRAMMAR
 } from '../constants/action-types';
 import axios from 'axios';
 
@@ -378,6 +379,21 @@ export const deleteVocab =(vocab, storyTitle) => dispatch => {
     dispatch({
       type: INSTRUCTOR_DELETE_VOCAB,
       payload: resp.data.vocab
+    })
+
+  })
+
+}
+
+export const deleteGrammar =(grammar, storyTitle) => dispatch => {
+  let params = {
+    grammar,
+    storyTitle
+  }
+  axios.put("/api/instructor/editGrammar/deleteGrammar", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_DELETE_GRAMMAR,
+      payload: resp.data.grammar
     })
 
   })

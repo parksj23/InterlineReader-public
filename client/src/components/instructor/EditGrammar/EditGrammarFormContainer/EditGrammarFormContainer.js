@@ -74,7 +74,7 @@ class EditGrammarFormContainer extends Component {
       here: this.state.here,
       order_id: this.state.order_id
     }
-    //this.props.deleteVocab(grammar, this.props.storyTitle);
+    this.props.deleteGrammar(grammar, this.props.storyTitle);
   }
 
   render() {
