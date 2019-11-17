@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import {startUpdatingEditGrammar} from '../../../../actions/instructor';
+import {startUpdatingEditGrammar, addNewGrammar, cancelSelection} from '../../../../actions/instructor';
 
 class NewGrammarFormContainer extends Component {
   constructor(props) {
@@ -82,7 +82,7 @@ class NewGrammarFormContainer extends Component {
     return order_id
   }
   
-  addNewGrammar = () => {
+  handleAddNewGrammar = () => {
     let newGrammar = {
       _id: this.state._id,
       sentence: this.state.sentence,
@@ -90,7 +90,11 @@ class NewGrammarFormContainer extends Component {
       here: this.state.here,
       order_id: this.state.order_id
     }
-    this.props.addNewVocabulary(newGrammar, this.props.storyTitle);
+    this.props.addNewGrammar(newGrammar, this.props.storyTitle);
+  }
+
+  handleCancel = () => {
+    this.props.cancelSelection();
   }
 
   render() {
@@ -189,15 +193,15 @@ class NewGrammarFormContainer extends Component {
             <Button style={{marginRight: '4px'}}
                     variant="contained"
                     color="primary"
-                    onClick={this.handleEditGrammar}
+                    onClick={this.handleAddNewGrammar}
                     disabled={this.state.disableEditButton}
 
-            >Edit</Button>
+            >Add</Button>
             <Button style={{marginLeft: '4px'}}
                     variant="contained"
                     color="secondary"
-                    onClick={this.handleDeleteGrammar}
-            >Delete</Button>
+                    onClick={this.handleCancel}
+            >Cancel</Button>
           </Grid>
         </Grid>
       </div>
@@ -208,7 +212,9 @@ class NewGrammarFormContainer extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  startUpdatingEditGrammar
+  startUpdatingEditGrammar,
+  addNewGrammar,
+  cancelSelection
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewGrammarFormContainer);

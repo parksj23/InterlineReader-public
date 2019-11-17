@@ -227,6 +227,24 @@ exports.addVocab =(req, res, next) => {
   })
 }
 
+exports.addGrammar =(req, res, next) => {
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw err;
+    var dbo = client.db("testdb");
+    let {grammar, storyTitle} = req
+
+    dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).updateMany({"order_id": {$gte:grammar.order_id}}, {$inc:{"order_id": 1}}, function(err, result){
+      if (err) throw err
+      dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).insertOne(grammar, function(err,result){
+        if(err) throw err
+        res.send({
+          grammar
+        })
+      })
+    })
+  })
+}
+
 exports.updateVocab =(req,res,next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;

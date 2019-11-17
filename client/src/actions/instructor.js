@@ -18,10 +18,12 @@ import {
   INSTRUCTOR_UPDATE_GRAMMAR,
   INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
+  INSTRUCTOR_ADD_NEW_GRAMMAR,
   INSTRUCTOR_RESET_EDIT_VOCAB,
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
   INSTRUCTOR_DELETE_VOCAB,
-  INSTRUCTOR_DELETE_GRAMMAR
+  INSTRUCTOR_DELETE_GRAMMAR,
+  INSTRUCTOR_CANCEL_SELECTION
 } from '../constants/action-types';
 import axios from 'axios';
 
@@ -370,6 +372,21 @@ export const addNewVocabulary = (vocab, storyTitle) => dispatch => {
   })
 }
 
+export const addNewGrammar = (grammar, storyTitle) => dispatch => {
+  let params ={
+    grammar,
+    storyTitle
+  }
+  axios.put('/api/instructor/editGrammar/addGrammar', params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_ADD_NEW_GRAMMAR,
+      payload: resp.data.grammar
+    })
+
+
+  })
+}
+
 export const deleteVocab =(vocab, storyTitle) => dispatch => {
   let params = {
     vocab,
@@ -398,4 +415,11 @@ export const deleteGrammar =(grammar, storyTitle) => dispatch => {
 
   })
 
+}
+
+export const cancelSelection =() => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_CANCEL_SELECTION,
+    payload: null
+  })
 }

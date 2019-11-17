@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import { addNewVocabulary, startUpdatingHighlightedText } from '../../../../actions/instructor'
+import { addNewVocabulary, startUpdatingHighlightedText, cancelSelection } from '../../../../actions/instructor'
 
 class NewVocabFormContainer extends Component {
   constructor(props) {
@@ -85,6 +85,10 @@ class NewVocabFormContainer extends Component {
       order_id: this.state.order_id
     }
     this.props.addNewVocabulary(newVocab, this.props.storyTitle);
+  }
+
+  handleCancel = () => {
+    this.props.cancelSelection();
   }
 
   render() {
@@ -180,7 +184,7 @@ class NewVocabFormContainer extends Component {
           <Grid item xs={7}/>
           <Grid item xs={5}>
             <Button style={{marginRight: '4px'}} variant="contained" color="primary" onClick={this.addNewVocab}>Add</Button>
-            <Button style={{marginLeft: '4px'}} variant="contained" color="secondary" >Cancel</Button>
+            <Button style={{marginLeft: '4px'}} variant="contained" color="secondary" onClick={this.handleCancel}>Cancel</Button>
           </Grid>
         </Grid>
       </div>
@@ -192,7 +196,8 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
   addNewVocabulary,
-  startUpdatingHighlightedText
+  startUpdatingHighlightedText,
+  cancelSelection
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(NewVocabFormContainer);

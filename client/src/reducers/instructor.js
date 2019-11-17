@@ -19,11 +19,13 @@ import {
   INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
   INSTRUCTOR_SAVE_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
+  INSTRUCTOR_ADD_NEW_GRAMMAR,
   INSTRUCTOR_RESET_EDIT_VOCAB,
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
   INSTRUCTOR_DELETE_VOCAB,
   INSTRUCTOR_DELETE_GRAMMAR,
-  INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR
+  INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR,
+  INSTRUCTOR_CANCEL_SELECTION
 } from "../constants/action-types";
 
 const initialState = {
@@ -245,6 +247,22 @@ export default (state = initialState, action) => {
         ...state,
         editVocab: newEditVocab
       }
+    case INSTRUCTOR_ADD_NEW_GRAMMAR:
+      newEditGrammar = state.editGrammar
+      newGrammarList = state.editGrammar.grammarList
+      newGrammarList.map((aGrammar, index) => {
+        if(aGrammar >= action.payload.order_id){
+          aGrammar.order_id++
+        }
+      })
+      newGrammarList.splice(action.payload.order_id-1,0,action.payload);
+      newEditGrammar.grammarList = newGrammarList
+      newEditGrammar.grammarSearch[action.payload.sentence] = action.payload;
+      newEditGrammar.highlightTextUpdating = false
+      return {
+        ...state,
+        editGrammar: newEditGrammar
+      }
     case INSTRUCTOR_RESET_EDIT_VOCAB:
       return{
         ...state,
@@ -289,6 +307,18 @@ export default (state = initialState, action) => {
       delete newEditGrammar.grammarSearch[action.payload.sentence];
       return{
         ...state,
+        editGrammar: newEditGrammar
+      }
+    case INSTRUCTOR_CANCEL_SELECTION:
+      newEditVocab = state.editVocab
+      newEditGrammar = state.editGrammar
+
+      newEditVocab.userHighlightedText = null
+      newEditGrammar.userHighlightedText = null
+
+      return{
+        ...state,
+        editVocab: newEditVocab,
         editGrammar: newEditGrammar
       }
 
