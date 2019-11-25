@@ -5,86 +5,92 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import { addNewVocabulary, startUpdatingHighlightedText, cancelSelection } from '../../../../actions/instructor'
+import {startUpdatingEditGrammar, addNewGrammar, cancelSelection} from '../../../../actions/instructor';
 
-class NewVocabFormContainer extends Component {
+class NewGrammarFormContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
       _id: null,
-      korean: null,
-      hanja: null,
-      english: null,
-      order_id: null
+      sentence: null,
+      pattern: null,
+      here: null,
+      order_id: null,
+      disableEditButton: true
     }
+    this.validateInputs.bind(this)
     this.findOrderId.bind(this)
   }
 
   componentDidMount(){
-    let order_id = this.findOrderId() + 1;
     this.setState({
       _id: null,
-      korean: this.props.editVocab.userHighlightedText,
-      hanja: null,
-      english: null,
-      order_id
+      sentence: this.props.editGrammar.userHighlightedText,
+      pattern: null,
+      here: null,
+      order_id: null
     })
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.userHighlightedText !== this.props.userHighlightedText) {
+    if (prevProps.userHighlightedText !== this.props.userHighlightedText){
       let order_id = this.findOrderId() +1 ;
       this.setState({
         _id: null,
-        korean: this.props.editVocab.userHighlightedText,
-        hanja: null,
-        english: null,
-        order_id
+        sentence: this.props.editGrammar.userHighlightedText,
+        pattern: null,
+        here: null,
+        order_id: order_id
       })
     }
   }
 
-  findOrderId() {
-    let order_id = null
-    let text = this.props.editVocab.rawKoreanText
-    let vocabWords = Object.keys(this.props.editVocab.vocabSearch)
-    let startIndex = 0;
-    let startText = vocabWords[startIndex]
-    let textSegment = text.substring(0,text.indexOf(startText));
-    console.log(textSegment)
-
-    if (textSegment.includes(this.props.editVocab.userHighlightedText)) {return 0}
-
-    for(startIndex = 0; startIndex !== vocabWords.length ; startIndex++){
-      let endIndex = startIndex + 1
-      let startText = vocabWords[startIndex]
-      let endText = vocabWords[endIndex]
-      textSegment = text.substring(text.indexOf(startText), text.indexOf(endText))
-      if (textSegment.includes(this.props.editVocab.userHighlightedText)) {
-          order_id = endIndex
-          return order_id
-        }
-      }
-    textSegment = text.substring(text.indexOf(vocabWords[startIndex]))
-    if (textSegment.includes(this.props.editVocab.userHighlightedText)) return vocabWords.length;
-    return order_id
-  }
-
   handleOnChangeField = name => event => {
+    let disableEditButton = !this.validateInputs();
     this.setState({
-      [name]: event.target.value
+      [name]: event.target.value,
+      disableEditButton
     })
   }
 
-  addNewVocab = () => {
-    let newVocab = {
+  validateInputs (){
+    return (this.state.sentence !== null && this.state.pattern !== null && this.state.here !== null)
+  }
+
+  findOrderId() {
+    let order_id = null
+    let text = this.props.editGrammar.rawKoreanText
+    let grammarWords = Object.keys(this.props.editGrammar.grammarSearch)
+    let startIndex = 0;
+    let startText = grammarWords[startIndex]
+    let textSegment = text.substring(0,text.indexOf(startText));
+
+    if (textSegment.includes(this.props.editGrammar.userHighlightedText)) {return 0}
+
+    for(startIndex = 0; startIndex !== grammarWords.length ; startIndex++){
+      let endIndex = startIndex + 1
+      let startText = grammarWords[startIndex]
+      let endText = grammarWords[endIndex]
+      textSegment = text.substring(text.indexOf(startText), text.indexOf(endText))
+      if (textSegment.includes(this.props.editGrammar.userHighlightedText)) {
+        order_id = endIndex
+        return order_id
+      }
+    }
+    textSegment = text.substring(text.indexOf(grammarWords[startIndex]))
+    if (textSegment.includes(this.props.editGrammar.userHighlightedText)) return grammarWords.length;
+    return order_id
+  }
+  
+  handleAddNewGrammar = () => {
+    let newGrammar = {
       _id: this.state._id,
-      korean: this.state.korean,
-      hanja: this.state.hanja,
-      english: this.state.english,
+      sentence: this.state.sentence,
+      pattern: this.state.pattern,
+      here: this.state.here,
       order_id: this.state.order_id
     }
-    this.props.addNewVocabulary(newVocab, this.props.storyTitle);
+    this.props.addNewGrammar(newGrammar, this.props.storyTitle);
   }
 
   handleCancel = () => {
@@ -93,11 +99,11 @@ class NewVocabFormContainer extends Component {
 
   render() {
     return (
-      <div className="edit-Vocabulary-form-container">
+      <div className="edit-grammar-form-container">
         <Grid container>
           <Grid item xs={1} />
           <Grid item xs={10} justify={'center'}>
-            <h2 className={'edit-vocab-form-title'}>Vocab Selected: {this.props.editVocab.userHighlightedText}</h2>
+            <h2 className={'edit-grammar-form-title'}>Grammar Selected: {this.props.editGrammar.userHighlightedText}</h2>
           </Grid>
           <Grid item xs={1} />
         </Grid>
@@ -105,16 +111,16 @@ class NewVocabFormContainer extends Component {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                <span className={'edit-vocab-form-label'}>Korean</span>
+                <span className={'edit-grammar-form-label'}>Sentence</span>
               </Grid>
               <Grid item xs={8}>
                 <TextField
                   required
-                  id="korean"
+                  id="sentence"
                   margin="normal"
-                  onChange={this.handleOnChangeField("korean")}
+                  onChange={this.handleOnChangeField("sentence")}
                   style={{whiteSpace: "noWrap"}}
-                  value={this.state.korean}
+                  value={this.state.sentence}
                   fullWidth
                   multiline
                 />
@@ -125,16 +131,16 @@ class NewVocabFormContainer extends Component {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                <span className={'edit-vocab-form-label'}>Hanja</span>
+                <span className={'edit-grammar-form-label'}>Pattern</span>
               </Grid>
               <Grid item xs={8}>
                 <TextField
                   required
-                  id="hanja"
+                  id="pattern"
                   margin="normal"
-                  onChange={this.handleOnChangeField("hanja")}
+                  onChange={this.handleOnChangeField("pattern")}
                   style={{whiteSpace: "noWrap"}}
-                  value={this.state.hanja}
+                  value={this.state.pattern}
                   fullWidth
                   multiline
                 />
@@ -145,16 +151,16 @@ class NewVocabFormContainer extends Component {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                <span className={'edit-vocab-form-label'}>English</span>
+                <span className={'edit-grammar-form-label'}>Here</span>
               </Grid>
               <Grid item xs={8}>
                 <TextField
                   required
-                  id="english"
+                  id="here"
                   margin="normal"
-                  onChange={this.handleOnChangeField("english")}
+                  onChange={this.handleOnChangeField("here")}
                   style={{whiteSpace: "noWrap"}}
-                  value={this.state.english}
+                  value={this.state.here}
                   fullWidth
                   multiline
                 />
@@ -165,7 +171,7 @@ class NewVocabFormContainer extends Component {
           <Grid item xs={12}>
             <Grid container>
               <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                <span className={'edit-vocab-form-label'}>Order</span>
+                <span className={'edit-grammar-form-label'}>Order</span>
               </Grid>
               <Grid item xs={8}>
                 <TextField
@@ -177,14 +183,25 @@ class NewVocabFormContainer extends Component {
                   value={this.state.order_id}
                   fullWidth
                   multiline
+                  disabled
                 />
               </Grid>
             </Grid>
           </Grid>
           <Grid item xs={7}/>
           <Grid item xs={5}>
-            <Button style={{marginRight: '4px'}} variant="contained" color="primary" onClick={this.addNewVocab}>Add</Button>
-            <Button style={{marginLeft: '4px'}} variant="contained" color="secondary" onClick={this.handleCancel}>Cancel</Button>
+            <Button style={{marginRight: '4px'}}
+                    variant="contained"
+                    color="primary"
+                    onClick={this.handleAddNewGrammar}
+                    disabled={this.state.disableEditButton}
+
+            >Add</Button>
+            <Button style={{marginLeft: '4px'}}
+                    variant="contained"
+                    color="secondary"
+                    onClick={this.handleCancel}
+            >Cancel</Button>
           </Grid>
         </Grid>
       </div>
@@ -195,9 +212,9 @@ class NewVocabFormContainer extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  addNewVocabulary,
-  startUpdatingHighlightedText,
+  startUpdatingEditGrammar,
+  addNewGrammar,
   cancelSelection
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewVocabFormContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(NewGrammarFormContainer);

@@ -46,8 +46,20 @@ router.put('/editVocab/addVocab', (req,res,next) => {
   instructor.addVocab(req.body,res,next);
 })
 
+router.put('/editGrammar/addGrammar', (req,res,next) => {
+  instructor.addGrammar(req.body,res,next);
+})
+
 router.put('/editVocab/deleteVocab', (req,res,next) => {
   instructor.deleteVocab(req.body,res,next);
+})
+
+router.put('/editGrammar/updateGrammar', (req,res,next)=>{
+  instructor.updateGrammar(req.body,res,next);
+})
+
+router.put('/editGrammar/deleteGrammar', (req,res,next) => {
+  instructor.deleteGrammar(req.body,res,next);
 })
 
 

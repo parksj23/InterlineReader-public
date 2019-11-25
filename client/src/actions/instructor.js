@@ -7,14 +7,23 @@ import {
   INSTRUCTOR_GET_GRAMMAR,
   INSTRUCTOR_GET_VOCAB,
   INIT_EDIT_VOCAB,
+  INIT_EDIT_GRAMMAR,
   INSTRUCTOR_EDIT_VOCAB_UPDATE_SELECTED_VOCAB,
+  INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR,
   INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
   INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
   INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
-  INSTRUCTOR_UPDATE_VOCAB, INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
+  INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
+  INSTRUCTOR_UPDATE_VOCAB,
+  INSTRUCTOR_UPDATE_GRAMMAR,
+  INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
   INSTRUCTOR_ADD_NEW_VOCAB,
+  INSTRUCTOR_ADD_NEW_GRAMMAR,
   INSTRUCTOR_RESET_EDIT_VOCAB,
-  INSTRUCTOR_DELETE_VOCAB
+  INSTRUCTOR_RESET_EDIT_GRAMMAR,
+  INSTRUCTOR_DELETE_VOCAB,
+  INSTRUCTOR_DELETE_GRAMMAR,
+  INSTRUCTOR_CANCEL_SELECTION
 } from '../constants/action-types';
 import axios from 'axios';
 
@@ -46,6 +55,7 @@ export const initEditVocab = (storyTitle) => dispatch => {
       let vocabSearch = {}
       res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
       res.data.vocab.map(aVocab => {
+
         if(aVocab.korean.indexOf("(") >= -1 || aVocab.korean.indexOf(")") >= -1){
           let temp = aVocab.korean
           let cleanVocab = temp.replace("(", "\(");
@@ -98,6 +108,13 @@ export const resetEditVocab =() => dispatch => {
   })
 }
 
+export const resetEditGrammar = () => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_RESET_EDIT_GRAMMAR,
+    payload: null
+  })
+}
+
 export const initEditGrammar = (storyTitle) => dispatch => {
   let params = {
     responseType: 'application/json',
@@ -106,21 +123,48 @@ export const initEditGrammar = (storyTitle) => dispatch => {
   let payload = {};
   return new Promise( (resolve,reject) => {
     axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
+      let grammarSearch = {}
+      res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
+      res.data.grammar.map(aGrammar => {
+        if(aGrammar.sentence.indexOf("(") >= -1 || aGrammar.korean.indexOf(")") >= -1){
+          let temp = aGrammar.sentence
+          let cleanGrammar = temp.replace("(", "\\(");
+          cleanGrammar= cleanGrammar.replace(")", "\\)");
+          grammarSearch[cleanGrammar] = aGrammar;
+        }
+        else{
+          grammarSearch[aGrammar.sentence] = aGrammar;
+        }
+      })
+
       payload["storyInfo"] = res.data.storyInfo
       payload["storyTitle"] = storyTitle
       payload["grammarList"] = res.data.grammar
+      payload["grammarSearch"] = grammarSearch
       return res.data.storyInfo
     }).then( storyInfo => {
       axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
         let storyTextKorn = res.data.storyTextKorn;
         let storyTextEngl = res.data.storyTextEngl
+
         storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
         storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+
+        let rawKoreanText = ""
+        storyTextKorn.map(aText => {
+          rawKoreanText = rawKoreanText.concat(aText.text)
+        })
         payload["storyTextEngl"] = storyTextEngl;
         payload["storyTextKorn"] = storyTextKorn;
+
+        payload["selectedGrammar"] = null
+        payload["userHighlightedText"] = null
+        payload['rawKoreanText'] = rawKoreanText
+        payload['highlightTextUpdating'] = false
+        payload['editGrammarUpdating'] = false
+
         dispatch({
-          type: INIT_EDIT_VOCAB,
+          type: INIT_EDIT_GRAMMAR,
           payload
         })
       })
@@ -237,6 +281,13 @@ export const updateSelectedVocab = selectedVocab => dispatch => {
   })
 }
 
+export const updateSelectedGrammar = (selectedGrammar) => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR,
+    payload: selectedGrammar
+  })
+}
+
 export const clearSelectedVocab= () => dispatch => {
   dispatch({
     type: INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
@@ -244,17 +295,21 @@ export const clearSelectedVocab= () => dispatch => {
   })
 }
 
-export const updateUserHighlightedText = text => dispatch => {
+export const updateUserHighlightedText = (text, component) => dispatch => {
+  let payload = {
+    text,
+    component
+  }
   dispatch({
     type: INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
-    payload: text
+    payload
   })
 }
 
-export const startUpdatingHighlightedText = () => dispatch => {
+export const startUpdatingHighlightedText = (component) => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
-    payload: null
+    payload: component
   })
 }
 
@@ -272,9 +327,32 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
   })
 }
 
+export const updateGrammar = (grammar, storyTitle) => dispatch => {
+  let params = {
+    grammar,
+    storyTitle
+  }
+
+  axios.put('/api/instructor/editGrammar/updateGrammar', params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_GRAMMAR,
+      payload: resp.data.grammar
+    })
+  })
+
+
+}
+
 export const startUpdatingEditVocab = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
+    payload: null
+  })
+}
+
+export const startUpdatingEditGrammar = () => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
     payload: null
   })
 }
@@ -294,6 +372,21 @@ export const addNewVocabulary = (vocab, storyTitle) => dispatch => {
   })
 }
 
+export const addNewGrammar = (grammar, storyTitle) => dispatch => {
+  let params ={
+    grammar,
+    storyTitle
+  }
+  axios.put('/api/instructor/editGrammar/addGrammar', params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_ADD_NEW_GRAMMAR,
+      payload: resp.data.grammar
+    })
+
+
+  })
+}
+
 export const deleteVocab =(vocab, storyTitle) => dispatch => {
   let params = {
     vocab,
@@ -307,4 +400,26 @@ export const deleteVocab =(vocab, storyTitle) => dispatch => {
 
   })
 
+}
+
+export const deleteGrammar =(grammar, storyTitle) => dispatch => {
+  let params = {
+    grammar,
+    storyTitle
+  }
+  axios.put("/api/instructor/editGrammar/deleteGrammar", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_DELETE_GRAMMAR,
+      payload: resp.data.grammar
+    })
+
+  })
+
+}
+
+export const cancelSelection =() => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_CANCEL_SELECTION,
+    payload: null
+  })
 }
