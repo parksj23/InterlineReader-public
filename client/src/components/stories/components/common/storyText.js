@@ -49,7 +49,7 @@ class StoryText extends Component {
       <Grid container>
         <Grid item md={1}/>
         <Grid item xs={12} md={10}>
-          <div className="col-lg-12 context engVer" style={{paddingBottom: "1em"}} id="theHeader">
+          <div className="col-lg-12 context engVer" style={{paddingBottom: "48px"}} id="theHeader">
             <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
             <span style={{textAlign: 'left', width: "50%"}}>
               <h3> {this.props.title} </h3>
