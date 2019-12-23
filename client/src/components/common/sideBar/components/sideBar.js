@@ -66,6 +66,7 @@ const SideBar = (props) => {
                 <Tab label="저장한 단어"/>
                 <Tab label="문법검색"/>
                 <Tab label="사전"/>
+                <Tab label="Stem/Dictionary Form"/>
                 <i style={{cursor:"pointer", fontSize: "28px", position:"absolute", "bottom":"0", "right": "0"}} className="material-icons" onClick={()=>props.toggleDrawer('left', false)}>arrow_back_ios</i>
               </Tabs>
             </AppBar>
