@@ -25,7 +25,7 @@ class StoriesContainer extends Component {
     this.state = {
       applicationDescription: "",
       storyTitle: "",
-      language: "korean",
+      selectedLanguage: "MODKR",
       storyInfo: null,
       showFlashCardModal: false,
       isSpeedDialOpen: false
@@ -70,7 +70,7 @@ class StoriesContainer extends Component {
   handleTranslate = (language) => {
     console.log(language)
     this.setState({
-      language: language,
+      selectedLanguage: language,
       isSpeedDialOpen: false
     })
   }
@@ -135,44 +135,31 @@ class StoriesContainer extends Component {
     let searchWord = null;
     let title = "";
     let author = "";
-    if (this.state.language === 'korean') {
-      text = stories.storyTextKorn
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleKorn;
-        author = stories.storyInfo.authorKorn
+    if(stories[this.state.selectedLanguage]) {
+      text = stories[this.state.selectedLanguage].storyText
+      switch(this.state.selectedLanguage){
+        case 'MODKR':
+          title = stories.storyInfo.titleKorn;
+          author = stories.storyInfo.authorKorn;
+          break;
+        case 'ENGSH':
+          title = stories.storyInfo.titleEng
+          author = stories.storyInfo.authorRom
+          break;
+        case 'MIDKR':
+          title = stories.storyInfo.titleKorn
+          author = stories.storyInfo.authorKorn
+          break;
+        default:
+          text = stories.storyTextHanmun
+          searchWord = vocab.highlightedWord
+          title = stories.storyInfo.titleKorn
+          author = stories.storyInfo.authorKorn
       }
     }
-    else if(this.state.language === 'english') {
-      text = stories.storyTextEngl
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleEng
-        author = stories.storyInfo.authorRom
-      }
-    }
-    else if(this.state.language === 'middleKorean') {
-      text = stories.storyTextMidKorn
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleKorn
-        author = stories.storyInfo.authorKorn
-      }
-    }
-    else {
-      text = stories.storyTextHanmun
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleKorn
-        author = stories.storyInfo.authorKorn
-      }
-    }
-
-
-
-
     return (
-      <div className={'story-container'}>
+      stories[this.state.selectedLanguage] ?
+        <div className={'story-container'}>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -197,13 +184,14 @@ class StoriesContainer extends Component {
           }
         </div>
         {stories.storyInfo ?
-          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.language} isSpeedDialOpen={this.state.isSpeedDialOpen}
+          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.selectedLanguage} isSpeedDialOpen={this.state.isSpeedDialOpen}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
                  handleOpenSpeedDial={this.handleOpenSpeedDial}
                  handleCloseSpeedDial={this.handleCloseSpeedDial}
           /> : null}
       </div>
+        : null
     );
   }
 }

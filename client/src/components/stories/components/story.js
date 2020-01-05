@@ -30,17 +30,17 @@ const Story = (props) => {
       </Paper>
       <div className='translateContainer' >
         <Tooltip title="Modern Korean" aria-label="Flashcard" placement="left">
-          <Fab color="primary" aria-label="add" className={classes.fab} onClick={()=> handleTranslate("korean")}>
+          <Fab color="primary" aria-label="add" className={classes.fab} onClick={()=> handleTranslate("MODKR")}>
             Kor
           </Fab>
         </Tooltip>
         <Tooltip title="English" placement="left">
-          <Fab color="primary" className={classes.fab}  onClick={()=> handleTranslate("english")}>
+          <Fab color="primary" className={classes.fab}  onClick={()=> handleTranslate("ENGSH")}>
             Eng
           </Fab>
         </Tooltip>
         <Tooltip title="Middle Korean" placement="left">
-          <Fab color="primary" className={classes.fab} onClick={()=> handleTranslate("middleKorean")}>
+          <Fab color="primary" className={classes.fab} onClick={()=> handleTranslate("MIDKR")}>
             Mid
           </Fab>
         </Tooltip>

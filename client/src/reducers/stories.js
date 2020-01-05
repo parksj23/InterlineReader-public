@@ -12,12 +12,10 @@ import {
 } from '../constants/action-types';
 
 const initialState = {
-  language: "korean",
+  selectedLanguage: "MODKR",
   isSideBarOpen: false,
-  storyTitle: "",
   openStatus: false,
   statusMessage:'',
-  vocabList: [],
   isStoryLoading: false
 };
 
@@ -27,14 +25,7 @@ export default (state = initialState, action) => {
     case INIT_STORY:
       return({
         ...state,
-        storyTitle: action.payload.storyTitle,
-        storyTextKorn: action.payload.storyTextKorn,
-        storyTextEngl: action.payload.storyTextEngl,
-        storyTextMidKorn: action.payload.storyTextMidKorean,
-        storyTextHanmun: action.payload.storyTextHanmun,
-        storyInfo: action.payload.storyInfo,
-        vocab: action.payload.vocab,
-        grammar: action.payload.grammar
+        ...action.payload
       })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {

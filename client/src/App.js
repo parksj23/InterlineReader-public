@@ -124,7 +124,7 @@ class App extends Component {
               <Route path="/cleaner" component={Cleaner} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
-                <PrivateRoute path='/story/:class/:storyName' component={Story} />
+                <PrivateRoute path='/story/:storyName' component={Story} />
                 <PrivateRoute path='/instructor' component={Instructor} />
               </Switch>
 

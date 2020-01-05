@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const path = require('path');
-const db = require('./config/keys').mongoURI;
 const handleErrors = require('./helpers/handleErrors');
 require('./models/User');
 require('./models/Story');
@@ -10,6 +9,7 @@ require('./config/passport')(passport);
 const app = express();
 const port = process.env.PORT || 5050;
 
+const db = require('./config/keys').mongoURI;
 mongoose
 	.connect(db)
 	.then(() => console.log('MongoDB connected'))
