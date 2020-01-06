@@ -49,6 +49,7 @@ class SavedWordsContainer extends Component {
 
   render(){
     const savedWords = this.props.savedWords;
+    console.log(savedWords)
     return(
       <div>
         <SavedWords savedWords={savedWords} handleDelete={this.handleDelete}/>

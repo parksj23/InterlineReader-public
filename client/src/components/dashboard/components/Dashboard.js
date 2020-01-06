@@ -8,9 +8,11 @@ import { ClipLoader } from 'react-spinners';
 
 const styles = {
   cardContainer: {
-    padding: "18px"
+    paddingTop: "0.5rem",
+    paddingBottom: "0.5rem",
+    paddingLeft: " 0.4rem",
+    paddingRight: "3rem"
   }
-
 }
 
 class Dashboard extends Component {

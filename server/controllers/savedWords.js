@@ -16,7 +16,7 @@ exports.getSavedWords = (params, res) => {
             order_id: parseInt(orderId)
           })
         })
-        dbo.collection(`KORN${storyClass}_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
+        dbo.collection(`${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
           if (err) throw err;
           res.json({
             savedVocab: voc_result,
