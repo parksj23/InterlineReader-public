@@ -74,7 +74,7 @@ class StoryText extends Component {
                           {plainText}
                         </Highlight>
                       )
-                      phraseArr.push(React.createElement('span', aSegment.style, childComponent))
+                      phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
                     }
                     textSection.map(phrase => {
                         let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
@@ -109,7 +109,7 @@ class StoryText extends Component {
                           {plainText}
                         </Highlight>
                       )
-                      phraseArr.push(React.createElement('span', aSegment.style, childComponent))
+                      phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
                     }
                     return (
                       <div key={"storySeg_" + index}>
@@ -126,14 +126,7 @@ class StoryText extends Component {
                         {aSegment.text}
                       </Highlight>
                     )
-                    return (
-                      <div key={"storySeg_" + index}>
-                        {
-                          //armaandh: Added font size changes here
-                          React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
-                        }
-                      </div>
-                    )
+                    return React.createElement('p', {style: aSegment.style}, childComponent)
                   }
                 })
               }

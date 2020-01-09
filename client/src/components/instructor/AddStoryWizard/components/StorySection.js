@@ -87,7 +87,7 @@ class StorySection extends Component {
   }
 
   onEditorStateChange = (editorState) => {
-
+    console.log(editorState)
     this.setState({
       editorState,
       saveDisabled: this.checkDisabled(this.state.storyForm) || !editorState.getCurrentContent().hasText()
@@ -112,6 +112,8 @@ class StorySection extends Component {
 
     stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">").replace(/(&amp;|&*nbsp;)/ugi, "");
 
+    console.log(stringToSave)
+
     if(this.doesStoryExist(this.state.storyForm).length > 0){
       //Warning
       console.log("Story Exist!")
@@ -120,10 +122,8 @@ class StorySection extends Component {
       if(this.state.storyForm.language !== "english") {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
 
-
         // Grab all text within <p> tags
-        stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
-
+        stringToSave.replace(/<(.+?)\/p>/ugi, (match, ci) => {
           //Grab all styles within tag
           ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
             let styles = c2.split(";")
@@ -136,14 +136,24 @@ class StorySection extends Component {
           })
           let cleanLine = [];
           //grab all text within <span> tag
-          ci.replace(/<span\b[^>]*>(.+?)<\/span>/ugi, (match, c3) => {
-            cleanLine.push(c3.replace("\\n", ""))
-          })
+          console.log(ci)
+          ci = ci.replace(/((p (.+?));">|(<span (.+?));">)|(<\/span>)|(<\/p>)|(<$)/ugi, "");
+            //(match, c3) => {
+            //console.log(c3)
+            //c3 = c3.replace("\\n", "")
+            //cleanLine.push(c3)
+          //})
+          cleanLine.push(ci)
+          //console.log(cleanLine)
+
+
 
           let styleObj = styleArr.reduce(function (acc, x) {
             for (var key in x) acc[key] = x[key];
             return acc;
           }, {});
+
+          console.log(styleObj)
 
           //join array with spaces, then capture all segments where a whtiespace from joining is not needed
           // such as a comma or period
@@ -189,8 +199,9 @@ class StorySection extends Component {
           textToSend.push(lineSegment)
         })
       }
-      this.props.addToStory(textToSend, this.state.storyForm);
-      this.props.addStoryInfo(this.state.storyForm);
+
+      //this.props.addToStory(textToSend, this.state.storyForm);
+      //this.props.addStoryInfo(this.state.storyForm);
     }
   }
 
@@ -369,7 +380,7 @@ class StorySection extends Component {
                           }}
                           handlePastedText={(text, html, editorState) => {
                             return false
-                          }} /> : this.state.storyForm.language === "korean" ?
+                          }} /> : this.state.storyForm.language === "modernKorean" ?
                         <Editor
                           editorState={editorState}
                           wrapperClassName="editor-wrapper"

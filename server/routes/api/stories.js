@@ -71,7 +71,7 @@ router.get('/:story/storyText', async (req, res, next) => {
 
             const findStoryKorean = () => {
                 return new Promise((resolve, reject) => {
-                    db.collection(`${storyName}_STORY_KOREAN`).find(query).toArray(function (err, story_result_korean) {
+                    db.collection(`${storyName}_STORY_MODERNKOREAN`).find(query).toArray(function (err, story_result_korean) {
                         if (err) reject(err);
                         resolve(story_result_korean);
                     })
