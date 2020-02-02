@@ -1,23 +1,25 @@
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
+const {ObjectId} = require('mongodb');
 const keys = require('../config/keys');
 const url = keys.mongoURI;
 const databaseName = keys.databaseName;
 
 exports.getSavedWords = (params, res) => {
-  let {userId, story, savedWords, storyClass} = params;
+  console.log(params)
+  let {userId, savedVocabIds, selectedLanguage} = params;
+  console.log(savedVocabIds)
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db(databaseName);
       let query = [];
-      if(savedWords && savedWords.length > 0) {
-        savedWords.map(orderId => {
-          query.push({
-            order_id: parseInt(orderId)
-          })
-        })
-        dbo.collection(`KORN${storyClass}_${story.toUpperCase()}_VOC`).find({$or: query}).toArray(function (err, voc_result) {
+      savedVocabIds.map(aVocabId => {
+        query.push(ObjectId(aVocabId))
+      })
+
+      if(savedVocabIds && savedVocabIds.length > 0) {
+        dbo.collection(`VOC_${selectedLanguage}_ALL`).find({"_id":{"$in": query}}).toArray(function (err, voc_result) {
           if (err) throw err;
           res.json({
             savedVocab: voc_result,
@@ -39,8 +41,6 @@ exports.getListOfSavedWords = (params, res) => {
         userId,
         storyId
       };
-      console.log(query)
-
       dbo.collection('USER_SAVED_VOCAB').find(query).toArray(function (err, voc_list) {
         // create a new document if not found
         if (err) throw err;

@@ -17,6 +17,7 @@ import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
 import Modal from '@material-ui/core/Modal'
 import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
+import story from "./components/story";
 
 class StoriesContainer extends Component {
   constructor(props){
@@ -47,8 +48,6 @@ class StoriesContainer extends Component {
 
   componentDidMount() {
     let pathname = this.props.location.pathname;
-    let paths = this.props.location.pathname.split("/")
-    let storyClass = paths.includes("410A") ? "410A" : "410B";
     let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
 
     let iframes = [].slice.apply(document.querySelectorAll('iframe'));
@@ -57,12 +56,16 @@ class StoriesContainer extends Component {
         anIframe.src = anIframe.src.split("&")[0]
       }
     }
-      this.props.initStory(storyTitle, storyClass).then(resp => {
-        this.props.getListOfSavedWords(this.props.userId, resp.storyInfo._id).then(resp => {
+    let storyInfo;
+      this.props.initStory(storyTitle).then(resp => {
+        storyInfo = resp.storyInfo
+        this.props.getListOfSavedWords(this.props.userId, storyInfo._id).then(resp => {
+          console.log(storyInfo)
+          console.log(resp.savedVocabIds);
           this.props.enableSideBarButton();
-          /*this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
+          this.props.getSavedWords(this.props.userId, storyInfo._id, resp.savedVocabIds, this.props.stories.selectedLanguage).then(resp => {
             this.props.disableLoading();
-          })*/
+          })
         })
     });
   }

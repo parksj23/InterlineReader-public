@@ -49,11 +49,9 @@ export const getListOfSavedWords = (userId, storyId) => dispatch => {
     userId,
     storyId
   }
-  console.log(params)
 
   return new Promise ((resolve, reject) => {
     resolve(axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
-      console.log(res)
       if (res.data) {
         dispatch({
           type: GET_LIST_OF_SAVED_WORDS,
@@ -66,15 +64,15 @@ export const getListOfSavedWords = (userId, storyId) => dispatch => {
 
 }
 
-export const getSavedWords = (userId, story, savedWords, storyClass) => dispatch => {
+export const getSavedWords = (userId, storyId, savedVocabIds, selectedLanguage) => dispatch => {
   const params = {
     userId,
-    story,
-    savedWords,
-    storyClass
+    storyId,
+    savedVocabIds,
+    selectedLanguage
   }
   return new Promise ((resolve,reject) => {
-    if(savedWords && savedWords.length > 0){
+    if(savedVocabIds && savedVocabIds.length > 0){
       resolve(axios.get(`/api/savedWords`, {params}).then(res=>{
          console.log(res.data)
         dispatch({
