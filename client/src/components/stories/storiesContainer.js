@@ -111,11 +111,10 @@ class StoriesContainer extends Component {
         anIframe.src = anIframe.src.split("&")[0]
       }
     }
-    let vocabList = this.props.stories.vocabList.vocabList;
     let params = {
       userId: this.props.userId,
-      storyTitle: this.props.stories.storyTitle,
-      vocabList
+      storyId: this.props.stories.storyInfo._id,
+      savedVocabIds: this.props.sideBar.savedVocabIds
     }
     this.props.updateSavedWords(params);
     if(this.props.analytics.sessions.length > 0)this.props.endGrammarSearchSession();

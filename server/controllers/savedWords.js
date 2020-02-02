@@ -67,21 +67,22 @@ exports.getListOfSavedWords = (params, res) => {
 }
 
 exports.updateSavedWords = (params,res) => {
-  let {userId,storyTitle, vocabList} = params;
-  if(userId && storyTitle) {
+  let {userId,storyId, savedVocabIds, savedWords} = params;
+  if(userId && storyId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db(databaseName);
       let query = {
-        userId: userId
+        userId: userId,
+        storyId: storyId
       };
-      dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
-          voc_list[0].vocabList = vocabList
-          console.log(voc_list[0])
-          dbo.collection(`USERS_${storyTitle.toUpperCase()}_SAVED_WORDS`).replaceOne(query,voc_list[0], {upsert:true});
+      dbo.collection('USER_SAVED_VOCAB').find(query).toArray(function (err, voc_list) {
+          let result = voc_list[0];
+          result.savedVocabIds = savedVocabIds;
+          dbo.collection('USER_SAVED_VOCAB').replaceOne(query,result, {upsert:true});
           if (err) throw err;
           res.json({
-            vocabList: voc_list[0],
+            savedVocabIds: savedVocabIds,
           });
           client.close();
         })

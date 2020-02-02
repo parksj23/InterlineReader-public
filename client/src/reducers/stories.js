@@ -38,24 +38,6 @@ export default (state = initialState, action) => {
         ...state,
         vocabList: action.payload
       }
-    case ADD_SAVED_WORD:
-      vocabList = state.vocabList;
-      vocabList.vocabList.push(action.payload.order_id)
-      return{
-        ...state,
-        vocabList,
-        openStatus: true,
-        statusMessage: "Added Vocab"
-      }
-    case DELETE_SAVED_WORD:
-      vocabList = state.vocabList;
-      vocabList.vocabList.splice(vocabList.vocabList.indexOf(action.payload.order_id),1)
-      return{
-        ...state,
-        vocabList,
-        openStatus: true,
-        statusMessage: "Deleted Vocab"
-      }
     case LEAVE_STORY:
       return {
         ...initialState
