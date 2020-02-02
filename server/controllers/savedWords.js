@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const url = keys.mongoURI;
+const databaseName = keys.databaseName;
 
 exports.getSavedWords = (params, res) => {
   let {userId, story, savedWords, storyClass} = params;
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("testdb");
+      var dbo = client.db(databaseName);
       let query = [];
       if(savedWords && savedWords.length > 0) {
         savedWords.map(orderId => {
@@ -29,43 +30,40 @@ exports.getSavedWords = (params, res) => {
 }
 
 exports.getListOfSavedWords = (params, res) => {
-  let {userId,story} = params;
-  if (userId) {
+  let {userId,storyId} = params;
+  if (userId && storyId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("testdb");
+      var dbo = client.db(databaseName);
       let query = {
-        userId
+        userId,
+        storyId
       };
+      console.log(query)
 
-      dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).find(query).toArray(function (err, voc_list) {
+      dbo.collection('USER_SAVED_VOCAB').find(query).toArray(function (err, voc_list) {
         // create a new document if not found
         if (err) throw err;
         if(voc_list.length == 0) {
-          dbo.collection(`USERS_${story.toUpperCase()}_SAVED_WORDS`).insert(
+          dbo.collection('USER_SAVED_VOCAB').insert(
             {
               userId: userId,
-              story: story,
-              vocabList: [-1]
+              storyId: storyId,
+              savedVocabIds: []
             })
           res.json({
-            vocabList: [-1],
+            savedVocabIds: [],
           });
         }
         else{
-          let vocabList = voc_list[0]
-          if( vocabList.vocabList === null) vocabList.vocabList = []
           res.json({
-            vocabList: voc_list[0],
+            savedVocabIds: voc_list[0].savedVocabIds,
           });
         }
         client.close();
       });
     })
   }
-
-
-
 }
 
 exports.updateSavedWords = (params,res) => {
@@ -73,7 +71,7 @@ exports.updateSavedWords = (params,res) => {
   if(userId && storyTitle) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("testdb");
+      var dbo = client.db(databaseName);
       let query = {
         userId: userId
       };
@@ -98,7 +96,7 @@ exports.deleteSavedWords = (params,res) => {
   if(userId && storyTitle) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("testdb");
+      var dbo = client.db(databaseName);
       let query = {
         userId
       };

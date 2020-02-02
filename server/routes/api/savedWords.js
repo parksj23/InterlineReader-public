@@ -23,7 +23,7 @@ router.get('/', (req, res, next) => {
 router.get('/getListOfSavedWords', (req, res, next) => {
   let params =  {
     userId: req.query.userId,
-    story: req.query.story
+    storyId: req.query.storyId
   }
   savedWords.getListOfSavedWords(params, res, next)
 });

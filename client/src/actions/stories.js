@@ -37,7 +37,6 @@ export const initStory = (storyTitle, className) => dispatch => {
     storyTitle,
     className
   }
-
   let payload = {};
   return new Promise( (resolve,reject) => {
     axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
@@ -71,14 +70,13 @@ export const initStory = (storyTitle, className) => dispatch => {
           }
         })
 
-        console.log(payload)
         dispatch({
           type: INIT_STORY,
           payload
         })
+        resolve(payload);
       })
     })
-    resolve(payload);
   })
 }
 

@@ -24,7 +24,9 @@ router.get('/:story', async (req, res, next) => {
         return new Promise((resolve, reject) => {
           db.collection(`STORY_KR_SUM`).find(query).limit(1).toArray(function (err, story_info) {
             if (err) reject(err);
-            resolve(story_info[0])
+            let storyInfo = story_info[0];
+            storyInfo._id = storyInfo._id.toString()
+            resolve(storyInfo)
           })
         })
       }

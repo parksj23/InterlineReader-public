@@ -44,19 +44,20 @@ export const toggleDrawer = (side, open) => dispatch => {
   })
 };
 
-export const getListOfSavedWords = (userId, story) => dispatch => {
+export const getListOfSavedWords = (userId, storyId) => dispatch => {
   let params = {
     userId,
-    story
+    storyId
   }
+  console.log(params)
 
   return new Promise ((resolve, reject) => {
     resolve(axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
-      console.log(res.data)
+      console.log(res)
       if (res.data) {
         dispatch({
           type: GET_LIST_OF_SAVED_WORDS,
-          payload: res.data.vocabList
+          payload: res.data.savedVocabIds
         })
       }
       return res.data

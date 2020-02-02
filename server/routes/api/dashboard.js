@@ -27,13 +27,25 @@ router.get("/", async (req, res, next) => {
                 let query = {
                   $or: storyNames
                 }
+                let aggregateParams = [
+                  {
+                    $match: query
+                  },
+                  {
+                  $project: {
+                    _id: {
+                      $toString: "$_id"
+                    }
+                  }
+                }]
 
                 db.collection(`STORY_KR_SUM`).find(query).toArray(function (err, result) {
                   if (err) reject(err);
                   const allStorySummary = []
                   result.map(aDoc => {
+                    
                     let storyResult = listOfStories.filter(aStory => aStory.storyName === aDoc.storyName)[0];
-                    storyResult = {...storyResult, ...aDoc}
+                    storyResult = {...storyResult, ...aDoc, _id: aDoc._id.toString()}
                     allStorySummary.push(storyResult)
                   })
                   resolve(allStorySummary);

@@ -33,11 +33,6 @@ export default (state = initialState, action) => {
         vocab: action.payload.vocab,
         grammar: action.payload.grammar,
       };
-    case GET_LIST_OF_SAVED_WORDS:
-      return {
-        ...state,
-        vocabList: action.payload
-      }
     case UPDATE_SAVED_WORDS:
       return {
         ...state,

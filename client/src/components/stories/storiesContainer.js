@@ -58,11 +58,11 @@ class StoriesContainer extends Component {
       }
     }
       this.props.initStory(storyTitle, storyClass).then(resp => {
-        this.props.getListOfSavedWords(this.props.userId, storyTitle).then(resp => {
+        this.props.getListOfSavedWords(this.props.userId, resp.storyInfo._id).then(resp => {
           this.props.enableSideBarButton();
-          this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
+          /*this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
             this.props.disableLoading();
-          })
+          })*/
         })
     });
   }
@@ -123,7 +123,7 @@ class StoriesContainer extends Component {
   }
 
   render() {
-    const {sideBar, stories, vocab} = this.props;
+    const {sideBar, stories} = this.props;
     let iframes = [].slice.apply(document.querySelectorAll('iframe'));
     for (let anIframe of iframes) {
       if (anIframe.src.startsWith("https://hypothes.is")) {
@@ -132,11 +132,15 @@ class StoriesContainer extends Component {
       }
     }
     let text;
+    let vocab;
+    let grammar;
     let searchWord = null;
     let title = "";
     let author = "";
     if(stories[this.state.selectedLanguage]) {
       text = stories[this.state.selectedLanguage].storyText
+      vocab = stories[this.state.selectedLanguage].vocabList;
+      grammar = stories[this.state.selectedLanguage].grammarList;
       switch(this.state.selectedLanguage){
         case 'MODKR':
           title = stories.storyInfo.titleKorn;
@@ -179,7 +183,7 @@ class StoriesContainer extends Component {
         </div>
         <div>
           {this.props.stories.storyInfo ?
-            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle}
+            <SideBar vocab={vocab} grammar={grammar} story={stories.storyTitle}
                      onResize={this.onResize}/> : null
           }
         </div>
@@ -199,7 +203,6 @@ class StoriesContainer extends Component {
 const mapStateToProps = state => (
   {
     stories: state.stories,
-    vocab: state.vocab,
     userId: state.auth.user.id,
     sideBar: state.sideBar,
     dashboard: state.dashboard,
