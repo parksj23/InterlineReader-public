@@ -81,7 +81,7 @@ class SideBarContainer extends Component {
                  handleAddVocab={this.handleAddVocab}
                  story={this.props.story}
                  openStatus={this.props.openStatus}
-                 statusMessage={this.props.statusMessage}
+                 statusMessage={this.props.sideBar.statusMessage}
                  handleStatusClose={this.props.handleStatusClose}
                  handleTabChange={this.handleTabChange.bind(this)}
                  storyInfo={this.props.stories.storyInfo}
@@ -97,7 +97,6 @@ const mapStateToProps = state => (
     stories: state.stories,
     userId: state.auth.user.id,
     openStatus: state.stories.openStatus,
-    statusMessage: state.stories.statusMessage,
     sideBar: state.sideBar,
     auth: state.auth
   }

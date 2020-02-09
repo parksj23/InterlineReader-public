@@ -2,19 +2,19 @@ const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const url = keys.mongoURI;
-const ObjectID = require("mongodb").ObjectID
+const ObjectID = require("mongodb").ObjectID;
+const databaseName = keys.databaseName;
 
 exports.initialize = (req,res,next) => {
   try {
     MongoClient.connect(url, async function (err, client) {
       let allStories ={};
-      const db = client.db("testdb");
+      const db = client.db(databaseName);
       const findAllStories = () => {
         return new Promise((resolve,reject) => {
           db.collection(`STORY_LIST`).find().toArray(function (err, documents) {
             if (err) reject(err);
             allStories = documents;
-            console.log(allStories)
             resolve(allStories);
           });
         });
@@ -28,14 +28,14 @@ exports.initialize = (req,res,next) => {
     next(err);
   }
 }
-
+ 
 exports.addNewStory = (req, res) => {
 
   const {text, storyInfo} = req;
   if (text && storyInfo) {
     MongoClient.connect(url, function (err, client) {
         if (err) throw err;
-        var dbo = client.db("testdb");
+        var dbo = client.db(databaseName);
         dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
           if (success.result.ok) {
             dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
@@ -58,17 +58,29 @@ exports.addNewStory = (req, res) => {
 
 exports.addStoryInfo = (req, res) => {
   if (req) {
-    let language = req.storyInfo.language
-    delete req.storyInfo.language
+    let {language, storyName, instructor, region, createdDate, lastUpdated} = req.storyInfo;
+    let query = {
+      storyName,
+      class: req.storyInfo.class,
+      instructor,
+      region
+    }
 
+    let storyInfo = {
+      ...query,
+      createdDate,
+      lastUpdated
+    }
+    console.log(query);
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("testdb");
-      dbo.collection(`STORY_LIST`).find(req.storyInfo).toArray(function (err, document) {
-
+      var dbo = client.db(databaseName);
+      dbo.collection(`STORY_LIST`).find(query).toArray(function (err, document) {
           if (document.length === 0) {
-            req.storyInfo[language] = true
-            dbo.collection(`STORY_LIST`).insertOne(req.storyInfo).then(success => {
+            let languages = []
+            languages.push(language)
+            storyInfo["languages"] = languages
+            dbo.collection(`STORY_LIST`).insertOne(storyInfo).then(success => {
               if (success.result.ok) {
                 res.json({
                   status: 'success'
@@ -85,11 +97,13 @@ exports.addStoryInfo = (req, res) => {
           }
           else {
             let oldDoc = document[0]
-            let updateField = {}
-            updateField[language] = true
-            dbo.collection(`STORY_LIST`).replaceOne(oldDoc, {$set: updateField}, {upsert:true}).then(success => {
+            delete oldDoc._id;
+            let languages = oldDoc.languages;
+            if(languages.indexOf(language) === -1) languages.push(language)
+            oldDoc["languages"] = languages
+            dbo.collection(`STORY_LIST`).replaceOne(query,oldDoc, {upsert:true}).then(success => {
               if (success.result.ok) {
-                res.json({
+                res.json({  
                   status: 'success'
                 });
                 client.close();
@@ -108,10 +122,7 @@ exports.addStoryInfo = (req, res) => {
         }
       )
     })
-
   }
-
-
 }
 
 exports.getAllStories = (req, res) => {
@@ -120,7 +131,7 @@ exports.getAllStories = (req, res) => {
     return new Promise((resolve, reject) => {
       MongoClient.connect(url, function (err, client) {
         if (err) throw err;
-        var dbo = client.db("testdb");
+        var dbo = client.db(databaseName);
         var query = {};
         dbo.collection(`STORY_LIST`).find(query).toArray(function (err, documents) {
           if (err) throw err;
@@ -138,7 +149,7 @@ exports.getAllStories = (req, res) => {
 exports.renameCollections = (req,res) => {
   MongoClient.connect(url, function (err, client) {
       if (err) throw err;
-      let dbo = client.db("testdb");
+      let dbo = client.db(databaseName);
       console.log(req)
       let oldName = req.oldName;
       let newName = oldName.substring(9)
@@ -203,7 +214,7 @@ exports.getGrammar = (req,res) => {
 exports.addVocab =(req, res, next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    var dbo = client.db("testdb");
+    var dbo = client.db(databaseName);
     let {vocab, storyTitle} = req
 
     dbo.collection(`${storyTitle.toUpperCase()}_VOC`).updateMany({"order_id": {$gte:vocab.order_id}}, {$inc:{"order_id": 1}}, function(err, result){
@@ -230,7 +241,7 @@ exports.addVocab =(req, res, next) => {
 exports.addGrammar =(req, res, next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    var dbo = client.db("testdb");
+    var dbo = client.db(databaseName);
     let {grammar, storyTitle} = req
 
     dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).updateMany({"order_id": {$gte:grammar.order_id}}, {$inc:{"order_id": 1}}, function(err, result){
@@ -248,7 +259,7 @@ exports.addGrammar =(req, res, next) => {
 exports.updateVocab =(req,res,next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    var dbo = client.db("testdb");
+    var dbo = client.db(databaseName);
     let {vocab, storyTitle} = req
     let query = {
       "_id": ObjectID(vocab._id)
@@ -274,7 +285,7 @@ exports.updateVocab =(req,res,next) => {
 exports.deleteVocab = (req, res, next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    var dbo = client.db("testdb");
+    var dbo = client.db(databaseName);
     let {vocab, storyTitle} = req
     let query = {
       "_id": ObjectID(vocab._id)
@@ -293,7 +304,7 @@ exports.deleteVocab = (req, res, next) => {
 exports.updateGrammar =(req,res,next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    var dbo = client.db("testdb");
+    var dbo = client.db(databaseName);
     let {grammar, storyTitle} = req
     let query = {
       "_id": ObjectID(grammar._id)
@@ -318,7 +329,7 @@ exports.updateGrammar =(req,res,next) => {
 exports.deleteGrammar = (req, res, next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    var dbo = client.db("testdb");
+    var dbo = client.db(databaseName);
     let {grammar, storyTitle} = req
     let query = {
       "_id": ObjectID(grammar._id)

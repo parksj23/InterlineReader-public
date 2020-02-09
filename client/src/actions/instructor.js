@@ -207,17 +207,13 @@ export const addToStory = (text,storyInfo) => dispatch => {
       }
     })
   })
-
-
-
-
-
 }
 
 export const addStoryInfo = (storyInfo) => dispatch => {
   let params = {
     storyInfo
   }
+  console.log(storyInfo)
   axios.put('/api/instructor/addStoryInfo', params).then(res => {
     dispatch({
       type: ADD_STORY_INFO,

@@ -23,26 +23,23 @@ import Tab from '@material-ui/core/Tab';
 import MenuItem from '@material-ui/core/MenuItem';
 import StatusMessage from '../../../common/statusMessage/statusMessage';
 
-
 const styleProperties = {
   "text-align": "textAlign",
   "font-family": "fontFamily",
   "font-size": "fontSize"
-
-
 }
 
 const languages = [
   {
-    value: "modernKorean",
+    value: "MODKR",
     label: "Modern Korean"
   },
   {
-    value: "english",
+    value: "ENGSH",
     label: "English"
   },
   {
-    value: "middleKorean",
+    value: "MIDKR",
     label: "Middle Korean"
   },
   {
@@ -51,16 +48,6 @@ const languages = [
   }
 ]
 
-const classes = [
-  {
-    value: "410A",
-    label: "410A"
-  },
-  {
-    value: "410B",
-    label: "410B"
-  }
-]
 
 class StorySection extends Component {
   constructor(props) {
@@ -69,40 +56,19 @@ class StorySection extends Component {
     this.state = {
       editorState: EditorState.createEmpty(),
       tabValue: 0,
-      storyForm: {
-        authorKorn: "",
-        authorRom: "",
-        titleKorn: "",
-        titleRom: "",
-        titleEng: "",
-        storyName: "",
-        class: "410B",
-        language: "korean",
-      },
       previewLabel: "korean",
       openStatus: false,
       statusMessage: "",
-      saveDisabled: true
+      saveDisabled: true,
+      language: "ENGSH"
     };
   }
 
   onEditorStateChange = (editorState) => {
-
     this.setState({
-      editorState,
-      saveDisabled: this.checkDisabled(this.state.storyForm) || !editorState.getCurrentContent().hasText()
+      editorState
     });
   };
-
-  checkDisabled = (storyForm) => {
-    let keys = Object.keys(storyForm)
-    for(let aKey of keys){
-      if (!storyForm[aKey]){
-        return true
-      }
-    }
-    return false
-  }
 
   handleOnSave = () => {
     let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())).replace("<br/>", "\\n");
@@ -117,10 +83,8 @@ class StorySection extends Component {
       console.log("Story Exist!")
     }
     else {
-      if(this.state.storyForm.language !== "english") {
+      if(this.state.language !== "ENGSH") {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
-
-
         // Grab all text within <p> tags
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
 
@@ -189,8 +153,15 @@ class StorySection extends Component {
           textToSend.push(lineSegment)
         })
       }
-      this.props.addToStory(textToSend, this.state.storyForm);
-      this.props.addStoryInfo(this.state.storyForm);
+      let createdDate = new Date()
+      let storyForm = this.props.storyForm;
+      storyForm["instructor"]= this.props.instructorId
+      storyForm.language = this.state.language;
+      storyForm.createdDate = createdDate;
+      storyForm.lastUpdated = createdDate
+      console.log(storyForm)
+      this.props.addStoryInfo(storyForm);
+      //this.props.addToStory(textToSend, this.props.storyForm); 
     }
   }
 
@@ -199,23 +170,12 @@ class StorySection extends Component {
   }
 
   handleOnChangeField = name => event => {
-    let storyForm = this.state.storyForm;
     let language = null;
-    storyForm[name] = event.target.value
-    if(name ==="titleRom") {
-      storyForm["storyName"] = event.target.value.toLowerCase();
-    }
-
-    else if (name ==="language"){
       language = languages.find(function(aLanguage,index){
         return(aLanguage.value === event.target.value)
       })
-    }
     this.setState({
-      storyForm,
-      saveDisabled: this.checkDisabled(storyForm) || this.state.editorState.getCurrentContent().hasText(),
-      language: language && language.label
-
+      language: language && language.value
     })
   }
 
@@ -253,96 +213,25 @@ class StorySection extends Component {
                 <Tab label="PREVIEW"/>
               </Tabs>
             </Grid>
+            {
             <Grid item xs={2}>
-              <Button key={this.props.key} className={'story-section-save-button'} style={{float: "right"}} onClick={() => this.handleOnSave()} disabled={this.state.saveDisabled}>Save</Button>
+              <Button key={this.props.key} 
+                className={'story-section-save-button'} 
+                style={{float: "right"}} 
+                onClick={() => this.handleOnSave()} 
+                disabled={false}>Save
+              </Button>
             </Grid>
+            }
           </Grid>
-          {
-            tabValue === 0 ?
-              <Grid container>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-name"
-                    label="Story Title"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("titleKorn")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-author"
-                    label="Story Author"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("authorKorn")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    id="story-class"
-                    select
-                    label="Class"
-                    value={this.state.storyForm.class}
-                    onChange={this.handleOnChangeField('class')}
-                    margin="normal"
-                    style={{width: "100%"}}
-                  >
-                    {classes.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-name-romanization"
-                    label="Story Name (Romanization)"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("titleRom")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-author-romanize"
-                    label="Story Author (Romanization)"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("authorRom")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-title-english"
-                    label="Story Title (English)"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("titleEng")}
-                    style={{whiteSpace: "noWrap"}}
-
-                  />
-                </Grid>
-                <Grid item xs={3}>
+              { tabValue === 0 ?
+                <Grid container>
+              <Grid item xs={3}>
                   <TextField
                     id="story-language"
                     select
                     label="Language"
-                    value={this.state.storyForm.language}
+                    value={this.state.language}
                     onChange={this.handleOnChangeField('language')}
                     helperText="Please select your Language"
                     margin="normal"
@@ -353,12 +242,11 @@ class StorySection extends Component {
                       </MenuItem>
                     ))}
                   </TextField>
-                </Grid>
-
-                <Grid item xs={12}>
+                  <Grid item xs={12} /> 
+              </Grid>
                   <div>
                     {
-                      this.state.storyForm.language === "english" ?
+                      this.state.language === "ENGSH" ?
                         <Editor
                           editorState={editorState}
                           wrapperClassName="editor-wrapper"
@@ -369,7 +257,7 @@ class StorySection extends Component {
                           }}
                           handlePastedText={(text, html, editorState) => {
                             return false
-                          }} /> : this.state.storyForm.language === "korean" ?
+                          }} /> : this.state.language === "MODKR" ?
                         <Editor
                           editorState={editorState}
                           wrapperClassName="editor-wrapper"
@@ -386,7 +274,7 @@ class StorySection extends Component {
                               dropdownClassName: undefined,
                             }
                           }}
-                        /> : this.state.storyForm.language === "middleKorean" ?
+                        /> : this.state.language === "MIDKR" ?
                           <Editor
                             editorState={editorState}
                             wrapperClassName="editor-wrapper"
@@ -424,7 +312,6 @@ class StorySection extends Component {
 
                     }
                   </div>
-                </Grid>
               </Grid> :
               <div style={{overflow: 'scroll'}}>
                 <div>
@@ -437,18 +324,11 @@ class StorySection extends Component {
                   </div>
                 </div>
               </div>
-
           }
         <StatusMessage status="success" open={this.props.instructor.addNewStory} message={this.props.instructor.addNewStoryMessage} handleClose={this.props.handleStatusClose}/>
       </div>
-
-
     )
-
-
   }
-
-
 }
 
 const mapStateToProps = state => ({

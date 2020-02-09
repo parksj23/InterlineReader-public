@@ -3,12 +3,13 @@ const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../../config/keys');
 const url = keys.mongoURI;
+const databaseName = keys.databaseName;
 
 router.get("/", async (req, res, next) => {
     try {
         MongoClient.connect(url, async function (err, client) {
             let allStories ={};
-            const db = client.db("interlineReaderTestDb");
+            const db = client.db(databaseName);
             const findAllStories = () => {
                 return new Promise((resolve,reject) => {
                     db.collection(`STORY_LIST`).find().toArray(function (err, documents) {
@@ -27,18 +28,7 @@ router.get("/", async (req, res, next) => {
                 let query = {
                   $or: storyNames
                 }
-                let aggregateParams = [
-                  {
-                    $match: query
-                  },
-                  {
-                  $project: {
-                    _id: {
-                      $toString: "$_id"
-                    }
-                  }
-                }]
-
+                
                 db.collection(`STORY_KR_SUM`).find(query).toArray(function (err, result) {
                   if (err) reject(err);
                   const allStorySummary = []

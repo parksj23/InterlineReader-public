@@ -114,7 +114,8 @@ class StoriesContainer extends Component {
     let params = {
       userId: this.props.userId,
       storyId: this.props.stories.storyInfo._id,
-      savedVocabIds: this.props.sideBar.savedVocabIds
+      savedVocabIds: this.props.sideBar.savedVocabIds,
+      savedWords: this.props.sideBar.savedWords
     }
     this.props.updateSavedWords(params);
     if(this.props.analytics.sessions.length > 0)this.props.endGrammarSearchSession();

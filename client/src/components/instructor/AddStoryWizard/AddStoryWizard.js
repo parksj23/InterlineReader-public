@@ -3,8 +3,6 @@
   TODO: Create another preview tab so user cans witch between english and korean previews
   TODO: Cleanly unmount componeont
 */
-
-
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -13,11 +11,13 @@ import StatusMessage from '../../common/statusMessage/statusMessage';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style/AddStoryWizard.css';
 import {EditorState, convertToRaw} from 'draft-js';
-import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import {addToStory, addStoryInfo,handleStatusClose} from '../../../actions/instructor';
 import {connect} from 'react-redux';
 import StorySection from './components/StorySection';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 
 const styleProperties = {
@@ -26,6 +26,16 @@ const styleProperties = {
   "font-size": "fontSize"
 }
 
+const classes = [
+  {
+    value: "410A",
+    label: "410A"
+  },
+  {
+    value: "410B",
+    label: "410B"
+  }
+]
 
 class AddStoryWizard extends Component {
   constructor(props) {
@@ -42,7 +52,9 @@ class AddStoryWizard extends Component {
         titleEng: "",
         storyName: "",
         class: "410B",
-        language: "korean",
+        language: "ENGSH",
+        region: "KR",
+        instructor: ""
       },
       openStatus: false,
       statusMessage: "",
@@ -51,6 +63,15 @@ class AddStoryWizard extends Component {
     };
   }
 
+  onComponentDidMount = () => {
+    this.setState({
+      storyForm: {
+        ...this.state.storyForm,
+        instructor: this.props.instructorId
+      }
+    })
+  }
+  
   onEditorStateChange = (editorState) => {
 
     this.setState({
@@ -82,10 +103,8 @@ class AddStoryWizard extends Component {
       console.log("Story Exist!")
     }
     else {
-      if(this.state.storyForm.language !== "english") {
+      if(this.state.storyForm.language !== "ENGSH") {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
-
-
         // Grab all text within <p> tags
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
 
@@ -124,7 +143,8 @@ class AddStoryWizard extends Component {
           textToSend.push({
             text: finalText,
             order_id,
-            style: styleObj
+            style: styleObj,
+            language: this.state.storyForm.language
           })
           order_id++
         })
@@ -154,8 +174,10 @@ class AddStoryWizard extends Component {
           textToSend.push(lineSegment)
         })
       }
-      this.props.addToStory(textToSend, this.state.storyForm);
-      this.props.addStoryInfo(this.state.storyForm);
+  
+      //this.props.addToStory(textToSend, this.state.storyForm);
+      console.log(this.state.storyForm)
+      //this.props.addStoryInfo(this.state.storyForm);
     }
   }
 
@@ -171,8 +193,7 @@ class AddStoryWizard extends Component {
     }
     this.setState({
       storyForm,
-      saveDisabled: this.checkDisabled(storyForm) || this.state.editorState.getCurrentContent().hasText()
-
+      saveDisabled: this.checkDisabled(storyForm) || this.state.editorState.getCurrentContent().hasText(),
     })
   }
 
@@ -185,7 +206,6 @@ class AddStoryWizard extends Component {
   handleSaveAll =() => {
     let sectionSaveButtons = document.getElementsByClassName('story-section-save-button');
     for(let aSection of sectionSaveButtons){
-      console.log(aSection)
       aSection.click();
     }
   }
@@ -210,7 +230,7 @@ class AddStoryWizard extends Component {
     let sections = []
 
     for(let i = 0; i < this.state.numOfSections ; i++){
-      sections.push(<StorySection key={`story-section-${i}`}/>);
+      sections.push(<StorySection isFirst={i===0}  key={`story-section-${i}`} storyForm={this.state.storyForm} instructorId={this.props.instructorId}/>);
       sections.push(<SectionDivider key={i}/>);
     }
     return sections;
@@ -229,6 +249,85 @@ class AddStoryWizard extends Component {
             </Grid>
           </Grid>
         </div>
+        <Grid container>
+          <Grid item xs={3}>
+            <TextField
+              required
+              id="story-name"
+              label="Story Title"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleOnChangeField("titleKorn")}
+              style={{whiteSpace: "noWrap"}}
+            />
+          </Grid>
+          <Grid item xs={1}/>
+          <Grid item xs={3}>
+            <TextField
+              required
+              id="story-author"
+              label="Story Author"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleOnChangeField("authorKorn")}
+              style={{whiteSpace: "noWrap"}}
+            />
+          </Grid>
+          <Grid item xs={1}/>
+          <Grid item xs={3}>
+            <TextField
+              id="story-class"
+              select
+              label="Class"
+              value={this.state.storyForm.class}
+              onChange={this.handleOnChangeField('class')}
+              margin="normal"
+              style={{width: "100%"}}
+            >
+              {classes.map(option => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              required
+              id="story-name-romanization"
+              label="Story Name (Romanization)"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleOnChangeField("titleRom")}
+              style={{whiteSpace: "noWrap"}}
+            />
+          </Grid>
+          <Grid item xs={1}/>
+          <Grid item xs={3}>
+            <TextField
+              required
+              id="story-author-romanize"
+              label="Story Author (Romanization)"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleOnChangeField("authorRom")}
+              style={{whiteSpace: "noWrap"}}
+            />
+          </Grid>
+          <Grid item xs={1}/>
+          <Grid item xs={3}>
+            <TextField
+              required
+              id="story-title-english"
+              label="Story Title (English)"
+              margin="normal"
+              variant="outlined"
+              onChange={this.handleOnChangeField("titleEng")}
+              style={{whiteSpace: "noWrap"}}
+
+            />
+          </Grid>
+        </Grid>
         {this.renderStorySections()}
       </div>
 
@@ -242,7 +341,8 @@ class AddStoryWizard extends Component {
 }
 
 const mapStateToProps = state => ({
-  instructor: state.instructor
+  instructor: state.instructor,
+  instructorId: state.auth.user.id
 });
 
 const mapDispatchToProps = ({

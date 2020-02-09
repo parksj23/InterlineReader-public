@@ -49,7 +49,6 @@ export const getListOfSavedWords = (userId, storyId) => dispatch => {
     userId,
     storyId
   }
-
   return new Promise ((resolve, reject) => {
     resolve(axios.get(`/api/savedWords/getListOfSavedWords`, {params}).then(res=> {
       if (res.data) {
