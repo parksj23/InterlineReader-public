@@ -90,7 +90,7 @@ class AddStoryWizard extends Component {
     return false
   }
 
-  handleOnSave = () => {
+  /*handleOnSave = () => {
     let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())).replace("<br/>", "\\n");
     let textToSend = [];
     let order_id = 1;
@@ -179,7 +179,7 @@ class AddStoryWizard extends Component {
       console.log(this.state.storyForm)
       //this.props.addStoryInfo(this.state.storyForm);
     }
-  }
+  } */
 
   handleOnChangeTab = (event, value) => {
     this.setState({tabValue: value});
@@ -231,7 +231,6 @@ class AddStoryWizard extends Component {
 
     for(let i = 0; i < this.state.numOfSections ; i++){
       sections.push(<StorySection isFirst={i===0}  key={`story-section-${i}`} storyForm={this.state.storyForm} instructorId={this.props.instructorId}/>);
-      sections.push(<SectionDivider key={i}/>);
     }
     return sections;
   }
@@ -328,13 +327,11 @@ class AddStoryWizard extends Component {
             />
           </Grid>
         </Grid>
+        <Grid container>
         {this.renderStorySections()}
+        </Grid>
       </div>
-
-
     )
-
-
   }
 
 

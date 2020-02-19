@@ -22,11 +22,16 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import MenuItem from '@material-ui/core/MenuItem';
 import StatusMessage from '../../../common/statusMessage/statusMessage';
+import '../style/StorySection.css'
 
 const styleProperties = {
   "text-align": "textAlign",
   "font-family": "fontFamily",
   "font-size": "fontSize"
+}
+
+const editorStyleMap = {
+  "fontFamily:": "source-han-serif-korean"
 }
 
 const languages = [
@@ -62,9 +67,11 @@ class StorySection extends Component {
       saveDisabled: true,
       language: "ENGSH"
     };
+
   }
 
   onEditorStateChange = (editorState) => {
+    console.log(EditorState)
     this.setState({
       editorState
     });
@@ -72,6 +79,7 @@ class StorySection extends Component {
 
   handleOnSave = () => {
     let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())).replace("<br/>", "\\n");
+    let storyForm = this.props.storyForm;
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
@@ -87,9 +95,9 @@ class StorySection extends Component {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
         // Grab all text within <p> tags
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
-
           //Grab all styles within tag
           ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
+            console.log(c2)
             let styles = c2.split(";")
             styles.map(aStyleProp => {
               let propArr = aStyleProp.split(':');
@@ -114,7 +122,6 @@ class StorySection extends Component {
           let finalText = cleanLine.filter(segment => segment !== " ").join(" ").replace(/([\u3131-\uD79D]\s[^\w\s|^\u3131-\uD79D])/ugi, (match, c4)=>{
             return c4.replace(/\s+/, "").trim()
           })
-
           // handle whitespace around quotations
           finalText = finalText.replace(/[\s]"\s/ugi, (match, c5)=>{
             return ' "'
@@ -123,12 +130,14 @@ class StorySection extends Component {
           textToSend.push({
             text: finalText,
             order_id,
-            style: styleObj
+            style: styleObj,
+            language: this.state.language
           })
           order_id++
         })
       }
       else{
+        
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           let lineSegment = {};
           match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
@@ -150,18 +159,20 @@ class StorySection extends Component {
             lineSegment["order_id"] = order_id
             order_id++
           })
-          textToSend.push(lineSegment)
+          textToSend.push({
+            ...lineSegment, 
+            language: this.state.language
+          })
         })
       }
       let createdDate = new Date()
-      let storyForm = this.props.storyForm;
       storyForm["instructor"]= this.props.instructorId
       storyForm.language = this.state.language;
       storyForm.createdDate = createdDate;
       storyForm.lastUpdated = createdDate
-      console.log(storyForm)
+      console.log(textToSend)
       this.props.addStoryInfo(storyForm);
-      //this.props.addToStory(textToSend, this.props.storyForm); 
+      this.props.addToStory(textToSend, storyForm); 
     }
   }
 
@@ -175,7 +186,8 @@ class StorySection extends Component {
         return(aLanguage.value === event.target.value)
       })
     this.setState({
-      language: language && language.value
+      language: language && language.value,
+      editorState: EditorState.createEmpty()
     })
   }
 
@@ -196,9 +208,10 @@ class StorySection extends Component {
   }
 
   render() {
+    console.log(this.state.editorState)
     const {editorState, tabValue} = this.state;
     return (
-      <div className={'addStoryContainer'}>
+      <div style={{marginBottom: "56px"}}>
           <Grid container>
             <Grid item xs={2}/>
             <Grid item xs={8}>
@@ -244,6 +257,12 @@ class StorySection extends Component {
                   </TextField>
                   <Grid item xs={12} /> 
               </Grid>
+              <Grid item xs={9}>
+              <div style={{display: "flex", "textAlign": "center", justifyContent: "center", height: "100%", flexDirection: "column"}}>
+                  <p style={{color: "red", fontSize: "0.75em"}}>For Modern Korean stoaries please manually select 
+                  "Source-Han-Serif-Korean" after copying and pasting contents from Microsoft Word</p>
+                </div>
+              </Grid>
                   <div>
                     {
                       this.state.language === "ENGSH" ?
@@ -260,19 +279,24 @@ class StorySection extends Component {
                           }} /> : this.state.language === "MODKR" ?
                         <Editor
                           editorState={editorState}
-                          wrapperClassName="editor-wrapper"
-                          editorClassName="editor-editor"
+                          wrapperClassName="wrapper-editor-modkr"
+                          editorClassName="editor-modkr"
+                          customStyleMap={editorStyleMap}
                           onEditorStateChange={this.onEditorStateChange}
                           localization={{
                             locale: 'ko',
                           }}
                           toolbar={{
                             fontFamily: {
-                              options: ['NanumBarunGothic YetHangul','Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+                              options: ['source-han-serif-korean','NanumBarunGothic YetHangul'],
                               className: undefined,
                               component: undefined,
                               dropdownClassName: undefined,
                             }
+            
+                          }}
+                          editorStyle={{
+                            fontFamily: "source-han-serif-korean !important"
                           }}
                         /> : this.state.language === "MIDKR" ?
                           <Editor
@@ -309,6 +333,7 @@ class StorySection extends Component {
                               }
                             }}
                           />
+                    
 
                     }
                   </div>
@@ -317,7 +342,7 @@ class StorySection extends Component {
                 <div>
                   <h2>Preview {this.state.language  ? " - " + this.state.language : ""}</h2>
                 </div>
-                <Divider/>
+                <Divider style={{color: "black", height: "8px"}}/>
                 <div style={{overflow: 'hidden'}}>
                   <div className={'preview-container'}>
                     {ReactHtmlParser(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
@@ -326,6 +351,7 @@ class StorySection extends Component {
               </div>
           }
         <StatusMessage status="success" open={this.props.instructor.addNewStory} message={this.props.instructor.addNewStoryMessage} handleClose={this.props.handleStatusClose}/>
+        <Divider/>
       </div>
     )
   }

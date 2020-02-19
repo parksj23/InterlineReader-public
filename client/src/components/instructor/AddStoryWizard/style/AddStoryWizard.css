@@ -14,9 +14,10 @@
 }
 
 .editor-editor{
-    border: 1px solid #F1F1F1 !important;
+    border: 2px solid #FAFAFA !important;
+    background-color: #F1F1F1;
     border-radius: 2px !important;
-    height: 80% !important;
+    height: 80%;
 }
 
 .editor-wrapper{

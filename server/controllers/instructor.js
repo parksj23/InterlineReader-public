@@ -36,23 +36,32 @@ exports.addNewStory = (req, res) => {
     MongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var dbo = client.db(databaseName);
-        dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
-          if (success.result.ok) {
-            dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
+        var query = {
+          language: text[0].language
+        }
+        dbo.collection(`TEXT_${storyInfo.storyName.toUpperCase()}`).deleteMany(query).then(success => {
+          if(success){
+            dbo.collection(`TEXT_${storyInfo.storyName.toUpperCase()}`).insertMany(text).then(success => {
               res.json({
                 status: 200
               });
             })
           }
-          else {
+          else{
             res.json({
-              status: 'fail'
+              status: 500,
+              message: "Error updating story"
             });
           }
-          client.close()
-        });
-      }
-    )
+          dbo.close();
+        })
+    })
+  }
+  else {
+    res.json({
+      status: 500,
+      message: "Text or StoryInfo is null"
+    })
   }
 }
 
