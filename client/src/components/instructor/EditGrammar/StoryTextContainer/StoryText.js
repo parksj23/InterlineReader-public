@@ -83,7 +83,7 @@ class StoryText extends Component {
             <Divider style={{marginBottom: "0.5rem"}}/>
             <div style={{fontFamily: this.props.language === 'middleKorean' ? "NanumBarunGothicOTF YetHangul" : "inherit"}}>
               {
-                this.props.editGrammar.storyTextKorn.map((aSegment, index) => {
+                this.props.editGrammar.MODKR.storyText.map((aSegment, index) => {
                   let text = aSegment.text
                   let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
 

@@ -16,6 +16,7 @@ import Divider from '@material-ui/core/Divider';
 import Paper from '@material-ui/core/Paper';
 import axios from 'axios';
 import "./style/instructor.css";
+import StoryList from './Common/StoryList/StoryList';
 
 class InstructorContainer extends Component {
   constructor(props){
@@ -26,7 +27,7 @@ class InstructorContainer extends Component {
   }
 
   componentWillMount(){
-    this.props.initInstructor();
+    this.props.initInstructor(this.props.storyList);
     this.props.disableSideBarButton();
   }
 
@@ -84,7 +85,8 @@ class InstructorContainer extends Component {
 
 const mapStateToProps = state => ({
   selected: state.instructor.selectedMenu,
-  headerName: state.instructor.headerName
+  headerName: state.instructor.headerName,
+  storyList: state.app.storyList
 });
 
 const mapDispatchToProps = ({

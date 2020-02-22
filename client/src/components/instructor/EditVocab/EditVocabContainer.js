@@ -23,7 +23,7 @@ class EditVocabularyContainer extends Component {
   }
 
   renderStoryList = () => {
-    return <StoryList storyList={this.props.instructor.storyList} component={'editVocab'}/>
+    return <StoryList storyList={this.props.storyList} component={'editVocab'}/>
   }
 
   render() {
@@ -43,7 +43,8 @@ class EditVocabularyContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  instructor: state.instructor
+  instructor: state.instructor,
+  storyList: state.app.storyList
 });
 
 const mapDispatchToProps = ({

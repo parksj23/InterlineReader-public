@@ -100,7 +100,7 @@ class StoryText extends Component {
             </div>
             <Divider style={{marginBottom: "0.5rem"}}/>
             {
-              this.props.editVocab.storyTextKorn.map((aSegment, index) => {
+              this.props.editVocab.MODKR.storyText.map((aSegment, index) => {
                 let text = aSegment.text
                 let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
 

@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import app from './app';
 import auth from './auth';
 import errors from './error';
 import about from './about';
@@ -11,6 +12,7 @@ import analytics from './analytics'
 
 
 export default combineReducers({
+  app,
   auth,
   errors,
   about,

@@ -226,24 +226,73 @@ exports.addVocab =(req, res, next) => {
     var dbo = client.db(databaseName);
     let {vocab, storyTitle} = req
 
-    dbo.collection(`${storyTitle.toUpperCase()}_VOC`).updateMany({"order_id": {$gte:vocab.order_id}}, {$inc:{"order_id": 1}}, function(err, result){
-      if (err) throw err
-      console.log(result)
-      dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertOne(vocab, function(err,result){
-        if(err) throw err
-        res.send({
-          vocab
+    // TODO - Get order of vocab from story and insert id in correct place to preserve ordering
+    // TODO - insert entry into VOC_MODKRs 
+    let storyIdquery = {
+      storyName: storyTitle
+    }
+    
+    
+    dbo.collection(`STORY_LIST_COPY`).find(storyIdquery).toArray(function(err, storyResult) {
+      if(err) throw(err);
+      if(storyResult.length === 0) throw(`Cannot find story for storyTitle: ${storyTitle}`);
+      console.log("StoryResult: ")
+      console.log(storyResult[0])
+      let storyId = storyResult[0]._id;
+      let vocabOrderQuery = {
+        storyId
+      }
+      let vocabQuery = {
+        korean: vocab.korean
+      }
+      console.log(vocab)
+
+      dbo.collection(`VOC_MODKR_ALL_COPY`).find(vocabQuery).toArray(function(err, vocabResult) {
+        if(err) throw(err);
+        console.log(vocabResult)
+        let newVocabEntry
+        if(vocabResult.length === 0) {
+          newVocabEntry = vocab
+          let storyList = [];
+          storyList.push(storyId)
+          newVocabEntry["storyList"] = storyList;
+          newVocabEntry["createdDate"] = new Date();
+          newVocabEntry["lastUpdated"] = new Date();
+        }
+        else {
+          newVocabEntry = vocabResult[0]
+          newVocabEntry = {
+            ...newVocabEntry,
+            ...vocab,
+            lastUpdated: new Date()
+          }
+        }
+
+        console.log(newVocabEntry)
+        dbo.collection('VOC_MODKR_ALL_COPY').updateOne(vocabQuery, {$set: newVocabEntry}, {upsert: true}, function(erro, result) {
+          dbo.collection(`VOC_MODKR_ALL_COPY`).find(vocabQuery).toArray(function(err, vocabResult) {
+            if(err) throw(err);
+            console.log("vocabResult: ")
+            console.log(vocabResult[0])
+            let vocabId = vocabResult[0]._id
+            dbo.collection(`VOC_MODKR_ORDER_COPY`).find(vocabOrderQuery).toArray(function(err, orderResult) {
+              if(err) throw(err)
+              if(orderResult.length === 0) reject(`Cannot find order data`);
+              console.log("OrderResult: ")
+              console.log(orderResult[0])
+              let order = orderResult[0].orderArray
+              order.push(vocabId)
+              dbo.collection(`VOC_MODKR_ORDER_COPY`).updateOne(vocabOrderQuery, {order: order}, function(err, result){
+                if(err) throw err
+                res.send({
+                  vocab
+                })
+              })
+            })
+          })
         })
       })
     })
-
-    /*dbo.createCollection(`${storyTitle.toUpperCase()}_VOC`, function(err,result){
-        dbo.collection(`${storyTitle.toUpperCase()}_VOC_COPY`).find({}).toArray(function(err, result){
-          dbo.collection(`${storyTitle.toUpperCase()}_VOC`).insertMany(result, function(err, result){
-            console.log(result)
-          })
-        })
-      })*/
   })
 }
 
@@ -269,7 +318,7 @@ exports.updateVocab =(req,res,next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let {vocab, storyTitle} = req
+    let {vocab} = req
     let query = {
       "_id": ObjectID(vocab._id)
     }
@@ -277,12 +326,10 @@ exports.updateVocab =(req,res,next) => {
     let updatedDocument  = {
       "korean": vocab.korean,
       "hanja": vocab.hanja,
-      "english": vocab.english,
-      "order_id": vocab.order_id
+      "english": vocab.english
     }
-    dbo.collection(`${storyTitle.toUpperCase()}_VOC`).updateOne(query, {$set: updatedDocument}, function(err, result){
+    dbo.collection(`VOC_MODKR_ALL`).updateOne(query, {$set: updatedDocument}, function(err, result){
         if(err) throw err
-      console.log(result)
         res.send({
           vocab
         })
@@ -314,7 +361,7 @@ exports.updateGrammar =(req,res,next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let {grammar, storyTitle} = req
+    let {grammar} = req
     let query = {
       "_id": ObjectID(grammar._id)
     }
@@ -322,10 +369,9 @@ exports.updateGrammar =(req,res,next) => {
     let updatedDocument  = {
       "sentence": grammar.sentence,
       "pattern": grammar.pattern,
-      "here": grammar.here,
-      "order_id": grammar.order_id
+      "here": grammar.here
     }
-    dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).updateOne(query, {$set: updatedDocument}, function(err, result){
+    dbo.collection(`GRAM_MODKR_ALL`).updateOne(query, {$set: updatedDocument}, function(err, result){
       if(err) throw err
       res.send({
         grammar

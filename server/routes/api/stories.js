@@ -38,6 +38,12 @@ router.get('/:story', async (req, res, next) => {
           db.collection(`VOC_${language}_ORDER`).find(query).toArray(function (err, order_result) {
             if (err) reject(err)
             if(order_result && order_result.length > 0) {
+              let tmpOrderList =  order_result[0].order
+              let orderList = []
+              tmpOrderList.sort((a,b) => a.order_id - b.order_id)
+              tmpOrderList.map(aVocab => orderList.push(aVocab.vocabId))
+              order_result[0].order = orderList;
+              console.log(order_result.order)
               resolve(order_result[0])
             }
             else resolve()
@@ -49,9 +55,17 @@ router.get('/:story', async (req, res, next) => {
           let query = {
             storyId: `${storyId}`
           }
-          db.collection(`GRAM_${language}_ORDER`).find(query).toArray(function (err, order_result) {
+          db.collection(`GRAM_${language}_ORDER_COPY`).find({$query: query, $orderby: {order_id: 1}}).toArray(function (err, order_result) {
             if (err) reject(err)
-            if(order_result && order_result.length > 0) resolve(order_result[0])
+            if(order_result && order_result.length > 0) {
+              let tmpOrderList =  order_result[0].order
+              let orderList = []
+              tmpOrderList.sort((a,b) => a.order_id - b.order_id)
+              tmpOrderList.map(aVocab => orderList.push(aVocab.grammarId))
+              order_result[0].order = orderList;
+              console.log(order_result.order)
+              resolve(order_result[0])
+            }
             else resolve()
           })
         })
@@ -92,6 +106,7 @@ router.get('/:story', async (req, res, next) => {
           let grammarOrder = await findGrammarOrder(aLanguageCode, storyId)
           let vocabList = await findStoryVocab(aLanguageCode, storyId)
           let grammarList = await findStoryGrammar(aLanguageCode,storyId)
+          console.log(vocabOrder)
 
           results[`${aLanguageCode}`] = {
             vocabOrder,
@@ -130,7 +145,7 @@ router.get('/:story/storyText', async (req, res, next) => {
           db.collection(`TEXT_${storyName}`).find(query).sort({order_id: 1}).toArray(function (err, story_result) {
             if (err) reject(err);
             if (story_result && story_result.length > 0) resolve(story_result);
-            else resolve({})
+            else resolve([])
           })
         })
       }

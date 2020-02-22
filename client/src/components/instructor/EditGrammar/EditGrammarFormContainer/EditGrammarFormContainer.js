@@ -60,8 +60,7 @@ class EditGrammarFormContainer extends Component {
       _id: this.state._id,
       sentence: this.state.sentence,
       pattern: this.state.pattern,
-      here: this.state.here,
-      order_id: this.state.order_id
+      here: this.state.here
     }
     this.props.updateGrammar(newGrammar, this.props.storyTitle);
   }
@@ -71,8 +70,7 @@ class EditGrammarFormContainer extends Component {
       _id: this.state._id,
       sentence: this.state.sentence,
       pattern: this.state.pattern,
-      here: this.state.here,
-      order_id: this.state.order_id
+      here: this.state.here
     }
     this.props.deleteGrammar(grammar, this.props.storyTitle);
   }
@@ -153,19 +151,6 @@ class EditGrammarFormContainer extends Component {
             <Grid container>
               <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
                 <span className={'edit-grammar-form-label'}>Order</span>
-              </Grid>
-              <Grid item xs={8}>
-                <TextField
-                  required
-                  id="order_id"
-                  margin="normal"
-                  onChange={this.handleOnChangeField("order_id")}
-                  style={{whiteSpace: "noWrap"}}
-                  value={this.state.order_id}
-                  fullWidth
-                  multiline
-                  disabled
-                />
               </Grid>
             </Grid>
           </Grid>

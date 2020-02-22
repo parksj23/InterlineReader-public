@@ -46,22 +46,28 @@ class NewVocabFormContainer extends Component {
 
   findOrderId() {
     let order_id = null
-    let text = this.props.editVocab.rawKoreanText
-    let vocabWords = Object.keys(this.props.editVocab.vocabSearch)
+    let text = this.props.editVocab.MODKR.rawKoreanText
+    let vocabWords = Object.keys(this.props.editVocab.MODKR.vocabSearch)
+    console.log(vocabWords)
     let startIndex = 0;
     let startText = vocabWords[startIndex]
     let textSegment = text.substring(0,text.indexOf(startText));
     console.log(textSegment)
 
     if (textSegment.includes(this.props.editVocab.userHighlightedText)) {return 0}
+    console.log(vocabWords)
 
     for(startIndex = 0; startIndex !== vocabWords.length ; startIndex++){
       let endIndex = startIndex + 1
       let startText = vocabWords[startIndex]
+      console.log(startText)
+      console.log(endText)
       let endText = vocabWords[endIndex]
       textSegment = text.substring(text.indexOf(startText), text.indexOf(endText))
+      console.log(textSegment)
       if (textSegment.includes(this.props.editVocab.userHighlightedText)) {
           order_id = endIndex
+          console.log(order_id)
           return order_id
         }
       }
@@ -78,11 +84,9 @@ class NewVocabFormContainer extends Component {
 
   addNewVocab = () => {
     let newVocab = {
-      _id: this.state._id,
       korean: this.state.korean,
       hanja: this.state.hanja,
-      english: this.state.english,
-      order_id: this.state.order_id
+      english: this.state.english
     }
     this.props.addNewVocabulary(newVocab, this.props.storyTitle);
   }

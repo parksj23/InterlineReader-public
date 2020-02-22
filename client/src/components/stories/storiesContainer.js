@@ -137,9 +137,10 @@ class StoriesContainer extends Component {
     let text;
     let vocab;
     let grammar;
-    let searchWord = null;
+    let searchWord = this.props.searchVocab.highlightedWord;
     let title = "";
     let author = "";
+
     if(stories[this.state.selectedLanguage]) {
       text = stories[this.state.selectedLanguage].storyText
       vocab = stories[this.state.selectedLanguage].vocabList;
@@ -159,7 +160,6 @@ class StoriesContainer extends Component {
           break;
         default:
           text = stories.storyTextHanmun
-          searchWord = vocab.highlightedWord
           title = stories.storyInfo.titleKorn
           author = stories.storyInfo.authorKorn
       }
@@ -209,7 +209,8 @@ const mapStateToProps = state => (
     userId: state.auth.user.id,
     sideBar: state.sideBar,
     dashboard: state.dashboard,
-    analytics: state.analytics
+    analytics: state.analytics,
+    searchVocab: state.vocab
   }
 )
 

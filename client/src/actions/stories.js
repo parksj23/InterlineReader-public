@@ -47,14 +47,14 @@ export const initStory = (storyTitle, className) => dispatch => {
           let {vocabOrder, vocabList} = data
           let order = vocabOrder.order
           vocabList.sort(function(a,b){
-            return order.indexOf(a) - order.indexOf(b);
+            return order.indexOf(a._id) - order.indexOf(b._id);
           })
         }
         if(data.grammarOrder && data.grammarList){
           let {grammarOrder, grammarList} = data
           let order = grammarOrder.order
           grammarList.sort(function(a,b){
-            return order.indexOf(a) - order.indexOf(b);
+            return order.indexOf(a._id) - order.indexOf(b._id);
           })
         }
       })

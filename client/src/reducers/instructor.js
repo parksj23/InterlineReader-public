@@ -51,6 +51,8 @@ export default (state = initialState, action) => {
   let newVocabList;
   let newEditGrammar;
   let newGrammarList;
+  let grammarOrder;
+  let vocabOrder;
   switch (action.type) {
     case INSTRUCTOR_INIT:
       return{
@@ -170,7 +172,6 @@ export default (state = initialState, action) => {
       }
       return {
         ...state,
-
       }
     case INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT:
       if(action.payload === "Vocab"){
@@ -191,11 +192,11 @@ export default (state = initialState, action) => {
       }
     case INSTRUCTOR_UPDATE_VOCAB:
       newEditVocab = state.editVocab
-      newVocabList = state.editVocab.vocabList;
+      newVocabList = state.editVocab.MODKR.vocabList;
       newVocabList.splice(action.payload.order_id-1,1,action.payload)
       newEditVocab.vocabList = newVocabList
       newEditVocab.selectedVocab = action.payload
-      newEditVocab.vocabSearch[action.payload.korean] = action.payload
+      newEditVocab.MODKR.vocabSearch[action.payload.korean] = action.payload
       newEditVocab.editVocabUpdating = false
       return{
         ...state,
@@ -203,11 +204,11 @@ export default (state = initialState, action) => {
       }
     case INSTRUCTOR_UPDATE_GRAMMAR:
       newEditGrammar = state.editGrammar
-      newGrammarList = state.editGrammar.grammarList;
+      newGrammarList = state.editGrammar.MODKR.grammarList;
       newGrammarList.splice(action.payload.order_id-1,1,action.payload)
-      newEditGrammar.grammarList = newGrammarList
+      newEditGrammar.MODKR.grammarList = newGrammarList
       newEditGrammar.selectedGrammar = action.payload
-      newEditGrammar.grammarSearch[action.payload.sentence] = action.payload
+      newEditGrammar.MODKR.grammarSearch[action.payload.sentence] = action.payload
       newEditGrammar.editGrammarUpdating = false
       return{
         ...state,

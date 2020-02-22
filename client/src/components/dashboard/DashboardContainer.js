@@ -19,7 +19,7 @@ class DashboardContainer extends Component {
   render() {
     return (
       <div className="dashboardContainer">
-        <Dashboard dashboard={this.props.dashboard} auth={this.props.auth}/>
+        <Dashboard dashboard={this.props.dashboard} storyList={this.props.storyList} auth={this.props.auth}/>
       </div>
     );
   }
@@ -32,7 +32,8 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  dashboard: state.dashboard
+  dashboard: state.dashboard,
+  storyList: state.app.storyList
 });
 
 const mapDispatchToProps = ({

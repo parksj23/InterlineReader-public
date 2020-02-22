@@ -36,9 +36,8 @@ class Dashboard extends Component {
 
 
   render() {
-    const sections = this.props.dashboard.storyList;
+    const sections = this.props.storyList;
     console.log(sections)
-    let classNames;
     return (
 
       <div className="dashboard">

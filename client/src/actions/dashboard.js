@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import {
-  GET_DASHBOARD_SUCCESS,
+  GET_STORY_LIST,
   UPDATE_DRAWER_SIZE,
   TOGGLE_SIDEBAR_BUTTON,
   DASHBOARD_IS_LOADING, DASHBOARD_IS_NOT_LOADING
@@ -18,7 +18,7 @@ export const dashboardInit = () => dispatch => {
   return new Promise((resolve, reject) => {
     axios.get("/api/dashboard/", {params}).then(res => {
       dispatch({
-        type: GET_DASHBOARD_SUCCESS,
+        type: GET_STORY_LIST,
         payload: res.data
       })
       resolve(res.data)

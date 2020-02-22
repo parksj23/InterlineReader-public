@@ -23,18 +23,28 @@ import {
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
   INSTRUCTOR_DELETE_VOCAB,
   INSTRUCTOR_DELETE_GRAMMAR,
-  INSTRUCTOR_CANCEL_SELECTION
+  INSTRUCTOR_CANCEL_SELECTION,
+  GET_STORY_LIST
 } from '../constants/action-types';
 import axios from 'axios';
 
 
-export const initInstructor = () => dispatch => {
+export const initInstructor = (storyList) => dispatch => {
   const params = {
     responseType: 'application/json',
     classType: 'all'
   }
   return new Promise((resolve, reject) => {
     axios.get("/api/instructor/", {params}).then(res => {
+      if(!storyList) {
+        axios.get("/api/dashboard/", {params}).then(response => {
+          dispatch({
+            type: GET_STORY_LIST,
+            payload: response.data
+          })
+          resolve(response.data)
+        })
+      }
       dispatch({
         type: INSTRUCTOR_INIT,
         payload: res.data
@@ -44,62 +54,82 @@ export const initInstructor = () => dispatch => {
   })
 }
 
-export const initEditVocab = (storyTitle) => dispatch => {
+export const initEditVocab = (storyTitle => dispatch => {
   let params = {
     responseType: 'application/json',
-    storyTitle,
+    storyTitle
   }
-  let payload = {};
   return new Promise( (resolve,reject) => {
+    let payload = {}
     axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      let vocabSearch = {}
-      res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
-      res.data.vocab.map(aVocab => {
+      let languages = res.data.storyInfo.languages
 
-        if(aVocab.korean.indexOf("(") >= -1 || aVocab.korean.indexOf(")") >= -1){
-          let temp = aVocab.korean
-          let cleanVocab = temp.replace("(", "\(");
-          cleanVocab = cleanVocab.replace(")", "\)");
-          vocabSearch[cleanVocab] = aVocab;
-        }
-        else{
-          vocabSearch[aVocab.korean] = aVocab;
-        }
-      })
-      payload["storyInfo"] = res.data.storyInfo
-      payload["storyTitle"] = storyTitle
-      payload["vocabList"] = res.data.vocab
-      payload["vocabSearch"] = vocabSearch
-      return res.data.storyInfo
-    }).then( storyInfo => {
-      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
-        let storyTextKorn = res.data.storyTextKorn;
-        let storyTextEngl = res.data.storyTextEngl
-        storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+      let storyInfo = res.data.storyInfo
 
-        let rawKoreanText = ""
-        storyTextKorn.map(aText => {
-          rawKoreanText = rawKoreanText.concat(aText.text)
+      languages.map(aLanguage => {
+        let data = res.data[`${aLanguage}`]
+        if(data.vocabOrder && data.vocabList){
+          let {vocabOrder, vocabList} = data
+          let order = vocabOrder.order
+          vocabList.sort(function(a,b){
+            return order.indexOf(a) - order.indexOf(b);
+          })
+
+          let vocabSearch = {}
+          vocabList.map(aVocab => {
+            if(aVocab.korean.indexOf("(") >= -1 || aVocab.korean.indexOf(")") >= -1){
+              let temp = aVocab.korean
+              let cleanVocab = temp.replace("(", "\(");
+              cleanVocab = cleanVocab.replace(")", "\)");
+              vocabSearch[cleanVocab] = aVocab;
+            }
+            else{
+              vocabSearch[aVocab.korean] = aVocab;
+            }
+          })
+
+          res.data[`${aLanguage}`] = {
+            vocabOrder,
+            vocabList,
+            vocabSearch
+          }
+
+          payload = res.data
+        }
+
+        axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
+          let languages = Object.keys(res.data)
+          languages.map(aLanguage => {
+            let rawKoreanText = "";
+            let storyText = res.data[aLanguage];
+            
+            storyText.map(aText => {
+              rawKoreanText = rawKoreanText.concat(aText.text);
+            })
+            payload[aLanguage] = {
+              ...payload[aLanguage],
+              storyText: res.data[aLanguage],
+              rawKoreanText
+            }
+          })
+          dispatch({
+            type: INIT_EDIT_VOCAB,
+            payload
+          })
+          resolve(payload);
         })
 
-        payload["storyTextEngl"] = storyTextEngl;
-        payload["storyTextKorn"] = storyTextKorn;
-        payload["selectedVocab"] = null
-        payload["userHighlightedText"] = null
-        payload['rawKoreanText'] = rawKoreanText
-
-        payload['highlightTextUpdating'] = false
-        payload['editVocabUpdating'] = false
-        dispatch({
-          type: INIT_EDIT_VOCAB,
-          payload
-        })
+        /*if(data.grammarOrder && data.grammarList){
+          let {grammarOrder, grammarList} = data
+          let order = grammarOrder.order
+          grammarList.sort(function(a,b){
+            return order.indexOf(a) - order.indexOf(b);
+          })
+        }*/
       })
     })
-    resolve(payload);
   })
-}
+})
 
 export const resetEditVocab =() => dispatch => {
   dispatch({
@@ -121,56 +151,68 @@ export const initEditGrammar = (storyTitle) => dispatch => {
     storyTitle,
   }
   let payload = {};
+
   return new Promise( (resolve,reject) => {
+    let payload = {}
     axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      let grammarSearch = {}
-      res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
-      res.data.grammar.map(aGrammar => {
-        if(aGrammar.sentence.indexOf("(") >= -1 || aGrammar.korean.indexOf(")") >= -1){
-          let temp = aGrammar.sentence
-          let cleanGrammar = temp.replace("(", "\\(");
-          cleanGrammar= cleanGrammar.replace(")", "\\)");
-          grammarSearch[cleanGrammar] = aGrammar;
-        }
-        else{
-          grammarSearch[aGrammar.sentence] = aGrammar;
-        }
-      })
+      let languages = res.data.storyInfo.languages
 
-      payload["storyInfo"] = res.data.storyInfo
-      payload["storyTitle"] = storyTitle
-      payload["grammarList"] = res.data.grammar
-      payload["grammarSearch"] = grammarSearch
-      return res.data.storyInfo
-    }).then( storyInfo => {
-      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
-        let storyTextKorn = res.data.storyTextKorn;
-        let storyTextEngl = res.data.storyTextEngl
+      let storyInfo = res.data.storyInfo
 
-        storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+      languages.map(aLanguage => {
+        let data = res.data[`${aLanguage}`]
+        if(data.grammarOrder && data.grammarList){
+          let {grammarOrder, grammarList} = data
+          let order = grammarOrder.order
+          grammarList.sort(function(a,b){
+            return order.indexOf(a) - order.indexOf(b);
+          })
 
-        let rawKoreanText = ""
-        storyTextKorn.map(aText => {
-          rawKoreanText = rawKoreanText.concat(aText.text)
+          let grammarSearch = {}
+          grammarList.map(aGrammar => {
+            if(aGrammar.sentence.indexOf("(") >= -1 || aGrammar.korean.indexOf(")") >= -1){
+              let temp = aGrammar.sentence
+              let cleanGrammar = temp.replace("(", "\\(");
+              cleanGrammar= cleanGrammar.replace(")", "\\)");
+              grammarSearch[cleanGrammar] = aGrammar;
+            }
+            else{
+              grammarSearch[aGrammar.sentence] = aGrammar;
+            }
+
+          res.data[`${aLanguage}`] = {
+            grammarOrder,
+            grammarList,
+            grammarSearch
+          }
+
+          payload = res.data
         })
-        payload["storyTextEngl"] = storyTextEngl;
-        payload["storyTextKorn"] = storyTextKorn;
-
-        payload["selectedGrammar"] = null
-        payload["userHighlightedText"] = null
-        payload['rawKoreanText'] = rawKoreanText
-        payload['highlightTextUpdating'] = false
-        payload['editGrammarUpdating'] = false
-
-        dispatch({
-          type: INIT_EDIT_GRAMMAR,
-          payload
+      }
+        axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
+          let languages = Object.keys(res.data)
+          languages.map(aLanguage => {
+            let rawKoreanText = "";
+            let storyText = res.data[aLanguage];
+            
+            storyText.map(aText => {
+              rawKoreanText = rawKoreanText.concat(aText.text);
+            })
+            payload[aLanguage] = {
+              ...payload[aLanguage],
+              storyText: res.data[aLanguage],
+              rawKoreanText
+            }
+          })
+          dispatch({
+            type: INIT_EDIT_GRAMMAR,
+            payload
+          })
+          resolve(payload);
         })
       })
-    })
-    resolve(payload);
   })
+})
 }
 
 export const changeSelectedMenu =(headerName) => dispatch => {
@@ -328,7 +370,6 @@ export const updateGrammar = (grammar, storyTitle) => dispatch => {
     grammar,
     storyTitle
   }
-
   axios.put('/api/instructor/editGrammar/updateGrammar', params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_GRAMMAR,

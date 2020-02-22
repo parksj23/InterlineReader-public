@@ -27,6 +27,7 @@ class EditVocab extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props.match.params)
     let {storyName} = this.props.match.params
     this.props.initEditVocab(storyName);
   }
@@ -35,12 +36,13 @@ class EditVocab extends Component {
    }
 
   handleSelectHighlight = (selectedText) => {
-    let selectedVocabInfo = this.props.editVocab.vocabSearch[selectedText]
+    let selectedVocabInfo = this.props.editVocab.MODKR.vocabSearch[selectedText]
     this.props.updateSelectedVocab(selectedVocabInfo);
   }
 
   render() {
-    let vocabSearch = this.props.editVocab && this.props.editVocab.vocabSearch ? new RegExp(Object.keys(this.props.editVocab.vocabSearch).join("|")) : null;
+    let vocabSearch = this.props.editVocab && this.props.editVocab.MODKR 
+        && this.props.editVocab.MODKR.vocabSearch ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|")) : null;
     let {editVocab} = this.props
     return (
       <div className="edit-Vocabulary">
@@ -48,7 +50,7 @@ class EditVocab extends Component {
           <Grid item xs={6}>{
             this.props.editVocab && this.props.editVocab.storyInfo && !this.props.editVocab.highlightTextUpdating  ?
               <StoryTextContainer
-                text={this.props.editVocab.storyTextKorn}
+                text={this.props.editVocab.MODKR.storyText}
                 searchWord={vocabSearch}
                 handleSelectHighlight={this.handleSelectHighlight}
                 updateUserHighlightedText={this.props.updateUserHighlightedText}
@@ -63,7 +65,7 @@ class EditVocab extends Component {
                 <EditVocabFormContainer
                   vocabList={this.props.editVocab.vocabList}
                   selectedVocab={editVocab.selectedVocab}
-                  storyTitle={this.props.editVocab.storyTitle}
+                  storyTitle={this.props.editVocab.storyInfo.storyName}
                   updateVocab={this.props.updateVocab}
                   deleteVocab={this.props.deleteVocab}
 
@@ -74,7 +76,7 @@ class EditVocab extends Component {
                 <NewVocabFormContainer
                   editVocab={this.props.editVocab}
                   userHighlightedText={this.props.editVocab.userHighlightedText}
-                  storyTitle={this.props.editVocab.storyTitle}
+                  storyTitle={this.props.editVocab.storyInfo.storyName}
                 /> : null
             }
           </Grid>
@@ -86,7 +88,8 @@ class EditVocab extends Component {
 }
 
 const mapStateToProps = state => ({
-  editVocab: state.instructor.editVocab
+  editVocab: state.instructor.editVocab,
+  stories: state.stories
 });
 
 const mapDispatchToProps = ({

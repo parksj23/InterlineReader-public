@@ -19,7 +19,7 @@ class EditGrammarContainer extends Component {
   }
 
   renderStoryList = () => {
-    return <StoryList storyList={this.props.instructor.storyList} component={'editGrammar'}/>
+    return <StoryList storyList={this.props.storyList} component={'editGrammar'}/>
   }
 
   render() {
@@ -40,7 +40,8 @@ class EditGrammarContainer extends Component {
 
 
 const mapStateToProps = state => ({
-  instructor: state.instructor
+  instructor: state.instructor,
+  storyList: state.app.storyList
 });
 
 const mapDispatchToProps = ({
