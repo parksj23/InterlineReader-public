@@ -35,6 +35,7 @@ class NewGrammarFormContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.userHighlightedText !== this.props.userHighlightedText){
       let order_id = this.findOrderId() +1 ;
+      console.log(order_id)
       this.setState({
         _id: null,
         sentence: this.props.editGrammar.userHighlightedText,
@@ -59,8 +60,8 @@ class NewGrammarFormContainer extends Component {
 
   findOrderId() {
     let order_id = null
-    let text = this.props.editGrammar.rawKoreanText
-    let grammarWords = Object.keys(this.props.editGrammar.grammarSearch)
+    let text = this.props.editGrammar.MODKR.rawKoreanText
+    let grammarWords = Object.keys(this.props.editGrammar.MODKR.grammarSearch)
     let startIndex = 0;
     let startText = grammarWords[startIndex]
     let textSegment = text.substring(0,text.indexOf(startText));
@@ -84,7 +85,6 @@ class NewGrammarFormContainer extends Component {
   
   handleAddNewGrammar = () => {
     let newGrammar = {
-      _id: this.state._id,
       sentence: this.state.sentence,
       pattern: this.state.pattern,
       here: this.state.here,

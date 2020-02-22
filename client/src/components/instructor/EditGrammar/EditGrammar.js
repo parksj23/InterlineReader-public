@@ -57,7 +57,7 @@ class EditGrammar extends Component {
                 <EditGrammarFormContainer
                   grammarList={this.props.editGrammar.grammarList}
                   selectedGrammar={editGrammar.selectedGrammar}
-                  storyTitle={this.props.editGrammar.storyInfo.storyTitle}
+                  storyTitle={this.props.editGrammar.storyInfo.storyName}
                   updateGrammar={this.props.updateGrammar}
                   deleteGrammar={this.props.deleteGrammar}
 
@@ -68,7 +68,7 @@ class EditGrammar extends Component {
                 <NewGrammarFormContainer
                   editGrammar={this.props.editGrammar}
                   userHighlightedText={this.props.editGrammar.userHighlightedText}
-                  storyTitle={this.props.editGrammar.storyInfo.storyTitle}
+                  storyTitle={this.props.editGrammar.storyInfo.storyName}
                 /> : null
             }
           </Grid>

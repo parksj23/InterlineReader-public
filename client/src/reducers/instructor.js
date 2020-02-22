@@ -250,15 +250,15 @@ export default (state = initialState, action) => {
       }
     case INSTRUCTOR_ADD_NEW_GRAMMAR:
       newEditGrammar = state.editGrammar
-      newGrammarList = state.editGrammar.grammarList
+      newGrammarList = state.editGrammar.MODKR.grammarList
       newGrammarList.map((aGrammar, index) => {
         if(aGrammar >= action.payload.order_id){
           aGrammar.order_id++
         }
       })
       newGrammarList.splice(action.payload.order_id-1,0,action.payload);
-      newEditGrammar.grammarList = newGrammarList
-      newEditGrammar.grammarSearch[action.payload.sentence] = action.payload;
+      newEditGrammar.MODKR.grammarList = newGrammarList
+      newEditGrammar.MODKR.grammarSearch[action.payload.sentence] = action.payload;
       newEditGrammar.highlightTextUpdating = false
       return {
         ...state,
@@ -294,7 +294,7 @@ export default (state = initialState, action) => {
       }
     case INSTRUCTOR_DELETE_GRAMMAR:
       newEditGrammar = state.editGrammar
-      newGrammarList = state.editGrammar.grammarList
+      newGrammarList = state.editGrammar.MODKR.grammarList
       newGrammarList.map((aGrammar, index) => {
         if(aGrammar >= action.payload.order_id){
           aGrammar.order_id--
@@ -302,10 +302,10 @@ export default (state = initialState, action) => {
       })
       newGrammarList.splice(newGrammarList.indexOf(action.payload),1);
 
-      newEditGrammar.grammarList = newGrammarList
+      newEditGrammar.MODKR.grammarList = newGrammarList
       newEditGrammar.editGrammarUpdating = false
       newEditGrammar.selectedGrammar = null
-      delete newEditGrammar.grammarSearch[action.payload.sentence];
+      delete newEditGrammar.MODKR.grammarSearch[action.payload.sentence];
       return{
         ...state,
         editGrammar: newEditGrammar

@@ -226,8 +226,6 @@ exports.addVocab =(req, res, next) => {
     var dbo = client.db(databaseName);
     let {vocab, storyTitle} = req
 
-    // TODO - Get order of vocab from story and insert id in correct place to preserve ordering
-    // TODO - insert entry into VOC_MODKRs 
     let storyIdquery = {
       storyName: storyTitle
     }
@@ -304,12 +302,65 @@ exports.addGrammar =(req, res, next) => {
     var dbo = client.db(databaseName);
     let {grammar, storyTitle} = req
 
-    dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).updateMany({"order_id": {$gte:grammar.order_id}}, {$inc:{"order_id": 1}}, function(err, result){
-      if (err) throw err
-      dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).insertOne(grammar, function(err,result){
-        if(err) throw err
-        res.send({
-          grammar
+    let storyIdquery = {
+      storyName: storyTitle
+    }
+    
+    dbo.collection(`STORY_LIST`).find(storyIdquery).toArray(function(err, storyResult) {
+      if(err) throw(err);
+      if(storyResult.length === 0) throw(`Cannot find story for storyTitle: ${storyTitle}`);
+      let storyId = storyResult[0]._id.toString();
+      let grammarQuery = {
+        sentence: grammar.sentence
+      }
+      console.log(grammarQuery)
+      dbo.collection(`GRAM_MODKR_ALL`).find(grammarQuery).toArray(function(err, grammarResult) {
+        if(err) throw(err);
+        let newGrammarEntry
+        if(grammarResult.length === 0) {
+          newGrammarEntry = grammar
+          let storyList = [];
+          storyList.push(storyId)
+          newGrammarEntry["storyList"] = storyList;
+          newGrammarEntry["createdDate"] = new Date();
+          newGrammarEntry["lastUpdated"] = new Date();
+        }
+        else {
+          newGrammarEntry = grammarResult[0]
+          newGrammarEntry = {
+            ...newGrammarEntry,
+            ...grammar,
+            lastUpdated: new Date()
+          }
+        }
+
+        dbo.collection('GRAM_MODKR_ALL').updateOne(grammarQuery, {$set: newGrammarEntry}, {upsert: true}, function(erro, result) {
+          dbo.collection(`GRAM_MODKR_ALL`).find(grammarQuery).toArray(function(err, grammarResult) {
+            if(err) throw(err);
+            let grammarId = grammarResult[0]._id
+            let grammarOrderQuery = {
+              storyId: storyId.trim()
+            }
+            dbo.collection(`GRAM_MODKR_ORDER`).find(grammarOrderQuery).toArray(function(err, orderResult) {
+              if(err) throw(err)
+              if(orderResult.length === 0) throw(`Cannot find order data`);
+
+              let order = orderResult[0].order
+              order.map(orderEntry => {
+                orderEntry.order_id = orderEntry.order_id >= grammar.order_id ? orderEntry.order_id+1 : orderEntry.order_id
+              })
+              order.push({
+                grammarId: grammarId.toString(),
+                order_id: grammar.order_id
+              })
+              dbo.collection(`GRAM_MODKR_ORDER`).updateOne(grammarOrderQuery, {$set: {order: order}}, function(err, result){
+                if(err) throw err
+                res.send({
+                  grammar
+                })
+              })
+            })
+          })
         })
       })
     })
@@ -429,15 +480,57 @@ exports.deleteGrammar = (req, res, next) => {
     if (err) throw err;
     var dbo = client.db(databaseName);
     let {grammar, storyTitle} = req
-    let query = {
-      "_id": ObjectID(grammar._id)
+    
+    let storyIdquery = {
+      storyName: storyTitle
     }
-    dbo.collection(`${storyTitle.toUpperCase()}_GRAM`).deleteOne(query, function (err, result) {
-      if (err) throw err
-      res.send({
-        grammar
+    
+    dbo.collection(`STORY_LIST`).find(storyIdquery).toArray(function(err, storyResult) {
+      if(err) throw(err);
+      if(storyResult.length === 0) throw(`Cannot find story for storyTitle: ${storyTitle}`);
+      console.log("StoryResult: ")
+      console.log(storyResult[0])
+      let storyId = storyResult[0]._id.toString();
+      let query = {
+        sentence: grammar.sentence,
+        pattern: grammar.pattern,
+        here: grammar.here
+      }
+      console.log(query)
+      dbo.collection(`GRAM_MODKR_ALL`).find(query).toArray(function (err, result) {
+        if (err) throw err
+        console.log(result[0])
+        let grammarToRemove = result[0]
+        let grammarId= grammarToRemove._id.toString();
+        let storyList = grammarToRemove.storyList;
+        storyList.splice(storyList.indexOf(storyId),1);
+        dbo.collection(`GRAM_MODKR_ALL`).updateOne(query, {$set: {storyList: storyList}}, function(err, result){
+          if(err) throw(err)
+          let orderQuery = {
+            storyId: storyId
+          }
+          dbo.collection(`GRAM_MODKR_ORDER`).find(orderQuery).toArray(function(err, orderResult) {
+            if(err) throw(err)
+            let newOrder = orderResult[0]
+            let order = newOrder.order;
+            let removeGrammar = {
+              grammarId,
+              order_id: grammar.order_id
+            }
+            order.splice(order.indexOf(removeGrammar),1);
+            order.map(grammarEntry => {
+              grammarEntry.order_id = grammarEntry.order_id >= removeGrammar.order_id ? grammarEntry.order_id - 1: grammarEntry.order_id 
+            })
+            dbo.collection(`GRAM_MODKR_ORDER`).updateOne(orderQuery, {$set: {order:order}}, function(err,result){
+              if(err) throw(err)
+              res.send({
+                grammar
+              })
+              client.close();
+            })
+          })
+        })
       })
-      client.close();
     })
   })
 }

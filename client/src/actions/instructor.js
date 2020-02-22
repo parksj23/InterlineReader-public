@@ -118,14 +118,6 @@ export const initEditVocab = (storyTitle => dispatch => {
           })
           resolve(payload);
         })
-
-        /*if(data.grammarOrder && data.grammarList){
-          let {grammarOrder, grammarList} = data
-          let order = grammarOrder.order
-          grammarList.sort(function(a,b){
-            return order.indexOf(a) - order.indexOf(b);
-          })
-        }*/
       })
     })
   })
