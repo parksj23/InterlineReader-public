@@ -179,7 +179,7 @@ exports.renameCollections = (req,res) => {
 exports.getVocabulary = (req,res) => {
   MongoClient.connect(url, async function(err,client){
     if(err) throw err;
-    let db = client.db('testdb')
+    let db = client.db(databaseName)
     let storyInfo = req.storyInfo
     const findStoryVocab = () => {
       return new Promise((resolve, reject) => {
@@ -232,24 +232,15 @@ exports.addVocab =(req, res, next) => {
       storyName: storyTitle
     }
     
-    
-    dbo.collection(`STORY_LIST_COPY`).find(storyIdquery).toArray(function(err, storyResult) {
+    dbo.collection(`STORY_LIST`).find(storyIdquery).toArray(function(err, storyResult) {
       if(err) throw(err);
       if(storyResult.length === 0) throw(`Cannot find story for storyTitle: ${storyTitle}`);
-      console.log("StoryResult: ")
-      console.log(storyResult[0])
-      let storyId = storyResult[0]._id;
-      let vocabOrderQuery = {
-        storyId
-      }
+      let storyId = storyResult[0]._id.toString();
       let vocabQuery = {
         korean: vocab.korean
       }
-      console.log(vocab)
-
-      dbo.collection(`VOC_MODKR_ALL_COPY`).find(vocabQuery).toArray(function(err, vocabResult) {
+      dbo.collection(`VOC_MODKR_ALL`).find(vocabQuery).toArray(function(err, vocabResult) {
         if(err) throw(err);
-        console.log(vocabResult)
         let newVocabEntry
         if(vocabResult.length === 0) {
           newVocabEntry = vocab
@@ -268,21 +259,32 @@ exports.addVocab =(req, res, next) => {
           }
         }
 
-        console.log(newVocabEntry)
-        dbo.collection('VOC_MODKR_ALL_COPY').updateOne(vocabQuery, {$set: newVocabEntry}, {upsert: true}, function(erro, result) {
-          dbo.collection(`VOC_MODKR_ALL_COPY`).find(vocabQuery).toArray(function(err, vocabResult) {
+        dbo.collection('VOC_MODKR_ALL').updateOne(vocabQuery, {$set: newVocabEntry}, {upsert: true}, function(erro, result) {
+          dbo.collection(`VOC_MODKR_ALL`).find(vocabQuery).toArray(function(err, vocabResult) {
             if(err) throw(err);
             console.log("vocabResult: ")
             console.log(vocabResult[0])
             let vocabId = vocabResult[0]._id
-            dbo.collection(`VOC_MODKR_ORDER_COPY`).find(vocabOrderQuery).toArray(function(err, orderResult) {
+            console.log(typeof storyId)
+            let vocabOrderQuery = {
+              storyId: storyId.trim()
+            }
+            dbo.collection(`VOC_MODKR_ORDER`).find(vocabOrderQuery).toArray(function(err, orderResult) {
               if(err) throw(err)
-              if(orderResult.length === 0) reject(`Cannot find order data`);
+              if(orderResult.length === 0) throw(`Cannot find order data`);
               console.log("OrderResult: ")
               console.log(orderResult[0])
-              let order = orderResult[0].orderArray
-              order.push(vocabId)
-              dbo.collection(`VOC_MODKR_ORDER_COPY`).updateOne(vocabOrderQuery, {order: order}, function(err, result){
+
+
+              let order = orderResult[0].order
+              order.map(orderEntry => {
+                orderEntry.order_id = orderEntry.order_id >= vocab.order_id ? orderEntry.order_id+1 : orderEntry.order_id
+              })
+              order.push({
+                vocabId: vocabId.toString(),
+                order_id: vocab.order_id
+              })
+              dbo.collection(`VOC_MODKR_ORDER`).updateOne(vocabOrderQuery, {$set: {order: order}}, function(err, result){
                 if(err) throw err
                 res.send({
                   vocab
@@ -343,16 +345,57 @@ exports.deleteVocab = (req, res, next) => {
     if (err) throw err;
     var dbo = client.db(databaseName);
     let {vocab, storyTitle} = req
-    let query = {
-      "_id": ObjectID(vocab._id)
+    
+    let storyIdquery = {
+      storyName: storyTitle
     }
-    dbo.collection(`${storyTitle.toUpperCase()}_VOC`).deleteOne(query, function (err, result) {
-      if (err) throw err
-      console.log(result)
-      res.send({
-        vocab
+    
+    dbo.collection(`STORY_LIST`).find(storyIdquery).toArray(function(err, storyResult) {
+      if(err) throw(err);
+      if(storyResult.length === 0) throw(`Cannot find story for storyTitle: ${storyTitle}`);
+      console.log("StoryResult: ")
+      console.log(storyResult[0])
+      let storyId = storyResult[0]._id.toString();
+      let query = {
+        korean: vocab.korean,
+        hanja: vocab.hanja,
+        english: vocab.english
+      }
+      console.log(query)
+      dbo.collection(`VOC_MODKR_ALL`).find(query).toArray(function (err, result) {
+        if (err) throw err
+        console.log(result[0])
+        let vocabToRemove = result[0]
+        let vocabId= vocabToRemove._id.toString();
+        let storyList = vocabToRemove.storyList;
+        storyList.splice(storyList.indexOf(storyId),1);
+        dbo.collection(`VOC_MODKR_ALL`).updateOne(query, {$set: {storyList: storyList}}, function(err, result){
+          if(err) throw(err)
+          let orderQuery = {
+            storyId: storyId
+          }
+          dbo.collection(`VOC_MODKR_ORDER`).find(orderQuery).toArray(function(err, orderResult) {
+            if(err) throw(err)
+            let newOrder = orderResult[0]
+            let order = newOrder.order;
+            let removeVocab = {
+              vocabId,
+              order_id: vocab.order_id
+            }
+            order.splice(order.indexOf(removeVocab),1);
+            order.map(vocabEntry => {
+              vocabEntry.order_id = vocabEntry.order_id >= removeVocab.order_id ? vocabEntry.order_id - 1: vocabEntry.order_id 
+            })
+            dbo.collection(`VOC_MODKR_ORDER`).updateOne(orderQuery, {$set: {order:order}}, function(err,result){
+              if(err) throw(err)
+              res.send({
+                vocab
+              })
+              client.close();
+            })
+          })
+        })
       })
-      client.close();
     })
   })
 }

@@ -90,6 +90,7 @@ class NewGrammarFormContainer extends Component {
       here: this.state.here,
       order_id: this.state.order_id
     }
+    console.log(newGrammar.order_id)
     this.props.addNewGrammar(newGrammar, this.props.storyTitle);
   }
 

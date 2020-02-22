@@ -8,7 +8,8 @@ import {
   RESET_STORIES,
   STORY_IS_LOADING,
   STORY_IS_NOT_LOADING,
-  SAVE_HYPOTHESIS
+  SAVE_HYPOTHESIS,
+  UPDATE_VOCAB_AND_ORDER
 } from '../constants/action-types';
 
 const initialState = {
@@ -68,6 +69,8 @@ export default (state = initialState, action) => {
         ...state,
         hypothesisURL: action.payload
       }
+      case UPDATE_VOCAB_AND_ORDER:
+
 
     default:
       return state;

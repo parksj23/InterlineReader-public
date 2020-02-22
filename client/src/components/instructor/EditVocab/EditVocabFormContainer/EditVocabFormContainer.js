@@ -71,7 +71,8 @@ class EditVocabFormContainer extends Component {
       _id: this.state._id,
       korean: this.state.korean,
       hanja: this.state.hanja,
-      english: this.state.english
+      english: this.state.english,
+      order_id: this.state.order_id
     }
     this.props.deleteVocab(vocab, this.props.storyTitle);
   }

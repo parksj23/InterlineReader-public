@@ -234,15 +234,15 @@ export default (state = initialState, action) => {
       }
     case INSTRUCTOR_ADD_NEW_VOCAB:
       newEditVocab = state.editVocab
-      newVocabList = state.editVocab.vocabList
+      newVocabList = state.editVocab.MODKR.vocabList
       newVocabList.map((aVocab, index) => {
         if(aVocab >= action.payload.order_id){
           aVocab.order_id++
         }
       })
       newVocabList.splice(action.payload.order_id-1,0,action.payload);
-      newEditVocab.vocabList = newVocabList
-      newEditVocab.vocabSearch[action.payload.korean] = action.payload;
+      newEditVocab.MODKR.vocabList = newVocabList
+      newEditVocab.MODKR.vocabSearch[action.payload.korean] = action.payload;
       newEditVocab.highlightTextUpdating = false
       return {
         ...state,
@@ -276,7 +276,7 @@ export default (state = initialState, action) => {
       }
     case INSTRUCTOR_DELETE_VOCAB:
       newEditVocab = state.editVocab
-      newVocabList = state.editVocab.vocabList
+      newVocabList = state.editVocab.MODKR.vocabList
       newVocabList.map((aVocab, index) => {
         if(aVocab >= action.payload.order_id){
           aVocab.order_id--
@@ -284,10 +284,10 @@ export default (state = initialState, action) => {
       })
       newVocabList.splice(newVocabList.indexOf(action.payload),1);
 
-      newEditVocab.vocabList = newVocabList
+      newEditVocab.MODKR.vocabList = newVocabList
       newEditVocab.editVocabUpdating = false
       newEditVocab.selectedVocab = null
-      delete newEditVocab.vocabSearch[action.payload.korean];
+      delete newEditVocab.MODKR.vocabSearch[action.payload.korean];
       return{
         ...state,
         editVocab: newEditVocab

@@ -55,7 +55,7 @@ router.get('/:story', async (req, res, next) => {
           let query = {
             storyId: `${storyId}`
           }
-          db.collection(`GRAM_${language}_ORDER_COPY`).find({$query: query, $orderby: {order_id: 1}}).toArray(function (err, order_result) {
+          db.collection(`GRAM_${language}_ORDER`).find({$query: query, $orderby: {order_id: 1}}).toArray(function (err, order_result) {
             if (err) reject(err)
             if(order_result && order_result.length > 0) {
               let tmpOrderList =  order_result[0].order
