@@ -1,15 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -136,6 +129,14 @@ class InstructorMenu extends React.Component {
                       }}>
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Edit Grammar'} />
+            </ListItem>
+            <ListItem button key={'addMidKRVoc'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/addMidKRVoc');
+                        this.props.changeSelectedMenu("Add Middle Korean")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Add Middle Korean'} />
             </ListItem>
           </List>
       </div>

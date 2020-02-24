@@ -9,6 +9,7 @@ import AddStoryWizard from './AddStoryWizard/AddStoryWizard';
 import AnalyticsContainer from './analytics/AnalyticsContainer';
 import EditGrammarContainer from './EditGrammar/EditGrammarContainer';
 import EditVocabContainer from './EditVocab/EditVocabContainer';
+import addMidKRVocContainer from './AddMidKRVoc/AddMidKRVocContainer'
 import Stories from './stories/Stories';
 import InstructorMenu from './component/InstructorMenu';
 import Grid from "@material-ui/core/Grid"
@@ -69,6 +70,7 @@ class InstructorContainer extends Component {
                       <Route path="/instructor/addStory" component={AddStoryWizard} />
                       <Route path="/instructor/editGrammar" component={EditGrammarContainer}/>
                       <Route path="/instructor/editVocab" component={EditVocabContainer}/>
+                      <Route path="/instructor/addMidKRVoc" component={addMidKRVocContainer}/>
                     </Switch>
                 </Instructor>
               </div>
