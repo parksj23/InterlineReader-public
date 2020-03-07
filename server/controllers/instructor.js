@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const MongoClient = require("mongodb").MongoClient;
 const keys = require("../config/keys");
 const url = keys.mongoURI;
@@ -762,3 +761,67 @@ exports.deleteMiddleKoreanGrammer = (params, res, next) => {
   })
 
 }
+
+exports.getMiddleKRVoc = (req, res, next) => {
+  MongoClient.connect(url, async function(err, client) {
+    if (err) throw(err)
+    var dbo = client.db(databaseName);
+    dbo.collection("VOC_MIDKR_ALL").find().toArray(function(err, result) {
+    if(err) throw(err)
+      res.json({
+      vocabList: result
+      })
+      client.close()
+    })
+  })
+}
+
+exports.updateMiddleKoreanVoc = (vocab, res, next) => {
+  MongoClient.connect(url, async function(err, client) {
+    if (err) throw(err)
+    var dbo = client.db(databaseName);
+
+    let query = {
+      romStem: vocab.romStem,
+      hankulStem: vocab.hankulStem,
+      here: vocab.here,
+      english: vocab.english
+    };
+    dbo.collection(`VOC_MIDKR_ALL`).findOneAndUpdate(
+        query,
+        { $set: vocab },
+        { upsert: true, returnOriginal: false },
+        function(err, result) {
+            if (err) throw err;
+            res.json({
+              status: "200OK",
+              vocab: result.value
+            });
+            client.close();
+          });
+      });
+}
+
+exports.deleteMiddleKoreanVoc = (vocab, res, next) => {
+  const vocabEntry = vocab.deleteVocab
+  let query = {
+    _id: ObjectID(vocabEntry._id)
+  }
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw(err)
+    var dbo = client.db(databaseName);
+    dbo.collection("VOC_MIDKR_ALL").deleteOne(query).then(success => {
+      if (success.result.ok) {
+        dbo.collection("VOC_MIDKR_ALL").find().toArray(function (err, result) {
+          if (err) throw(err)
+          res.json({
+            vocabList: result
+          })
+          client.close()
+        })
+      }
+    })
+  })
+}
+
+

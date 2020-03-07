@@ -29,7 +29,11 @@ import {
   INSTRUCTOR_ADD_MIDKR_GRAMMAR,
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
   INSTRUCTOR_SAVE_MIDKR_GRAM,
-  INSTRUCTOR_DELETE_MIDKR_GRAMMAR
+  INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
+  INSTRUCTOR_ADD_MIDKR_VOCAB,
+  INTRUCTOR_UPDATE_MIDKR_VOCAB,
+  INSTRUCTOR_SAVE_MIDKR_VOCAB,
+  INSTRUCTOR_DELETE_MIDKR_VOCAB
 } from "../constants/action-types";
 import axios from "axios";
 
@@ -454,7 +458,7 @@ export const cancelSelection = () => dispatch => {
 };
 
 export const getMiddleKorean = () => dispatch => {
-  axios.get("/api/instructor/getMiddleKRGram").then(resp => {
+  axios.get("/api/instructor/midkr-gram").then(resp => {
     console.log(resp.data);
     if (resp.data.status === "200OK") {
       dispatch({
@@ -466,7 +470,6 @@ export const getMiddleKorean = () => dispatch => {
 };
 
 export const addMiddleKoreanGrammar = grammar => dispatch => {
-  console.log(grammar)
   dispatch({
     type: INSTRUCTOR_ADD_MIDKR_GRAMMAR,
     payload: grammar
@@ -484,7 +487,7 @@ export const saveMidKrGram = grammarList => dispatch => {
  let params = {
    grammarList
  }
- axios.put("/api/instructor/addMiddleKr/updateGrammar", params).then( resp => {
+ axios.put("/api/instructor/midkr-gram", params).then( resp => {
    dispatch({
      type: INSTRUCTOR_SAVE_MIDKR_GRAM,
      payload: resp.data.grammarList
@@ -494,12 +497,53 @@ export const saveMidKrGram = grammarList => dispatch => {
 
 export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
   let params = {
-    deleteGrammar
+    data: {
+      deleteGrammar
+    }
   }
-  axios.put("/api/instructor/addMiddleKr/deleteGrammar", params).then(resp => {
+  axios.delete("/api/instructor/midkr-gram", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
       payload: resp.data.grammarList
     })
   })
 }
+
+export const addMiddleKoreanVocab = vocab => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_ADD_MIDKR_VOCAB,
+    payload: vocab
+  })
+}
+
+export const updateMiddleKoreanVocabEntry = vocabList => dispatch => {
+  dispatch({
+    type: INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
+    payload: vocabList
+  })
+}
+
+export const saveMidKrVocab = vocabList => dispatch => {
+  let params = {
+    vocabList
+  }
+  axios.put("/api/instructor/midkr-voc", params).then( resp => {
+    dispatch({
+      type: INSTRUCTOR_SAVE_MIDKR_VOCAB,
+      payload: resp.data.vocabList
+    })
+  })
+}
+
+export const deleteMiddleKrVocabEntr = deleteVocab => dispatch => {
+  let params = {
+    data: {deleteVocab}
+  }
+  axios.delete("/api/instructor/midkr-voc", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_DELETE_MIDKR_VOCAB,
+      payload: resp.data.vocabList
+    })
+  })
+}
+

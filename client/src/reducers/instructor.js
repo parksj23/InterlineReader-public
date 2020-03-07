@@ -30,7 +30,11 @@ import {
   INSTRUCTOR_ADD_MIDKR_GRAMMAR,
   INSTRUCTOR_SAVE_MIDKR_GRAM,
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
-  INSTRUCTOR_DELETE_MIDKR_GRAMMAR
+  INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
+  INSTRUCTOR_ADD_MIDKR_VOCAB,
+  INTRUCTOR_UPDATE_MIDKR_VOCAB,
+  INSTRUCTOR_SAVE_MIDKR_VOCAB,
+  INSTRUCTOR_DELETE_MIDKR_VOCAB
 } from "../constants/action-types";
 
 const initialState = {
@@ -51,6 +55,9 @@ const initialState = {
   },
   addMiddleGram: {
     grammarList: []
+  },
+  addMiddleVocab: {
+    vocabList:[]
   }
 };
 
@@ -59,7 +66,8 @@ export default (state = initialState, action) => {
   let newVocabList;
   let newEditGrammar;
   let newGrammarList;
-  let newAddMiddleGram
+  let newAddMiddleGram;
+  let newAddMiddleVocab;
   switch (action.type) {
     case INSTRUCTOR_INIT:
       return {
@@ -351,6 +359,22 @@ export default (state = initialState, action) => {
       return {
         ...state,
         addMiddleGram: newAddMiddleGram
+      }
+    case INSTRUCTOR_ADD_MIDKR_VOCAB:
+      newAddMiddleVocab = state.addMiddleVocab
+      newAddMiddleVocab.vocabList.push(action.payload)
+      return{
+        ...state,
+        addMiddleVocab: newAddMiddleVocab
+      }
+    case INSTRUCTOR_SAVE_MIDKR_VOCAB:
+    case INTRUCTOR_UPDATE_MIDKR_VOCAB:
+    case INSTRUCTOR_DELETE_MIDKR_VOCAB:
+      newAddMiddleVocab = state.addMiddleVocab;
+      newAddMiddleVocab.vocabList = action.payload;
+      return {
+        ...state,
+        addMiddleVocab: newAddMiddleVocab
       }
     default:
       return state;

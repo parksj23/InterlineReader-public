@@ -91,7 +91,7 @@ class TablePaginationWrapper extends React.Component {
                 <CustomTableCell align="right" style={{width: "7%"}}>Line Number</CustomTableCell>
               </TableRow>
             </TableHead>
-            {rows.length > 0 ?
+            {rows && rows.length > 0 ?
               <TableBody>
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

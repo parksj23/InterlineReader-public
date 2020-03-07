@@ -60,20 +60,28 @@ router.put("/editGrammar/deleteGrammar", (req, res, next) => {
   instructor.deleteGrammar(req.body, res, next);
 });
 
-router.get("/getMiddleKRGram", (req, res, next) => {
+router.get("/midkr-gram", (req, res, next) => {
   instructor.getMiddleKRGram(req, res, next);
 });
 
-router.put("/addMiddleKR/addGrammar", (req, res, next) => {
-  instructor.addMiddleKoreanGrammar(req.body, res, next);
-});
-
-router.put("/addMiddleKr/updateGrammar", (req,res,next) => {
+router.put("/midkr-gram", (req,res,next) => {
   instructor.updateMiddleKoreanGrammar(req.body, res, next);
 });
 
-router.put("/addMiddleKr/deleteGrammar", (req, res, next) => {
+router.delete("/midkr-gram", (req, res, next) => {
   instructor.deleteMiddleKoreanGrammer(req.body, res, next);
+})
+
+router.get("/midkr-voc", (req, res, next) => {
+  instructor.getMiddleKRVoc(req, res, next);
+});
+
+router.put("/midkr-voc", (req,res,next) => {
+  instructor.updateMiddleKoreanVoc(req.body, res, next);
+});
+
+router.delete("/midkr-voc", (req, res, next) => {
+  instructor.deleteMiddleKoreanVoc(req.body, res, next);
 })
 
 module.exports = router;
