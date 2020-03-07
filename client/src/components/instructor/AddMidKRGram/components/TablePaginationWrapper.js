@@ -15,11 +15,14 @@ import EditableTableRow from "./EditableTableRow";
 
 const styles = theme => ({
   root: {
-    width: "90%",
+    width: "100%",
     marginTop: theme.spacing.unit * 3
   },
   tableWrapper: {
-    overflowX: "auto"
+    overflow: "scroll"
+  },
+  table: {
+    width: "150%"
   }
 });
 
@@ -29,36 +32,22 @@ const CustomTableCell = withStyles(theme => ({
     color: theme.palette.common.white
   },
   body: {
-    fontSize: 14
+    fontSize: 12
   }
 }))(TableCell);
 
-let counter = 0;
-function createData(name, calories, fat) {
-  counter += 1;
-  return { id: counter, name, calories, fat };
-}
-
 class TablePaginationWrapper extends React.Component {
   state = {
-    rows: [
-      createData("Cupcake", 305, 3.7),
-      createData("Donut", 452, 25.0),
-      createData("Eclair", 262, 16.0),
-      createData("Frozen yoghurt", 159, 6.0),
-      createData("Gingerbread", 356, 16.0),
-      createData("Honeycomb", 408, 3.2),
-      createData("Ice cream sandwich", 237, 9.0),
-      createData("Jelly Bean", 375, 0.0),
-      createData("KitKat", 518, 26.0),
-      createData("Lollipop", 392, 0.2),
-      createData("Marshmallow", 318, 0),
-      createData("Nougat", 360, 19.0),
-      createData("Oreo", 437, 18.0)
-    ].sort((a, b) => (a.calories < b.calories ? -1 : 1)),
+    rows: [],
     page: 0,
     rowsPerPage: 5
   };
+
+  componentDidMount() {
+    this.setState({
+      rows: this.props.grammarList
+    });
+  }
 
   handleChangePage = (event, page) => {
     this.setState({ page });
@@ -78,7 +67,9 @@ class TablePaginationWrapper extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { rows, rowsPerPage, page } = this.state;
+    const {rowsPerPage, page } = this.state;
+    let rows = this.props.grammarList
+
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
@@ -88,24 +79,32 @@ class TablePaginationWrapper extends React.Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <CustomTableCell>Actions</CustomTableCell>
-                <CustomTableCell align="right">Middle Korean</CustomTableCell>
-                <CustomTableCell align="right">English</CustomTableCell>
-                <CustomTableCell align="right">Hanja</CustomTableCell>
+                <CustomTableCell >Actions</CustomTableCell>
+                <CustomTableCell align="right" >English Category</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "20%"}}>Annotation</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "4%"}}>Romanized Shape</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "4%"}}>Hankul Shape</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "10%"}}>Romanized Example</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "10%"}}>Hankul Example</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "10%"}}>*Ur</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "16%"}}>English Translation of Example</CustomTableCell>
+                <CustomTableCell align="right" style={{width: "7%"}}>Line Number</CustomTableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(row => (
-                  <EditableTableRow row={row} />
-                ))}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 48 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
+            {rows.length > 0 ?
+              <TableBody>
+                {rows
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(row => (
+                    <EditableTableRow row={row} updateEntry={this.props.updateEntry} deleteMidKRGram={this.props.deleteMidKRGram}/>
+                  ))}
+                {emptyRows > 0 && (
+                  <TableRow style={{height: 56 * emptyRows}}>
+                    <TableCell colSpan={6}/>
+                  </TableRow>
+                )}
+              </TableBody> : null
+            }
             <TableFooter>
               <TableRow>
                 <TablePagination
