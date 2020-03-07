@@ -30,6 +30,7 @@ import {
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
   INSTRUCTOR_SAVE_MIDKR_GRAM,
   INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
+  INSTRUCTOR_GET_MIDDLE_KR_VOCAB,
   INSTRUCTOR_ADD_MIDKR_VOCAB,
   INTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
@@ -457,7 +458,7 @@ export const cancelSelection = () => dispatch => {
   });
 };
 
-export const getMiddleKorean = () => dispatch => {
+export const getMiddleKoreanGram = () => dispatch => {
   axios.get("/api/instructor/midkr-gram").then(resp => {
     console.log(resp.data);
     if (resp.data.status === "200OK") {
@@ -508,6 +509,17 @@ export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
     })
   })
 }
+
+export const getMiddleKoreanVocab = () => dispatch => {
+  axios.get("/api/instructor/midkr-voc").then(resp => {
+    if (resp.data.status === "200OK") {
+      dispatch({
+        type: INSTRUCTOR_GET_MIDDLE_KR_VOCAB,
+        payload: resp.data.middleKRGram
+      });
+    }
+  });
+};
 
 export const addMiddleKoreanVocab = vocab => dispatch => {
   dispatch({

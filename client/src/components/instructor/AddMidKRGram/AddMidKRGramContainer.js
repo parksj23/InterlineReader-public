@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Route, Switch } from "react-router-dom";
 import AddMidKRGram from "./AddMidKRGram";
-import { getMiddleKorean } from "../../../actions/instructor";
+import { getMiddleKoreanGram } from "../../../actions/instructor";
 
-import Grid from "@material-ui/core/Grid";
 
 class AddMidKRGramContainer extends Component {
   constructor(props) {
@@ -13,7 +11,7 @@ class AddMidKRGramContainer extends Component {
   }
 
   componentWillMount() {
-    this.props.getMiddleKorean();
+    this.props.getMiddleKoreanGram();
   }
 
   componentWillUnmount() {}
@@ -21,17 +19,17 @@ class AddMidKRGramContainer extends Component {
   render() {
     return (
       <div>
-        <AddMidKRGram grammarList={this.props.addMiddleKrGram.grammarList}/>
+        <AddMidKRGram grammarList={this.props.addMiddleK}/>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  addMiddleKrGram: state.instructor.addMiddleGram
+  addMiddleKrGram: state.instructor.addMiddleVocab
 });
 
-const mapDispatchToProps = { getMiddleKorean };
+const mapDispatchToProps = { getMiddleKoreanGram };
 
 export default connect(
   mapStateToProps,

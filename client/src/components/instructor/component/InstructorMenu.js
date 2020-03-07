@@ -130,13 +130,21 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Edit Grammar'} />
             </ListItem>
-            <ListItem button key={'addMidKRVoc'}
+            <ListItem button key={'addMidKRGram'}
                       onClick={()=> {
                         this.props.history.push('/instructor/addMidKRGram');
                         this.props.changeSelectedMenu("Add Middle Korean")
                       }}>
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Add Middle Korean Grammar'} />
+            </ListItem>
+            <ListItem button key={'addMidKRVoc'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/addMidKRVocab');
+                        this.props.changeSelectedMenu("Add Middle Korean Vocabulary")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Add Middle Korean Vocabulary'} />
             </ListItem>
           </List>
       </div>

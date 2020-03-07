@@ -10,6 +10,7 @@ import AnalyticsContainer from "./analytics/AnalyticsContainer";
 import EditGrammarContainer from "./EditGrammar/EditGrammarContainer";
 import EditVocabContainer from "./EditVocab/EditVocabContainer";
 import addMidKRGramContainer from "./AddMidKRGram/AddMidKRGramContainer";
+import addMidKRVocContainer from "./AddMidKRVoc/AddMidKRVocContainer"
 import Stories from "./stories/Stories";
 import InstructorMenu from "./component/InstructorMenu";
 import Grid from "@material-ui/core/Grid";
@@ -17,7 +18,6 @@ import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import axios from "axios";
 import "./style/instructor.css";
-import StoryList from "./Common/StoryList/StoryList";
 
 class InstructorContainer extends Component {
   constructor(props) {
@@ -31,14 +31,6 @@ class InstructorContainer extends Component {
     this.props.initInstructor(this.props.storyList);
     this.props.disableSideBarButton();
   }
-
-  renameCollections = () => {
-    let params = {
-      oldName: this.state.oldName
-    };
-    axios.put("/api/instructor/renameCollection", params).then(res => {
-    });
-  };
 
   handleChange = name => event => {
     this.setState({
@@ -93,6 +85,10 @@ class InstructorContainer extends Component {
                       <Route
                         path="/instructor/addMidKRGram"
                         component={addMidKRGramContainer}
+                      />
+                      <Route
+                        path="/instructor/addMidKRVocab"
+                        component={addMidKRVocContainer}
                       />
                     </Switch>
                   </Instructor>

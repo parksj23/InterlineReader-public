@@ -68,7 +68,7 @@ class TablePaginationWrapper extends React.Component {
   render() {
     const { classes } = this.props;
     const {rowsPerPage, page } = this.state;
-    let rows = this.props.grammarList || []
+    let rows = this.props.vocabList || []
 
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);

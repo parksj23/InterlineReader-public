@@ -777,29 +777,28 @@ exports.getMiddleKRVoc = (req, res, next) => {
 }
 
 exports.updateMiddleKoreanVoc = (vocab, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  const vocabList = vocab.vocabList
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
+    vocabList.map(aVocabEntry => {
+      aVocabEntry["lastUpdated"] = new Date()
+      let query = {
+        _id: ObjectID(aVocabEntry._id)
+      }
 
-    let query = {
-      romStem: vocab.romStem,
-      hankulStem: vocab.hankulStem,
-      here: vocab.here,
-      english: vocab.english
-    };
-    dbo.collection(`VOC_MIDKR_ALL`).findOneAndUpdate(
-        query,
-        { $set: vocab },
-        { upsert: true, returnOriginal: false },
-        function(err, result) {
-            if (err) throw err;
-            res.json({
-              status: "200OK",
-              vocab: result.value
-            });
-            client.close();
-          });
-      });
+      delete aVocabEntry._id
+      dbo.collection("VOC_MIDKR_ALL").findOneAndUpdate(query, {$set: aVocabEntry}, {upsert: true})
+    })
+    dbo.collection("VOC_MIDKR_ALL").find().toArray(function (err, result) {
+      if (err) throw(err)
+      res.json({
+        status: "200OK",
+        vocabList: result
+      })
+    })
+    client.close();
+  })
 }
 
 exports.deleteMiddleKoreanVoc = (vocab, res, next) => {
