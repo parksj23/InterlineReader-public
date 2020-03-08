@@ -19,14 +19,14 @@ class AddMidKRGramContainer extends Component {
   render() {
     return (
       <div>
-        <AddMidKRGram grammarList={this.props.addMiddleK}/>
+        <AddMidKRGram grammarList={this.props.addMiddleKrGram.grammarList}/>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  addMiddleKrGram: state.instructor.addMiddleVocab
+  addMiddleKrGram: state.instructor.addMiddleGram
 });
 
 const mapDispatchToProps = { getMiddleKoreanGram };

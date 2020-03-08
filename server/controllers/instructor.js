@@ -599,8 +599,6 @@ exports.deleteGrammar = (req, res, next) => {
         if (err) throw err;
         if (storyResult.length === 0)
           throw `Cannot find story for storyTitle: ${storyTitle}`;
-        console.log("StoryResult: ");
-        console.log(storyResult[0]);
         let storyId = storyResult[0]._id.toString();
         let query = {
           sentence: grammar.sentence,

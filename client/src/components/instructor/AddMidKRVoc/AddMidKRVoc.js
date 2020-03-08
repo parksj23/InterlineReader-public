@@ -54,7 +54,6 @@ class AddMidKRVoc extends Component {
     vocabToAdd["createdDate"] = new Date();
     vocabToAdd["lastUpdated"] = new Date();
     let newvocabList = this.state.vocabList;
-    newvocabList.push(vocabToAdd);
     this.setState({
       vocabList: newvocabList
     })
@@ -277,7 +276,7 @@ class AddMidKRVoc extends Component {
             </Grid>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-       {/* <ExpansionPanel>
+       <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Existing Vocabulary</Typography>
           </ExpansionPanelSummary>
@@ -291,7 +290,7 @@ class AddMidKRVoc extends Component {
               </Grid>
             </Grid>
           </ExpansionPanelDetails>
-        </ExpansionPanel>*/}
+        </ExpansionPanel>
       </div>
     );
   }

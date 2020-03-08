@@ -10,7 +10,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import TableHead from "@material-ui/core/TableHead";
-import TextField from "@material-ui/core/TextField";
 import EditableTableRow from "./EditableTableRow";
 
 const styles = theme => ({
@@ -22,7 +21,7 @@ const styles = theme => ({
     overflow: "scroll"
   },
   table: {
-    width: "150%"
+    width: "100%"
   }
 });
 
@@ -80,15 +79,11 @@ class TablePaginationWrapper extends React.Component {
             <TableHead>
               <TableRow>
                 <CustomTableCell >Actions</CustomTableCell>
-                <CustomTableCell align="right" >English Category</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "20%"}}>Annotation</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "4%"}}>Romanized Shape</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "4%"}}>Hankul Shape</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "10%"}}>Romanized Example</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "10%"}}>Hankul Example</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "10%"}}>*Ur</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "16%"}}>English Translation of Example</CustomTableCell>
-                <CustomTableCell align="right" style={{width: "7%"}}>Line Number</CustomTableCell>
+                <CustomTableCell align="right" >Romanized Stem</CustomTableCell>
+                <CustomTableCell align="right" >Hankul Stem</CustomTableCell>
+                <CustomTableCell align="right" >Here</CustomTableCell>
+                <CustomTableCell align="right" >English</CustomTableCell>
+                <CustomTableCell align="right" >Hanja</CustomTableCell>
               </TableRow>
             </TableHead>
             {rows && rows.length > 0 ?
