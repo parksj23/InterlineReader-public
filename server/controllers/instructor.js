@@ -767,7 +767,8 @@ exports.getMiddleKRVoc = (req, res, next) => {
     dbo.collection("VOC_MIDKR_ALL").find().toArray(function(err, result) {
     if(err) throw(err)
       res.json({
-      vocabList: result
+        status: "200OK",
+        vocabList: result
       })
       client.close()
     })

@@ -34,7 +34,8 @@ import {
   INSTRUCTOR_ADD_MIDKR_VOCAB,
   INTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
-  INSTRUCTOR_DELETE_MIDKR_VOCAB
+  INSTRUCTOR_DELETE_MIDKR_VOCAB,
+  INSTRUCTOR_GET_MIDKR_VOCAB
 } from "../constants/action-types";
 
 const initialState = {
@@ -360,6 +361,13 @@ export default (state = initialState, action) => {
         ...state,
         addMiddleGram: newAddMiddleGram
       }
+    case INSTRUCTOR_GET_MIDKR_VOCAB:
+      newAddMiddleVocab = state.addMiddleVocab;
+      newAddMiddleVocab.vocabList = action.payload;
+      return {
+        ...state,
+        addMiddleVocab: newAddMiddleVocab
+      };
     case INSTRUCTOR_ADD_MIDKR_VOCAB:
       newAddMiddleVocab = state.addMiddleVocab
       newAddMiddleVocab.vocabList.push(action.payload)
