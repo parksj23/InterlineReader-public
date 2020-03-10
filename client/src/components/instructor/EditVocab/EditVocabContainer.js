@@ -5,7 +5,7 @@ import {Route, Switch } from 'react-router-dom';
 import EditVocab from './EditVocab';
 
 
-import{ getVocabulary, getStoryInfo, resetEditVocab } from "../../../actions/instructor";
+import{ getVocabulary, resetEditVocab } from "../../../actions/instructor";
 
 import Grid from '@material-ui/core/Grid'
 
@@ -49,7 +49,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = ({
   getVocabulary,
-  getStoryInfo,
   resetEditVocab
 })
 

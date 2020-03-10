@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from './actions/auth';
-import { addGrammarSearch, endGrammarSearchSession } from './actions/analytics'
+import { endGrammarSearchSession } from './actions/analytics'
 import setAuthToken from './utils/setAuthToken';
 
 
 import { Provider } from 'react-redux';
 import store from './store';
 import axios from 'axios'
-import Grid from '@material-ui/core/Grid';
 
 
 import PrivateRoute from './components/common/PrivateRoute';
@@ -57,7 +56,6 @@ class App extends Component {
 
   }
   componentWillUnmount() {
-    console.log(store)
     window.removeEventListener("beforeunload", this.unload);
   }
 
@@ -65,7 +63,6 @@ class App extends Component {
 
     let state = store.getState()
     let { analytics, auth } = state;
-    let promiseArr = []
     let date = new Date();
 
     if (analytics.sessions.length > 0) endGrammarSearchSession();

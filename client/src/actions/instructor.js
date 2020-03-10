@@ -32,7 +32,6 @@ import {
   INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
   INSTRUCTOR_GET_MIDKR_VOCAB,
   INSTRUCTOR_ADD_MIDKR_VOCAB,
-  INTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
   INSTRUCTOR_DELETE_MIDKR_VOCAB
 } from "../constants/action-types";
@@ -43,7 +42,7 @@ export const initInstructor = storyList => dispatch => {
     responseType: "application/json",
     classType: "all"
   };
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     axios.get("/api/instructor/", { params }).then(res => {
       if (!storyList) {
         axios.get("/api/dashboard/", { params }).then(response => {
@@ -68,14 +67,14 @@ export const initEditVocab = storyTitle => dispatch => {
     responseType: "application/json",
     storyTitle
   };
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let payload = {};
     axios.get(`/api/stories/${storyTitle}`, { params }).then(res => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
 
-      languages.map(aLanguage => {
+      languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
         if (data.vocabOrder && data.vocabList) {
           let { vocabOrder, vocabList } = data;
@@ -85,7 +84,7 @@ export const initEditVocab = storyTitle => dispatch => {
           });
 
           let vocabSearch = {};
-          vocabList.map(aVocab => {
+          vocabList.forEach(aVocab => {
             if (
               aVocab.korean.indexOf("(") >= -1 ||
               aVocab.korean.indexOf(")") >= -1
@@ -114,11 +113,11 @@ export const initEditVocab = storyTitle => dispatch => {
           })
           .then(res => {
             let languages = Object.keys(res.data);
-            languages.map(aLanguage => {
+            languages.forEach(aLanguage => {
               let rawKoreanText = "";
               let storyText = res.data[aLanguage];
 
-              storyText.map(aText => {
+              storyText.forEach(aText => {
                 rawKoreanText = rawKoreanText.concat(aText.text);
               });
               payload[aLanguage] = {
@@ -157,16 +156,15 @@ export const initEditGrammar = storyTitle => dispatch => {
     responseType: "application/json",
     storyTitle
   };
-  let payload = {};
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     let payload = {};
     axios.get(`/api/stories/${storyTitle}`, { params }).then(res => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
 
-      languages.map(aLanguage => {
+      languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
         if (data.grammarOrder && data.grammarList) {
           let { grammarOrder, grammarList } = data;
@@ -176,7 +174,7 @@ export const initEditGrammar = storyTitle => dispatch => {
           });
 
           let grammarSearch = {};
-          grammarList.map(aGrammar => {
+          grammarList.forEach(aGrammar => {
             if (
               aGrammar.sentence.indexOf("(") >= -1 ||
               aGrammar.korean.indexOf(")") >= -1
@@ -204,11 +202,11 @@ export const initEditGrammar = storyTitle => dispatch => {
           })
           .then(res => {
             let languages = Object.keys(res.data);
-            languages.map(aLanguage => {
+            languages.forEach(aLanguage => {
               let rawKoreanText = "";
               let storyText = res.data[aLanguage];
 
-              storyText.map(aText => {
+              storyText.forEach(aText => {
                 rawKoreanText = rawKoreanText.concat(aText.text);
               });
               payload[aLanguage] = {
@@ -246,13 +244,11 @@ export const addToStory = (text, storyInfo) => dispatch => {
 
   axios.put("/api/instructor/addStory", params).then(res => {
     let message;
-    console.log(res.data);
     if (res.data.status === 200) {
       message = "Story added Successfully!";
     } else {
       message = "Error adding story. Story not saved.";
     }
-
     dispatch({
       type: ADD_NEW_STORY,
       payload: {
@@ -267,8 +263,7 @@ export const addStoryInfo = storyInfo => dispatch => {
   let params = {
     storyInfo
   };
-  console.log(storyInfo);
-  axios.put("/api/instructor/addStoryInfo", params).then(res => {
+  axios.put("/api/instructor/addStoryInfo", params).then(() => {
     dispatch({
       type: ADD_STORY_INFO,
       payload: null
@@ -289,7 +284,7 @@ export const getVocabulary = storyInfo => dispatch => {
     classType: "all",
     storyInfo
   };
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     axios.get("/api/instructor/getVocab", { params }).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_VOCAB,
@@ -306,7 +301,7 @@ export const getGrammar = storyInfo => dispatch => {
     classType: "all",
     storyInfo
   };
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     axios.get("/api/instructor/getGrammar", { params }).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_GRAMMAR,
@@ -316,8 +311,6 @@ export const getGrammar = storyInfo => dispatch => {
     });
   });
 };
-
-export const getStoryInfo = storyName => dispatch => {};
 
 export const updateSelectedVocab = selectedVocab => dispatch => {
   dispatch({
@@ -364,7 +357,6 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
     storyTitle
   };
   axios.put("/api/instructor/editVocab/updateVocab", params).then(resp => {
-    console.log(resp.data);
     dispatch({
       type: INSTRUCTOR_UPDATE_VOCAB,
       payload: resp.data.vocab

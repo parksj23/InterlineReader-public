@@ -62,7 +62,6 @@ exports.getMostFrequentGrammar = async (req, res) => {
             voc_list.map(aSession => {
               let { grammarFrequency } = aSession;
               for (let key in grammarFrequency) {
-                console.log(key)
                 if (grammarCount[key]) {
                   grammarCount[key] += grammarFrequency[key]
                 }
@@ -120,9 +119,7 @@ exports.getAnalyticsGrammarSearch = async (req, res) => {
 }
 
 exports.addGrammarSearchSession = async (req, res) => {
-  console.log('in add grammar search')
   const { sessions, id } = req
-  console.log(sessions)
   if (sessions && id) {
     MongoClient.connect(analyticsURL, function (err, client) {
       if (err) throw err;
@@ -132,7 +129,6 @@ exports.addGrammarSearchSession = async (req, res) => {
           userId: id,
           ...aSession
         }
-        console.log(`ANALYTICS_${aSession.class}_${aSession.story.toUpperCase()}_SESSIONS`)
         dbo.collection(`ANALYTICS_${aSession.class}_${aSession.story.toUpperCase()}_SESSIONS`).insertOne(entry)
       })
       client.close()

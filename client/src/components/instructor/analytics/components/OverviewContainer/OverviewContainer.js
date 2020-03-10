@@ -13,11 +13,6 @@ class AnalyticsContainer extends Component {
   }
 
   render(){
-
-    let overView = null;
-    if(this.props.instructor.analytics){
-      overView = this.props.instructor.analytics.overView
-    }
     return (
       <div className={'instructor-analytics-overview-container'}>
         { this.props.instructor.analytics ? this.props.instructor.analytics.map(anAnalytic =>(

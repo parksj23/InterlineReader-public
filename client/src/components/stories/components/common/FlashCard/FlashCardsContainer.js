@@ -25,7 +25,7 @@ class FlashCardContainer extends Component {
   componentDidMount(){
     let {vocabList} = this.props;
     let vocabQueue = []
-    vocabList.map(aVocab => {
+    vocabList.forEach(function(aVocab) {
       let options = []
       let question = {
         vocabKor: aVocab.korean,

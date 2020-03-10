@@ -10,7 +10,6 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import TableHead from "@material-ui/core/TableHead";
-import TextField from "@material-ui/core/TextField";
 import EditableTableRow from "./EditableTableRow";
 
 const styles = theme => ({

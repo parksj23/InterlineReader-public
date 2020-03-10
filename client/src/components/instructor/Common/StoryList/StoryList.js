@@ -17,7 +17,6 @@ class ClassList extends Component {
   }
 
   renderClassStories = (aStory, classIndex) => {
-    console.log(aStory)
     const {classes} = this.props
     return (
       <Grid
@@ -36,7 +35,6 @@ class ClassList extends Component {
 
   render() {
     const storyList = this.props.storyList;
-    console.log(storyList)
     return (
 
       <div className="class-list">

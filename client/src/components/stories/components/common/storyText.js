@@ -76,7 +76,7 @@ class StoryText extends Component {
                       )
                       phraseArr.push(React.createElement('span', aSegment.style, childComponent))
                     }
-                    textSection.map(phrase => {
+                    textSection.forEach(function(phrase) {
                         let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
 
                         //if there are two or more inline HTML tags

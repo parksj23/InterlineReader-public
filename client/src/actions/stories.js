@@ -41,7 +41,7 @@ export const initStory = (storyTitle, className) => dispatch => {
   return new Promise( (resolve,reject) => {
     axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
       let languages = res.data.storyInfo.languages
-      languages.map(aLanguage => {
+      languages.forEach(function(aLanguage) {
         let data = res.data[`${aLanguage}`]
         if(data.vocabOrder && data.vocabList){
           let {vocabOrder, vocabList} = data
@@ -63,7 +63,7 @@ export const initStory = (storyTitle, className) => dispatch => {
     }).then( storyInfo => {
       axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
         let languages = Object.keys(res.data)
-        languages.map(aLanguage => {
+        languages.forEach(function(aLanguage) {
           payload[aLanguage] = {
             ...payload[aLanguage],
             storyText: res.data[aLanguage]

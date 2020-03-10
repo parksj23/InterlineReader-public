@@ -27,7 +27,6 @@ class EditVocab extends Component {
   }
 
   componentWillMount() {
-    console.log(this.props.match.params)
     let {storyName} = this.props.match.params
     this.props.initEditVocab(storyName);
   }

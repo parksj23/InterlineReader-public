@@ -6,25 +6,14 @@
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import SectionDivider from './components/SectionDivider';
-import StatusMessage from '../../common/statusMessage/statusMessage';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style/AddStoryWizard.css';
-import {EditorState, convertToRaw} from 'draft-js';
-import draftToHtml from 'draftjs-to-html';
+import {EditorState} from 'draft-js';
 import {addToStory, addStoryInfo,handleStatusClose} from '../../../actions/instructor';
 import {connect} from 'react-redux';
 import StorySection from './components/StorySection';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
-
-
-
-const styleProperties = {
-  "text-align": "textAlign",
-  "font-family": "fontFamily",
-  "font-size": "fontSize"
-}
 
 const classes = [
   {

@@ -59,7 +59,6 @@ class NewVocabFormContainer extends Component {
       let startText = vocabWords[startIndex]
       let endText = vocabWords[endIndex]
       textSegment = text.substring(text.indexOf(startText), text.indexOf(endText))
-      console.log(textSegment)
       if (textSegment.includes(this.props.editVocab.userHighlightedText)) {
           order_id = endIndex
           return order_id

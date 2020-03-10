@@ -45,14 +45,14 @@ class StoryText extends Component {
 
   handleWordClick = (e) => {
     let text =  null;
-    if (typeof window.getSelection != "undefined") {
+    if (typeof window.getSelection !== "undefined") {
       text = window.getSelection().toString();
       if(text !== ""){
         this.props.startUpdatingHighlightedText("Grammar");
         this.props.updateUserHighlightedText(text, "Grammar");
       }
       else this.props.handleSelectHighlight(e.target.innerHTML)
-    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+    } else if (typeof document.selection !== "undefined" && document.selection.type === "Text") {
       text = document.selection.createRange().text;
       if(text !== ""){
         this.props.startUpdatingHighlightedText("Grammar");
@@ -91,7 +91,6 @@ class StoryText extends Component {
                     let phraseArr = []
                     if (text.indexOf("<") > 0) {
                       let plainText = text.slice(0, text.indexOf("<"));
-                      console.log(plainText)
                       let childComponent = (
                         <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
                           {plainText}
@@ -99,7 +98,7 @@ class StoryText extends Component {
                       )
                       phraseArr.push(React.createElement('span', aSegment.style, childComponent))
                     }
-                    textSection.map(phrase => {
+                    textSection.forEach(function(phrase) {
                         let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
 
                         //if there are two or more inline HTML tags
@@ -127,7 +126,6 @@ class StoryText extends Component {
                     if (text.lastIndexOf(">") < text.length - 1) {
 
                       let plainText = text.slice(text.lastIndexOf(">") + 1);
-                      console.log(plainText)
                       let childComponent = (
                         <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
                           {plainText}

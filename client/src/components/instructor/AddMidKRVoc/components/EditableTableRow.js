@@ -98,7 +98,7 @@ class EditableTableRow extends React.Component {
   }
 
   render() {
-    const { classes, row } = this.props;
+    const {row} = this.props;
 
     return !this.state.isEditable ? (
       <TableRow key={row._id}>

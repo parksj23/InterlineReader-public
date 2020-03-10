@@ -1,12 +1,10 @@
 import React, {Component} from "react";
 import {Route, Switch} from "react-router-dom";
-
 import {connect} from "react-redux";
 import Instructor from "./component/Instructor";
 import {changeSelectedMenu, initInstructor} from "../../actions/instructor";
 import {disableSideBarButton} from "../../actions/dashboard";
 import AddStoryWizard from "./AddStoryWizard/AddStoryWizard";
-import AnalyticsContainer from "./analytics/AnalyticsContainer";
 import EditGrammarContainer from "./EditGrammar/EditGrammarContainer";
 import EditVocabContainer from "./EditVocab/EditVocabContainer";
 import addMidKRGramContainer from "./AddMidKRGram/AddMidKRGramContainer";
@@ -16,7 +14,6 @@ import InstructorMenu from "./component/InstructorMenu";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-import axios from "axios";
 import "./style/instructor.css";
 
 class InstructorContainer extends Component {
@@ -63,11 +60,7 @@ class InstructorContainer extends Component {
                       <Route
                         exact
                         path="/instructor"
-                        component={AnalyticsContainer}
-                      />
-                      <Route
-                        path="/instructor/analytics"
-                        component={AnalyticsContainer}
+                        component={Stories}
                       />
                       <Route path="/instructor/stories" component={Stories}/>
                       <Route

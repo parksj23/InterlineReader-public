@@ -71,7 +71,6 @@ class StorySection extends Component {
   }
 
   onEditorStateChange = (editorState) => {
-    console.log(EditorState)
     this.setState({
       editorState
     });
@@ -97,9 +96,8 @@ class StorySection extends Component {
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           //Grab all styles within tag
           ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
-            console.log(c2)
             let styles = c2.split(";")
-            styles.map(aStyleProp => {
+            styles.forEeach(function(aStyleProp) {
               let propArr = aStyleProp.split(':');
               let prop = {};
               prop[styleProperties[propArr[0]]] = propArr[1]
@@ -137,12 +135,11 @@ class StorySection extends Component {
         })
       }
       else{
-        
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           let lineSegment = {};
           match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
             let styles = c2.split(";")
-            styles.map(aStyleProp => {
+            styles.forEach(function(aStyleProp) {
               let propArr = aStyleProp.split(':');
               let prop = {};
               prop[styleProperties[propArr[0]]] = propArr[1]
@@ -170,7 +167,6 @@ class StorySection extends Component {
       storyForm.language = this.state.language;
       storyForm.createdDate = createdDate;
       storyForm.lastUpdated = createdDate
-      console.log(textToSend)
       this.props.addStoryInfo(storyForm);
       this.props.addToStory(textToSend, storyForm); 
     }
@@ -208,7 +204,6 @@ class StorySection extends Component {
   }
 
   render() {
-    console.log(this.state.editorState)
     const {editorState, tabValue} = this.state;
     return (
       <div style={{marginBottom: "56px"}}>

@@ -73,7 +73,6 @@ export const getSavedWords = (userId, storyId, savedVocabIds, selectedLanguage) 
   return new Promise ((resolve,reject) => {
     if(savedVocabIds && savedVocabIds.length > 0){
       resolve(axios.get(`/api/savedWords`, {params}).then(res=>{
-         console.log(res.data)
         dispatch({
           type: GET_SAVED_WORDS,
           payload: res.data.savedVocab

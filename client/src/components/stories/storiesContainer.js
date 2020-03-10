@@ -17,7 +17,6 @@ import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
 import Modal from '@material-ui/core/Modal'
 import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
-import story from "./components/story";
 
 class StoriesContainer extends Component {
   constructor(props){
@@ -60,8 +59,6 @@ class StoriesContainer extends Component {
       this.props.initStory(storyTitle).then(resp => {
         storyInfo = resp.storyInfo
         this.props.getListOfSavedWords(this.props.userId, storyInfo._id).then(resp => {
-          console.log(storyInfo)
-          console.log(resp.savedVocabIds);
           this.props.enableSideBarButton();
           this.props.getSavedWords(this.props.userId, storyInfo._id, resp.savedVocabIds, this.props.stories.selectedLanguage).then(resp => {
             this.props.disableLoading();
@@ -71,7 +68,6 @@ class StoriesContainer extends Component {
   }
 
   handleTranslate = (language) => {
-    console.log(language)
     this.setState({
       selectedLanguage: language,
       isSpeedDialOpen: false
@@ -191,11 +187,9 @@ class StoriesContainer extends Component {
           }
         </div>
         {stories.storyInfo ?
-          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.selectedLanguage} isSpeedDialOpen={this.state.isSpeedDialOpen}
+          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.selectedLanguage}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
-                 handleOpenSpeedDial={this.handleOpenSpeedDial}
-                 handleCloseSpeedDial={this.handleCloseSpeedDial}
           /> : null}
       </div>
         : null

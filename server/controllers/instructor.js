@@ -90,7 +90,6 @@ exports.addStoryInfo = (req, res) => {
       createdDate,
       lastUpdated
     };
-    console.log(query);
     MongoClient.connect(url, function(err, client) {
       if (err) throw err;
       var dbo = client.db(databaseName);
@@ -297,10 +296,7 @@ exports.addVocab = (req, res, next) => {
                     .find(vocabQuery)
                     .toArray(function(err, vocabResult) {
                       if (err) throw err;
-                      console.log("vocabResult: ");
-                      console.log(vocabResult[0]);
                       let vocabId = vocabResult[0]._id;
-                      console.log(typeof storyId);
                       let vocabOrderQuery = {
                         storyId: storyId.trim()
                       };
@@ -311,9 +307,6 @@ exports.addVocab = (req, res, next) => {
                           if (err) throw err;
                           if (orderResult.length === 0)
                             throw `Cannot find order data`;
-                          console.log("OrderResult: ");
-                          console.log(orderResult[0]);
-
                           let order = orderResult[0].order;
                           order.map(orderEntry => {
                             orderEntry.order_id =
@@ -367,7 +360,6 @@ exports.addGrammar = (req, res, next) => {
         let grammarQuery = {
           sentence: grammar.sentence
         };
-        console.log(grammarQuery);
         dbo
           .collection(`GRAM_MODKR_ALL`)
           .find(grammarQuery)
@@ -489,21 +481,17 @@ exports.deleteVocab = (req, res, next) => {
         if (err) throw err;
         if (storyResult.length === 0)
           throw `Cannot find story for storyTitle: ${storyTitle}`;
-        console.log("StoryResult: ");
-        console.log(storyResult[0]);
         let storyId = storyResult[0]._id.toString();
         let query = {
           korean: vocab.korean,
           hanja: vocab.hanja,
           english: vocab.english
         };
-        console.log(query);
         dbo
           .collection(`VOC_MODKR_ALL`)
           .find(query)
           .toArray(function(err, result) {
             if (err) throw err;
-            console.log(result[0]);
             let vocabToRemove = result[0];
             let vocabId = vocabToRemove._id.toString();
             let storyList = vocabToRemove.storyList;
@@ -605,13 +593,11 @@ exports.deleteGrammar = (req, res, next) => {
           pattern: grammar.pattern,
           here: grammar.here
         };
-        console.log(query);
         dbo
           .collection(`GRAM_MODKR_ALL`)
           .find(query)
           .toArray(function(err, result) {
             if (err) throw err;
-            console.log(result[0]);
             let grammarToRemove = result[0];
             let grammarId = grammarToRemove._id.toString();
             let storyList = grammarToRemove.storyList;
@@ -701,7 +687,6 @@ exports.addMiddleKoreanGrammar = (grammar, res, next) => {
           .collection(`GRAM_MIDKR_ALL`)
           .findOneAndUpdate(query, { $set: grammar }, { upsert:true, returnOriginal: false }, function(err, result) {
             if (err) throw err;
-            console.log(result)
             res.json({
               status: "200OK",
               grammar: result.value

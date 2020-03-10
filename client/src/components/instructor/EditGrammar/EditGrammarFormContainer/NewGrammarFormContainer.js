@@ -35,7 +35,6 @@ class NewGrammarFormContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.userHighlightedText !== this.props.userHighlightedText){
       let order_id = this.findOrderId() +1 ;
-      console.log(order_id)
       this.setState({
         _id: null,
         sentence: this.props.editGrammar.userHighlightedText,
@@ -90,7 +89,6 @@ class NewGrammarFormContainer extends Component {
       here: this.state.here,
       order_id: this.state.order_id
     }
-    console.log(newGrammar.order_id)
     this.props.addNewGrammar(newGrammar, this.props.storyTitle);
   }
 

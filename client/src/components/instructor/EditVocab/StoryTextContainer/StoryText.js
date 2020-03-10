@@ -27,14 +27,14 @@ class StoryText extends Component {
 
   handleWordClick = (e) => {
     let text =  null;
-    if (typeof window.getSelection != "undefined") {
+    if (typeof window.getSelection !== "undefined") {
       text = window.getSelection().toString();
       if(text !== ""){
         this.props.startUpdatingHighlightedText("Vocab");
         this.props.updateUserHighlightedText(text, "Vocab");
       }
       else this.props.handleSelectHighlight(e.target.innerHTML)
-    } else if (typeof document.selection != "undefined" && document.selection.type == "Text") {
+    } else if (typeof document.selection !== "undefined" && document.selection.type === "Text") {
       text = document.selection.createRange().text;
       if(text !== ""){
         this.props.startUpdatingHighlightedText("Vocab");
@@ -115,7 +115,7 @@ class StoryText extends Component {
                     )
                     phraseArr.push(React.createElement('span', aSegment.style, childComponent))
                   }
-                  textSection.map((phrase,index) => {
+                  textSection.forEach(function(phrase,index) {
                       let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
 
                       //if there are two or more inline HTML tags

@@ -6,9 +6,7 @@ const url = keys.mongoURI;
 const databaseName = keys.databaseName;
 
 exports.getSavedWords = (params, res) => {
-  console.log(params)
   let {userId, savedVocabIds, selectedLanguage} = params;
-  console.log(savedVocabIds)
   if (userId) {
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;

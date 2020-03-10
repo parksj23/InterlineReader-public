@@ -4,9 +4,6 @@ import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../../../a
 import SavedWords from './SavedWords';
 
 class SavedWordsContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   shouldComponentUpdate(nextProps,nextState){
     if(this.props.sideBar.savedWords){

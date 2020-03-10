@@ -1,15 +1,13 @@
 import {
-  GET_LIST_OF_SAVED_WORDS,
   GET_VOCAB_AND_GRAMMAR_SUCCESS,
   INIT_STORY,
   UPDATE_SAVED_WORDS,
-  ADD_SAVED_WORD, DELETE_SAVED_WORD, LEAVE_STORY,
+  LEAVE_STORY,
   RESET_STATUS,
   RESET_STORIES,
   STORY_IS_LOADING,
   STORY_IS_NOT_LOADING,
   SAVE_HYPOTHESIS,
-  UPDATE_VOCAB_AND_ORDER
 } from '../constants/action-types';
 
 const initialState = {
@@ -21,7 +19,6 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  let vocabList;
   switch (action.type) {
     case INIT_STORY:
       return({
@@ -69,9 +66,6 @@ export default (state = initialState, action) => {
         ...state,
         hypothesisURL: action.payload
       }
-      case UPDATE_VOCAB_AND_ORDER:
-
-
     default:
       return state;
   }

@@ -43,7 +43,6 @@ router.get('/:story', async (req, res, next) => {
               tmpOrderList.sort((a,b) => a.order_id - b.order_id)
               tmpOrderList.map(aVocab => orderList.push(aVocab.vocabId))
               order_result[0].order = orderList;
-              console.log(order_result.order)
               resolve(order_result[0])
             }
             else resolve()
@@ -63,7 +62,6 @@ router.get('/:story', async (req, res, next) => {
               tmpOrderList.sort((a,b) => a.order_id - b.order_id)
               tmpOrderList.map(aVocab => orderList.push(aVocab.grammarId))
               order_result[0].order = orderList;
-              console.log(order_result.order)
               resolve(order_result[0])
             }
             else resolve()
@@ -106,7 +104,6 @@ router.get('/:story', async (req, res, next) => {
           let grammarOrder = await findGrammarOrder(aLanguageCode, storyId)
           let vocabList = await findStoryVocab(aLanguageCode, storyId)
           let grammarList = await findStoryGrammar(aLanguageCode,storyId)
-          console.log(vocabOrder)
 
           results[`${aLanguageCode}`] = {
             vocabOrder,

@@ -24,17 +24,6 @@ class VocabContainer extends Component {
 
   }
 
-  componentWillUnmount(){
-    if(this.props.stories.vocabList) {
-      let vocabList = this.props.stories.vocabList.vocabList;
-      let params = {
-        userId: this.props.userId,
-        storyTitle: this.props.stories.storyTitle,
-        vocabList
-      }
-      //this.props.updateSavedWords(params);
-    }
-  }
   render(){
     return(
         <div className={"vocab-Container"}>

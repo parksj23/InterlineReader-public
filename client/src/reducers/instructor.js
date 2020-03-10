@@ -109,7 +109,7 @@ export default (state = initialState, action) => {
       };
     case ANALYTICS_INIT_OVERVIEW:
       let allAnalytics = [];
-      action.payload.map(anAnalytic => {
+      action.payload.forEach(function(anAnalytic) {
         let analytic = anAnalytic.data;
         analytic = analytic.map(anEntry => {
           if (anEntry.date) {
@@ -185,9 +185,6 @@ export default (state = initialState, action) => {
         ...state,
         editVocab: editVocabClear
       };
-      return {
-        ...state
-      };
     case INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT:
       if (action.payload === "Vocab") {
         newEditVocab = state.editVocab;
@@ -250,7 +247,7 @@ export default (state = initialState, action) => {
     case INSTRUCTOR_ADD_NEW_VOCAB:
       newEditVocab = state.editVocab;
       newVocabList = state.editVocab.MODKR.vocabList;
-      newVocabList.map((aVocab, index) => {
+      newVocabList.forEach(function(aVocab) {
         if (aVocab >= action.payload.order_id) {
           aVocab.order_id++;
         }
@@ -266,7 +263,7 @@ export default (state = initialState, action) => {
     case INSTRUCTOR_ADD_NEW_GRAMMAR:
       newEditGrammar = state.editGrammar;
       newGrammarList = state.editGrammar.MODKR.grammarList;
-      newGrammarList.map((aGrammar, index) => {
+      newGrammarList.forEach(function(aGrammar) {
         if (aGrammar >= action.payload.order_id) {
           aGrammar.order_id++;
         }
@@ -293,7 +290,7 @@ export default (state = initialState, action) => {
     case INSTRUCTOR_DELETE_VOCAB:
       newEditVocab = state.editVocab;
       newVocabList = state.editVocab.MODKR.vocabList;
-      newVocabList.map((aVocab, index) => {
+      newVocabList.forEach(function(aVocab) {
         if (aVocab >= action.payload.order_id) {
           aVocab.order_id--;
         }
@@ -311,7 +308,7 @@ export default (state = initialState, action) => {
     case INSTRUCTOR_DELETE_GRAMMAR:
       newEditGrammar = state.editGrammar;
       newGrammarList = state.editGrammar.MODKR.grammarList;
-      newGrammarList.map((aGrammar, index) => {
+      newGrammarList.forEach(function(aGrammar) {
         if (aGrammar >= action.payload.order_id) {
           aGrammar.order_id--;
         }

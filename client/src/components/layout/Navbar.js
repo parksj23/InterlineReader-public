@@ -6,33 +6,20 @@ import { logoutUser } from '../../actions/auth';
 import {updateDrawerSize} from '../../actions/dashboard';
 import {toggleSideBar} from "../../actions/sideBar";
 import SideBarButton from './common/sideBarButton';
-import store from "../../store";
-
-
 
 class Navbar extends Component {
-  constructor(){
-    super()
-  }
-
   onLogoutClick = (e) => {
     e.preventDefault();
     this.props.logoutUser();
   }
 
-
-
   toggleDrawer = (side, open) => () => {
     let width = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10) : "30vw"
     let height = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').clientHeight : "100vh"
-
-
     let size = {
       width,
       height
     }
-
-
 
     this.props.toggleSideBar(open, size);
     this.setState({
@@ -40,9 +27,7 @@ class Navbar extends Component {
     });
   };
 
-
   render() {
-
     const { isAuthenticated, user } = this.props.auth;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
