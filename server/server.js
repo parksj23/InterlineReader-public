@@ -6,8 +6,46 @@ const handleErrors = require('./helpers/handleErrors');
 require('./models/User');
 require('./models/Story');
 require('./config/passport')(passport);
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 const app = express();
 const port = process.env.PORT || 5050;
+
+const swaggerDefinition = {
+	info: {
+		title: 'Interline Reader Swagger API',
+		version: '1.0.0',
+		description: 'Enpoints to test interline reader'
+	},
+	host: 'localhost:5050',
+	basePath: '/api',
+	securityDefinitions: {
+		bearerAuth: {
+			type: 'apiKey',
+			name: 'Authorization',
+			scheme: 'bearer',
+			in: 'header'
+		}
+	}
+}
+
+const options = {
+	swaggerDefinition,
+	apis: ['./routes/api/*.js']
+}
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.get('/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+
 
 const db = require('./config/keys').mongoURI;
 mongoose

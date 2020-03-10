@@ -41,8 +41,6 @@ const About = (props) => {
       </Grid>
     </Paper>
   )
-
-
 }
 
 export default withStyles(styles)(About)

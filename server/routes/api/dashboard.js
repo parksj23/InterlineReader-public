@@ -5,6 +5,24 @@ const keys = require('../../config/keys');
 const url = keys.mongoURI;
 const databaseName = keys.databaseName;
 
+/**
+ * @swagger
+ * /dashboard:
+ *  get:
+ *    tags:
+ *      - Dashboard
+ *    name: Dashboard Page
+ *    summary: Gets the stories to display on the Dashboard Page
+ *    produces:
+ *      -application/json
+ *    responses:
+ *      '200':
+ *        description: Stories gathered successfully
+ *      '500':
+ *        description: Internal Server Error
+ *
+ */
+
 router.get("/", async (req, res, next) => {
     try {
         MongoClient.connect(url, async function (err, client) {
