@@ -38,17 +38,17 @@ class StoriesContainer extends Component {
 
   componentWillMount() {
     this.props.enableLoading();
-    let pathname = this.props.location.pathname;
-    let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
+    const search = this.props.location.search;
+
+    const params = new URLSearchParams(search);
+    const storyTitle = params.get('storyTitle'); // bar
+    console.log(this.props.location)
     this.setState({
       storyTitle,
     })
   }
 
   componentDidMount() {
-    let pathname = this.props.location.pathname;
-    let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
-
     let iframes = [].slice.apply(document.querySelectorAll('iframe'));
     for (let anIframe of iframes) {
       if (anIframe.src.startsWith("https://hypothes.is")) {
@@ -56,7 +56,7 @@ class StoriesContainer extends Component {
       }
     }
     let storyInfo;
-      this.props.initStory(storyTitle).then(resp => {
+      this.props.initStory(this.state.storyTitle).then(resp => {
         storyInfo = resp.storyInfo
         this.props.getListOfSavedWords(this.props.userId, storyInfo._id).then(resp => {
           this.props.enableSideBarButton();

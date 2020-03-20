@@ -98,13 +98,13 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">bar_chart</i></ListItemIcon>
               <ListItemText primary={'Analytics'} />
             </ListItem>
-            <ListItem button key={'stories'}
+            <ListItem button key={'classes'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/stories');
-                        this.props.changeSelectedMenu("Stories")
+                        this.props.history.push('/instructor/classes');
+                        this.props.changeSelectedMenu("Classes")
                       }}>
               <ListItemIcon><i className="material-icons">library_books</i></ListItemIcon>
-              <ListItemText primary={'Stories'} />
+              <ListItemText primary={'Classes'} />
             </ListItem>
             <ListItem button key={'addStory'}
                       onClick={()=> {

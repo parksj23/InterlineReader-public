@@ -807,4 +807,60 @@ exports.deleteMiddleKoreanVoc = (vocab, res, next) => {
   })
 }
 
+exports.getClasses = (req,res,next) => {
+  const { instructorId } = req.query;
+  let query = {
+    instructorId
+  }
+  MongoClient.connect(url, async function(err, client) {
+    if(err) throw(err)
+    const dbo = client.db(databaseName);
+    dbo.collection("CLASSES").find(query).toArray(function(err, result){
+      if(err) throw(err)
+      res.json({
+        result
+      })
+      client.close()
+    })
+  })
+}
+
+exports.updateClass = (req,res,next) => {
+  const { newClass } = req.body;
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw(err)
+    var dbo = client.db(databaseName);
+    let query = {
+      _id: (ObjectID(newClass._id))
+    }
+    delete newClass._id
+    dbo.collection(`CLASSES`).findOneAndUpdate(query, {$set: newClass},  { upsert:true, returnOriginal: false }, function(err, result) {
+    if(err) throw(err)
+      res.json({
+        newClass: result.value
+      })
+    })
+  })
+}
+
+exports.deleteClass = (req,res,next) => {
+  const {instructorId, classId} = req.body
+  MongoClient.connect(url, async function(err,client) {
+    if(err) throw(err)
+    const dbo = client.db(databaseName);
+    let query = {
+      _id: ObjectID(classId),
+      instructorId
+    }
+    dbo.collection(`CLASSES`).deleteOne(query).then(success => {
+      if(success.result.ok) {
+        res.json({
+          success: true
+        })
+      }
+      client.close();
+    })
+  })
+}
+
 

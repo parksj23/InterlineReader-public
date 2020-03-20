@@ -10,6 +10,8 @@ const savedWords = require('../../controllers/savedWords');
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
+
+
 router.get('/', (req, res, next) => {
   savedWords.getSavedWords(req.query, res, next)
 });

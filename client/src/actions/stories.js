@@ -1,4 +1,5 @@
 import axios from "axios";
+import queryStringify from 'querystringify';
 import {
   GET_VOCAB_AND_GRAMMAR_SUCCESS,
   INIT_STORY,
@@ -31,15 +32,14 @@ export const getVocabforStory = (story, storyInfo) => dispatch => {
   })
 }
 
-export const initStory = (storyTitle, className) => dispatch => {
+export const initStory = (storyTitle) => dispatch => {
   let params = {
     responseType: 'application/json',
-    storyTitle,
-    className
+    storyTitle
   }
   let payload = {};
   return new Promise( (resolve,reject) => {
-    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
+    axios.get(`/api/story`, {params}).then(res => {
       let languages = res.data.storyInfo.languages
       languages.forEach(function(aLanguage) {
         let data = res.data[`${aLanguage}`]
@@ -61,7 +61,8 @@ export const initStory = (storyTitle, className) => dispatch => {
       payload = res.data
       return res.data.storyInfo
     }).then( storyInfo => {
-      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
+      let query = queryStringify.stringify(storyInfo)
+      axios.get(`/api/story/storyText?${query}`).then(res => {
         let languages = Object.keys(res.data)
         languages.forEach(function(aLanguage) {
           payload[aLanguage] = {

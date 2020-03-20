@@ -33,7 +33,10 @@ import {
   INSTRUCTOR_GET_MIDKR_VOCAB,
   INSTRUCTOR_ADD_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
-  INSTRUCTOR_DELETE_MIDKR_VOCAB
+  INSTRUCTOR_DELETE_MIDKR_VOCAB,
+  INSTRUCTOR_GET_CLASSES,
+  INSTRUCTOR_NEW_CLASS,
+  INSTRUCTOR_UPDATE_CLASS
 } from "../constants/action-types";
 import axios from "axios";
 
@@ -550,3 +553,31 @@ export const deleteMiddleKrVocabEntr = deleteVocab => dispatch => {
   })
 }
 
+export const getClasses = (instructorId) => dispatch => {
+  axios.get(`/api/instructor/classes?instructorId=${instructorId}`).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_GET_CLASSES,
+      payload: resp.data.result
+    })
+  })
+}
+
+export const addNewClass = (newClass, history) => dispatch => {
+  axios.post('/api/instructor/classes', {newClass}).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_NEW_CLASS,
+      payload: resp.data.newClass
+    })
+    history.push('/instructor/classes')
+  })
+}
+
+export const updateClass = (newClass, history) => dispatch => {
+  axios.put('/api/instructor/classes', {newClass}).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_CLASS,
+      payload: resp.data.newClass
+    })
+    history.push('/instructor/classes')
+  })
+}

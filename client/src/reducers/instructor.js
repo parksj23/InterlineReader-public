@@ -35,7 +35,10 @@ import {
   INTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
   INSTRUCTOR_DELETE_MIDKR_VOCAB,
-  INSTRUCTOR_GET_MIDKR_VOCAB
+  INSTRUCTOR_GET_MIDKR_VOCAB,
+  INSTRUCTOR_GET_CLASSES,
+  INSTRUCTOR_NEW_CLASS,
+  INSTRUCTOR_UPDATE_CLASS
 } from "../constants/action-types";
 
 const initialState = {
@@ -59,7 +62,8 @@ const initialState = {
   },
   addMiddleVocab: {
     vocabList:[]
-  }
+  },
+  classes: []
 };
 
 export default (state = initialState, action) => {
@@ -69,6 +73,7 @@ export default (state = initialState, action) => {
   let newGrammarList;
   let newAddMiddleGram;
   let newAddMiddleVocab;
+  let classes;
   switch (action.type) {
     case INSTRUCTOR_INIT:
       return {
@@ -381,6 +386,31 @@ export default (state = initialState, action) => {
         ...state,
         addMiddleVocab: newAddMiddleVocab
       }
+    case INSTRUCTOR_GET_CLASSES:
+      return {
+        ...state,
+        classes: action.payload
+      }
+    case INSTRUCTOR_NEW_CLASS:
+      classes = state.classes
+      classes.push(action.payload)
+      return {
+        ...state,
+        classes
+      }
+    case INSTRUCTOR_UPDATE_CLASS:
+      classes = state.classes;
+      for(let i = 0; i < classes.length; i++){
+        if(classes[i]._id === action.payload._id) {
+          classes.splice(i,1, action.payload)
+          break;
+        }
+      }
+      return {
+        ...state,
+        classes
+      }
+
     default:
       return state;
   }

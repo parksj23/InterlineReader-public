@@ -9,6 +9,7 @@ import EditGrammarContainer from "./EditGrammar/EditGrammarContainer";
 import EditVocabContainer from "./EditVocab/EditVocabContainer";
 import addMidKRGramContainer from "./AddMidKRGram/AddMidKRGramContainer";
 import addMidKRVocContainer from "./AddMidKRVoc/AddMidKRVocContainer"
+import ClassesContainer from './Classes/ClassesContainer';
 import Stories from "./stories/Stories";
 import InstructorMenu from "./component/InstructorMenu";
 import Grid from "@material-ui/core/Grid";
@@ -62,7 +63,7 @@ class InstructorContainer extends Component {
                         path="/instructor"
                         component={Stories}
                       />
-                      <Route path="/instructor/stories" component={Stories}/>
+                      <Route path="/instructor/classes" component={ClassesContainer}/>
                       <Route
                         path="/instructor/addStory"
                         component={AddStoryWizard}

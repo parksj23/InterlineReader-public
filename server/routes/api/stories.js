@@ -5,15 +5,33 @@ const ObjectId = require('mongodb').ObjectID;
 const keys = require('../../config/keys');
 const url = keys.mongoURI;
 
-// @route   GET api/stories/current
-// @desc    Return current story
-// @access  Private
-// router.get(
-// 	'/current',
-// 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
-// );
-
-router.get('/:story', async (req, res, next) => {
+/**
+ * @swagger
+ * /story:
+ *  get:
+ *    tags:
+ *      - Stories
+ *    name: Story Information
+ *    summary: Get information on a specific story
+ *    consumes:
+ *      application/json
+ *    produces:
+ *      -application/json
+ *    parameters:
+ *      - in: query
+ *        name: storyTitle
+ *        schema:
+ *          type: string
+ *        required:
+ *          - storyTitle
+ *    responses:
+ *      '200':
+ *        description: Stories Retrieved from database
+ *      '500':
+ *        description: Internal Server Error
+ *
+ */
+router.get('/', async (req, res, next) => {
   let storyTitle = req.query.storyTitle.toUpperCase();
   try {
     MongoClient.connect(url, async function (err, client) {
@@ -125,8 +143,64 @@ router.get('/:story', async (req, res, next) => {
   }
 });
 
-router.get('/:story/storyText', async (req, res, next) => {
-  let storyInfo = JSON.parse(req.query.storyInfo);
+/**
+ * @swagger
+ * /story/storyText:
+ *  get:
+ *    tags:
+ *      - Stories
+ *    name: Detailed Story Information
+ *    summary: Get Detailed information on a specific story
+ *    consumes:
+ *      -application/json
+ *    produces:
+ *      -application/json
+ *    parameters:
+ *      - in: query
+ *        name: _id
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: authorKorn
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: authorRom
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: titleKorn
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name:  titleRom
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: titleEng
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: storyName
+ *        schema:
+ *          type: string
+ *      - in: query
+ *        name: languages
+ *        schema:
+ *          type: array
+ *          items:
+ *            type: string
+ *    responses:
+ *      '200':
+ *        description: Stories Retrieved from database
+ *      '500':
+ *        description: Internal Server Error
+ *
+ */
+router.get('/storyText', async (req, res, next) => {
+  let storyInfo = req.query;
+  storyInfo.languages = storyInfo.languages.split(",")
+  console.log(storyInfo)
   let storyName = storyInfo.storyName.toUpperCase();
   try {
     MongoClient.connect(url, async function (err, client) {
