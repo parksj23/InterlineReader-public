@@ -36,7 +36,9 @@ import {
   INSTRUCTOR_DELETE_MIDKR_VOCAB,
   INSTRUCTOR_GET_CLASSES,
   INSTRUCTOR_NEW_CLASS,
-  INSTRUCTOR_UPDATE_CLASS
+  INSTRUCTOR_UPDATE_CLASS,
+  INSTRUCTOR_GET_FILES,
+  INSTRUCTOR_ADD_FILE
 } from "../constants/action-types";
 import axios from "axios";
 
@@ -46,9 +48,9 @@ export const initInstructor = storyList => dispatch => {
     classType: "all"
   };
   return new Promise((resolve) => {
-    axios.get("/api/instructor/", { params }).then(res => {
+    axios.get("/api/instructor/", {params}).then(res => {
       if (!storyList) {
-        axios.get("/api/dashboard/", { params }).then(response => {
+        axios.get("/api/dashboard/", {params}).then(response => {
           dispatch({
             type: GET_STORY_LIST,
             payload: response.data
@@ -72,7 +74,7 @@ export const initEditVocab = storyTitle => dispatch => {
   };
   return new Promise((resolve) => {
     let payload = {};
-    axios.get(`/api/stories/${storyTitle}`, { params }).then(res => {
+    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
@@ -80,9 +82,9 @@ export const initEditVocab = storyTitle => dispatch => {
       languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
         if (data.vocabOrder && data.vocabList) {
-          let { vocabOrder, vocabList } = data;
+          let {vocabOrder, vocabList} = data;
           let order = vocabOrder.order;
-          vocabList.sort(function(a, b) {
+          vocabList.sort(function (a, b) {
             return order.indexOf(a._id) - order.indexOf(b._id);
           });
 
@@ -112,7 +114,7 @@ export const initEditVocab = storyTitle => dispatch => {
 
         axios
           .get(`/api/stories/${storyTitle}/storyText`, {
-            params: { storyInfo }
+            params: {storyInfo}
           })
           .then(res => {
             let languages = Object.keys(res.data);
@@ -162,7 +164,7 @@ export const initEditGrammar = storyTitle => dispatch => {
 
   return new Promise((resolve) => {
     let payload = {};
-    axios.get(`/api/stories/${storyTitle}`, { params }).then(res => {
+    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
@@ -170,9 +172,9 @@ export const initEditGrammar = storyTitle => dispatch => {
       languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
         if (data.grammarOrder && data.grammarList) {
-          let { grammarOrder, grammarList } = data;
+          let {grammarOrder, grammarList} = data;
           let order = grammarOrder.order;
-          grammarList.sort(function(a, b) {
+          grammarList.sort(function (a, b) {
             return order.indexOf(a._id) - order.indexOf(b._id);
           });
 
@@ -201,7 +203,7 @@ export const initEditGrammar = storyTitle => dispatch => {
         }
         axios
           .get(`/api/stories/${storyTitle}/storyText`, {
-            params: { storyInfo }
+            params: {storyInfo}
           })
           .then(res => {
             let languages = Object.keys(res.data);
@@ -288,7 +290,7 @@ export const getVocabulary = storyInfo => dispatch => {
     storyInfo
   };
   return new Promise((resolve) => {
-    axios.get("/api/instructor/getVocab", { params }).then(res => {
+    axios.get("/api/instructor/getVocab", {params}).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_VOCAB,
         payload: res.data
@@ -305,7 +307,7 @@ export const getGrammar = storyInfo => dispatch => {
     storyInfo
   };
   return new Promise((resolve) => {
-    axios.get("/api/instructor/getGrammar", { params }).then(res => {
+    axios.get("/api/instructor/getGrammar", {params}).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_GRAMMAR,
         payload: res.data
@@ -479,15 +481,15 @@ export const updateMiddleKrGrammarEntry = grammarList => dispatch => {
 }
 
 export const saveMidKrGram = grammarList => dispatch => {
- let params = {
-   grammarList
- }
- axios.put("/api/instructor/midkr-gram", params).then( resp => {
-   dispatch({
-     type: INSTRUCTOR_SAVE_MIDKR_GRAM,
-     payload: resp.data.grammarList
-   })
- })
+  let params = {
+    grammarList
+  }
+  axios.put("/api/instructor/midkr-gram", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_SAVE_MIDKR_GRAM,
+      payload: resp.data.grammarList
+    })
+  })
 }
 
 export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
@@ -533,7 +535,7 @@ export const saveMidKrVocab = vocabList => dispatch => {
   let params = {
     vocabList
   }
-  axios.put("/api/instructor/midkr-voc", params).then( resp => {
+  axios.put("/api/instructor/midkr-voc", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_SAVE_MIDKR_VOCAB,
       payload: resp.data.vocabList
@@ -580,4 +582,69 @@ export const updateClass = (newClass, history) => dispatch => {
     })
     history.push('/instructor/classes')
   })
+}
+
+export const uploadDroppedFiles = (acceptedFiles, user) => dispatch => {
+  acceptedFiles.forEach((file) => {
+    axios.post("/api/files/signedUrl", {
+      fileName: file.name,
+      fileType: file.type,
+    }).then(resp => {
+      const returnData = resp.data.data.returnData;
+      const signedRequest = returnData.signedRequest;
+      const url = returnData.url;
+
+      const reader = new FileReader()
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = () => {
+        let token = axios.defaults.headers.common["Authorization"]
+        delete axios.defaults.headers.common["Authorization"]
+        const options = {
+          headers: {
+            'Content-Type': file.type
+          }
+        }
+        axios.put(signedRequest, file, options)
+          .then(result => {
+            axios.defaults.headers.common["Authorization"] = token
+            axios.put("/api/files/file", {
+              instructorId: user.id,
+              fileName: file.name,
+              fileType: file.type,
+              url,
+              createdDate: new Date(),
+              modifiedDate: new Date()
+            }).then(resp => {
+              console.log(resp)
+              if(resp.data.value){
+                dispatch({
+                  type: INSTRUCTOR_ADD_FILE,
+                  payload: resp.data.value
+                })
+              }
+
+            }).catch(error => console.log(error))
+          })
+          .catch(error => {
+            console.log(error)
+            axios.defaults.headers.common["Authorization"] = token
+          })
+
+      }
+      reader.readAsArrayBuffer(file)
+
+    })
+  })
+}
+
+export const getFiles = (user) => dispatch => {
+  axios.get(`/api/files?userId=${user.id}`).then(resp => {
+    console.log(resp.data)
+    dispatch({
+      type: INSTRUCTOR_GET_FILES,
+      payload: resp.data
+    })
+  })
+
 }

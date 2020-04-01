@@ -146,6 +146,14 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Add Middle Korean Vocabulary'} />
             </ListItem>
+            <ListItem button key={'files'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/files');
+                        this.props.changeSelectedMenu("Files")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Files'} />
+            </ListItem>
           </List>
       </div>
     );

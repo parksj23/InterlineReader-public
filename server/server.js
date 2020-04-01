@@ -6,6 +6,7 @@ const handleErrors = require('./helpers/handleErrors');
 require('./models/User');
 require('./models/Story');
 require('./config/passport')(passport);
+require('dotenv').config();
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 
@@ -70,6 +71,7 @@ app.use('/api/story', require('./routes/api/stories'));
 app.use('/api/savedWords', require('./routes/api/savedWords'));
 app.use('/api/instructor', require("./routes/api/instructor"));
 app.use('/api/analytics', require("./routes/api/analytics"));
+app.use('/api/files', require('./routes/api/files'))
 app.use(handleErrors);
 
 if (process.env.NODE_ENV === 'production') {

@@ -12,6 +12,7 @@ import addMidKRVocContainer from "./AddMidKRVoc/AddMidKRVocContainer"
 import ClassesContainer from './Classes/ClassesContainer';
 import Stories from "./stories/Stories";
 import InstructorMenu from "./component/InstructorMenu";
+import FilesContainer from './Files/FilesContainer'
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
@@ -84,6 +85,9 @@ class InstructorContainer extends Component {
                         path="/instructor/addMidKRVocab"
                         component={addMidKRVocContainer}
                       />
+                      <Route
+                        path="/instructor/files"
+                        component={FilesContainer} />
                     </Switch>
                   </Instructor>
                 </Grid>

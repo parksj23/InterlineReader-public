@@ -38,7 +38,9 @@ import {
   INSTRUCTOR_GET_MIDKR_VOCAB,
   INSTRUCTOR_GET_CLASSES,
   INSTRUCTOR_NEW_CLASS,
-  INSTRUCTOR_UPDATE_CLASS
+  INSTRUCTOR_UPDATE_CLASS,
+  INSTRUCTOR_GET_FILES,
+  INSTRUCTOR_ADD_FILE
 } from "../constants/action-types";
 
 const initialState = {
@@ -63,7 +65,8 @@ const initialState = {
   addMiddleVocab: {
     vocabList:[]
   },
-  classes: []
+  classes: [],
+  files: []
 };
 
 export default (state = initialState, action) => {
@@ -410,7 +413,18 @@ export default (state = initialState, action) => {
         ...state,
         classes
       }
-
+    case INSTRUCTOR_GET_FILES:
+      return {
+        ...state,
+        files: action.payload
+      }
+    case INSTRUCTOR_ADD_FILE:
+      let newFiles = state.files
+      newFiles.push(action.payload)
+      return{
+        ...state,
+        files: newFiles
+      }
     default:
       return state;
   }
