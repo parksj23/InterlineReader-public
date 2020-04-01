@@ -5,12 +5,9 @@ import { setCurrentUser, logoutUser } from './actions/auth';
 import { endGrammarSearchSession } from './actions/analytics'
 import setAuthToken from './utils/setAuthToken';
 
-
 import { Provider } from 'react-redux';
 import store from './store';
 import axios from 'axios'
-
-
 import PrivateRoute from './components/common/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
@@ -27,9 +24,6 @@ import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
-
-
-
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";

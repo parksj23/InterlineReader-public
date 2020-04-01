@@ -143,7 +143,7 @@ class NewClass extends Component {
                     id: 'select-multiple-native',
                   }}
                 >
-                  {this.props.storyList.map(name => (
+                  {this.props.storyList.allStories.map(name => (
                     <MenuItem key={name.storyName} value={name.storyName}>
                       {name.storyName}
                     </MenuItem>

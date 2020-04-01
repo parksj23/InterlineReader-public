@@ -8,8 +8,6 @@ import { getClasses, addNewClass, updateClass } from '../../../actions/instructo
 import {Route, Switch } from 'react-router-dom';
 import NewClass from './NewClass';
 
-
-
 class ClassesContainer extends Component {
 
   componentWillMount(){
@@ -64,7 +62,6 @@ class ClassesContainer extends Component {
     return (
       <Grid container>
         <Grid item xs={12}>
-        <span><h1> Your classes </h1></span>
         <span style={{float: 'right'}}><Button variant='contained' onClick={() => this.props.history.push('/instructor/classes/newClass')}>New Class</Button></span>
         </Grid>
         <Divider />

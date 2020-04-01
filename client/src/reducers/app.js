@@ -1,7 +1,11 @@
 import {GET_STORY_LIST} from '../constants/action-types';
 
 const initialState = {
-  storyList: null
+  storyLists: {
+    allStories: null,
+    korn410StoryList: null,
+    korn420StoryList: null
+  }
 };
 
 export default (state = initialState, action) => {
@@ -9,7 +13,7 @@ export default (state = initialState, action) => {
     case GET_STORY_LIST:
       return {
         ...state,
-        storyList: action.payload,
+        storyLists: action.payload,
       };
     default:
       return state;

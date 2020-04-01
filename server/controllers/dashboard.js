@@ -1,96 +1,156 @@
-/*
-const path = require("path");
-const fs = require('fs');
 const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const url = keys.mongoURI;
+const databaseName = keys.databaseName;
 
-exports.init = async (req, res, next) => {
-  const classType = req.query.classType
-  console.log(classType)
-  let stories = {};
-  let storiesPromises = [];
-  switch (classType) {
-    case "410A":
-      storiesPromises.push(new Promise((resolve, reject) => {
-        try {
-          getStories(classType).then(res => {
-            stories[classType] = res
-            resolve(stories)
-          })
-        }
-        catch (err) {
-          reject(err)
-        }
-      }))
-      break;
-    case "410B":
-      storiesPromises.push(new Promise((resolve, reject) => {
-        try {
-          getStories(classType).then(res => {
-            stories[classType] = res
-            resolve(stories)
-          })
-        }
-        catch (err) {
-        }
-      }))
-      break;
-    case "all":
-      storiesPromises.push(new Promise((resolve, reject) => {
-        try {
-          getAllStories().then(resp => {
-            resolve(resp)
+
+
+
+exports.getDashboard = (req,res,next) => {
+  try {
+    MongoClient.connect(url, async function (err, client) {
+      const db = client.db(databaseName);
+      const findAllStories = () => {
+        return new Promise((resolve,reject) => {
+          db.collection(`STORY_LIST`).find().toArray(function (err, documents) {
+            if (err) reject(err);
+            resolve(documents);
           });
-        }
-        catch (err) {
-        }
-      }))
-      break
-    default:
-  }
-  Promise.all(storiesPromises).then(resp => {
-    console.log(resp)
-    res.json(resp[0])
-    next();
-  }).catch( err => {
-    console.log(err)
-    next();
-  })
-}
-
-
-const getStories = function (className) {
-  return new Promise((resolve, reject) => {
-    let pathToStories = path.join(__dirname, `../public/images/korn/${className}/badges/png`);
-    let stories = []
-    fs.readdir(pathToStories, function (err, items) {
-      items.map((aFile) => {
-        stories.push(fs.readFileSync(pathToStories + "/" + aFile, 'utf8'))
-      })
-      resolve(stories)
-    })
-  })
-}
-
-getAllStories = function(){
-  let allStories = {};
-  try{
-    return new Promise((resolve, reject) =>{
-      MongoClient.connect(url, function(err, client) {
-        if (err) throw err;
-        var dbo = client.db("ubcreadertesting");
-        var query = {};
-        dbo.collection(`STORY_LIST`).find(query).toArray(function(err, documents) {
-          if (err) throw err;
-          allStories["410B"] = documents;
-          resolve(allStories)
-          client.close();
         });
+      };
+      const findStorySummaries = (listOFStories) => {
+        return new Promise((resolve, reject) => {
+          let storyNames = []
+          listOFStories.map(aStory => {
+            storyNames.push({storyName: aStory.storyName})
+          })
+          let query = {
+            $or: storyNames
+          }
+
+          db.collection(`STORY_KR_SUM`).find(query).toArray(function (err, result) {
+            if (err) reject(err);
+            const allStorySummary = []
+            result.map(aDoc => {
+
+              let storyResult = listOfStories.filter(aStory => aStory.storyName === aDoc.storyName)[0];
+              storyResult = {...storyResult, ...aDoc, _id: aDoc._id.toString()}
+              allStorySummary.push(storyResult)
+            })
+            resolve(allStorySummary);
+          })
+        })
+      }
+
+      const findClass = (className) => {
+        return new Promise((resolve,reject) => {
+          let query = {
+            className
+          }
+          db.collection("CLASSES").find(query).toArray(function(err, classResult) {
+            if(err) throw(err)
+            resolve(classResult[0])
+          })
+        })
+      }
+
+      var listOfStories = await findAllStories();
+      var korn410Class = await findClass("KORN410")
+      var korn420Class = await findClass("KORN420")
+      var korn410StoriesList =[]
+      var korn420StoriesList=[]
+
+      listOfStories.forEach(aStory => {
+        if(korn410Class.storyList.indexOf(aStory._id.toString()) > -1) korn410StoriesList.push(aStory)
+        if(korn420Class.storyList.indexOf(aStory._id.toString()) > -1) korn420StoriesList.push(aStory)
+      })
+
+      const allStories = await findStorySummaries(listOfStories);
+      const korn410Stories = await findStorySummaries(korn410StoriesList)
+      const korn420Stories = await findStorySummaries(korn420StoriesList)
+      res.json( {
+        allStories,
+        korn410Stories,
+        korn420Stories
       });
+      client.close();
     })
-  }catch(err){
-    console.log(err);
+  }
+  catch (err) {
+    next(err);
   }
 }
-*/
+
+exports.getMiddleKorean = (req,res,next) => {
+  try {
+    MongoClient.connect(url, async function(err, client) {
+      if(err) throw(err)
+      const dbo = client.db(databaseName);
+      dbo.collection('GRAM_MIDKR_ALL').find().toArray(function(err,resultGram) {
+        if(err) throw(err)
+        resultGram.forEach( anEntry => {
+          delete anEntry._id;
+          delete anEntry.lastUpdated
+          delete anEntry.createdDate
+        })
+        const midKrGram = resultGram;
+        dbo.collection('VOC_MIDKR_ALL').find().toArray(function(err, resultVoc) {
+          if(err) throw(err)
+          resultVoc.forEach(anEntry => {
+            delete anEntry._id
+            delete anEntry.createdDate
+            delete anEntry.lastUpdated
+          })
+          const midKrVoc = resultVoc
+          res.json({
+            midKrGram,
+            midKrVoc
+          })
+          client.close()
+        })
+      })
+    })
+  } catch (err) {
+    next(err)
+  }
+
+}
+
+exports.getModernKorean = (req,res,next) => {
+  try {
+    MongoClient.connect(url, async function(err, client) {
+      if(err) throw(err)
+      const dbo = client.db(databaseName);
+      dbo.collection('GRAM_MODKR_ALL').find().toArray(function(err,resultGram) {
+        if(err) throw(err)
+
+       resultGram.forEach( anEntry => {
+          delete anEntry._id;
+          delete anEntry.storyList
+        })
+        const modKrGram = resultGram;
+        dbo.collection('VOC_MODKR_ALL').find().toArray(function(err, resultVoc) {
+          if(err) throw(err)
+          resultVoc.forEach(anEntry => {
+            delete anEntry._id
+            delete anEntry.storyList
+            delete anEntry.instructor
+            delete anEntry.createdDate
+            delete anEntry.lastUpdated
+          })
+
+          const modKrVoc = resultVoc
+          res.json({
+            modKrGram,
+            modKrVoc
+          })
+          client.close()
+        })
+      })
+    })
+  } catch (err) {
+    next(err)
+  }
+}
+
+

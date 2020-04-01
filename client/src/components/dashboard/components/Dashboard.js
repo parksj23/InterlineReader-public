@@ -36,9 +36,8 @@ class Dashboard extends Component {
 
 
   render() {
-    const sections = this.props.storyList;
+    const {storyList} = this.props
     return (
-
       <div className="dashboard">
         <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
           <ClipLoader
@@ -49,9 +48,9 @@ class Dashboard extends Component {
           />
         </div>
         { <Grid container >
-          {sections ? sections.map((aClass,classIndex) => {
+          {storyList ? storyList.map((aClass,classIndex) => {
             return this.renderClassStories(aClass, classIndex)
-          }) : null}
+          }): null}
         </Grid> }
       </div>  
     );

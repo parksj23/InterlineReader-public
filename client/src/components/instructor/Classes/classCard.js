@@ -40,7 +40,6 @@ const ClassCard = (props) => {
         <Divider/>
         <CardActions>
           <IconButton onClick={()=> props.history.push(`/instructor/classes/editClass/${aClass._id}`)}><i className="material-icons">create</i></IconButton>
-          <IconButton><i className="material-icons">delete_sweep</i></IconButton>
         </CardActions>
       </Card>
     </Grid>)

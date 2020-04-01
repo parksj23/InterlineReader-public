@@ -39,7 +39,7 @@ class Classes extends Component {
     return (
       <div className="edit-grammar-container">
         <Grid container>
-            <Grid item xs={12}><h4>Active Classes</h4></Grid>
+            <Grid item xs={12}><h3>Active Classes</h3></Grid>
             { this.renderClasses(activeClasses) }
           </Grid>
           <Divider />

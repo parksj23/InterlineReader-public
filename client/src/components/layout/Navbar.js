@@ -77,8 +77,23 @@ class Navbar extends Component {
             <div className="collapse navbar-collapse" id="mobile-nav">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/dashboard">
-                    Stories
+                  <Link className="nav-link" to="/dashboard/middleKorean">
+                    Middle Korean
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard/modernKorean">
+                    Modern korean
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard/KORN410">
+                    KORN 410
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard/KORN420">
+                    KORN 420
                   </Link>
                 </li>
                 <li className="nav-item">
