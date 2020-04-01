@@ -189,8 +189,8 @@ class StorySection extends Component {
 
   doesStoryExist = (storyInfo) => {
     let {instructor} = this.props;
-    if(!instructor.storyList) return false;
-    return instructor.storyList.filter(aStory =>{
+    if(!instructor.storyLists) return false;
+    return instructor.storyLists.filter(aStory =>{
       return (
         storyInfo === aStory
       )

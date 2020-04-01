@@ -9,11 +9,12 @@ import Button from '@material-ui/core/Button';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style/AddStoryWizard.css';
 import {EditorState} from 'draft-js';
-import {addToStory, addStoryInfo,handleStatusClose} from '../../../actions/instructor';
+import {addToStory, addStoryInfo,handleStatusClose, getFiles} from '../../../actions/instructor';
 import {connect} from 'react-redux';
 import StorySection from './components/StorySection';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
+import PdfReaderContainer from "./components/PdfReaderContainer";
 
 const classes = [
   {
@@ -43,20 +44,29 @@ class AddStoryWizard extends Component {
         class: "410B",
         language: "ENGSH",
         region: "KR",
-        instructor: ""
+        instructor: "",
+        pdfUrl: "",
+        pagesSelected: []
       },
       openStatus: false,
       statusMessage: "",
       saveDisabled: false,
       numOfSections: 1
     };
+
+    this.addPage.bind(this)
+    this.removePage.bind(this)
+  }
+
+  componentWillMount(){
+    this.props.getFiles(this.props.user);
   }
 
   onComponentDidMount = () => {
     this.setState({
       storyForm: {
         ...this.state.storyForm,
-        instructor: this.props.instructorId
+        instructor: this.props.user.instructorId
       }
     })
   }
@@ -124,11 +134,38 @@ class AddStoryWizard extends Component {
     })
   }
 
+  addPage = (pageNumber) => {
+    if(this.state.storyForm.pagesSelected.indexOf(pageNumber) === -1) {
+      let newPagesSelected = this.state.storyForm.pagesSelected
+      console.log(newPagesSelected)
+      newPagesSelected.push(pageNumber)
+      console.log(newPagesSelected)
+      let newStoryForm = this.state.storyForm
+      newStoryForm.pagesSelected = newPagesSelected
+      this.setState({
+        storyForm: newStoryForm
+      })
+    }
+  }
+
+  removePage = (pageNumber) => {
+    let index = this.state.storyForm.pagesSelected.indexOf(pageNumber)
+    if(index > -1) {
+      let newStoryForm = this.state.storyForm
+      let newPagesSelected = this.state.storyForm.pagesSelected
+      newPagesSelected.splice(index,1)
+      newStoryForm.pagesSelected = newPagesSelected
+      this.setState({
+        storyForm: newStoryForm
+      })
+    }
+  }
+
   renderStorySections = () => {
     let sections = []
 
     for(let i = 0; i < this.state.numOfSections ; i++){
-      sections.push(<StorySection isFirst={i===0}  key={`story-section-${i}`} storyForm={this.state.storyForm} instructorId={this.props.instructorId}/>);
+      sections.push(<StorySection isFirst={i===0}  key={`story-section-${i}`} storyForm={this.state.storyForm} instructorId={this.props.user.instructorId}/>);
     }
     return sections;
   }
@@ -228,6 +265,15 @@ class AddStoryWizard extends Component {
         <Grid container>
         {this.renderStorySections()}
         </Grid>
+        <Grid container>
+          <PdfReaderContainer
+            pdfList={this.props.instructor.files}
+            handleOnChangeField={this.handleOnChangeField}
+            pdfUrl={this.state.storyForm.pdfUrl}
+            addPage={this.addPage}
+            removePage={this.removePage}
+          />
+        </Grid>
       </div>
     )
   }
@@ -237,13 +283,14 @@ class AddStoryWizard extends Component {
 
 const mapStateToProps = state => ({
   instructor: state.instructor,
-  instructorId: state.auth.user.id
+  user: state.auth.user
 });
 
 const mapDispatchToProps = ({
   addToStory,
   addStoryInfo,
-  handleStatusClose
+  handleStatusClose,
+  getFiles
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddStoryWizard);

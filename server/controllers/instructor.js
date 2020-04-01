@@ -57,7 +57,7 @@ exports.addNewStory = (req, res) => {
               message: "Error updating story"
             });
           }
-          dbo.close();
+          client.close();
         });
     });
   } else {
@@ -76,7 +76,9 @@ exports.addStoryInfo = (req, res) => {
       instructor,
       region,
       createdDate,
-      lastUpdated
+      lastUpdated,
+      pdfUrl,
+      pagesSelected
     } = req.storyInfo;
     let query = {
       storyName,
@@ -88,7 +90,9 @@ exports.addStoryInfo = (req, res) => {
     let storyInfo = {
       ...query,
       createdDate,
-      lastUpdated
+      lastUpdated,
+      pdfUrl,
+      pagesSelected
     };
     MongoClient.connect(url, function(err, client) {
       if (err) throw err;
