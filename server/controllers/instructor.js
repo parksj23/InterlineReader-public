@@ -6,14 +6,14 @@ const databaseName = keys.databaseName;
 
 exports.initialize = (req, res, next) => {
   try {
-    MongoClient.connect(url, async function(err, client) {
+    MongoClient.connect(url, async function (err, client) {
       let allStories = {};
       const db = client.db(databaseName);
       const findAllStories = () => {
         return new Promise((resolve, reject) => {
           db.collection(`STORY_LIST`)
             .find()
-            .toArray(function(err, documents) {
+            .toArray(function (err, documents) {
               if (err) reject(err);
               allStories = documents;
               resolve(allStories);
@@ -30,9 +30,9 @@ exports.initialize = (req, res, next) => {
 };
 
 exports.addNewStory = (req, res) => {
-  const { text, storyInfo } = req;
+  const {text, storyInfo} = req;
   if (text && storyInfo) {
-    MongoClient.connect(url, function(err, client) {
+    MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db(databaseName);
       var query = {
@@ -78,7 +78,12 @@ exports.addStoryInfo = (req, res) => {
       createdDate,
       lastUpdated,
       pdfUrl,
-      pagesSelected
+      pagesSelected,
+      authorKorn,
+      authorRom,
+      titleKorn,
+      titleRom,
+      titleEng,
     } = req.storyInfo;
     let query = {
       storyName,
@@ -94,61 +99,36 @@ exports.addStoryInfo = (req, res) => {
       pdfUrl,
       pagesSelected
     };
-    MongoClient.connect(url, function(err, client) {
+
+    let languages = [];
+    languages.push(language);
+    MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db(databaseName);
       dbo
         .collection(`STORY_LIST`)
-        .find(query)
-        .toArray(function(err, document) {
-          if (document.length === 0) {
-            let languages = [];
-            languages.push(language);
-            storyInfo["languages"] = languages;
-            dbo
-              .collection(`STORY_LIST`)
-              .insertOne(storyInfo)
-              .then(success => {
-                if (success.result.ok) {
-                  res.json({
-                    status: "success"
-                  });
-                  client.close();
-                } else {
-                  res.json({
-                    status: "failed to save to database"
-                  });
-                  client.close();
-                }
-              });
-          } else {
-            let oldDoc = document[0];
-            delete oldDoc._id;
-            let languages = oldDoc.languages;
-            if (languages.indexOf(language) === -1) languages.push(language);
-            oldDoc["languages"] = languages;
-            dbo
-              .collection(`STORY_LIST`)
-              .replaceOne(query, oldDoc, { upsert: true })
-              .then(success => {
-                if (success.result.ok) {
-                  res.json({
-                    status: "success"
-                  });
-                  client.close();
-                } else {
-                  res.json({
-                    status: "failed - story already exist!"
-                  });
-                  client.close();
-                }
+        .findOneAndUpdate(query, {$set: storyInfo},
+          {upsert: true}, function (err, result) {
+            if (err) throw(err)
+            let krSumQuery = {
+              authorKorn,
+              authorRom,
+              titleKorn,
+              titleRom,
+              titleEng,
+              storyName,
+              languages,
+              pdfUrl,
+              pagesSelected
+            }
+            dbo.collection("STORY_KR_SUM").findOneAndUpdate(krSumQuery, {$set: krSumQuery},
+              {upsert: true}, function (err, success) {
+                res.json({
+                  status: "success"
+                });
+                client.close();
               })
-              .catch(err => {
-                console.log(err);
-              });
-            client.close();
-          }
-        });
+          })
     });
   }
 };
@@ -157,14 +137,14 @@ exports.getAllStories = (req, res) => {
   let allStories = {};
   try {
     return new Promise((resolve, reject) => {
-      MongoClient.connect(url, function(err, client) {
+      MongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var dbo = client.db(databaseName);
         var query = {};
         dbo
           .collection(`STORY_LIST`)
           .find(query)
-          .toArray(function(err, documents) {
+          .toArray(function (err, documents) {
             if (err) throw err;
             allStories = documents;
             res.json(allStories);
@@ -178,7 +158,7 @@ exports.getAllStories = (req, res) => {
 };
 
 exports.renameCollections = (req, res) => {
-  MongoClient.connect(url, function(err, client) {
+  MongoClient.connect(url, function (err, client) {
     if (err) throw err;
     let dbo = client.db(databaseName);
     console.log(req);
@@ -198,7 +178,7 @@ exports.renameCollections = (req, res) => {
 };
 
 exports.getVocabulary = (req, res) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     let db = client.db(databaseName);
     let storyInfo = req.storyInfo;
@@ -206,7 +186,7 @@ exports.getVocabulary = (req, res) => {
       return new Promise((resolve, reject) => {
         db.collection(`${storyInfo.storyTitle}_VOC`)
           .find()
-          .toArray(function(err, voc_result) {
+          .toArray(function (err, voc_result) {
             if (err) reject(err);
             resolve(voc_result);
           });
@@ -222,7 +202,7 @@ exports.getVocabulary = (req, res) => {
 };
 
 exports.getGrammar = (req, res) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     let db = client.db("testdb");
     let storyInfo = req.storyInfo;
@@ -230,7 +210,7 @@ exports.getGrammar = (req, res) => {
       return new Promise((resolve, reject) => {
         db.collection(`${storyInfo.storyTitle}_GRAM`)
           .find()
-          .toArray(function(err, voc_result) {
+          .toArray(function (err, voc_result) {
             if (err) reject(err);
             resolve(voc_result);
           });
@@ -246,10 +226,10 @@ exports.getGrammar = (req, res) => {
 };
 
 exports.addVocab = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let { vocab, storyTitle } = req;
+    let {vocab, storyTitle} = req;
 
     let storyIdquery = {
       storyName: storyTitle
@@ -258,7 +238,7 @@ exports.addVocab = (req, res, next) => {
     dbo
       .collection(`STORY_LIST`)
       .find(storyIdquery)
-      .toArray(function(err, storyResult) {
+      .toArray(function (err, storyResult) {
         if (err) throw err;
         if (storyResult.length === 0)
           throw `Cannot find story for storyTitle: ${storyTitle}`;
@@ -269,7 +249,7 @@ exports.addVocab = (req, res, next) => {
         dbo
           .collection(`VOC_MODKR_ALL`)
           .find(vocabQuery)
-          .toArray(function(err, vocabResult) {
+          .toArray(function (err, vocabResult) {
             if (err) throw err;
             let newVocabEntry;
             if (vocabResult.length === 0) {
@@ -292,13 +272,13 @@ exports.addVocab = (req, res, next) => {
               .collection("VOC_MODKR_ALL")
               .updateOne(
                 vocabQuery,
-                { $set: newVocabEntry },
-                { upsert: true },
-                function(erro, result) {
+                {$set: newVocabEntry},
+                {upsert: true},
+                function (erro, result) {
                   dbo
                     .collection(`VOC_MODKR_ALL`)
                     .find(vocabQuery)
-                    .toArray(function(err, vocabResult) {
+                    .toArray(function (err, vocabResult) {
                       if (err) throw err;
                       let vocabId = vocabResult[0]._id;
                       let vocabOrderQuery = {
@@ -307,7 +287,7 @@ exports.addVocab = (req, res, next) => {
                       dbo
                         .collection(`VOC_MODKR_ORDER`)
                         .find(vocabOrderQuery)
-                        .toArray(function(err, orderResult) {
+                        .toArray(function (err, orderResult) {
                           if (err) throw err;
                           if (orderResult.length === 0)
                             throw `Cannot find order data`;
@@ -326,8 +306,8 @@ exports.addVocab = (req, res, next) => {
                             .collection(`VOC_MODKR_ORDER`)
                             .updateOne(
                               vocabOrderQuery,
-                              { $set: { order: order } },
-                              function(err, result) {
+                              {$set: {order: order}},
+                              function (err, result) {
                                 if (err) throw err;
                                 res.send({
                                   vocab
@@ -344,10 +324,10 @@ exports.addVocab = (req, res, next) => {
 };
 
 exports.addGrammar = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let { grammar, storyTitle } = req;
+    let {grammar, storyTitle} = req;
 
     let storyIdquery = {
       storyName: storyTitle
@@ -356,7 +336,7 @@ exports.addGrammar = (req, res, next) => {
     dbo
       .collection(`STORY_LIST`)
       .find(storyIdquery)
-      .toArray(function(err, storyResult) {
+      .toArray(function (err, storyResult) {
         if (err) throw err;
         if (storyResult.length === 0)
           throw `Cannot find story for storyTitle: ${storyTitle}`;
@@ -367,7 +347,7 @@ exports.addGrammar = (req, res, next) => {
         dbo
           .collection(`GRAM_MODKR_ALL`)
           .find(grammarQuery)
-          .toArray(function(err, grammarResult) {
+          .toArray(function (err, grammarResult) {
             if (err) throw err;
             let newGrammarEntry;
             if (grammarResult.length === 0) {
@@ -390,13 +370,13 @@ exports.addGrammar = (req, res, next) => {
               .collection("GRAM_MODKR_ALL")
               .updateOne(
                 grammarQuery,
-                { $set: newGrammarEntry },
-                { upsert: true },
-                function(erro, result) {
+                {$set: newGrammarEntry},
+                {upsert: true},
+                function (erro, result) {
                   dbo
                     .collection(`GRAM_MODKR_ALL`)
                     .find(grammarQuery)
-                    .toArray(function(err, grammarResult) {
+                    .toArray(function (err, grammarResult) {
                       if (err) throw err;
                       let grammarId = grammarResult[0]._id;
                       let grammarOrderQuery = {
@@ -405,7 +385,7 @@ exports.addGrammar = (req, res, next) => {
                       dbo
                         .collection(`GRAM_MODKR_ORDER`)
                         .find(grammarOrderQuery)
-                        .toArray(function(err, orderResult) {
+                        .toArray(function (err, orderResult) {
                           if (err) throw err;
                           if (orderResult.length === 0)
                             throw `Cannot find order data`;
@@ -425,8 +405,8 @@ exports.addGrammar = (req, res, next) => {
                             .collection(`GRAM_MODKR_ORDER`)
                             .updateOne(
                               grammarOrderQuery,
-                              { $set: { order: order } },
-                              function(err, result) {
+                              {$set: {order: order}},
+                              function (err, result) {
                                 if (err) throw err;
                                 res.send({
                                   grammar
@@ -443,10 +423,10 @@ exports.addGrammar = (req, res, next) => {
 };
 
 exports.updateVocab = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let { vocab } = req;
+    let {vocab} = req;
     let query = {
       _id: ObjectID(vocab._id)
     };
@@ -458,7 +438,7 @@ exports.updateVocab = (req, res, next) => {
     };
     dbo
       .collection(`VOC_MODKR_ALL`)
-      .updateOne(query, { $set: updatedDocument }, function(err, result) {
+      .updateOne(query, {$set: updatedDocument}, function (err, result) {
         if (err) throw err;
         res.send({
           vocab
@@ -469,10 +449,10 @@ exports.updateVocab = (req, res, next) => {
 };
 
 exports.deleteVocab = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let { vocab, storyTitle } = req;
+    let {vocab, storyTitle} = req;
 
     let storyIdquery = {
       storyName: storyTitle
@@ -481,7 +461,7 @@ exports.deleteVocab = (req, res, next) => {
     dbo
       .collection(`STORY_LIST`)
       .find(storyIdquery)
-      .toArray(function(err, storyResult) {
+      .toArray(function (err, storyResult) {
         if (err) throw err;
         if (storyResult.length === 0)
           throw `Cannot find story for storyTitle: ${storyTitle}`;
@@ -494,7 +474,7 @@ exports.deleteVocab = (req, res, next) => {
         dbo
           .collection(`VOC_MODKR_ALL`)
           .find(query)
-          .toArray(function(err, result) {
+          .toArray(function (err, result) {
             if (err) throw err;
             let vocabToRemove = result[0];
             let vocabId = vocabToRemove._id.toString();
@@ -502,7 +482,7 @@ exports.deleteVocab = (req, res, next) => {
             storyList.splice(storyList.indexOf(storyId), 1);
             dbo
               .collection(`VOC_MODKR_ALL`)
-              .updateOne(query, { $set: { storyList: storyList } }, function(
+              .updateOne(query, {$set: {storyList: storyList}}, function (
                 err,
                 result
               ) {
@@ -513,7 +493,7 @@ exports.deleteVocab = (req, res, next) => {
                 dbo
                   .collection(`VOC_MODKR_ORDER`)
                   .find(orderQuery)
-                  .toArray(function(err, orderResult) {
+                  .toArray(function (err, orderResult) {
                     if (err) throw err;
                     let newOrder = orderResult[0];
                     let order = newOrder.order;
@@ -532,8 +512,8 @@ exports.deleteVocab = (req, res, next) => {
                       .collection(`VOC_MODKR_ORDER`)
                       .updateOne(
                         orderQuery,
-                        { $set: { order: order } },
-                        function(err, result) {
+                        {$set: {order: order}},
+                        function (err, result) {
                           if (err) throw err;
                           res.send({
                             vocab
@@ -549,10 +529,10 @@ exports.deleteVocab = (req, res, next) => {
 };
 
 exports.updateGrammar = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let { grammar } = req;
+    let {grammar} = req;
     let query = {
       _id: ObjectID(grammar._id)
     };
@@ -564,7 +544,7 @@ exports.updateGrammar = (req, res, next) => {
     };
     dbo
       .collection(`GRAM_MODKR_ALL`)
-      .updateOne(query, { $set: updatedDocument }, function(err, result) {
+      .updateOne(query, {$set: updatedDocument}, function (err, result) {
         if (err) throw err;
         res.send({
           grammar
@@ -575,10 +555,10 @@ exports.updateGrammar = (req, res, next) => {
 };
 
 exports.deleteGrammar = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
-    let { grammar, storyTitle } = req;
+    let {grammar, storyTitle} = req;
 
     let storyIdquery = {
       storyName: storyTitle
@@ -587,7 +567,7 @@ exports.deleteGrammar = (req, res, next) => {
     dbo
       .collection(`STORY_LIST`)
       .find(storyIdquery)
-      .toArray(function(err, storyResult) {
+      .toArray(function (err, storyResult) {
         if (err) throw err;
         if (storyResult.length === 0)
           throw `Cannot find story for storyTitle: ${storyTitle}`;
@@ -600,7 +580,7 @@ exports.deleteGrammar = (req, res, next) => {
         dbo
           .collection(`GRAM_MODKR_ALL`)
           .find(query)
-          .toArray(function(err, result) {
+          .toArray(function (err, result) {
             if (err) throw err;
             let grammarToRemove = result[0];
             let grammarId = grammarToRemove._id.toString();
@@ -608,7 +588,7 @@ exports.deleteGrammar = (req, res, next) => {
             storyList.splice(storyList.indexOf(storyId), 1);
             dbo
               .collection(`GRAM_MODKR_ALL`)
-              .updateOne(query, { $set: { storyList: storyList } }, function(
+              .updateOne(query, {$set: {storyList: storyList}}, function (
                 err,
                 result
               ) {
@@ -619,7 +599,7 @@ exports.deleteGrammar = (req, res, next) => {
                 dbo
                   .collection(`GRAM_MODKR_ORDER`)
                   .find(orderQuery)
-                  .toArray(function(err, orderResult) {
+                  .toArray(function (err, orderResult) {
                     if (err) throw err;
                     let newOrder = orderResult[0];
                     let order = newOrder.order;
@@ -638,8 +618,8 @@ exports.deleteGrammar = (req, res, next) => {
                       .collection(`GRAM_MODKR_ORDER`)
                       .updateOne(
                         orderQuery,
-                        { $set: { order: order } },
-                        function(err, result) {
+                        {$set: {order: order}},
+                        function (err, result) {
                           if (err) throw err;
                           res.send({
                             grammar
@@ -655,13 +635,13 @@ exports.deleteGrammar = (req, res, next) => {
 };
 
 exports.getMiddleKRGram = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
     dbo
       .collection(`GRAM_MIDKR_ALL`)
       .find()
-      .toArray(function(err, grammarResult) {
+      .toArray(function (err, grammarResult) {
         if (err) throw err;
         res.json({
           status: "200OK",
@@ -673,7 +653,7 @@ exports.getMiddleKRGram = (req, res, next) => {
 };
 
 exports.addMiddleKoreanGrammar = (grammar, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
     var dbo = client.db(databaseName);
     let query = {
@@ -685,11 +665,11 @@ exports.addMiddleKoreanGrammar = (grammar, res, next) => {
     dbo
       .collection(`GRAM_MIDKR_ALL`)
       .find(query)
-      .toArray(function(err, grammarResult) {
+      .toArray(function (err, grammarResult) {
         if (err) throw err;
         dbo
           .collection(`GRAM_MIDKR_ALL`)
-          .findOneAndUpdate(query, { $set: grammar }, { upsert:true, returnOriginal: false }, function(err, result) {
+          .findOneAndUpdate(query, {$set: grammar}, {upsert: true, returnOriginal: false}, function (err, result) {
             if (err) throw err;
             res.json({
               status: "200OK",
@@ -703,8 +683,8 @@ exports.addMiddleKoreanGrammar = (grammar, res, next) => {
 
 exports.updateMiddleKoreanGrammar = (params, res, next) => {
   const grammarList = params.grammarList
-  MongoClient.connect(url, async function(err, client){
-    if(err) throw(err)
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw(err)
     var dbo = client.db(databaseName);
     grammarList.map(aGrammarEntry => {
       aGrammarEntry["lastUpdated"] = new Date()
@@ -713,10 +693,10 @@ exports.updateMiddleKoreanGrammar = (params, res, next) => {
       }
 
       delete aGrammarEntry._id
-      dbo.collection("GRAM_MIDKR_ALL").findOneAndUpdate(query, { $set: aGrammarEntry }, {upsert:true})
+      dbo.collection("GRAM_MIDKR_ALL").findOneAndUpdate(query, {$set: aGrammarEntry}, {upsert: true})
     })
-    dbo.collection("GRAM_MIDKR_ALL").find().toArray(function(err,result) {
-      if(err) throw(err)
+    dbo.collection("GRAM_MIDKR_ALL").find().toArray(function (err, result) {
+      if (err) throw(err)
       res.json({
         status: "200OK",
         grammarList: result
@@ -731,13 +711,13 @@ exports.deleteMiddleKoreanGrammer = (params, res, next) => {
   let query = {
     _id: ObjectID(grammarEntry._id)
   }
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
     dbo.collection("GRAM_MIDKR_ALL").deleteOne(query).then(success => {
-      if(success.result.ok) {
-        dbo.collection("GRAM_MIDKR_ALL").find().toArray(function(err, result) {
-          if(err) throw(err)
+      if (success.result.ok) {
+        dbo.collection("GRAM_MIDKR_ALL").find().toArray(function (err, result) {
+          if (err) throw(err)
           res.json({
             grammarList: result
           })
@@ -750,11 +730,11 @@ exports.deleteMiddleKoreanGrammer = (params, res, next) => {
 }
 
 exports.getMiddleKRVoc = (req, res, next) => {
-  MongoClient.connect(url, async function(err, client) {
+  MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
-    dbo.collection("VOC_MIDKR_ALL").find().toArray(function(err, result) {
-    if(err) throw(err)
+    dbo.collection("VOC_MIDKR_ALL").find().toArray(function (err, result) {
+      if (err) throw(err)
       res.json({
         status: "200OK",
         vocabList: result
@@ -811,16 +791,16 @@ exports.deleteMiddleKoreanVoc = (vocab, res, next) => {
   })
 }
 
-exports.getClasses = (req,res,next) => {
-  const { instructorId } = req.query;
+exports.getClasses = (req, res, next) => {
+  const {instructorId} = req.query;
   let query = {
     instructorId
   }
-  MongoClient.connect(url, async function(err, client) {
-    if(err) throw(err)
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw(err)
     const dbo = client.db(databaseName);
-    dbo.collection("CLASSES").find(query).toArray(function(err, result){
-      if(err) throw(err)
+    dbo.collection("CLASSES").find(query).toArray(function (err, result) {
+      if (err) throw(err)
       res.json({
         result
       })
@@ -829,8 +809,8 @@ exports.getClasses = (req,res,next) => {
   })
 }
 
-exports.updateClass = (req,res,next) => {
-  const { newClass } = req.body;
+exports.updateClass = (req, res, next) => {
+  const {newClass} = req.body;
   MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
@@ -838,8 +818,11 @@ exports.updateClass = (req,res,next) => {
       _id: (ObjectID(newClass._id))
     }
     delete newClass._id
-    dbo.collection(`CLASSES`).findOneAndUpdate(query, {$set: newClass},  { upsert:true, returnOriginal: false }, function(err, result) {
-    if(err) throw(err)
+    dbo.collection(`CLASSES`).findOneAndUpdate(query, {$set: newClass}, {
+      upsert: true,
+      returnOriginal: false
+    }, function (err, result) {
+      if (err) throw(err)
       res.json({
         newClass: result.value
       })
@@ -847,17 +830,17 @@ exports.updateClass = (req,res,next) => {
   })
 }
 
-exports.deleteClass = (req,res,next) => {
+exports.deleteClass = (req, res, next) => {
   const {instructorId, classId} = req.body
-  MongoClient.connect(url, async function(err,client) {
-    if(err) throw(err)
+  MongoClient.connect(url, async function (err, client) {
+    if (err) throw(err)
     const dbo = client.db(databaseName);
     let query = {
       _id: ObjectID(classId),
       instructorId
     }
     dbo.collection(`CLASSES`).deleteOne(query).then(success => {
-      if(success.result.ok) {
+      if (success.result.ok) {
         res.json({
           success: true
         })

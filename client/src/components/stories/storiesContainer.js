@@ -17,6 +17,7 @@ import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
 import Modal from '@material-ui/core/Modal'
 import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
+import OriginalText from './components/common/OriginalText/OriginalTextContainer';
 
 class StoriesContainer extends Component {
   constructor(props){
@@ -27,11 +28,13 @@ class StoriesContainer extends Component {
       storyTitle: "",
       selectedLanguage: "MODKR",
       storyInfo: null,
-      showFlashCardModal: false,
-      isSpeedDialOpen: false
+      showModal: false,
+      isSpeedDialOpen: false,
+      modalComponent: "",
     }
     this.handleTranslate.bind(this)
     this.handleFlashCards.bind(this)
+    this.handleOriginalText.bind(this)
   }
 
 
@@ -88,14 +91,24 @@ class StoriesContainer extends Component {
 
   handleFlashCards = () => {
     this.setState({
-      showFlashCardModal: true,
-      isSpeedDialOpen: false
+      showModal: true,
+      isSpeedDialOpen: false,
+      modalComponent: 'FlashCards'
     })
   }
 
+  handleOriginalText = () => {
+    this.setState({
+      showModal: true,
+      isSpeedDialOpen: false,
+      modalComponent: 'OriginalText'
+    })
+  }
+
+
   handleClose = () => {
     this.setState({
-      showFlashCardModal: false
+      showModal: false
     })
   }
 
@@ -160,16 +173,27 @@ class StoriesContainer extends Component {
           author = stories.storyInfo.authorKorn
       }
     }
+    let modalComponent = null
+    switch(this.state.modalComponent){
+      case 'FlashCards':
+        modalComponent = <FlashCardsContainer/>
+        break;
+      case 'OriginalText':
+        modalComponent = <OriginalText url={this.props.stories.storyInfo.pdfUrl} selectedPages={this.props.stories.storyInfo.pagesSelected}/>
+        break;
+      default:
+    }
+
     return (
       stories[this.state.selectedLanguage] ?
         <div className={'story-container'}>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.state.showFlashCardModal}
+          open={this.state.showModal}
           onClose={this.handleClose}
         >
-          <FlashCardsContainer/>
+          {modalComponent}
         </Modal>
 
         <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
@@ -190,6 +214,7 @@ class StoriesContainer extends Component {
           <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.selectedLanguage}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
+                 handleOriginalText={this.handleOriginalText}
           /> : null}
       </div>
         : null

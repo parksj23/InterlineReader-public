@@ -15,7 +15,7 @@ const styles = {
 }
 
 const Story = (props) => {
-  const {text, searchWord, classes, title, author, language, handleTranslate, handleFlashCards} = props;
+  const {text, searchWord, classes, title, author, language, handleTranslate, handleFlashCards, handleOriginalText} = props;
   return(
     <div>
       <Paper elevation={1} style={props.sideBar && props.sideBar.isSideBarOpen ? {marginLeft: props.sideBar.drawerSize.width+ "px"} : null}>
@@ -52,6 +52,11 @@ const Story = (props) => {
         <Tooltip title="Flashcard" placement="left" onClick={handleFlashCards}>
           <Fab color="primary" className={classes.fab}>
             FC
+          </Fab>
+        </Tooltip>
+        <Tooltip title="Original Text" placement="left" onClick={handleOriginalText}>
+          <Fab color="primary" className={classes.fab}>
+            OT
           </Fab>
         </Tooltip>
       </div>

@@ -20,3 +20,17 @@
     padding-top: 28px;
     font-family: "'Cute Font', serif";
 }
+
+.OriginalText-modal {
+    top: 2.5vh;
+    left: 21vw;
+    height: 92.5vh;
+    width: 60%;
+}
+
+.FlashCard-modal {
+    top: 40vh;
+    left: 45% ;
+    position: absolute;
+    display: flex;
+}

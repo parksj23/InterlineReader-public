@@ -272,6 +272,7 @@ class AddStoryWizard extends Component {
             pdfUrl={this.state.storyForm.pdfUrl}
             addPage={this.addPage}
             removePage={this.removePage}
+            pagesSelected={this.state.storyForm.pagesSelected}
           />
         </Grid>
       </div>
