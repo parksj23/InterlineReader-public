@@ -32,9 +32,10 @@ class Search extends Component {
       items.forEach(aSearchEntry => {
         this.props.tableHeaders.forEach( aTableHeader => {
           let value = aSearchEntry[aTableHeader.value];
-          value = value.replace(new RegExp(`${anEntry.from}`, "g"), anEntry.to)
-          console.log(value)
-          aSearchEntry[aTableHeader.value] = value
+          if(value) {
+            value = value.replace(new RegExp(`${anEntry.from}`, "g"), anEntry.to)
+            aSearchEntry[aTableHeader.value] = value
+          }
         })
       })
       }

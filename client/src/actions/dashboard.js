@@ -46,7 +46,7 @@ export const enableDashboardLoading = () => dispatch => {
   })
 }
 
-export const disableDashboardLoading =() => dispatch => {
+export const disableDashboardLoading = () => dispatch => {
   dispatch({
     type: DASHBOARD_IS_NOT_LOADING,
     payload: null
@@ -66,11 +66,13 @@ export const getMiddleKorean = () => dispatch => {
 }
 
 export const getModernKorean = () => dispatch => {
-  axios.get("/api/dashboard/modernKorean").then(resp => {
-    console.log(resp.data)
-    dispatch({
-      type: DASHBOARD_GET_MODKR,
-      payload: resp.data
+  return new Promise((resolve, reject) => {
+    axios.get("/api/dashboard/modernKorean").then(resp => {
+      console.log(resp.data)
+      dispatch({
+        type: DASHBOARD_GET_MODKR,
+        payload: resp.data
+      })
     })
   })
 }
