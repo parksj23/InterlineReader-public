@@ -200,7 +200,6 @@ router.get('/', async (req, res, next) => {
 router.get('/storyText', async (req, res, next) => {
   let storyInfo = req.query;
   storyInfo.languages = storyInfo.languages.split(",")
-  console.log(storyInfo)
   let storyName = storyInfo.storyName.toUpperCase();
   try {
     MongoClient.connect(url, async function (err, client) {

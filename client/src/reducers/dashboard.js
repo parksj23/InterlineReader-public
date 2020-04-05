@@ -8,8 +8,15 @@ import {
 
 const initialState = {
   isDashboardLoading: false,
-  midKr: [],
-  modKr:[]
+  midKr: {
+    midKrGram: null,
+    midKrVoc: null
+  }
+  ,
+  modKr: {
+    modKrGram: [],
+    modKrVoc: []
+  }
 };
 
 export default (state = initialState, action) => {

@@ -640,7 +640,6 @@ export const uploadDroppedFiles = (acceptedFiles, user) => dispatch => {
 
 export const getFiles = (user) => dispatch => {
   axios.get(`/api/files?userId=${user.id}`).then(resp => {
-    console.log(resp.data)
     dispatch({
       type: INSTRUCTOR_GET_FILES,
       payload: resp.data

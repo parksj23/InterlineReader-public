@@ -16,7 +16,6 @@ export const dashboardInit = () => dispatch => {
 
   return new Promise((resolve, reject) => {
     axios.get("/api/dashboard/", {params}).then(res => {
-      console.log(res.data)
       dispatch({
         type: GET_STORY_LIST,
         payload: res.data
@@ -55,10 +54,13 @@ export const disableDashboardLoading =() => dispatch => {
 }
 
 export const getMiddleKorean = () => dispatch => {
-  axios.get("/api/dashboard/middleKorean").then(resp => {
-    dispatch({
-      type: DASHBOARD_GET_MIDKR,
-      payload: resp.data
+  return new Promise((resolve, reject) => {
+    axios.get("/api/dashboard/middleKorean").then(resp => {
+      dispatch({
+        type: DASHBOARD_GET_MIDKR,
+        payload: resp.data
+      })
+      resolve()
     })
   })
 }

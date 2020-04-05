@@ -5,19 +5,14 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {Grid, TextField, Typography, MenuItem} from "@material-ui/core";
-import "./style/grammarSearch.css";
+import "./style/Search.css";
 
-class GrammarSearch extends Component {
-
+class Search extends Component {
   constructor(props) {
     super(props);
     this.state = {
       searchTerm: "",
       items: [],
-      keys: {
-        "hankulShape": "hankulShape"
-      },
-      hankulShape: "hankulShape",
       fuseOptions: {
         shouldSort: true,
         threshold: 0.4,
@@ -32,6 +27,18 @@ class GrammarSearch extends Component {
   }
 
   componentDidMount() {
+    let items = this.props.items;
+    this.props.processSearchEntriesMap.forEach( anEntry => {
+      items.forEach(aSearchEntry => {
+        this.props.tableHeaders.forEach( aTableHeader => {
+          let value = aSearchEntry[aTableHeader.value];
+          value = value.replace(new RegExp(`${anEntry.from}`, "g"), anEntry.to)
+          console.log(value)
+          aSearchEntry[aTableHeader.value] = value
+        })
+      })
+      }
+    )
     this.setState({
       items: this.props.items
     })
@@ -56,6 +63,7 @@ class GrammarSearch extends Component {
 
   render() {
     return (
+      this.state.items.length > 0 ?
       <Grid style={{marginTop: "2em"}} container>
         <Grid item xs={12} justify='center'>
           <h5 style={{backgroundColor: "#ffd8d5", padding: "15px"}}>
@@ -100,16 +108,20 @@ class GrammarSearch extends Component {
                   )
                 })
                 return (
-                  <ExpansionPanel>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                      <Typography variant="title">{item[this.state.selectedSearchColumn]}</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                      <Typography>
-                        {data}
-                      </Typography>
-                    </ExpansionPanelDetails>
-                  </ExpansionPanel>
+                  <Grid container>
+                    <Grid item xs={12}>
+                    <ExpansionPanel style={{width: "100%"}}>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                        <Typography variant="title">{item[this.state.selectedSearchColumn]}</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <Typography>
+                          {data}
+                        </Typography>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    </Grid>
+                  </Grid>
                 );
               }}
               fuseOptions={this.state.fuseOptions}
@@ -119,10 +131,9 @@ class GrammarSearch extends Component {
             />
           </div>
         </Grid>
-      </Grid>
+      </Grid>  : null
     );
   }
 }
 
-
-export default GrammarSearch;
+export default Search;

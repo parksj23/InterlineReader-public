@@ -1,14 +1,23 @@
-import React, { Component } from 'react';
-import { Grid, Tabs, Tab, Paper, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography} from "@material-ui/core";
+import React, {Component} from 'react';
+import {
+  Grid,
+  Tabs,
+  Tab,
+  Paper,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  Typography
+} from "@material-ui/core";
 import {getMiddleKorean} from "../../../actions/dashboard";
 import {connect} from "react-redux";
 import TablePaginationWrapper from './common/TablePaginationWrapper'
-import GrammarSearch from './common/GrammarSearch/GrammarSearch';
+import Search from './common/Search/Search';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-const vocabTableHeaders= [
+const vocabTableHeaders = [
   {
-    label:"Romanized Stem",
+    label: "Romanized Stem",
     value: "romStem"
   },
   {
@@ -16,7 +25,7 @@ const vocabTableHeaders= [
     value: "hankulStem"
   },
   {
-    label:"Here",
+    label: "Here",
     value: "here"
   },
   {
@@ -24,22 +33,22 @@ const vocabTableHeaders= [
     value: "english"
   },
   {
-    label:"Hanja",
+    label: "Hanja",
     value: "hanja"
   }
 ]
 
 const grammarTableHeaders = [
   {
-    label:"English Category",
+    label: "English Category",
     value: "engCat"
   },
   {
-   label: "Annotation",
+    label: "Annotation",
     value: "annotation"
   },
   {
-    label:"Hankul Shape",
+    label: "Hankul Shape",
     value: "hankulShape"
   },
   {
@@ -47,7 +56,7 @@ const grammarTableHeaders = [
     value: "romShape"
   },
   {
-    label:"Romanized Example",
+    label: "Romanized Example",
     value: "romExample"
   },
   {
@@ -68,6 +77,21 @@ const grammarTableHeaders = [
   }
 ]
 
+const processSearchEntriesMap = [
+  {
+    from: "·",
+    to: ""
+  },
+  {
+    from: ":",
+    to: ""
+  },
+  {
+    from: "-",
+    to: ""
+  }
+]
+
 class MiddleKoreanContainer extends Component {
   constructor() {
     super();
@@ -76,8 +100,8 @@ class MiddleKoreanContainer extends Component {
     }
   }
 
-  componentWillMount(){
-    this.props.getMiddleKorean();
+  componentWillMount() {
+    this.props.getMiddleKorean().then(resp => {});
   }
 
   handleOnChangeTab = (event, value) => {
@@ -87,29 +111,30 @@ class MiddleKoreanContainer extends Component {
   render() {
     return (
       <div className="dashboard-middleKorean">
-          <Grid container>
-            <Grid item xs={2}/>
-            <Grid item xs={8}>
-              <Tabs
-                value={this.state.tabValue}
-                onChange={this.handleOnChangeTab}
-                indicatorColor="primary"
-                textColor="primary"
-                centered
-              >
-                <Tab label="Vocabulary"/>
-                <Tab label="Grammar"/>
-              </Tabs>
-            </Grid>
+        <Grid container>
+          <Grid item xs={2}/>
+          <Grid item xs={8}>
+            <Tabs
+              value={this.state.tabValue}
+              onChange={this.handleOnChangeTab}
+              indicatorColor="primary"
+              textColor="primary"
+              centered
+            >
+              <Tab label="Vocabulary"/>
+              <Tab label="Grammar"/>
+            </Tabs>
           </Grid>
+        </Grid>
 
-          <Grid container>
-            <Grid item xs={12} style={{padding: "12px"}}>
+        <Grid container>
+          <Grid item xs={12} style={{padding: "12px"}}>
+            { this.props.dashboard.midKr.midKrGram && this.props.dashboard.midKr.midKrVoc ?
               <Paper>
-                {
-                  this.state.tabValue === 0 ?
+                {this.state.tabValue === 0 ?
+                  <div>
                     <ExpansionPanel>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <Typography>All Vocabulary</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
@@ -117,38 +142,55 @@ class MiddleKoreanContainer extends Component {
                           tableHeaders={vocabTableHeaders}
                           list={this.props.dashboard.midKr.midKrVoc}/>
                       </ExpansionPanelDetails>
-                    </ExpansionPanel> :
-                    <div>
+                    </ExpansionPanel>
                     <ExpansionPanel>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                        <Typography>Search Vocabulary</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <Search key={'midKr-vocabulary-search'}
+                          items={this.props.dashboard.midKr.midKrVoc}
+                          tableHeaders={vocabTableHeaders}
+                          processSearchEntriesMap={processSearchEntriesMap}
+                        />
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                  </div> :
+                  <div>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <Typography>All Grammar</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
                         <TablePaginationWrapper
                           tableHeaders={grammarTableHeaders}
-                          list={this.props.dashboard.midKr.midKrGram}
-                        />
+                          list={this.props.dashboard.midKr.midKrGram}/>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
                     <ExpansionPanel>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
                         <Typography>Search Grammar</Typography>
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails>
-                        <GrammarSearch items={this.props.dashboard.midKr.midKrGram} tableHeaders={grammarTableHeaders}/>
+                        <Search key={'midKr-grammar-search'}
+                          items={this.props.dashboard.midKr.midKrGram}
+                          tableHeaders={grammarTableHeaders}
+                          processSearchEntriesMap={processSearchEntriesMap}/>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
-                    </div>
+                  </div>
                 }
-              </Paper>
-            </Grid>
+              </Paper> : null
+            }
           </Grid>
+        </Grid>
         <Grid container>
         </Grid>
       </div>
     );
   }
 }
+
 const mapStateToProps = state => ({
   auth: state.auth,
   dashboard: state.dashboard,
