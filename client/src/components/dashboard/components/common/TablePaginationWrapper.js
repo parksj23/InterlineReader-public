@@ -67,7 +67,7 @@ class TablePaginationWrapper extends React.Component {
     let rows = this.props.list || []
     let tableHeaders = []
     this.props.tableHeaders.forEach(aTableHeader => {
-      tableHeaders.push(<CustomTableCell align="right" >{aTableHeader}</CustomTableCell>);
+      tableHeaders.push(<CustomTableCell align="right" >{aTableHeader.label}</CustomTableCell>);
     })
 
     const emptyRows =
@@ -89,7 +89,7 @@ class TablePaginationWrapper extends React.Component {
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(row => (
-                    <EditableTableRow row={row} />
+                    <EditableTableRow row={row} tableHeaders={this.props.tableHeaders}/>
                   ))}
                 {emptyRows > 0 && (
                   <TableRow style={{height: 56 * emptyRows}}>

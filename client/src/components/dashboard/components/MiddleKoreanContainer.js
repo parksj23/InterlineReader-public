@@ -1,27 +1,71 @@
 import React, { Component } from 'react';
-import { Grid, Tabs, Tab, Paper} from "@material-ui/core";
+import { Grid, Tabs, Tab, Paper, ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography} from "@material-ui/core";
 import {getMiddleKorean} from "../../../actions/dashboard";
 import {connect} from "react-redux";
 import TablePaginationWrapper from './common/TablePaginationWrapper'
+import GrammarSearch from './common/GrammarSearch/GrammarSearch';
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const vocabTableHeaders= [
-  "Romanized Stem",
-  "Hankul Stem",
-  "Here",
-  "English",
-  "Hanja"
+  {
+    label:"Romanized Stem",
+    value: "romStem"
+  },
+  {
+    label: "Hankul Stem",
+    value: "hankulStem"
+  },
+  {
+    label:"Here",
+    value: "here"
+  },
+  {
+    label: "English",
+    value: "english"
+  },
+  {
+    label:"Hanja",
+    value: "hanja"
+  }
 ]
 
 const grammarTableHeaders = [
-  "English Category",
-  "Annotation",
-  "Romanized Shape",
-  "Hankul Shape",
-  "Romanized Example",
-  "Hankul Example",
-  "*Ur",
-  "English Translation of Example",
-  "Line Number"
+  {
+    label:"English Category",
+    value: "engCat"
+  },
+  {
+   label: "Annotation",
+    value: "annotation"
+  },
+  {
+    label:"Hankul Shape",
+    value: "hankulShape"
+  },
+  {
+    label: "Romanized Shape",
+    value: "romShape"
+  },
+  {
+    label:"Romanized Example",
+    value: "romExample"
+  },
+  {
+    label: "Hankul Example",
+    value: "hankulExample"
+  },
+  {
+    label: "*Ur",
+    value: "ur"
+  },
+  {
+    label: "English Translation of Example",
+    value: "engTransExample"
+  },
+  {
+    label: "Line Number",
+    value: "lineNumber"
+  }
 ]
 
 class MiddleKoreanContainer extends Component {
@@ -58,22 +102,49 @@ class MiddleKoreanContainer extends Component {
               </Tabs>
             </Grid>
           </Grid>
+
           <Grid container>
             <Grid item xs={12} style={{padding: "12px"}}>
               <Paper>
                 {
                   this.state.tabValue === 0 ?
-                    <TablePaginationWrapper
-                      tableHeaders={vocabTableHeaders}
-                      list={this.props.dashboard.midKr.midKrVoc}/> :
-                    <TablePaginationWrapper
-                      tableHeaders={grammarTableHeaders}
-                      list={this.props.dashboard.midKr.midKrGram}
-                    />
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>All Vocabulary</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <TablePaginationWrapper
+                          tableHeaders={vocabTableHeaders}
+                          list={this.props.dashboard.midKr.midKrVoc}/>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel> :
+                    <div>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>All Grammar</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <TablePaginationWrapper
+                          tableHeaders={grammarTableHeaders}
+                          list={this.props.dashboard.midKr.midKrGram}
+                        />
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    <ExpansionPanel>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>Search Grammar</Typography>
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails>
+                        <GrammarSearch items={this.props.dashboard.midKr.midKrGram} tableHeaders={grammarTableHeaders}/>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
+                    </div>
                 }
               </Paper>
             </Grid>
           </Grid>
+        <Grid container>
+        </Grid>
       </div>
     );
   }
