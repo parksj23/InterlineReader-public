@@ -67,8 +67,7 @@ const rejectStyle = {
 const tableHeaders = [
   "filesName",
   "fileType",
-  "created Date",
-  "actions"
+  "created Date"
 ]
 
 
@@ -169,8 +168,7 @@ class FilesContainer extends Component {
       list.push({
         fileName: <a href={aFile.url} target="_blank">{aFile.fileName}</a>,
         fileType: aFile.fileType,
-        createdDate: aFile.createdDate,
-        action: <div><i className="material-icons">search</i><i className="material-icons">delete</i></div>
+        createdDate: aFile.createdDate
       })
     })
 

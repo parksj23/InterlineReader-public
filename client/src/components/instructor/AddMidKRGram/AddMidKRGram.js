@@ -454,7 +454,9 @@ class AddMidKRGram extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+});
 
 const mapDispatchToProps = { addMiddleKoreanGrammar, saveMidKrGram, updateMiddleKrGrammarEntry};
 
-export default connect(mapDispatchToProps)(AddMidKRGram);
+export default connect(mapStateToProps, mapDispatchToProps)(AddMidKRGram);
