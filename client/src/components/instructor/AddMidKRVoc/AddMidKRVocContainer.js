@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import AddMidKRVoc from "./AddMidKRVoc";
-import { getMiddleKoreanVocab } from "../../../actions/instructor";
+import StatusMessage from '../../common/statusMessage/statusMessage';
+import { getMiddleKoreanVocab, handleStatusClose } from "../../../actions/instructor";
 
 class AddMidKRVocContainer extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ class AddMidKRVocContainer extends Component {
     return (
       <div>
         <AddMidKRVoc vocabList={this.props.addMiddleKrVocab.vocabList}/>
+        <StatusMessage status="success"
+                       open={this.props.addMiddleKrVocab.addNewVocabStatusMessage}
+                       message={this.props.addMiddleKrVocab.addNewVocabStatusMessage}
+                       handleClose={ this.props.handleStatusClose}/>
       </div>
     );
   }
@@ -28,7 +33,7 @@ const mapStateToProps = state => ({
   addMiddleKrVocab: state.instructor.addMiddleVocab
 });
 
-const mapDispatchToProps = { getMiddleKoreanVocab };
+const mapDispatchToProps = { getMiddleKoreanVocab, handleStatusClose };
 
 export default connect(
   mapStateToProps,

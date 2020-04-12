@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AddMidKRGram from "./AddMidKRGram";
 import StatusMessage from '../../common/statusMessage/statusMessage';
-import {getMiddleKoreanGram, closeAddMidKrStatus} from "../../../actions/instructor";
+import {getMiddleKoreanGram, handleStatusClose} from "../../../actions/instructor";
 
 
 class AddMidKRGramContainer extends Component {
@@ -28,7 +28,7 @@ class AddMidKRGramContainer extends Component {
         <StatusMessage status="success"
                        open={this.props.addMiddleKrGram.addNewGrammarMessage}
                        message={this.props.addMiddleKrGram.addNewGrammarMessage}
-                       handleClose={ this.props.closeAddMidKrStatus}/>
+                       handleClose={ this.props.handleStatusClose}/>
       </div>
     );
   }
@@ -40,7 +40,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getMiddleKoreanGram ,
-  closeAddMidKrStatus
+  handleStatusClose
 };
 
 export default connect(

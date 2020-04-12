@@ -16,7 +16,7 @@ export const getVocabforStory = (story, storyInfo) => dispatch => {
     classType: 'all',
     storyInfo
   }
-  axios.get(`/api/stories/${storyInfo.class}/${story}`, {params}).then(res => {
+  axios.get(`/api/story/${storyInfo.class}/${story}`, {params}).then(res => {
     res.data.vocab.sort(function (a, b) {
       return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)
     })

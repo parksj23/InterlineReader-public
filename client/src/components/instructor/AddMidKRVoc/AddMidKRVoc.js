@@ -19,11 +19,13 @@ class AddMidKRVoc extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      romStem: null,
-      hankulStem: null,
-      here: null,
-      english: null,
-      hanja: null,
+      romStem: "",
+      hankulStem: "",
+      here: "",
+      english: "",
+      hanja: "",
+      newVocabExpanded: false,
+      existVocabExpanded: false
     };
   }
 
@@ -45,6 +47,12 @@ class AddMidKRVoc extends Component {
     });
   };
 
+  handleChange = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
+  };
+
   handleAddVocab = () => {
     let vocabToAdd = {
       ...this.state
@@ -55,7 +63,13 @@ class AddMidKRVoc extends Component {
     vocabToAdd["lastUpdated"] = new Date();
     let newvocabList = this.state.vocabList;
     this.setState({
-      vocabList: newvocabList
+      vocabList: newvocabList,
+      romStem: "",
+      hankulStem: "",
+      here: "",
+      english: "",
+      hanja: "",
+      expanded: false
     })
 
     this.props.addMiddleKoreanVocab(vocabToAdd);
@@ -77,27 +91,33 @@ class AddMidKRVoc extends Component {
 
   handleCancel = () => {
     this.setState({
-      engCat: null,
-      annotation: null,
-      romShape: null,
-      hankulShape: null,
-      romExample: null,
-      hankulExample: null,
-      ur: null,
-      engTranExample: null,
-      lineNumber: null
+      romStem: "",
+      hankulStem: "",
+      here: "",
+      english: "",
+      hanja: "",
+      expanded: false
     });
   };
 
-  deleteMidKRVocab = (deleteGrammar) => {
-    this.props.deleteMiddleKrVocabEntr(deleteGrammar)
+  deleteEntry = (deleteVocab) => {
+    let vocabList = this.props.vocabList;
+    for(let index = 0 ; index < vocabList.length ; index++){
+      if(vocabList[index]._id === deleteVocab._id) {
+        vocabList.splice(index,1)
+        break;
+      }
+    }
+    this.props.updateMiddleKoreanVocabEntry(vocabList);
     this.forceUpdate();
   }
 
   render() {
+    const {expanded} = this.state
     return (
       <div className="add-midKR-grammar">
-        <ExpansionPanel>
+        <ExpansionPanel expanded={expanded === 'newVocabExpanded'}
+                        onChange={this.handleChange('newVocabExpanded')}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Add New Vocabulary</Typography>
           </ExpansionPanelSummary>
@@ -276,7 +296,8 @@ class AddMidKRVoc extends Component {
             </Grid>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-       <ExpansionPanel>
+       <ExpansionPanel expanded={expanded === 'existVocabExpanded'}
+                       onChange={this.handleChange('existVocabExpanded')}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Existing Vocabulary</Typography>
           </ExpansionPanelSummary>
@@ -285,7 +306,7 @@ class AddMidKRVoc extends Component {
               <Grid item xs={12}>
                 <TablePaginationWrapper vocabList={this.props.vocabList}
                                         updateEntry={this.updateEntry}
-                                        deleteMidKRGram={this.deleteMidKRVocab}
+                                        deleteMidKRGram={this.deleteEntry}
                 />
               </Grid>
             </Grid>

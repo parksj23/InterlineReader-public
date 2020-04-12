@@ -137,9 +137,7 @@ class AddStoryWizard extends Component {
   addPage = (pageNumber) => {
     if(this.state.storyForm.pagesSelected.indexOf(pageNumber) === -1) {
       let newPagesSelected = this.state.storyForm.pagesSelected
-      console.log(newPagesSelected)
       newPagesSelected.push(pageNumber)
-      console.log(newPagesSelected)
       let newStoryForm = this.state.storyForm
       newStoryForm.pagesSelected = newPagesSelected
       this.setState({

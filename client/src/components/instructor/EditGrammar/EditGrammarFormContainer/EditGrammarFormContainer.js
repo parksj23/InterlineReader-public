@@ -4,8 +4,10 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import StatusMessage from '../../../common/statusMessage/statusMessage';
 
-import {startUpdatingEditGrammar} from '../../../../actions/instructor';
+
+import {startUpdatingEditGrammar, handleStatusClose} from '../../../../actions/instructor';
 
 class EditGrammarFormContainer extends Component {
   constructor(props) {
@@ -16,7 +18,8 @@ class EditGrammarFormContainer extends Component {
       pattern: null,
       here: null,
       order_id: null,
-      disableEditButton: true
+      disableEditButton: true,
+      openStatus: false
     }
     this.validateInputs.bind(this)
   }
@@ -63,6 +66,9 @@ class EditGrammarFormContainer extends Component {
       here: this.state.here
     }
     this.props.updateGrammar(newGrammar, this.props.storyTitle);
+    this.setState({
+      openStatus: true
+    })
   }
 
   handleDeleteGrammar = () => {
@@ -73,6 +79,12 @@ class EditGrammarFormContainer extends Component {
       here: this.state.here
     }
     this.props.deleteGrammar(grammar, this.props.storyTitle);
+  }
+
+  handleCloseStatus = () => {
+    this.setState({
+      openStatus: false
+    })
   }
 
   render() {
@@ -169,6 +181,10 @@ class EditGrammarFormContainer extends Component {
             >Delete</Button>
           </Grid>
         </Grid>
+        <StatusMessage status="success"
+                       open={this.props.statusMessage}
+                       message={this.props.statusMessage}
+                       handleClose={this.props.handleStatusClose}/>
       </div>
     );
   }
@@ -177,7 +193,8 @@ class EditGrammarFormContainer extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  startUpdatingEditGrammar
+  startUpdatingEditGrammar,
+  handleStatusClose
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditGrammarFormContainer);

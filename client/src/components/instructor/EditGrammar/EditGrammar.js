@@ -21,7 +21,8 @@ class EditGrammar extends Component {
   }
 
   componentWillMount() {
-    let {storyName} = this.props.match.params
+    let urlSegments = this.props.history.location.pathname.split("/")
+    let storyName = urlSegments[urlSegments.length-1]
     this.props.initEditGrammar(storyName);
   }
 
@@ -60,6 +61,7 @@ class EditGrammar extends Component {
                   storyTitle={this.props.editGrammar.storyInfo.storyName}
                   updateGrammar={this.props.updateGrammar}
                   deleteGrammar={this.props.deleteGrammar}
+                  statusMessage={this.props.editGrammar.ediGrammarStatusMessage}
 
                 /> : null
             }

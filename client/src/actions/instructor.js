@@ -42,6 +42,7 @@ import {
   INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS
 } from "../constants/action-types";
 import axios from "axios";
+import queryStringify from "querystringify";
 
 export const initInstructor = storyList => dispatch => {
   const params = {
@@ -158,6 +159,7 @@ export const resetEditGrammar = () => dispatch => {
 };
 
 export const initEditGrammar = storyTitle => dispatch => {
+  console.log("in init grammar")
   let params = {
     responseType: "application/json",
     storyTitle
@@ -165,10 +167,11 @@ export const initEditGrammar = storyTitle => dispatch => {
 
   return new Promise((resolve) => {
     let payload = {};
-    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
+    axios.get(`/api/story`, {params}).then(res => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
+      console.log(storyInfo)
 
       languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
@@ -202,10 +205,8 @@ export const initEditGrammar = storyTitle => dispatch => {
             payload = res.data;
           });
         }
-        axios
-          .get(`/api/stories/${storyTitle}/storyText`, {
-            params: {storyInfo}
-          })
+        let query = queryStringify.stringify(storyInfo)
+        axios.get(`/api/story/storyText?${query}`)
           .then(res => {
             let languages = Object.keys(res.data);
             languages.forEach(aLanguage => {
@@ -378,7 +379,10 @@ export const updateGrammar = (grammar, storyTitle) => dispatch => {
   axios.put("/api/instructor/editGrammar/updateGrammar", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_GRAMMAR,
-      payload: resp.data.grammar
+      payload: {
+        grammar: resp.data.grammar,
+        message: "Successfully Updated Grammar"
+      }
     });
   });
 };
@@ -470,7 +474,7 @@ export const getMiddleKoreanGram = () => dispatch => {
 export const addMiddleKoreanGrammar = grammar => dispatch => {
   dispatch({
     type: INSTRUCTOR_ADD_MIDKR_GRAMMAR,
-    payload:  {
+    payload: {
       grammar,
       status: "Grammar added successfully"
     }
@@ -524,7 +528,10 @@ export const getMiddleKoreanVocab = () => dispatch => {
 export const addMiddleKoreanVocab = vocab => dispatch => {
   dispatch({
     type: INSTRUCTOR_ADD_MIDKR_VOCAB,
-    payload: vocab
+    payload: {
+      vocab,
+      status: "Grammar added successfully"
+    }
   })
 }
 
@@ -628,7 +635,7 @@ export const uploadDroppedFiles = (acceptedFiles, user) => dispatch => {
               modifiedDate: new Date()
             }).then(resp => {
               console.log(resp)
-              if(resp.data.value){
+              if (resp.data.value) {
                 dispatch({
                   type: INSTRUCTOR_ADD_FILE,
                   payload: resp.data.value

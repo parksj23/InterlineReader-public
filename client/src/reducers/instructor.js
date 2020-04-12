@@ -53,12 +53,14 @@ const initialState = {
     userHighlightedText: null,
     highlightTextUpdating: false,
     editVocabUpdating: false
+
   },
   editGrammar: {
     selectedGrammar: null,
     userHighlightedText: null,
     highlightTextUpdating: false,
-    editGrammarUpdating: false
+    editGrammarUpdating: false,
+    ediGrammarStatusMessage: null
   },
   addMiddleGram: {
     grammarList: [],
@@ -114,9 +116,15 @@ export default (state = initialState, action) => {
         storyList: action.payload
       };
     case CLOSE_STATUS_BAR:
+      let newAddMiddleGram = state.addMiddleGram
+      let newAddMiddleVocab = state.addMiddleVocab
+      newAddMiddleGram.addNewGrammarMessage = null
+      newAddMiddleVocab.addNewVocabStatusMessage = null
       return {
         ...state,
         addNewStory: false,
+        addMiddleGram: newAddMiddleGram,
+        addMiddleVocab: newAddMiddleVocab,
         message: ""
       };
     case ANALYTICS_INIT_OVERVIEW:
@@ -228,15 +236,18 @@ export default (state = initialState, action) => {
     case INSTRUCTOR_UPDATE_GRAMMAR:
       newEditGrammar = state.editGrammar;
       newGrammarList = state.editGrammar.MODKR.grammarList;
-      newGrammarList.splice(action.payload.order_id - 1, 1, action.payload);
+      newGrammarList.splice(action.payload.grammar.order_id - 1, 1, action.payload.grammar);
       newEditGrammar.MODKR.grammarList = newGrammarList;
-      newEditGrammar.selectedGrammar = action.payload;
-      newEditGrammar.MODKR.grammarSearch[action.payload.sentence] =
-        action.payload;
+      newEditGrammar.selectedGrammar = action.payload.grammar;
+      newEditGrammar.MODKR.grammarSearch[action.payload.grammar.sentence] =
+        action.payload.grammar;
       newEditGrammar.editGrammarUpdating = false;
       return {
         ...state,
-        editGrammar: newEditGrammar
+        editGrammar: {
+          ...newEditGrammar,
+          ediGrammarStatusMessage: action.payload.message
+        }
       };
     case INSTRUCTOR_START_UPDATING_EDIT_VOCAB:
       newEditVocab = state.editVocab;
@@ -387,7 +398,8 @@ export default (state = initialState, action) => {
       };
     case INSTRUCTOR_ADD_MIDKR_VOCAB:
       newAddMiddleVocab = state.addMiddleVocab
-      newAddMiddleVocab.vocabList.push(action.payload)
+      newAddMiddleVocab.vocabList.push(action.payload.vocab)
+      newAddMiddleVocab.addNewVocabStatusMessage = action.payload.status
       return{
         ...state,
         addMiddleVocab: newAddMiddleVocab
