@@ -345,7 +345,10 @@ class StorySection extends Component {
                 </div>
               </div>
           }
-        <StatusMessage status="success" open={this.props.instructor.addNewStory} message={this.props.instructor.addNewStoryMessage} handleClose={this.props.handleStatusClose}/>
+        <StatusMessage status="success"
+                       open={this.props.instructor.addNewStory}
+                       message={this.props.instructor.addNewStoryMessage}
+                       handleClose={this.props.handleStatusClose}/>
         <Divider/>
       </div>
     )

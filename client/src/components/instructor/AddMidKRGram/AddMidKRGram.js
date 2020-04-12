@@ -11,7 +11,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 
-import { addMiddleKoreanGrammar, saveMidKrGram,updateMiddleKrGrammarEntry, deleteMiddleKrGrammarEntr } from "../../../actions/instructor";
+import { addMiddleKoreanGrammar, saveMidKrGram,updateMiddleKrGrammarEntry } from "../../../actions/instructor";
 
 class AddMidKRGram extends Component {
   constructor(props) {
@@ -68,7 +68,17 @@ class AddMidKRGram extends Component {
     let newGrammarList = this.state.grammarList;
     newGrammarList.push(grammarToAdd);
     this.setState({
-      grammarList: newGrammarList
+      grammarList: newGrammarList,
+      engCat: "",
+      annotation: "",
+      romShape: "",
+      hankulShape: "",
+      romExample: "",
+      hankulExample: "",
+      ur: "",
+      engTranExample: "",
+      lineNumber: "",
+      expanded: false
     })
 
     this.props.addMiddleKoreanGrammar(grammarToAdd);
@@ -88,6 +98,18 @@ class AddMidKRGram extends Component {
 
   }
 
+  deleteEntry = (deleteGrammar) => {
+    let grammarList = this.props.grammarList;
+    for(let index = 0 ; index < grammarList.length ; index++){
+      if(grammarList[index]._id === deleteGrammar._id) {
+        grammarList.splice(index,1)
+        break;
+      }
+    }
+    this.props.updateMiddleKrGrammarEntry(grammarList);
+    this.forceUpdate();
+  }
+
   handleCancel = () => {
     this.setState({
       engCat: "",
@@ -102,11 +124,6 @@ class AddMidKRGram extends Component {
       expanded: false
     });
   };
-
-  deleteMidKRGram = (deleteGrammar) => {
-    this.props.deleteMiddleKrGrammarEntr(deleteGrammar)
-    this.forceUpdate();
-  }
 
   render() {
     const { expanded } = this.state;
@@ -426,7 +443,7 @@ class AddMidKRGram extends Component {
               <Grid item xs={12}>
                 <TablePaginationWrapper grammarList={this.props.grammarList}
                                         updateEntry={this.updateEntry}
-                                        deleteMidKRGram={this.deleteMidKRGram}
+                                        deleteMidKRGram={this.deleteEntry}
                 />
               </Grid>
             </Grid>
@@ -437,9 +454,7 @@ class AddMidKRGram extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-});
 
-const mapDispatchToProps = { addMiddleKoreanGrammar, saveMidKrGram, updateMiddleKrGrammarEntry, deleteMiddleKrGrammarEntr};
+const mapDispatchToProps = { addMiddleKoreanGrammar, saveMidKrGram, updateMiddleKrGrammarEntry};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddMidKRGram);
+export default connect(mapDispatchToProps)(AddMidKRGram);

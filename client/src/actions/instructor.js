@@ -38,7 +38,8 @@ import {
   INSTRUCTOR_NEW_CLASS,
   INSTRUCTOR_UPDATE_CLASS,
   INSTRUCTOR_GET_FILES,
-  INSTRUCTOR_ADD_FILE
+  INSTRUCTOR_ADD_FILE,
+  INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS
 } from "../constants/action-types";
 import axios from "axios";
 
@@ -469,7 +470,10 @@ export const getMiddleKoreanGram = () => dispatch => {
 export const addMiddleKoreanGrammar = grammar => dispatch => {
   dispatch({
     type: INSTRUCTOR_ADD_MIDKR_GRAMMAR,
-    payload: grammar
+    payload:  {
+      grammar,
+      status: "Grammar added successfully"
+    }
   })
 };
 
@@ -477,18 +481,6 @@ export const updateMiddleKrGrammarEntry = grammarList => dispatch => {
   dispatch({
     type: INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
     payload: grammarList
-  })
-}
-
-export const saveMidKrGram = grammarList => dispatch => {
-  let params = {
-    grammarList
-  }
-  axios.put("/api/instructor/midkr-gram", params).then(resp => {
-    dispatch({
-      type: INSTRUCTOR_SAVE_MIDKR_GRAM,
-      payload: resp.data.grammarList
-    })
   })
 }
 
@@ -501,6 +493,18 @@ export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
   axios.delete("/api/instructor/midkr-gram", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
+      payload: resp.data.grammarList
+    })
+  })
+}
+
+export const saveMidKrGram = grammarList => dispatch => {
+  let params = {
+    grammarList
+  }
+  axios.put("/api/instructor/midkr-gram", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_SAVE_MIDKR_GRAM,
       payload: resp.data.grammarList
     })
   })
@@ -552,6 +556,13 @@ export const deleteMiddleKrVocabEntr = deleteVocab => dispatch => {
       type: INSTRUCTOR_DELETE_MIDKR_VOCAB,
       payload: resp.data.vocabList
     })
+  })
+}
+
+export const closeAddMidKrStatus = () => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS,
+    payload: null
   })
 }
 

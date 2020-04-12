@@ -28,6 +28,7 @@ import {
   INSTRUCTOR_CANCEL_SELECTION,
   INSTRUCTOR_GET_MIDDLE_KR_GRAM,
   INSTRUCTOR_ADD_MIDKR_GRAMMAR,
+  INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS,
   INSTRUCTOR_SAVE_MIDKR_GRAM,
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
   INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
@@ -60,10 +61,13 @@ const initialState = {
     editGrammarUpdating: false
   },
   addMiddleGram: {
-    grammarList: []
+    grammarList: [],
+    addNewGrammarMessage: null,
   },
   addMiddleVocab: {
-    vocabList:[]
+    vocabList:[],
+    addNewVocabStatusMessage: null,
+
   },
   classes: [],
   files: []
@@ -352,7 +356,8 @@ export default (state = initialState, action) => {
       };
     case INSTRUCTOR_ADD_MIDKR_GRAMMAR:
       newAddMiddleGram = state.addMiddleGram
-      newAddMiddleGram.grammarList.push(action.payload)
+      newAddMiddleGram.grammarList.push(action.payload.grammar)
+      newAddMiddleGram.addNewGrammarMessage = action.payload.status
       return {
         ...state,
         addMiddleGram: newAddMiddleGram
@@ -366,6 +371,13 @@ export default (state = initialState, action) => {
         ...state,
         addMiddleGram: newAddMiddleGram
       }
+    case INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS:
+      newAddMiddleGram = state.addMiddleGram;
+      newAddMiddleGram.addNewGrammarMessage = null
+        return {
+          ...state,
+          addMiddleGram: newAddMiddleGram
+        }
     case INSTRUCTOR_GET_MIDKR_VOCAB:
       newAddMiddleVocab = state.addMiddleVocab;
       newAddMiddleVocab.vocabList = action.payload;
