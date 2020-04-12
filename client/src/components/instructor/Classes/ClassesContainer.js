@@ -20,7 +20,7 @@ class ClassesContainer extends Component {
     let createdDate = new Date();
     let lastUpdated = new Date();
 
-    this.props.storyList.forEach(aStory => {
+    this.props.storyLists.allStories.forEach(aStory => {
       if(storyNames.indexOf(aStory.storyName) > -1) {
         storyList.push(aStory._id)
       }
@@ -40,7 +40,7 @@ class ClassesContainer extends Component {
     let storyList = []
     let lastUpdated = new Date();
 
-    this.props.storyList.forEach(aStory => {
+    this.props.storyLists.allStories.forEach(aStory => {
       if(storyNames.indexOf(aStory.storyName) > -1) {
         storyList.push(aStory._id)
       }
@@ -77,14 +77,19 @@ class ClassesContainer extends Component {
       let classInfo = this.props.instructor.classes.find(aClass => aClass._id === match.params.id);
       return (
         <NewClass handleAddNewClass={this.handleUpdateClass}
-                  storyList={this.props.storyList}
+                  storyLists={this.props.storyLists}
                   classInfo={classInfo}
                   handleCancel={this.handleCancel}
+                  isEdit={true}
         />
       )
     } else {
       return (
-        <NewClass handleAddNewClass={this.handleAddNewClass} storyList={this.props.storyList}/>
+        <NewClass handleAddNewClass={this.handleAddNewClass}
+                  storyLists={this.props.storyLists}
+                  isEdit={false}
+                  handleCancel={this.handleCancel}
+        />
       )
     }
   }
@@ -110,7 +115,7 @@ class ClassesContainer extends Component {
 
 const mapStateToProps = state => ({
   instructor: state.instructor,
-  storyList: state.app.storyList,
+  storyLists: state.app.storyLists,
   auth: state.auth
 });
 

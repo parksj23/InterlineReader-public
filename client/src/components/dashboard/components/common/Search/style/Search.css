@@ -1,15 +1,17 @@
 .FuseInstructions{
     display: none;
 }
-.FuseResults selected li {
-    width: 100%;
-}
-
 .FuseResults{
     list-style-type: none;
     width: 100%;
     display: flex;
+    flex-direction: column;
 }
+
+.FuseResults li {
+    padding: 4px;
+}
+
 .FusePicker {
     display: flex;
     flex-direction: column;

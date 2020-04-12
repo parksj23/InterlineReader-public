@@ -32,10 +32,10 @@ class NewClass extends Component {
   }
 
   componentDidMount() {
-    const {classInfo} = this.props;
-    if(classInfo) {
+    const {classInfo, storyLists} = this.props;
+    if(classInfo && storyLists.allStories) {
       let newStoryList = []
-      this.props.storyList.forEach(aStory => {
+      storyLists.allStories.forEach(aStory => {
         if(classInfo.storyList.indexOf(aStory._id) > -1) {
           newStoryList.push(aStory.storyName)
         }
@@ -57,11 +57,12 @@ class NewClass extends Component {
   }
 
   render() {
+    const {classInfo, storyLists, isEdit} = this.props;
     return (
       <Grid container>
         <Grid item xs={1}/>
         <Grid item xs={10} justify={'center'}>
-          <h2 className={'new-class-form-title'}>{this.props.classInfo ? "Edit Class" : "New Class"}</h2>
+          <h2 className={'new-class-form-title'}>{classInfo ? "Edit Class" : "New Class"}</h2>
         </Grid>
         <Grid item xs={1}/>
         <Grid container>
@@ -80,6 +81,7 @@ class NewClass extends Component {
                   value={this.state.className}
                   fullWidth
                   multiline
+                  disabled={isEdit}
                 />
               </Grid>
             </Grid>
@@ -143,7 +145,7 @@ class NewClass extends Component {
                     id: 'select-multiple-native',
                   }}
                 >
-                  {this.props.storyList.allStories.map(name => (
+                  {storyLists.allStories && storyLists.allStories.map(name => (
                     <MenuItem key={name.storyName} value={name.storyName}>
                       {name.storyName}
                     </MenuItem>

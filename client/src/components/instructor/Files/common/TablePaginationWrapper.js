@@ -50,7 +50,7 @@ class TablePaginationWrapper extends React.Component {
   };
 
   handleChangeRowsPerPage = event => {
-    this.setState({ page: 0, rowsPerPage: event.target.value });
+    this.setState({ page: 0, rowsPerPage: parseInt(event.target.value, 10) });
   };
 
   handleOnChangeField = name => event => {

@@ -76,7 +76,7 @@ class StoryText extends Component {
                       )
                       phraseArr.push(React.createElement('span', aSegment.style, childComponent))
                     }
-                    textSection.forEach(function(phrase) {
+                    textSection.forEach(phrase => {
                         let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
 
                         //if there are two or more inline HTML tags
@@ -129,7 +129,6 @@ class StoryText extends Component {
                     return (
                       <div key={"storySeg_" + index}>
                         {
-                          //armaandh: Added font size changes here
                           React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
                         }
                       </div>

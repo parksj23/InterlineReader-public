@@ -39,19 +39,23 @@ class Classes extends Component {
     return (
       <div className="edit-grammar-container">
         <Grid container>
-            <Grid item xs={12}><h3>Active Classes</h3></Grid>
+            <Grid item xs={12}>
+              <h3 style={{padding: "1rem"}}>Active Classes</h3>
+            </Grid>
             { this.renderClasses(activeClasses) }
           </Grid>
           <Divider />
         <Grid container>
         <Grid item xs={12}>
-            <h3>Pending Classes</h3>
+            <h3 style={{padding: "1rem"}}>Pending Classes</h3>
         </Grid>
             { this.renderClasses(pendingClasses) }
         </Grid>
           <Divider />
         <Grid container>
-          <Grid item xs={12}><h3>Archived Classes</h3></Grid>
+          <Grid item xs={12}>
+            <h3 style={{padding: "1rem"}}>Archived Classes</h3>
+          </Grid>
             { this.renderClasses(archivedClasses) }
         </Grid>
       </div>

@@ -41,7 +41,7 @@ class TablePaginationWrapper extends React.Component {
 
   componentDidMount() {
     this.setState({
-      rows: this.props.grammarList
+      rows: this.props.list
     });
   }
 
@@ -50,7 +50,7 @@ class TablePaginationWrapper extends React.Component {
   };
 
   handleChangeRowsPerPage = event => {
-    this.setState({ page: 0, rowsPerPage: event.target.value });
+    this.setState({ page: 0, rowsPerPage: parseInt(event.target.value, 10) });
   };
 
   handleOnChangeField = name => event => {
@@ -64,7 +64,7 @@ class TablePaginationWrapper extends React.Component {
   render() {
     const { classes } = this.props;
     const {rowsPerPage, page } = this.state;
-    let rows = this.props.list || []
+    let rows = this.props.list
     let tableHeaders = []
     this.props.tableHeaders.forEach(aTableHeader => {
       tableHeaders.push(<CustomTableCell align="right" >{aTableHeader.label}</CustomTableCell>);
@@ -72,6 +72,9 @@ class TablePaginationWrapper extends React.Component {
 
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+    console.log(rows);
+    console.log(page,  rowsPerPage )
+
 
     return (
       <Paper className={classes.root}>

@@ -176,7 +176,7 @@ class StoriesContainer extends Component {
     let modalComponent = null
     switch(this.state.modalComponent){
       case 'FlashCards':
-        modalComponent = <FlashCardsContainer/>
+        modalComponent = <FlashCardsContainer vocabList={this.props.stories.MODKR.vocabList}/>
         break;
       case 'OriginalText':
         modalComponent = <OriginalText url={this.props.stories.storyInfo.pdfUrl} selectedPages={this.props.stories.storyInfo.pagesSelected}/>
@@ -211,10 +211,16 @@ class StoriesContainer extends Component {
           }
         </div>
         {stories.storyInfo ?
-          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.selectedLanguage}
+          <Story title={title}
+                 author={author}
+                 text={text}
+                 searchWord={searchWord}
+                 sideBar={sideBar}
+                 language={this.state.selectedLanguage}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
                  handleOriginalText={this.handleOriginalText}
+                 stories={this.props.stories}
           /> : null}
       </div>
         : null

@@ -17,16 +17,18 @@ class AddMidKRGram extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      engCat: null,
-      annotation: null,
-      romShape: null,
-      hankulShape: null,
-      romExample: null,
-      hankulExample: null,
-      ur: null,
-      engTransExample: null,
-      lineNumber: null
+      engCat: "",
+      annotation: "",
+      romShape: "",
+      hankulShape: "",
+      romExample: "",
+      hankulExample: "",
+      ur: "",
+      engTransExample: "",
+      lineNumber: "",
+     expanded: null
     };
+    this.handleOnChangeField.bind(this)
   }
 
   componentDidMount(){
@@ -46,6 +48,14 @@ class AddMidKRGram extends Component {
       [name]: event.target.value
     });
   };
+
+
+  handleChange = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
+  };
+
 
   handleAddGrammar = () => {
     let grammarToAdd = {
@@ -80,15 +90,16 @@ class AddMidKRGram extends Component {
 
   handleCancel = () => {
     this.setState({
-      engCat: null,
-      annotation: null,
-      romShape: null,
-      hankulShape: null,
-      romExample: null,
-      hankulExample: null,
-      ur: null,
-      engTranExample: null,
-      lineNumber: null
+      engCat: "",
+      annotation: "",
+      romShape: "",
+      hankulShape: "",
+      romExample: "",
+      hankulExample: "",
+      ur: "",
+      engTranExample: "",
+      lineNumber: "",
+      expanded: false
     });
   };
 
@@ -98,9 +109,11 @@ class AddMidKRGram extends Component {
   }
 
   render() {
+    const { expanded } = this.state;
     return (
       <div className="add-midKR-grammar">
-        <ExpansionPanel>
+        <ExpansionPanel expanded={expanded === 'newGramExpanded'}
+                        onChange={this.handleChange('newGramExpanded')}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Add New Grammar</Typography>
           </ExpansionPanelSummary>
@@ -401,7 +414,10 @@ class AddMidKRGram extends Component {
             </Grid>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel>
+        <ExpansionPanel
+          expanded={expanded === 'existGramExpanded'}
+          onChange={this.handleChange('existGramExpanded')}
+        >
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>Existing Grammar</Typography>
           </ExpansionPanelSummary>
