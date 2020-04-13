@@ -85,13 +85,12 @@ exports.addStoryInfo = (req, res) => {
       titleRom,
       titleEng,
     } = req.storyInfo;
+
     let query = {
       storyName,
-      class: req.storyInfo.class,
       instructor,
       region
     };
-
     let storyInfo = {
       ...query,
       createdDate,
@@ -99,36 +98,62 @@ exports.addStoryInfo = (req, res) => {
       pdfUrl,
       pagesSelected
     };
-
     let languages = [];
     languages.push(language);
+
     MongoClient.connect(url, function (err, client) {
       if (err) throw err;
       var dbo = client.db(databaseName);
-      dbo
-        .collection(`STORY_LIST`)
-        .findOneAndUpdate(query, {$set: storyInfo},
-          {upsert: true}, function (err, result) {
-            if (err) throw(err)
-            let krSumQuery = {
-              authorKorn,
-              authorRom,
-              titleKorn,
-              titleRom,
-              titleEng,
-              storyName,
-              languages,
-              pdfUrl,
-              pagesSelected
-            }
-            dbo.collection("STORY_KR_SUM").findOneAndUpdate(krSumQuery, {$set: krSumQuery},
-              {upsert: true}, function (err, success) {
-                res.json({
-                  status: "success"
-                });
-                client.close();
-              })
-          })
+      dbo.collection(`STORY_LIST`).find(query).toArray((err,result) => {
+          if(err) throw(err)
+          if(result.length === 0) {
+            dbo.collection("STORY_LIST").insertOne(storyInfo);
+          }
+          let krSumQuery = {
+          authorKorn,
+          authorRom,
+          titleKorn,
+          titleRom,
+          titleEng,
+          storyName,
+          pdfUrl,
+          pagesSelected
+        }
+          dbo.collection("STORY_KR_SUM").find(krSumQuery).toArray((err, result) => {
+              if (err) throw(err)
+              let krSumDoc = {
+                languages: languages
+              }
+              if (result.length > 0) {
+                let updatedStory = result[0];
+                let newLanguages = updatedStory.languages
+                if (newLanguages.indexOf(language) === -1) {
+                  newLanguages.push(language)
+                  krSumDoc.languages = newLanguages
+                }
+
+              }
+              krSumDoc = {
+                ...krSumDoc,
+                authorKorn,
+                authorRom,
+                titleKorn,
+                titleRom,
+                titleEng,
+                storyName,
+                pdfUrl,
+                pagesSelected
+              }
+              dbo.collection("STORY_KR_SUM").findOneAndUpdate(krSumQuery, {$set: krSumDoc},
+                {upsert: true}, function (err, success) {
+                  if (err) throw(err)
+                  res.json({
+                    status: "success"
+                  });
+                  client.close();
+                })
+            })
+      })
     });
   }
 };
