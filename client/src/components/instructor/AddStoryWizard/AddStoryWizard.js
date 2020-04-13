@@ -41,7 +41,6 @@ class AddStoryWizard extends Component {
         titleRom: "",
         titleEng: "",
         storyName: "",
-        class: "410B",
         language: "ENGSH",
         region: "KR",
         instructor: "",
@@ -50,7 +49,7 @@ class AddStoryWizard extends Component {
       },
       openStatus: false,
       statusMessage: "",
-      saveDisabled: false,
+      saveDisabled: true,
       numOfSections: 1
     };
 
@@ -66,7 +65,7 @@ class AddStoryWizard extends Component {
     this.setState({
       storyForm: {
         ...this.state.storyForm,
-        instructor: this.props.user.instructorId
+        instructor: this.props.auth.user.id
       }
     })
   }
@@ -80,8 +79,9 @@ class AddStoryWizard extends Component {
   };
 
   checkDisabled = (storyForm) => {
-    let keys = Object.keys(storyForm)
+    let keys = ["authorKorn", "authorRom", "titleKorn", "titleRom", "titleEng", "storyName", "language"]
     for(let aKey of keys){
+      console.log(aKey)
       if (!storyForm[aKey]){
         return true
       }
@@ -101,7 +101,7 @@ class AddStoryWizard extends Component {
     }
     this.setState({
       storyForm,
-      saveDisabled: this.checkDisabled(storyForm) || this.state.editorState.getCurrentContent().hasText(),
+      saveDisabled: this.checkDisabled(storyForm),
     })
   }
 
@@ -206,23 +206,6 @@ class AddStoryWizard extends Component {
             />
           </Grid>
           <Grid item xs={1}/>
-          <Grid item xs={3}>
-            <TextField
-              id="story-class"
-              select
-              label="Class"
-              value={this.state.storyForm.class}
-              onChange={this.handleOnChangeField('class')}
-              margin="normal"
-              style={{width: "100%"}}
-            >
-              {classes.map(option => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
           <Grid item xs={3}>
             <TextField
               required
