@@ -5,8 +5,6 @@ import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import StatusMessage from '../../../common/statusMessage/statusMessage';
-
-
 import {startUpdatingEditGrammar, handleStatusClose} from '../../../../actions/instructor';
 
 class EditGrammarFormContainer extends Component {
@@ -79,12 +77,6 @@ class EditGrammarFormContainer extends Component {
       here: this.state.here
     }
     this.props.deleteGrammar(grammar, this.props.storyTitle);
-  }
-
-  handleCloseStatus = () => {
-    this.setState({
-      openStatus: false
-    })
   }
 
   render() {

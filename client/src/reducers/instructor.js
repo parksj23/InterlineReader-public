@@ -52,7 +52,9 @@ const initialState = {
     selectedVocab: null,
     userHighlightedText: null,
     highlightTextUpdating: false,
-    editVocabUpdating: false
+    editVocabUpdating: false,
+    editVocabStatus: null,
+    editVocabStatusMessage: null
 
   },
   editGrammar: {
@@ -60,7 +62,8 @@ const initialState = {
     userHighlightedText: null,
     highlightTextUpdating: false,
     editGrammarUpdating: false,
-    ediGrammarStatusMessage: null
+    ediGrammarStatusMessage: null,
+    editGrammarStatus: null
   },
   addMiddleGram: {
     grammarList: [],
@@ -80,8 +83,6 @@ export default (state = initialState, action) => {
   let newVocabList;
   let newEditGrammar;
   let newGrammarList;
-  let newAddMiddleGram;
-  let newAddMiddleVocab;
   let classes;
   switch (action.type) {
     case INSTRUCTOR_INIT:
@@ -118,13 +119,19 @@ export default (state = initialState, action) => {
     case CLOSE_STATUS_BAR:
       let newAddMiddleGram = state.addMiddleGram
       let newAddMiddleVocab = state.addMiddleVocab
+      let newEditVocab = state.editVocab
+      let newEditGrammar = state.editGrammar
       newAddMiddleGram.addNewGrammarMessage = null
       newAddMiddleVocab.addNewVocabStatusMessage = null
+      newEditGrammar.ediGrammarStatusMessage = null
+      newEditVocab.editVocabStatusMessage = null
       return {
         ...state,
         addNewStory: false,
         addMiddleGram: newAddMiddleGram,
         addMiddleVocab: newAddMiddleVocab,
+        editVocab: newEditVocab,
+        editGrammar: newEditGrammar,
         message: ""
       };
     case ANALYTICS_INIT_OVERVIEW:
@@ -224,14 +231,17 @@ export default (state = initialState, action) => {
     case INSTRUCTOR_UPDATE_VOCAB:
       newEditVocab = state.editVocab;
       newVocabList = state.editVocab.MODKR.vocabList;
-      newVocabList.splice(action.payload.order_id - 1, 1, action.payload);
+      newVocabList.splice(action.payload.vocab.order_id - 1, 1, action.payload.vocab);
       newEditVocab.vocabList = newVocabList;
-      newEditVocab.selectedVocab = action.payload;
-      newEditVocab.MODKR.vocabSearch[action.payload.korean] = action.payload;
+      newEditVocab.selectedVocab = action.payload.vocab;
+      newEditVocab.MODKR.vocabSearch[action.payload.vocab.korean] = action.payload.vocab;
       newEditVocab.editVocabUpdating = false;
       return {
         ...state,
-        editVocab: newEditVocab
+        editVocab: {
+          ...newEditVocab,
+          editVocabStatusMessage: action.payload.message
+        }
       };
     case INSTRUCTOR_UPDATE_GRAMMAR:
       newEditGrammar = state.editGrammar;

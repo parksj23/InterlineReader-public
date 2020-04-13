@@ -25,7 +25,8 @@ class AddMidKRVoc extends Component {
       english: "",
       hanja: "",
       newVocabExpanded: false,
-      existVocabExpanded: false
+      existVocabExpanded: false,
+      deletedVocabList: []
     };
   }
 
@@ -38,7 +39,7 @@ class AddMidKRVoc extends Component {
   componentWillMount() {}
 
   componentWillUnmount() {
-    this.props.saveMidKrVocab(this.props.vocabList);
+    this.props.saveMidKrVocab(this.props.vocabList, this.state.deletedVocabList);
   }
 
   handleOnChangeField = name => event => {
@@ -102,6 +103,8 @@ class AddMidKRVoc extends Component {
 
   deleteEntry = (deleteVocab) => {
     let vocabList = this.props.vocabList;
+    let deletedVocabList = this.state.deletedVocabList
+    deletedVocabList.push(deleteVocab)
     for(let index = 0 ; index < vocabList.length ; index++){
       if(vocabList[index]._id === deleteVocab._id) {
         vocabList.splice(index,1)
@@ -109,6 +112,9 @@ class AddMidKRVoc extends Component {
       }
     }
     this.props.updateMiddleKoreanVocabEntry(vocabList);
+    this.setState({
+      deletedVocabList
+    })
     this.forceUpdate();
   }
 

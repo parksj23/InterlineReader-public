@@ -27,7 +27,8 @@ class EditVocab extends Component {
   }
 
   componentWillMount() {
-    let {storyName} = this.props.match.params
+    let urlSegments = this.props.history.location.pathname.split("/")
+    let storyName = urlSegments[urlSegments.length-1]
     this.props.initEditVocab(storyName);
   }
 
@@ -67,6 +68,7 @@ class EditVocab extends Component {
                   storyTitle={this.props.editVocab.storyInfo.storyName}
                   updateVocab={this.props.updateVocab}
                   deleteVocab={this.props.deleteVocab}
+                  statusMessage={this.props.editVocab.editVocabStatusMessage}
 
                 /> : null
             }

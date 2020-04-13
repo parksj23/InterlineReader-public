@@ -1,4 +1,4 @@
-import {GET_STORY_LIST} from '../constants/action-types';
+import {ADD_STORY_INFO, GET_STORY_LIST} from '../constants/action-types';
 
 const initialState = {
   storyLists: {
@@ -15,6 +15,13 @@ export default (state = initialState, action) => {
         ...state,
         storyLists: action.payload,
       };
+    case ADD_STORY_INFO:
+      let updatedStoryList = state.storyLists
+      updatedStoryList.allStories.push(action.payload)
+      return {
+        ...state,
+        storyLists: updatedStoryList
+      }
     default:
       return state;
   }

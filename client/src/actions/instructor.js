@@ -76,7 +76,7 @@ export const initEditVocab = storyTitle => dispatch => {
   };
   return new Promise((resolve) => {
     let payload = {};
-    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
+    axios.get(`/api/story`, {params}).then(res => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
@@ -113,12 +113,8 @@ export const initEditVocab = storyTitle => dispatch => {
 
           payload = res.data;
         }
-
-        axios
-          .get(`/api/stories/${storyTitle}/storyText`, {
-            params: {storyInfo}
-          })
-          .then(res => {
+        let query = queryStringify.stringify(storyInfo)
+        axios.get(`/api/story/storyText?${query}`).then(res => {
             let languages = Object.keys(res.data);
             languages.forEach(aLanguage => {
               let rawKoreanText = "";
@@ -159,7 +155,6 @@ export const resetEditGrammar = () => dispatch => {
 };
 
 export const initEditGrammar = storyTitle => dispatch => {
-  console.log("in init grammar")
   let params = {
     responseType: "application/json",
     storyTitle
@@ -171,7 +166,6 @@ export const initEditGrammar = storyTitle => dispatch => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
-      console.log(storyInfo)
 
       languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
@@ -270,10 +264,10 @@ export const addStoryInfo = storyInfo => dispatch => {
   let params = {
     storyInfo
   };
-  axios.put("/api/instructor/addStoryInfo", params).then(() => {
+  axios.put("/api/instructor/addStoryInfo", params).then((resp) => {
     dispatch({
       type: ADD_STORY_INFO,
-      payload: null
+      payload: resp.data.storyInfo
     });
   });
 };
@@ -366,7 +360,10 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
   axios.put("/api/instructor/editVocab/updateVocab", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_VOCAB,
-      payload: resp.data.vocab
+      payload: {
+        vocab: resp.data.vocab,
+        message: "Successfully Updated Vocabulary"
+      }
     });
   });
 };
@@ -502,9 +499,10 @@ export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
   })
 }
 
-export const saveMidKrGram = grammarList => dispatch => {
+export const saveMidKrGram = (grammarList, deletedGrammarList) => dispatch => {
   let params = {
-    grammarList
+    grammarList,
+    deletedGrammarList
   }
   axios.put("/api/instructor/midkr-gram", params).then(resp => {
     dispatch({
@@ -542,9 +540,10 @@ export const updateMiddleKoreanVocabEntry = vocabList => dispatch => {
   })
 }
 
-export const saveMidKrVocab = vocabList => dispatch => {
+export const saveMidKrVocab = (vocabList, deletedVocabList) => dispatch => {
   let params = {
-    vocabList
+    vocabList,
+    deletedVocabList
   }
   axios.put("/api/instructor/midkr-voc", params).then(resp => {
     dispatch({

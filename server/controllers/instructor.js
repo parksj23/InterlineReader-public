@@ -115,9 +115,7 @@ exports.addStoryInfo = (req, res) => {
           titleKorn,
           titleRom,
           titleEng,
-          storyName,
-          pdfUrl,
-          pagesSelected
+          storyName
         }
           dbo.collection("STORY_KR_SUM").find(krSumQuery).toArray((err, result) => {
               if (err) throw(err)
@@ -148,7 +146,8 @@ exports.addStoryInfo = (req, res) => {
                 {upsert: true}, function (err, success) {
                   if (err) throw(err)
                   res.json({
-                    status: "success"
+                    status: "success",
+                    storyInfo: krSumDoc
                   });
                   client.close();
                 })
@@ -708,9 +707,11 @@ exports.addMiddleKoreanGrammar = (grammar, res, next) => {
 
 exports.updateMiddleKoreanGrammar = (params, res, next) => {
   const grammarList = params.grammarList
+  const deletedGrammarList = params.deletedGrammarList
   MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
+
     grammarList.map(aGrammarEntry => {
       aGrammarEntry["lastUpdated"] = new Date()
       let query = {
@@ -720,6 +721,14 @@ exports.updateMiddleKoreanGrammar = (params, res, next) => {
       delete aGrammarEntry._id
       dbo.collection("GRAM_MIDKR_ALL").findOneAndUpdate(query, {$set: aGrammarEntry}, {upsert: true})
     })
+
+    deletedGrammarList.forEach(aGrammarEntry => {
+      let query = {
+        _id: ObjectID(aGrammarEntry._id)
+      }
+      dbo.collection("GRAM_MIDKR_ALL").findOneAndDelete(query)
+    })
+
     dbo.collection("GRAM_MIDKR_ALL").find().toArray(function (err, result) {
       if (err) throw(err)
       res.json({
@@ -771,6 +780,7 @@ exports.getMiddleKRVoc = (req, res, next) => {
 
 exports.updateMiddleKoreanVoc = (vocab, res, next) => {
   const vocabList = vocab.vocabList
+  const deletedVocabList = vocab.deletedVocabList
   MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
@@ -782,6 +792,14 @@ exports.updateMiddleKoreanVoc = (vocab, res, next) => {
 
       delete aVocabEntry._id
       dbo.collection("VOC_MIDKR_ALL").findOneAndUpdate(query, {$set: aVocabEntry}, {upsert: true})
+
+      deletedVocabList.forEach(aVocabEntry => {
+        let query = {
+          _id: ObjectID(aVocabEntry._id)
+        }
+        dbo.collection("VOC_MIDKR_ALL").findOneAndDelete(query)
+      })
+
     })
     dbo.collection("VOC_MIDKR_ALL").find().toArray(function (err, result) {
       if (err) throw(err)

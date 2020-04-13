@@ -26,7 +26,8 @@ class AddMidKRGram extends Component {
       ur: "",
       engTransExample: "",
       lineNumber: "",
-     expanded: null
+      expanded: null,
+      deletedGrammar: []
     };
     this.handleOnChangeField.bind(this)
   }
@@ -40,7 +41,7 @@ class AddMidKRGram extends Component {
   componentWillMount() {}
 
   componentWillUnmount() {
-    this.props.saveMidKrGram(this.props.grammarList);
+    this.props.saveMidKrGram(this.props.grammarList, this.state.deletedGrammar);
   }
 
   handleOnChangeField = name => event => {
@@ -93,13 +94,15 @@ class AddMidKRGram extends Component {
         break;
       }
     }
-    this.props.updateMiddleKrGrammarEntry(grammarList);
+    this.props.updateMiddleKrGrammarEntry(grammarList, this.state.deletedGrammar);
     this.forceUpdate();
 
   }
 
   deleteEntry = (deleteGrammar) => {
     let grammarList = this.props.grammarList;
+    let updatedDeletedEntries = this.state.deletedGrammar
+    updatedDeletedEntries.push(deleteGrammar)
     for(let index = 0 ; index < grammarList.length ; index++){
       if(grammarList[index]._id === deleteGrammar._id) {
         grammarList.splice(index,1)
@@ -107,6 +110,7 @@ class AddMidKRGram extends Component {
       }
     }
     this.props.updateMiddleKrGrammarEntry(grammarList);
+
     this.forceUpdate();
   }
 

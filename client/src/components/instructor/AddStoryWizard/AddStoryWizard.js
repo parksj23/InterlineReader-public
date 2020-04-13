@@ -13,19 +13,7 @@ import {addToStory, addStoryInfo,handleStatusClose, getFiles} from '../../../act
 import {connect} from 'react-redux';
 import StorySection from './components/StorySection';
 import TextField from '@material-ui/core/TextField';
-import MenuItem from '@material-ui/core/MenuItem';
 import PdfReaderContainer from "./components/PdfReaderContainer";
-
-const classes = [
-  {
-    value: "410A",
-    label: "410A"
-  },
-  {
-    value: "410B",
-    label: "410B"
-  }
-]
 
 class AddStoryWizard extends Component {
   constructor(props) {

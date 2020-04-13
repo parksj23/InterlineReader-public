@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-
-import {startUpdatingEditVocab} from '../../../../actions/instructor';
+import StatusMessage from '../../../common/statusMessage/statusMessage';
+import {handleStatusClose, startUpdatingEditVocab} from '../../../../actions/instructor';
 
 class EditVocabFormContainer extends Component {
   constructor(props) {
@@ -166,6 +166,10 @@ class EditVocabFormContainer extends Component {
             >Delete</Button>
           </Grid>
         </Grid>
+        <StatusMessage status="success"
+                       open={this.props.statusMessage}
+                       message={this.props.statusMessage}
+                       handleClose={this.props.handleStatusClose}/>
       </div>
     );
   }
@@ -174,7 +178,8 @@ class EditVocabFormContainer extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  startUpdatingEditVocab
+  startUpdatingEditVocab,
+  handleStatusClose
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditVocabFormContainer);
