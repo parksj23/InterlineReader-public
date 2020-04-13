@@ -79,9 +79,7 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-  let newEditVocab;
   let newVocabList;
-  let newEditGrammar;
   let newGrammarList;
   let classes;
   switch (action.type) {

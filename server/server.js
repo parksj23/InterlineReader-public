@@ -7,13 +7,13 @@ require('./models/User');
 require('./models/Story');
 require('./config/passport')(passport);
 require('dotenv').config();
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+//const swaggerJSDoc = require('swagger-jsdoc');
+//const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 const port = process.env.PORT || 5050;
 
-const swaggerDefinition = {
+/*const swaggerDefinition = {
 	info: {
 		title: 'Interline Reader Swagger API',
 		version: '1.0.0',
@@ -33,7 +33,7 @@ const swaggerDefinition = {
 
 const options = {
 	swaggerDefinition,
-	apis: ['./routes/api/*.js']
+	apis: ['./routes/api/!*.js']
 }
 
 const swaggerSpec = swaggerJSDoc(options);
@@ -43,7 +43,7 @@ app.get('/swagger.json', function(req, res) {
   res.send(swaggerSpec);
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));*/
 
 
 
