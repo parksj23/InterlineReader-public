@@ -74,7 +74,7 @@ class StoryText extends Component {
                           {plainText}
                         </Highlight>
                       )
-                      phraseArr.push(React.createElement('span', aSegment.style, childComponent))
+                      phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
                     }
                     textSection.forEach(phrase => {
                         let numberOfInlineTags = phrase.match(/<(.|\n)*?>/g);
@@ -109,7 +109,7 @@ class StoryText extends Component {
                           {plainText}
                         </Highlight>
                       )
-                      phraseArr.push(React.createElement('span', aSegment.style, childComponent))
+                      phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
                     }
                     return (
                       <div key={"storySeg_" + index}>

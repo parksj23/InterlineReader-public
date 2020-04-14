@@ -59,7 +59,7 @@ class AddStoryWizard extends Component {
   }
   
   onEditorStateChange = (editorState) => {
-
+    console.log(editorState)
     this.setState({
       editorState,
       saveDisabled: this.checkDisabled(this.state.storyForm) || !editorState.getCurrentContent().hasText()
@@ -69,7 +69,6 @@ class AddStoryWizard extends Component {
   checkDisabled = (storyForm) => {
     let keys = ["authorKorn", "authorRom", "titleKorn", "titleRom", "titleEng", "storyName", "language"]
     for(let aKey of keys){
-      console.log(aKey)
       if (!storyForm[aKey]){
         return true
       }
