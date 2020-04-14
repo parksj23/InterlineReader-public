@@ -2,10 +2,6 @@ const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const url = keys.mongoURI;
 const databaseName = keys.databaseName;
-
-
-
-
 exports.getDashboard = (req,res,next) => {
   try {
     MongoClient.connect(url, async function (err, client) {

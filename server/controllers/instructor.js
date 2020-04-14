@@ -228,7 +228,7 @@ exports.getVocabulary = (req, res) => {
 exports.getGrammar = (req, res) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw err;
-    let db = client.db("testdb");
+    let db = client.db(databaseName);
     let storyInfo = req.storyInfo;
     const findStoryGrammar = () => {
       return new Promise((resolve, reject) => {

@@ -45,9 +45,6 @@ app.get('/swagger.json', function(req, res) {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));*/
 
-
-
-
 const db = require('./config/keys').mongoURI;
 mongoose
 	.connect(db)

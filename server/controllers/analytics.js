@@ -3,12 +3,13 @@ const MongoClient = require('mongodb').MongoClient;
 const keys = require('../config/keys');
 const analyticsURL = keys.mongoAnalyticsURI;
 const storiesURL = keys.mongoURI
+const databaseName = keys.databaseName;
 
 exports.getUserActivity = async (req, res) => {
   let { className, storyName, date } = req;
   MongoClient.connect(analyticsURL, function (err, client) {
     if (err) throw err;
-    var dbo = client.db("ubcreader");
+    var dbo = client.db(databaseName);
     let promiseArray = []
     date -= date % (1000 * 60 * 60 * 24)
     for (let i = 0; i < 6; i++) {
@@ -49,7 +50,7 @@ exports.getMostFrequentGrammar = async (req, res) => {
   let { className, storyName } = req;
   MongoClient.connect(analyticsURL, function (err, client) {
     if (err) throw err;
-    var dbo = client.db("ubcreader");
+    var dbo = client.db(databaseName);
     let promiseArray = []
     promiseArray.push(new Promise((resolve, reject) => {
       let query = {
@@ -97,7 +98,7 @@ exports.getAnalyticsGrammarSearch = async (req, res) => {
   if (text && storyInfo) {
     MongoClient.connect(analyticsURL, function (err, client) {
       if (err) throw err;
-      var dbo = client.db("testdb");
+      var dbo = client.db(databaseName);
       dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).deleteMany().then(success => {
         if (success.result.ok) {
           dbo.collection(`${storyInfo.storyName.toUpperCase()}_STORY_${storyInfo.language.toUpperCase()}`).insertMany(text).then(success => {
@@ -123,7 +124,7 @@ exports.addGrammarSearchSession = async (req, res) => {
   if (sessions && id) {
     MongoClient.connect(analyticsURL, function (err, client) {
       if (err) throw err;
-      let dbo = client.db("ubcreader");
+      let dbo = client.db(databaseName);
       sessions.map(aSession => {
         let entry = {
           userId: id,

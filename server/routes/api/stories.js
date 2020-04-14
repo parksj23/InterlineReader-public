@@ -4,7 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectId = require('mongodb').ObjectID;
 const keys = require('../../config/keys');
 const url = keys.mongoURI;
-
+const databaseName = keys.databaseName;
 /**
  * @swagger
  * /story:
@@ -35,7 +35,7 @@ router.get('/', async (req, res, next) => {
   let storyTitle = req.query.storyTitle.toUpperCase();
   try {
     MongoClient.connect(url, async function (err, client) {
-      const db = client.db("interlineReaderTestDb");
+      const db = client.db(databaseName);
       if (err) throw err;
       let query = {storyName: storyTitle.toLowerCase()};
       const findStoryInfo = () => {
@@ -204,7 +204,7 @@ router.get('/storyText', async (req, res, next) => {
   try {
     MongoClient.connect(url, async function (err, client) {
       if (err) throw err;
-      const db = client.db("interlineReaderTestDb");
+      const db = client.db(databaseName);
       const results = {}
       const findStory = (aLanguage) => {
         let query = {
@@ -240,7 +240,7 @@ router.get('/:story/storyInfo', async (req, res, next) => {
   try {
     MongoClient.connect(url, async function (err, client) {
       if (err) throw err;
-      var db = client.db("testdb");
+      var db = client.db(databaseName);
       var query = {storyName: story};
 
       const findStoryInfo = () => {
