@@ -5,7 +5,7 @@ import {Route, Switch } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid'
 import EditGrammar from "./EditGrammar";
-import {getStoryInfo, getGrammar, resetEditGrammar} from "../../../actions/instructor";
+import {getGrammar, resetEditGrammar} from "../../../actions/instructor";
 
 class EditGrammarContainer extends Component {
   constructor(props){
@@ -19,7 +19,7 @@ class EditGrammarContainer extends Component {
   }
 
   renderStoryList = () => {
-    return <StoryList storyList={this.props.instructor.storyList} component={'editGrammar'}/>
+    return <StoryList storyList={this.props.storyLists.allStories} component={'editGrammar'}/>
   }
 
   render() {
@@ -40,12 +40,12 @@ class EditGrammarContainer extends Component {
 
 
 const mapStateToProps = state => ({
-  instructor: state.instructor
+  instructor: state.instructor,
+  storyLists: state.app.storyLists
 });
 
 const mapDispatchToProps = ({
   getGrammar,
-  getStoryInfo,
   resetEditGrammar
 })
 

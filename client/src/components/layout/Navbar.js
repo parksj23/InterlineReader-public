@@ -6,33 +6,20 @@ import { logoutUser } from '../../actions/auth';
 import {updateDrawerSize} from '../../actions/dashboard';
 import {toggleSideBar} from "../../actions/sideBar";
 import SideBarButton from './common/sideBarButton';
-import store from "../../store";
-
-
 
 class Navbar extends Component {
-  constructor(){
-    super()
-  }
-
   onLogoutClick = (e) => {
     e.preventDefault();
     this.props.logoutUser();
   }
 
-
-
   toggleDrawer = (side, open) => () => {
     let width = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').offsetWidth - parseInt(window.getComputedStyle(document.getElementById('mainContainer')).marginLeft,10) : "30vw"
     let height = document.getElementById('resizeContainer') ? document.getElementById('resizeContainer').clientHeight : "100vh"
-
-
     let size = {
       width,
       height
     }
-
-
 
     this.props.toggleSideBar(open, size);
     this.setState({
@@ -40,9 +27,7 @@ class Navbar extends Component {
     });
   };
 
-
   render() {
-
     const { isAuthenticated, user } = this.props.auth;
     const authLinks = (
       <ul className="navbar-nav ml-auto">
@@ -92,8 +77,23 @@ class Navbar extends Component {
             <div className="collapse navbar-collapse" id="mobile-nav">
               <ul className="navbar-nav mr-auto">
                 <li className="nav-item">
-                  <Link className="nav-link" to="/dashboard">
-                    Stories
+                  <Link className="nav-link" to="/dashboard/middleKorean">
+                    Middle Korean
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard/modernKorean">
+                    Modern korean
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard/KORN410">
+                    KORN 410
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard/KORN420">
+                    KORN 420
                   </Link>
                 </li>
                 <li className="nav-item">

@@ -1,0 +1,32 @@
+.FuseInstructions{
+    display: none;
+}
+.FuseResults{
+    list-style-type: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.FuseResults li {
+    padding: 4px;
+}
+
+.FusePicker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.FuseInput {
+    background: #f3f3f3;
+    border-radius: 19px;
+    border: 1px solid #f3f3f3;
+    height: 40px;
+    padding: 10px;
+}
+
+.FuseInput:focus {
+    outline:0;
+}

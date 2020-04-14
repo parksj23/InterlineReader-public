@@ -1,13 +1,12 @@
-
-
 import axios from "axios";
 import {
-  GET_DASHBOARD_SUCCESS,
+  GET_STORY_LIST,
   UPDATE_DRAWER_SIZE,
   TOGGLE_SIDEBAR_BUTTON,
-  DASHBOARD_IS_LOADING, DASHBOARD_IS_NOT_LOADING
+  DASHBOARD_IS_LOADING, DASHBOARD_IS_NOT_LOADING,
+  DASHBOARD_GET_MIDKR,
+  DASHBOARD_GET_MODKR
 } from "../constants/action-types";
-
 
 export const dashboardInit = () => dispatch => {
   const params = {
@@ -18,7 +17,7 @@ export const dashboardInit = () => dispatch => {
   return new Promise((resolve, reject) => {
     axios.get("/api/dashboard/", {params}).then(res => {
       dispatch({
-        type: GET_DASHBOARD_SUCCESS,
+        type: GET_STORY_LIST,
         payload: res.data
       })
       resolve(res.data)
@@ -47,9 +46,33 @@ export const enableDashboardLoading = () => dispatch => {
   })
 }
 
-export const disableDashboardLoading =() => dispatch => {
+export const disableDashboardLoading = () => dispatch => {
   dispatch({
     type: DASHBOARD_IS_NOT_LOADING,
     payload: null
+  })
+}
+
+export const getMiddleKorean = () => dispatch => {
+  return new Promise((resolve, reject) => {
+    axios.get("/api/dashboard/middleKorean").then(resp => {
+      dispatch({
+        type: DASHBOARD_GET_MIDKR,
+        payload: resp.data
+      })
+      resolve()
+    })
+  })
+}
+
+export const getModernKorean = () => dispatch => {
+  return new Promise((resolve, reject) => {
+    axios.get("/api/dashboard/modernKorean").then(resp => {
+      console.log(resp.data)
+      dispatch({
+        type: DASHBOARD_GET_MODKR,
+        payload: resp.data
+      })
+    })
   })
 }

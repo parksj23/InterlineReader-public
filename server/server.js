@@ -2,14 +2,50 @@ const express = require('express');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const path = require('path');
-const db = require('./config/keys').mongoURI;
 const handleErrors = require('./helpers/handleErrors');
 require('./models/User');
 require('./models/Story');
 require('./config/passport')(passport);
+require('dotenv').config();
+//const swaggerJSDoc = require('swagger-jsdoc');
+//const swaggerUi = require('swagger-ui-express');
+
 const app = express();
 const port = process.env.PORT || 5050;
 
+/*const swaggerDefinition = {
+	info: {
+		title: 'Interline Reader Swagger API',
+		version: '1.0.0',
+		description: 'Enpoints to test interline reader'
+	},
+	host: 'localhost:5050',
+	basePath: '/api',
+	securityDefinitions: {
+		bearerAuth: {
+			type: 'apiKey',
+			name: 'Authorization',
+			scheme: 'bearer',
+			in: 'header'
+		}
+	}
+}
+
+const options = {
+	swaggerDefinition,
+	apis: ['./routes/api/!*.js']
+}
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.get('/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));*/
+
+const db = require('./config/keys').mongoURI;
 mongoose
 	.connect(db)
 	.then(() => console.log('MongoDB connected'))
@@ -28,10 +64,11 @@ app.use('/api/users', require('./routes/api/users'));
 app.use('/api/about', require('./routes/api/about'));
 app.use('/api/dashboard', require('./routes/api/dashboard'));
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
-app.use('/api/stories', require('./routes/api/stories'));
+app.use('/api/story', require('./routes/api/stories'));
 app.use('/api/savedWords', require('./routes/api/savedWords'));
 app.use('/api/instructor', require("./routes/api/instructor"));
 app.use('/api/analytics', require("./routes/api/analytics"));
+app.use('/api/files', require('./routes/api/files'))
 app.use(handleErrors);
 
 if (process.env.NODE_ENV === 'production') {

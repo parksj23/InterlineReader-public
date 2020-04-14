@@ -23,403 +23,644 @@ import {
   INSTRUCTOR_RESET_EDIT_GRAMMAR,
   INSTRUCTOR_DELETE_VOCAB,
   INSTRUCTOR_DELETE_GRAMMAR,
-  INSTRUCTOR_CANCEL_SELECTION
-} from '../constants/action-types';
-import axios from 'axios';
+  INSTRUCTOR_CANCEL_SELECTION,
+  GET_STORY_LIST,
+  INSTRUCTOR_GET_MIDDLE_KR_GRAM,
+  INSTRUCTOR_ADD_MIDKR_GRAMMAR,
+  INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
+  INSTRUCTOR_SAVE_MIDKR_GRAM,
+  INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
+  INSTRUCTOR_GET_MIDKR_VOCAB,
+  INSTRUCTOR_ADD_MIDKR_VOCAB,
+  INSTRUCTOR_SAVE_MIDKR_VOCAB,
+  INSTRUCTOR_DELETE_MIDKR_VOCAB,
+  INSTRUCTOR_GET_CLASSES,
+  INSTRUCTOR_NEW_CLASS,
+  INSTRUCTOR_UPDATE_CLASS,
+  INSTRUCTOR_GET_FILES,
+  INSTRUCTOR_ADD_FILE,
+  INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS
+} from "../constants/action-types";
+import axios from "axios";
+import queryStringify from "querystringify";
 
-
-export const initInstructor = () => dispatch => {
+export const initInstructor = storyList => dispatch => {
   const params = {
-    responseType: 'application/json',
-    classType: 'all'
-  }
-  return new Promise((resolve, reject) => {
+    responseType: "application/json",
+    classType: "all"
+  };
+  return new Promise((resolve) => {
     axios.get("/api/instructor/", {params}).then(res => {
+      if (!storyList) {
+        axios.get("/api/dashboard/", {params}).then(response => {
+          dispatch({
+            type: GET_STORY_LIST,
+            payload: response.data
+          });
+          resolve(response.data);
+        });
+      }
       dispatch({
         type: INSTRUCTOR_INIT,
         payload: res.data
-      })
-      resolve(res.data)
-    })
-  })
-}
+      });
+      resolve(res.data);
+    });
+  });
+};
 
-export const initEditVocab = (storyTitle) => dispatch => {
+export const initEditVocab = storyTitle => dispatch => {
   let params = {
-    responseType: 'application/json',
-    storyTitle,
-  }
-  let payload = {};
-  return new Promise( (resolve,reject) => {
-    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      let vocabSearch = {}
-      res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
-      res.data.vocab.map(aVocab => {
+    responseType: "application/json",
+    storyTitle
+  };
+  return new Promise((resolve) => {
+    let payload = {};
+    axios.get(`/api/story`, {params}).then(res => {
+      let languages = res.data.storyInfo.languages;
 
-        if(aVocab.korean.indexOf("(") >= -1 || aVocab.korean.indexOf(")") >= -1){
-          let temp = aVocab.korean
-          let cleanVocab = temp.replace("(", "\(");
-          cleanVocab = cleanVocab.replace(")", "\)");
-          vocabSearch[cleanVocab] = aVocab;
+      let storyInfo = res.data.storyInfo;
+
+      languages.forEach(aLanguage => {
+        let data = res.data[`${aLanguage}`];
+        if (data.vocabOrder && data.vocabList) {
+          let {vocabOrder, vocabList} = data;
+          let order = vocabOrder.order;
+          vocabList.sort(function (a, b) {
+            return order.indexOf(a._id) - order.indexOf(b._id);
+          });
+
+          let vocabSearch = {};
+          vocabList.forEach(aVocab => {
+            if (
+              aVocab.korean.indexOf("(") >= -1 ||
+              aVocab.korean.indexOf(")") >= -1
+            ) {
+              let temp = aVocab.korean;
+              let cleanVocab = temp.replace("(", "(");
+              cleanVocab = cleanVocab.replace(")", ")");
+              vocabSearch[cleanVocab] = aVocab;
+            } else {
+              vocabSearch[aVocab.korean] = aVocab;
+            }
+          });
+
+          res.data[`${aLanguage}`] = {
+            vocabOrder,
+            vocabList,
+            vocabSearch
+          };
+
+          payload = res.data;
         }
-        else{
-          vocabSearch[aVocab.korean] = aVocab;
-        }
-      })
-      payload["storyInfo"] = res.data.storyInfo
-      payload["storyTitle"] = storyTitle
-      payload["vocabList"] = res.data.vocab
-      payload["vocabSearch"] = vocabSearch
-      return res.data.storyInfo
-    }).then( storyInfo => {
-      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
-        let storyTextKorn = res.data.storyTextKorn;
-        let storyTextEngl = res.data.storyTextEngl
-        storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
+        let query = queryStringify.stringify(storyInfo)
+        axios.get(`/api/story/storyText?${query}`).then(res => {
+            let languages = Object.keys(res.data);
+            languages.forEach(aLanguage => {
+              let rawKoreanText = "";
+              let storyText = res.data[aLanguage];
 
-        let rawKoreanText = ""
-        storyTextKorn.map(aText => {
-          rawKoreanText = rawKoreanText.concat(aText.text)
-        })
+              storyText.forEach(aText => {
+                rawKoreanText = rawKoreanText.concat(aText.text);
+              });
+              payload[aLanguage] = {
+                ...payload[aLanguage],
+                storyText: res.data[aLanguage],
+                rawKoreanText
+              };
+            });
+            dispatch({
+              type: INIT_EDIT_VOCAB,
+              payload
+            });
+            resolve(payload);
+          });
+      });
+    });
+  });
+};
 
-        payload["storyTextEngl"] = storyTextEngl;
-        payload["storyTextKorn"] = storyTextKorn;
-        payload["selectedVocab"] = null
-        payload["userHighlightedText"] = null
-        payload['rawKoreanText'] = rawKoreanText
-
-        payload['highlightTextUpdating'] = false
-        payload['editVocabUpdating'] = false
-        dispatch({
-          type: INIT_EDIT_VOCAB,
-          payload
-        })
-      })
-    })
-    resolve(payload);
-  })
-}
-
-export const resetEditVocab =() => dispatch => {
+export const resetEditVocab = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_RESET_EDIT_VOCAB,
     payload: null
-  })
-}
+  });
+};
 
 export const resetEditGrammar = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_RESET_EDIT_GRAMMAR,
     payload: null
-  })
-}
+  });
+};
 
-export const initEditGrammar = (storyTitle) => dispatch => {
+export const initEditGrammar = storyTitle => dispatch => {
   let params = {
-    responseType: 'application/json',
-    storyTitle,
-  }
-  let payload = {};
-  return new Promise( (resolve,reject) => {
-    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      let grammarSearch = {}
-      res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
-      res.data.grammar.map(aGrammar => {
-        if(aGrammar.sentence.indexOf("(") >= -1 || aGrammar.korean.indexOf(")") >= -1){
-          let temp = aGrammar.sentence
-          let cleanGrammar = temp.replace("(", "\\(");
-          cleanGrammar= cleanGrammar.replace(")", "\\)");
-          grammarSearch[cleanGrammar] = aGrammar;
+    responseType: "application/json",
+    storyTitle
+  };
+
+  return new Promise((resolve) => {
+    let payload = {};
+    axios.get(`/api/story`, {params}).then(res => {
+      let languages = res.data.storyInfo.languages;
+
+      let storyInfo = res.data.storyInfo;
+
+      languages.forEach(aLanguage => {
+        let data = res.data[`${aLanguage}`];
+        if (data.grammarOrder && data.grammarList) {
+          let {grammarOrder, grammarList} = data;
+          let order = grammarOrder.order;
+          grammarList.sort(function (a, b) {
+            return order.indexOf(a._id) - order.indexOf(b._id);
+          });
+
+          let grammarSearch = {};
+          grammarList.forEach(aGrammar => {
+            if (
+              aGrammar.sentence.indexOf("(") >= -1 ||
+              aGrammar.korean.indexOf(")") >= -1
+            ) {
+              let temp = aGrammar.sentence;
+              let cleanGrammar = temp.replace("(", "\\(");
+              cleanGrammar = cleanGrammar.replace(")", "\\)");
+              grammarSearch[cleanGrammar] = aGrammar;
+            } else {
+              grammarSearch[aGrammar.sentence] = aGrammar;
+            }
+
+            res.data[`${aLanguage}`] = {
+              grammarOrder,
+              grammarList,
+              grammarSearch
+            };
+
+            payload = res.data;
+          });
         }
-        else{
-          grammarSearch[aGrammar.sentence] = aGrammar;
-        }
-      })
+        let query = queryStringify.stringify(storyInfo)
+        axios.get(`/api/story/storyText?${query}`)
+          .then(res => {
+            let languages = Object.keys(res.data);
+            languages.forEach(aLanguage => {
+              let rawKoreanText = "";
+              let storyText = res.data[aLanguage];
 
-      payload["storyInfo"] = res.data.storyInfo
-      payload["storyTitle"] = storyTitle
-      payload["grammarList"] = res.data.grammar
-      payload["grammarSearch"] = grammarSearch
-      return res.data.storyInfo
-    }).then( storyInfo => {
-      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
-        let storyTextKorn = res.data.storyTextKorn;
-        let storyTextEngl = res.data.storyTextEngl
+              storyText.forEach(aText => {
+                rawKoreanText = rawKoreanText.concat(aText.text);
+              });
+              payload[aLanguage] = {
+                ...payload[aLanguage],
+                storyText: res.data[aLanguage],
+                rawKoreanText
+              };
+            });
+            dispatch({
+              type: INIT_EDIT_GRAMMAR,
+              payload
+            });
+            resolve(payload);
+          });
+      });
+    });
+  });
+};
 
-        storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-
-        let rawKoreanText = ""
-        storyTextKorn.map(aText => {
-          rawKoreanText = rawKoreanText.concat(aText.text)
-        })
-        payload["storyTextEngl"] = storyTextEngl;
-        payload["storyTextKorn"] = storyTextKorn;
-
-        payload["selectedGrammar"] = null
-        payload["userHighlightedText"] = null
-        payload['rawKoreanText'] = rawKoreanText
-        payload['highlightTextUpdating'] = false
-        payload['editGrammarUpdating'] = false
-
-        dispatch({
-          type: INIT_EDIT_GRAMMAR,
-          payload
-        })
-      })
-    })
-    resolve(payload);
-  })
-}
-
-export const changeSelectedMenu =(headerName) => dispatch => {
-  let payload ={
+export const changeSelectedMenu = headerName => dispatch => {
+  let payload = {
     headerName
-  }
+  };
   dispatch({
     type: CHANGE_INSTRUCTOR_SELECTED_MENU,
     payload
-  })
-}
+  });
+};
 
-export const addToStory = (text,storyInfo) => dispatch => {
+export const addToStory = (text, storyInfo) => dispatch => {
   let params = {
     text,
     storyInfo
-  }
+  };
 
-  axios.put('/api/instructor/addStory', params).then( res => {
+  axios.put("/api/instructor/addStory", params).then(res => {
     let message;
-    console.log(res.data)
-    if(res.data.status === 200){
-      message = "Story added Successfully!"
+    if (res.data.status === 200) {
+      message = "Story added Successfully!";
+    } else {
+      message = "Error adding story. Story not saved.";
     }
-    else{
-      message = "Error adding story. Story not saved."
-    }
-
     dispatch({
       type: ADD_NEW_STORY,
       payload: {
         status: res.data.status === 200,
         message
       }
-    })
-  })
+    });
+  });
+};
 
-
-
-
-
-}
-
-export const addStoryInfo = (storyInfo) => dispatch => {
+export const addStoryInfo = storyInfo => dispatch => {
   let params = {
     storyInfo
-  }
-  axios.put('/api/instructor/addStoryInfo', params).then(res => {
+  };
+  axios.put("/api/instructor/addStoryInfo", params).then((resp) => {
     dispatch({
       type: ADD_STORY_INFO,
-      payload: null
-    })
-  })
+      payload: resp.data.storyInfo
+    });
+  });
+};
 
-
-}
-
-export const handleStatusClose =() => dispatch => {
+export const handleStatusClose = () => dispatch => {
   dispatch({
     type: CLOSE_STATUS_BAR,
     payload: null
-  })
-}
+  });
+};
 
-export const getVocabulary = (storyInfo) => dispatch => {
+export const getVocabulary = storyInfo => dispatch => {
   const params = {
-    responseType: 'application/json',
-    classType: 'all',
+    responseType: "application/json",
+    classType: "all",
     storyInfo
-  }
-  return new Promise((resolve, reject) => {
+  };
+  return new Promise((resolve) => {
     axios.get("/api/instructor/getVocab", {params}).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_VOCAB,
         payload: res.data
-      })
-      resolve(res.data)
-    })
-  })
-}
+      });
+      resolve(res.data);
+    });
+  });
+};
 
-export const getGrammar = (storyInfo) => dispatch => {
+export const getGrammar = storyInfo => dispatch => {
   const params = {
-    responseType: 'application/json',
-    classType: 'all',
+    responseType: "application/json",
+    classType: "all",
     storyInfo
-  }
-  return new Promise((resolve, reject) => {
+  };
+  return new Promise((resolve) => {
     axios.get("/api/instructor/getGrammar", {params}).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_GRAMMAR,
         payload: res.data
-      })
-      resolve(res.data)
-    })
-  })
-}
-
-export const getStoryInfo = storyName => dispatch => {
-
-
-}
+      });
+      resolve(res.data);
+    });
+  });
+};
 
 export const updateSelectedVocab = selectedVocab => dispatch => {
   dispatch({
     type: INSTRUCTOR_EDIT_VOCAB_UPDATE_SELECTED_VOCAB,
     payload: selectedVocab
-  })
-}
+  });
+};
 
-export const updateSelectedGrammar = (selectedGrammar) => dispatch => {
+export const updateSelectedGrammar = selectedGrammar => dispatch => {
   dispatch({
     type: INSTRUCTOR_EDIT_GRAMMAR_UPDATE_SELECTED_GRAMMAR,
     payload: selectedGrammar
-  })
-}
+  });
+};
 
-export const clearSelectedVocab= () => dispatch => {
+export const clearSelectedVocab = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_EDIT_VOCAB_CLEAR_SELECTED_VOCAB,
     payload: null
-  })
-}
+  });
+};
 
 export const updateUserHighlightedText = (text, component) => dispatch => {
   let payload = {
     text,
     component
-  }
+  };
   dispatch({
     type: INSTRUCTOR_UPDATE_HIGHLIGHTED_TEXT,
     payload
-  })
-}
+  });
+};
 
-export const startUpdatingHighlightedText = (component) => dispatch => {
+export const startUpdatingHighlightedText = component => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_HIGHLIGHTED_TEXT,
     payload: component
-  })
-}
+  });
+};
 
 export const updateVocab = (vocab, storyTitle) => dispatch => {
   let params = {
     vocab,
     storyTitle
-  }
-  axios.put('/api/instructor/editVocab/updateVocab', params).then(resp => {
-    console.log(resp.data)
+  };
+  axios.put("/api/instructor/editVocab/updateVocab", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_VOCAB,
-      payload: resp.data.vocab
-    })
-  })
-}
+      payload: {
+        vocab: resp.data.vocab,
+        message: "Successfully Updated Vocabulary"
+      }
+    });
+  });
+};
 
 export const updateGrammar = (grammar, storyTitle) => dispatch => {
   let params = {
     grammar,
     storyTitle
-  }
-
-  axios.put('/api/instructor/editGrammar/updateGrammar', params).then(resp => {
+  };
+  axios.put("/api/instructor/editGrammar/updateGrammar", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_GRAMMAR,
-      payload: resp.data.grammar
-    })
-  })
-
-
-}
+      payload: {
+        grammar: resp.data.grammar,
+        message: "Successfully Updated Grammar"
+      }
+    });
+  });
+};
 
 export const startUpdatingEditVocab = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_EDIT_VOCAB,
     payload: null
-  })
-}
+  });
+};
 
 export const startUpdatingEditGrammar = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_START_UPDATING_EDIT_GRAMMAR,
     payload: null
-  })
-}
+  });
+};
 
 export const addNewVocabulary = (vocab, storyTitle) => dispatch => {
-  let params ={
-    vocab,
-    storyTitle
-  }
-  axios.put('/api/instructor/editVocab/addVocab', params).then(resp => {
-    dispatch({
-      type: INSTRUCTOR_ADD_NEW_VOCAB,
-      payload: resp.data.vocab
-    })
-
-
-  })
-}
-
-export const addNewGrammar = (grammar, storyTitle) => dispatch => {
-  let params ={
-    grammar,
-    storyTitle
-  }
-  axios.put('/api/instructor/editGrammar/addGrammar', params).then(resp => {
-    dispatch({
-      type: INSTRUCTOR_ADD_NEW_GRAMMAR,
-      payload: resp.data.grammar
-    })
-
-
-  })
-}
-
-export const deleteVocab =(vocab, storyTitle) => dispatch => {
   let params = {
     vocab,
     storyTitle
-  }
+  };
+  axios.put("/api/instructor/editVocab/addVocab", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_ADD_NEW_VOCAB,
+      payload: resp.data.vocab
+    });
+  });
+};
+
+export const addNewGrammar = (grammar, storyTitle) => dispatch => {
+  let params = {
+    grammar,
+    storyTitle
+  };
+  axios.put("/api/instructor/editGrammar/addGrammar", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_ADD_NEW_GRAMMAR,
+      payload: resp.data.grammar
+    });
+  });
+};
+
+export const deleteVocab = (vocab, storyTitle) => dispatch => {
+  let params = {
+    vocab,
+    storyTitle
+  };
   axios.put("/api/instructor/editVocab/deleteVocab", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_DELETE_VOCAB,
       payload: resp.data.vocab
-    })
+    });
+  });
+};
 
-  })
-
-}
-
-export const deleteGrammar =(grammar, storyTitle) => dispatch => {
+export const deleteGrammar = (grammar, storyTitle) => dispatch => {
   let params = {
     grammar,
     storyTitle
-  }
+  };
   axios.put("/api/instructor/editGrammar/deleteGrammar", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_DELETE_GRAMMAR,
       payload: resp.data.grammar
-    })
+    });
+  });
+};
 
-  })
-
-}
-
-export const cancelSelection =() => dispatch => {
+export const cancelSelection = () => dispatch => {
   dispatch({
     type: INSTRUCTOR_CANCEL_SELECTION,
     payload: null
+  });
+};
+
+export const getMiddleKoreanGram = () => dispatch => {
+  axios.get("/api/instructor/midkr-gram").then(resp => {
+    if (resp.data.status === "200OK") {
+      dispatch({
+        type: INSTRUCTOR_GET_MIDDLE_KR_GRAM,
+        payload: resp.data.middleKRGram
+      });
+    }
+  });
+};
+
+export const addMiddleKoreanGrammar = grammar => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_ADD_MIDKR_GRAMMAR,
+    payload: {
+      grammar,
+      status: "Grammar added successfully"
+    }
   })
+};
+
+export const updateMiddleKrGrammarEntry = grammarList => dispatch => {
+  dispatch({
+    type: INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
+    payload: grammarList
+  })
+}
+
+export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
+  let params = {
+    data: {
+      deleteGrammar
+    }
+  }
+  axios.delete("/api/instructor/midkr-gram", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
+      payload: resp.data.grammarList
+    })
+  })
+}
+
+export const saveMidKrGram = (grammarList, deletedGrammarList) => dispatch => {
+  let params = {
+    grammarList,
+    deletedGrammarList
+  }
+  axios.put("/api/instructor/midkr-gram", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_SAVE_MIDKR_GRAM,
+      payload: resp.data.grammarList
+    })
+  })
+}
+
+export const getMiddleKoreanVocab = () => dispatch => {
+  axios.get("/api/instructor/midkr-voc").then(resp => {
+    if (resp.data.status === "200OK") {
+      dispatch({
+        type: INSTRUCTOR_GET_MIDKR_VOCAB,
+        payload: resp.data.vocabList
+      });
+    }
+  });
+};
+
+export const addMiddleKoreanVocab = vocab => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_ADD_MIDKR_VOCAB,
+    payload: {
+      vocab,
+      status: "Grammar added successfully"
+    }
+  })
+}
+
+export const updateMiddleKoreanVocabEntry = vocabList => dispatch => {
+  dispatch({
+    type: INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
+    payload: vocabList
+  })
+}
+
+export const saveMidKrVocab = (vocabList, deletedVocabList) => dispatch => {
+  let params = {
+    vocabList,
+    deletedVocabList
+  }
+  axios.put("/api/instructor/midkr-voc", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_SAVE_MIDKR_VOCAB,
+      payload: resp.data.vocabList
+    })
+  })
+}
+
+export const deleteMiddleKrVocabEntr = deleteVocab => dispatch => {
+  let params = {
+    data: {deleteVocab}
+  }
+  axios.delete("/api/instructor/midkr-voc", params).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_DELETE_MIDKR_VOCAB,
+      payload: resp.data.vocabList
+    })
+  })
+}
+
+export const closeAddMidKrStatus = () => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS,
+    payload: null
+  })
+}
+
+export const getClasses = (instructorId) => dispatch => {
+  axios.get(`/api/instructor/classes?instructorId=${instructorId}`).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_GET_CLASSES,
+      payload: resp.data.result
+    })
+  })
+}
+
+export const addNewClass = (newClass, history) => dispatch => {
+  axios.post('/api/instructor/classes', {newClass}).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_NEW_CLASS,
+      payload: resp.data.newClass
+    })
+    history.push('/instructor/classes')
+  })
+}
+
+export const updateClass = (newClass, history) => dispatch => {
+  axios.put('/api/instructor/classes', {newClass}).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_UPDATE_CLASS,
+      payload: resp.data.newClass
+    })
+    history.push('/instructor/classes')
+  })
+}
+
+export const uploadDroppedFiles = (acceptedFiles, user) => dispatch => {
+  acceptedFiles.forEach((file) => {
+    axios.post("/api/files/signedUrl", {
+      fileName: file.name,
+      fileType: file.type,
+    }).then(resp => {
+      const returnData = resp.data.data.returnData;
+      const signedRequest = returnData.signedRequest;
+      const url = returnData.url;
+
+      const reader = new FileReader()
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => console.log('file reading has failed')
+      reader.onload = () => {
+        let token = axios.defaults.headers.common["Authorization"]
+        delete axios.defaults.headers.common["Authorization"]
+        const options = {
+          headers: {
+            'Content-Type': file.type
+          }
+        }
+        axios.put(signedRequest, file, options)
+          .then(result => {
+            axios.defaults.headers.common["Authorization"] = token
+            axios.put("/api/files/file", {
+              instructorId: user.id,
+              fileName: file.name,
+              fileType: file.type,
+              url,
+              createdDate: new Date(),
+              modifiedDate: new Date()
+            }).then(resp => {
+              console.log(resp)
+              if (resp.data.value) {
+                dispatch({
+                  type: INSTRUCTOR_ADD_FILE,
+                  payload: resp.data.value
+                })
+              }
+
+            }).catch(error => console.log(error))
+          })
+          .catch(error => {
+            console.log(error)
+            axios.defaults.headers.common["Authorization"] = token
+          })
+
+      }
+      reader.readAsArrayBuffer(file)
+
+    })
+  })
+}
+
+export const getFiles = (user) => dispatch => {
+  axios.get(`/api/files?userId=${user.id}`).then(resp => {
+    dispatch({
+      type: INSTRUCTOR_GET_FILES,
+      payload: resp.data
+    })
+  })
+
 }

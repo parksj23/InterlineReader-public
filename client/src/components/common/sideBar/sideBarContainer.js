@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import './styles/sideBar.css';
 import {updateDrawerSize} from '../../../actions/dashboard';
 import SideBar from './components/sideBar';
-import {toggleSideBar, getSavedWords, handleStatusClose, toggleDrawer} from "../../../actions/sideBar";
+import {toggleSideBar, getSavedWords, handleStatusClose, toggleDrawer, getListOfSavedWords} from "../../../actions/sideBar";
 
 class SideBarContainer extends Component {
 
@@ -19,7 +19,6 @@ class SideBarContainer extends Component {
   }
 
   componentWillMount(){
-   
   }
 
   componentDidMount(){
@@ -32,6 +31,7 @@ class SideBarContainer extends Component {
         left: this.props.sideBar.isSideBarOpen
       })
     }
+
   }
 
 
@@ -81,7 +81,7 @@ class SideBarContainer extends Component {
                  handleAddVocab={this.handleAddVocab}
                  story={this.props.story}
                  openStatus={this.props.openStatus}
-                 statusMessage={this.props.statusMessage}
+                 statusMessage={this.props.sideBar.statusMessage}
                  handleStatusClose={this.props.handleStatusClose}
                  handleTabChange={this.handleTabChange.bind(this)}
                  storyInfo={this.props.stories.storyInfo}
@@ -97,11 +97,11 @@ const mapStateToProps = state => (
     stories: state.stories,
     userId: state.auth.user.id,
     openStatus: state.stories.openStatus,
-    statusMessage: state.stories.statusMessage,
-    sideBar: state.sideBar
+    sideBar: state.sideBar,
+    auth: state.auth
   }
 )
 
-const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose, updateDrawerSize, toggleDrawer})
+const mapDispatchToProps = ({toggleSideBar, getSavedWords, handleStatusClose, updateDrawerSize, toggleDrawer, getListOfSavedWords})
 
 export default connect(mapStateToProps, mapDispatchToProps)(SideBarContainer);

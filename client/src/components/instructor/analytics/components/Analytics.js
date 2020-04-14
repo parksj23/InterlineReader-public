@@ -15,9 +15,6 @@ const styles = {
 
 class Dashboard extends Component {
 
-  componentWillMount(){
-  }
-
   renderClassStories = (name, aStory, classIndex) => {
     const {classes} = this.props
     return (
@@ -32,16 +29,9 @@ class Dashboard extends Component {
       </Grid>
     )
   }
-
-
-
   render() {
     const sections = this.props.dashboard.storyList;
-    let classNames;
-    if(sections) classNames = Object.keys(sections)
-    console.log(sections)
     return (
-
       <div className="dashboard">
         <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
           <ClipLoader
@@ -62,7 +52,6 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  //deleteAccount: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };
 

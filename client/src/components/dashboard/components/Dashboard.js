@@ -20,7 +20,7 @@ class Dashboard extends Component {
   componentWillMount(){
   }
 
-  renderClassStories = (name, aStory, classIndex) => {
+  renderClassStories = (aStory, classIndex) => {
     const {classes} = this.props
     return (
       <Grid
@@ -28,7 +28,7 @@ class Dashboard extends Component {
           item: classes.cardContainer
         }}
         item xs={4} key={'story_badge' + classIndex}>
-       { <Link to={`/story/${name}/${aStory.storyName}`} className={'card-link'}>
+       { <Link to={`/story?storyTitle=${aStory.storyName}`} className={'card-link'}>
           <ClassCard story={aStory} style={{width: "100%"}}/>
         </Link>}
       </Grid>
@@ -38,11 +38,8 @@ class Dashboard extends Component {
 
 
   render() {
-    const sections = this.props.dashboard.storyList;
-    console.log(sections)
-    let classNames;
+    const {storyList} = this.props
     return (
-
       <div className="dashboard">
         <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
           <ClipLoader
@@ -53,9 +50,9 @@ class Dashboard extends Component {
           />
         </div>
         { <Grid container >
-          {sections ? sections.map((aClass,classIndex) => {
-            return this.renderClassStories("Stories", aClass, classIndex)
-          }) : null}
+          {storyList ? storyList.map((aClass,classIndex) => {
+            return this.renderClassStories(aClass, classIndex)
+          }): null}
         </Grid> }
       </div>  
     );

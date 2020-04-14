@@ -1,3 +1,7 @@
+.root {
+    z-index: 1000;
+}
+
 .root.success {
     background-color: #42b35b;
 }

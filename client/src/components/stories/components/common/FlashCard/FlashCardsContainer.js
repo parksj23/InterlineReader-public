@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux'
 import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
@@ -25,7 +24,7 @@ class FlashCardContainer extends Component {
   componentDidMount(){
     let {vocabList} = this.props;
     let vocabQueue = []
-    vocabList.map(aVocab => {
+    vocabList.forEach(function(aVocab) {
       let options = []
       let question = {
         vocabKor: aVocab.korean,
@@ -34,9 +33,9 @@ class FlashCardContainer extends Component {
       }
       options.push(question)
       for(let i = 0; i < 3 ; i++){
-        let index = Math.floor((Math.random()* +this.props.vocabList.length))
+        let index = Math.floor((Math.random()* +vocabList.length))
         while(vocabList[index] === aVocab){
-          index = Math.floor((Math.random()* +this.props.vocabList.length))
+          index = Math.floor((Math.random()* +vocabList.length))
         }
         options.push({
           vocabKor: vocabList[index].korean,
@@ -132,8 +131,5 @@ class FlashCardContainer extends Component {
   }
 }
 
-const mapStatetoProps = state => ({
-  vocabList: state.stories.vocab
-})
 
-export default connect(mapStatetoProps) (FlashCardContainer)
+export default FlashCardContainer

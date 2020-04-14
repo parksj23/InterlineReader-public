@@ -5,7 +5,7 @@ import {Route, Switch } from 'react-router-dom';
 import EditVocab from './EditVocab';
 
 
-import{ getVocabulary, getStoryInfo, resetEditVocab } from "../../../actions/instructor";
+import{ getVocabulary, resetEditVocab } from "../../../actions/instructor";
 
 import Grid from '@material-ui/core/Grid'
 
@@ -23,7 +23,7 @@ class EditVocabularyContainer extends Component {
   }
 
   renderStoryList = () => {
-    return <StoryList storyList={this.props.instructor.storyList} component={'editVocab'}/>
+    return <StoryList storyList={this.props.storyLists.allStories} component={'editVocab'}/>
   }
 
   render() {
@@ -43,12 +43,12 @@ class EditVocabularyContainer extends Component {
 }
 
 const mapStateToProps = state => ({
-  instructor: state.instructor
+  instructor: state.instructor,
+  storyLists: state.app.storyLists
 });
 
 const mapDispatchToProps = ({
   getVocabulary,
-  getStoryInfo,
   resetEditVocab
 })
 

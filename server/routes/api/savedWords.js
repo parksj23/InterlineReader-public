@@ -10,20 +10,16 @@ const savedWords = require('../../controllers/savedWords');
 // 	passport.authenticate('jwt', { session: false }, story.getCurrentStory)
 // );
 
+
+
 router.get('/', (req, res, next) => {
-  let params =  {
-    userId: req.query.userId,
-    story: req.query.story,
-    savedWords: req.query.savedWords,
-    storyClass: req.query.storyClass
-  }
-  savedWords.getSavedWords(params, res, next)
+  savedWords.getSavedWords(req.query, res, next)
 });
 
 router.get('/getListOfSavedWords', (req, res, next) => {
   let params =  {
     userId: req.query.userId,
-    story: req.query.story
+    storyId: req.query.storyId
   }
   savedWords.getListOfSavedWords(params, res, next)
 });

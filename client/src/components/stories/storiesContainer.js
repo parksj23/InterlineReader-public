@@ -17,6 +17,7 @@ import SideBar from '../common/sideBar/sideBarContainer'
 import { ClipLoader } from 'react-spinners';
 import Modal from '@material-ui/core/Modal'
 import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
+import OriginalText from './components/common/OriginalText/OriginalTextContainer';
 
 class StoriesContainer extends Component {
   constructor(props){
@@ -25,42 +26,44 @@ class StoriesContainer extends Component {
     this.state = {
       applicationDescription: "",
       storyTitle: "",
-      language: "korean",
+      selectedLanguage: "MODKR",
       storyInfo: null,
-      showFlashCardModal: false,
-      isSpeedDialOpen: false
+      showModal: false,
+      isSpeedDialOpen: false,
+      modalComponent: "",
     }
     this.handleTranslate.bind(this)
     this.handleFlashCards.bind(this)
+    this.handleOriginalText.bind(this)
   }
 
 
 
   componentWillMount() {
     this.props.enableLoading();
-    let pathname = this.props.location.pathname;
-    let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
+    const search = this.props.location.search;
+
+    const params = new URLSearchParams(search);
+    const storyTitle = params.get('storyTitle'); // bar
+    console.log(this.props.location)
     this.setState({
       storyTitle,
     })
   }
 
   componentDidMount() {
-    let pathname = this.props.location.pathname;
-    let paths = this.props.location.pathname.split("/")
-    let storyClass = paths.includes("410A") ? "410A" : "410B";
-    let storyTitle = pathname.slice(pathname.lastIndexOf("/") + 1).trim();
-
     let iframes = [].slice.apply(document.querySelectorAll('iframe'));
     for (let anIframe of iframes) {
       if (anIframe.src.startsWith("https://hypothes.is")) {
         anIframe.src = anIframe.src.split("&")[0]
       }
     }
-      this.props.initStory(storyTitle, storyClass).then(resp => {
-        this.props.getListOfSavedWords(this.props.userId, storyTitle).then(resp => {
+    let storyInfo;
+      this.props.initStory(this.state.storyTitle).then(resp => {
+        storyInfo = resp.storyInfo
+        this.props.getListOfSavedWords(this.props.userId, storyInfo._id).then(resp => {
           this.props.enableSideBarButton();
-          this.props.getSavedWords(this.props.userId, storyTitle, this.props.stories.vocabList.vocabList, storyClass).then(resp => {
+          this.props.getSavedWords(this.props.userId, storyInfo._id, resp.savedVocabIds, this.props.stories.selectedLanguage).then(resp => {
             this.props.disableLoading();
           })
         })
@@ -68,9 +71,8 @@ class StoriesContainer extends Component {
   }
 
   handleTranslate = (language) => {
-    console.log(language)
     this.setState({
-      language: language,
+      selectedLanguage: language,
       isSpeedDialOpen: false
     })
   }
@@ -89,14 +91,24 @@ class StoriesContainer extends Component {
 
   handleFlashCards = () => {
     this.setState({
-      showFlashCardModal: true,
-      isSpeedDialOpen: false
+      showModal: true,
+      isSpeedDialOpen: false,
+      modalComponent: 'FlashCards'
     })
   }
 
+  handleOriginalText = () => {
+    this.setState({
+      showModal: true,
+      isSpeedDialOpen: false,
+      modalComponent: 'OriginalText'
+    })
+  }
+
+
   handleClose = () => {
     this.setState({
-      showFlashCardModal: false
+      showModal: false
     })
   }
 
@@ -108,11 +120,11 @@ class StoriesContainer extends Component {
         anIframe.src = anIframe.src.split("&")[0]
       }
     }
-    let vocabList = this.props.stories.vocabList.vocabList;
     let params = {
       userId: this.props.userId,
-      storyTitle: this.props.stories.storyTitle,
-      vocabList
+      storyId: this.props.stories.storyInfo._id,
+      savedVocabIds: this.props.sideBar.savedVocabIds,
+      savedWords: this.props.sideBar.savedWords
     }
     this.props.updateSavedWords(params);
     if(this.props.analytics.sessions.length > 0)this.props.endGrammarSearchSession();
@@ -123,7 +135,7 @@ class StoriesContainer extends Component {
   }
 
   render() {
-    const {sideBar, stories, vocab} = this.props;
+    const {sideBar, stories} = this.props;
     let iframes = [].slice.apply(document.querySelectorAll('iframe'));
     for (let anIframe of iframes) {
       if (anIframe.src.startsWith("https://hypothes.is")) {
@@ -132,54 +144,56 @@ class StoriesContainer extends Component {
       }
     }
     let text;
-    let searchWord = null;
+    let vocab;
+    let grammar;
+    let searchWord = this.props.searchVocab.highlightedWord;
     let title = "";
     let author = "";
-    if (this.state.language === 'korean') {
-      text = stories.storyTextKorn
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleKorn;
-        author = stories.storyInfo.authorKorn
-      }
-    }
-    else if(this.state.language === 'english') {
-      text = stories.storyTextEngl
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleEng
-        author = stories.storyInfo.authorRom
-      }
-    }
-    else if(this.state.language === 'middleKorean') {
-      text = stories.storyTextMidKorn
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleKorn
-        author = stories.storyInfo.authorKorn
-      }
-    }
-    else {
-      text = stories.storyTextHanmun
-      searchWord = vocab.highlightedWord
-      if (stories.storyInfo) {
-        title = stories.storyInfo.titleKorn
-        author = stories.storyInfo.authorKorn
-      }
-    }
 
-
-
+    if(stories[this.state.selectedLanguage]) {
+      text = stories[this.state.selectedLanguage].storyText
+      vocab = stories[this.state.selectedLanguage].vocabList;
+      grammar = stories[this.state.selectedLanguage].grammarList;
+      switch(this.state.selectedLanguage){
+        case 'MODKR':
+          title = stories.storyInfo.titleKorn;
+          author = stories.storyInfo.authorKorn;
+          break;
+        case 'ENGSH':
+          title = stories.storyInfo.titleEng
+          author = stories.storyInfo.authorRom
+          break;
+        case 'MIDKR':
+          title = stories.storyInfo.titleKorn
+          author = stories.storyInfo.authorKorn
+          break;
+        default:
+          text = stories.storyTextHanmun
+          title = stories.storyInfo.titleKorn
+          author = stories.storyInfo.authorKorn
+      }
+    }
+    let modalComponent = null
+    switch(this.state.modalComponent){
+      case 'FlashCards':
+        modalComponent = <FlashCardsContainer vocabList={this.props.stories.MODKR.vocabList}/>
+        break;
+      case 'OriginalText':
+        modalComponent = <OriginalText url={this.props.stories.storyInfo.pdfUrl} selectedPages={this.props.stories.storyInfo.pagesSelected}/>
+        break;
+      default:
+    }
 
     return (
-      <div className={'story-container'}>
+      stories[this.state.selectedLanguage] ?
+        <div className={'story-container'}>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.state.showFlashCardModal}
+          open={this.state.showModal}
           onClose={this.handleClose}
         >
-          <FlashCardsContainer/>
+          {modalComponent}
         </Modal>
 
         <div style={{top: "40vh", left: "45%", position: "absolute", display: "flex"}}>
@@ -192,18 +206,24 @@ class StoriesContainer extends Component {
         </div>
         <div>
           {this.props.stories.storyInfo ?
-            <SideBar vocab={stories.vocab} grammar={stories.grammar} story={stories.storyTitle}
+            <SideBar vocab={vocab} grammar={grammar} story={stories.storyTitle}
                      onResize={this.onResize}/> : null
           }
         </div>
         {stories.storyInfo ?
-          <Story title={title} author={author} text={text} searchWord={searchWord} sideBar={sideBar} language={this.state.language} isSpeedDialOpen={this.state.isSpeedDialOpen}
+          <Story title={title}
+                 author={author}
+                 text={text}
+                 searchWord={searchWord}
+                 sideBar={sideBar}
+                 language={this.state.selectedLanguage}
                  handleTranslate={this.handleTranslate}
                  handleFlashCards={this.handleFlashCards}
-                 handleOpenSpeedDial={this.handleOpenSpeedDial}
-                 handleCloseSpeedDial={this.handleCloseSpeedDial}
+                 handleOriginalText={this.handleOriginalText}
+                 stories={this.props.stories}
           /> : null}
       </div>
+        : null
     );
   }
 }
@@ -211,11 +231,11 @@ class StoriesContainer extends Component {
 const mapStateToProps = state => (
   {
     stories: state.stories,
-    vocab: state.vocab,
     userId: state.auth.user.id,
     sideBar: state.sideBar,
     dashboard: state.dashboard,
-    analytics: state.analytics
+    analytics: state.analytics,
+    searchVocab: state.vocab
   }
 )
 

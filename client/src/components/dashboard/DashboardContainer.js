@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { sendEmailVerification } from '../../actions/auth';
+import { Route, Switch } from 'react-router-dom';
 import {dashboardInit, disableSideBarButton, enableDashboardLoading, disableDashboardLoading} from '../../actions/dashboard';
 import Dashboard from './components/Dashboard';
+import MiddleKoreanContainer from './components/MiddleKoreanContainer';
+import ModernKoreanContainer from './components/ModernKoreanContainer';
+
 
 
 class DashboardContainer extends Component {
@@ -15,24 +18,37 @@ class DashboardContainer extends Component {
     });
     this.props.disableSideBarButton();
   }
+  renderDashboard = (className) => {
+    return (
+      <Dashboard dashboard={this.props.dashboard}
+                 storyList={
+                   className === "ALL" ? this.props.storyLists.allStories :
+                     className === "KORN410" ? this.props.storyLists.korn410Stories:
+                       this.props.storyLists.korn420Stories
+                 }
+                 auth={this.props.auth}/>
+    )
+  }
 
   render() {
     return (
       <div className="dashboardContainer">
-        <Dashboard dashboard={this.props.dashboard} auth={this.props.auth}/>
+          <Switch>
+            <Route exact path="/dashboard" component={() => this.renderDashboard("ALL")} />
+            <Route path='/dashboard/middleKorean' component={MiddleKoreanContainer} />
+            <Route path='/dashboard/modernKorean' component={ModernKoreanContainer} />
+            <Route path='/dashboard/KORN410' component={() => this.renderDashboard("KORN410")} />
+            <Route path='/dashboard/KORN420' component={() => this.renderDashboard("KORN420")} />
+          </Switch>
       </div>
     );
   }
 }
 
-Dashboard.propTypes = {
-  //deleteAccount: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-};
-
 const mapStateToProps = state => ({
   auth: state.auth,
-  dashboard: state.dashboard
+  dashboard: state.dashboard,
+  storyLists: state.app.storyLists
 });
 
 const mapDispatchToProps = ({

@@ -5,27 +5,13 @@ import Analytics from './components/Analytics'
 import OverviewContainer from './components/OverviewContainer/OverviewContainer'
 import {Route, Switch } from 'react-router-dom';
 
-
-
-
-
-
 class AnalyticsContainer extends Component {
-
-  componentWillMount(){
-  }
 
   renderAnalytics = () => {
     return (<Analytics dashboard={this.props.dashboard} auth={this.props.auth}/>)
 }
 
   render(){
-    const sections = this.props.dashboard.storyList;
-    let classNames;
-    let pathnames = this.props.location.pathname.split("/");
-
-
-    if(sections) classNames = Object.keys(sections)
     return (
         <div className={'instructor-analytics-container'}>
             <Grid container style={{marginTop: "12px"}}>

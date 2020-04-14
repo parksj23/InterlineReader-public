@@ -1,15 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -91,7 +84,7 @@ class InstructorMenu extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes} = this.props;
 
     return (
       <div className={classes.root}>
@@ -105,13 +98,13 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">bar_chart</i></ListItemIcon>
               <ListItemText primary={'Analytics'} />
             </ListItem>
-            <ListItem button key={'stories'}
+            <ListItem button key={'classes'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/stories');
-                        this.props.changeSelectedMenu("Stories")
+                        this.props.history.push('/instructor/classes');
+                        this.props.changeSelectedMenu("Classes")
                       }}>
               <ListItemIcon><i className="material-icons">library_books</i></ListItemIcon>
-              <ListItemText primary={'Stories'} />
+              <ListItemText primary={'Classes'} />
             </ListItem>
             <ListItem button key={'addStory'}
                       onClick={()=> {
@@ -136,6 +129,30 @@ class InstructorMenu extends React.Component {
                       }}>
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Edit Grammar'} />
+            </ListItem>
+            <ListItem button key={'addMidKRGram'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/addMidKRGram');
+                        this.props.changeSelectedMenu("Add Middle Korean")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Add Middle Korean Grammar'} />
+            </ListItem>
+            <ListItem button key={'addMidKRVoc'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/addMidKRVocab');
+                        this.props.changeSelectedMenu("Add Middle Korean Vocabulary")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Add Middle Korean Vocabulary'} />
+            </ListItem>
+            <ListItem button key={'files'}
+                      onClick={()=> {
+                        this.props.history.push('/instructor/files');
+                        this.props.changeSelectedMenu("Files")
+                      }}>
+              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemText primary={'Files'} />
             </ListItem>
           </List>
       </div>

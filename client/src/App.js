@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from './actions/auth';
-import { addGrammarSearch, endGrammarSearchSession } from './actions/analytics'
+import { endGrammarSearchSession } from './actions/analytics'
 import setAuthToken from './utils/setAuthToken';
-
 
 import { Provider } from 'react-redux';
 import store from './store';
 import axios from 'axios'
-import Grid from '@material-ui/core/Grid';
-
-
 import PrivateRoute from './components/common/PrivateRoute';
 
 import Navbar from './components/layout/Navbar';
@@ -28,9 +24,6 @@ import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
-
-
-
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";
@@ -57,7 +50,6 @@ class App extends Component {
 
   }
   componentWillUnmount() {
-    console.log(store)
     window.removeEventListener("beforeunload", this.unload);
   }
 
@@ -65,7 +57,6 @@ class App extends Component {
 
     let state = store.getState()
     let { analytics, auth } = state;
-    let promiseArr = []
     let date = new Date();
 
     if (analytics.sessions.length > 0) endGrammarSearchSession();
@@ -124,7 +115,7 @@ class App extends Component {
               <Route path="/cleaner" component={Cleaner} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
-                <PrivateRoute path='/story/:class/:storyName' component={Story} />
+                <PrivateRoute path='/story' component={Story} />
                 <PrivateRoute path='/instructor' component={Instructor} />
               </Switch>
 

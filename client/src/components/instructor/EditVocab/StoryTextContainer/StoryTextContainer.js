@@ -3,7 +3,7 @@ import Paper from '@material-ui/core/Paper';
 import StoryText from './StoryText';
 
 const StoryTextContainer = (props) => {
-  const {text, searchWord} = props;
+  const {searchWord} = props;
   return(
     <div>
       <Paper elevation={1}>

@@ -21,19 +21,21 @@ class EditGrammar extends Component {
   }
 
   componentWillMount() {
-    let {storyName} = this.props.match.params
+    let urlSegments = this.props.history.location.pathname.split("/")
+    let storyName = urlSegments[urlSegments.length-1]
     this.props.initEditGrammar(storyName);
   }
 
   componentWillUnmount(){
   }
   handleSelectHighlight = (selectedText) => {
-    let selectedGrammarInfo = this.props.editGrammar.grammarSearch[selectedText]
+    let selectedGrammarInfo = this.props.editGrammar.MODKR.grammarSearch[selectedText]
     this.props.updateSelectedGrammar(selectedGrammarInfo);
   }
 
   render() {
-    let grammarSearch = this.props.editGrammar && this.props.editGrammar.grammarSearch ? new RegExp(Object.keys(this.props.editGrammar.grammarSearch).join("|"), "g") : null;
+
+    let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch ? new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|"), "g") : null;
     let {editGrammar} = this.props
     return (
       <div className="edit-Vocabulary">
@@ -41,7 +43,7 @@ class EditGrammar extends Component {
           <Grid item xs={6}>{
             this.props.editGrammar && this.props.editGrammar.storyInfo && !this.props.editGrammar.highlightTextUpdating  ?
               <StoryTextContainer
-                text={this.props.editGrammar.storyTextKorn}
+                text={this.props.editGrammar.MODKR.storyText}
                 searchWord={grammarSearch}
                 handleSelectHighlight={this.handleSelectHighlight}
                 updateUserHighlightedText={this.props.updateUserHighlightedText}
@@ -56,9 +58,10 @@ class EditGrammar extends Component {
                 <EditGrammarFormContainer
                   grammarList={this.props.editGrammar.grammarList}
                   selectedGrammar={editGrammar.selectedGrammar}
-                  storyTitle={this.props.editGrammar.storyTitle}
+                  storyTitle={this.props.editGrammar.storyInfo.storyName}
                   updateGrammar={this.props.updateGrammar}
                   deleteGrammar={this.props.deleteGrammar}
+                  statusMessage={this.props.editGrammar.ediGrammarStatusMessage}
 
                 /> : null
             }
@@ -67,7 +70,7 @@ class EditGrammar extends Component {
                 <NewGrammarFormContainer
                   editGrammar={this.props.editGrammar}
                   userHighlightedText={this.props.editGrammar.userHighlightedText}
-                  storyTitle={this.props.editGrammar.storyTitle}
+                  storyTitle={this.props.editGrammar.storyInfo.storyName}
                 /> : null
             }
           </Grid>
@@ -79,7 +82,8 @@ class EditGrammar extends Component {
 }
 
 const mapStateToProps = state => ({
-  editGrammar: state.instructor.editGrammar
+  editGrammar: state.instructor.editGrammar,
+  stories: state.stories
 });
 
 const mapDispatchToProps = ({

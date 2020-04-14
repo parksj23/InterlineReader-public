@@ -58,8 +58,7 @@ export const initOverview = (className,storyName) => dispatch => {
   overViewPromiseArray.push(axios.get(`/api/analytics/mostFrequentGrammar?className=${className}&storyName=${storyName}&date=${date.getTime()}`))
   let overView = []
   Promise.all(overViewPromiseArray).then(resp => {
-    resp.map(aResult => {
-      console.log(aResult)
+    resp.forEach(function(aResult) {
       overView.push(...aResult.data)
     })
     dispatch({

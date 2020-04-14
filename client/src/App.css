@@ -61,3 +61,8 @@ footer {
 .mainContainer {
   width: 100%;
 }
+
+.annotator-frame .annotator-bucket-bar {
+  background-color: transparent!important;
+}
+

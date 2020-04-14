@@ -4,7 +4,6 @@
   TODO: Cleanly unmount componeont
 */
 
-
 import React, {Component} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Divider from "@material-ui/core/Divider";
@@ -16,49 +15,40 @@ import {EditorState, convertToRaw} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import ReactHtmlParser from 'react-html-parser';
-import {addToStory, addStoryInfo,handleStatusClose} from '../../../../actions/instructor';
+import {addToStory, addStoryInfo, handleStatusClose} from '../../../../actions/instructor';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import MenuItem from '@material-ui/core/MenuItem';
 import StatusMessage from '../../../common/statusMessage/statusMessage';
-
+import '../style/StorySection.css'
 
 const styleProperties = {
   "text-align": "textAlign",
   "font-family": "fontFamily",
   "font-size": "fontSize"
+}
 
-
+const editorStyleMap = {
+  "fontFamily:": "source-han-serif-korean"
 }
 
 const languages = [
   {
-    value: "modernKorean",
+    value: "MODKR",
     label: "Modern Korean"
   },
   {
-    value: "english",
+    value: "ENGSH",
     label: "English"
   },
   {
-    value: "middleKorean",
+    value: "MIDKR",
     label: "Middle Korean"
   },
   {
     value: "hanmun",
     label: "Hanmun Original"
-  }
-]
-
-const classes = [
-  {
-    value: "410A",
-    label: "410A"
-  },
-  {
-    value: "410B",
-    label: "410B"
   }
 ]
 
@@ -69,65 +59,44 @@ class StorySection extends Component {
     this.state = {
       editorState: EditorState.createEmpty(),
       tabValue: 0,
-      storyForm: {
-        authorKorn: "",
-        authorRom: "",
-        titleKorn: "",
-        titleRom: "",
-        titleEng: "",
-        storyName: "",
-        class: "410B",
-        language: "korean",
-      },
       previewLabel: "korean",
       openStatus: false,
       statusMessage: "",
-      saveDisabled: true
+      saveDisabled: true,
+      language: "ENGSH"
     };
+
   }
 
   onEditorStateChange = (editorState) => {
-    console.log(editorState)
     this.setState({
-      editorState,
-      saveDisabled: this.checkDisabled(this.state.storyForm) || !editorState.getCurrentContent().hasText()
+      editorState
     });
   };
 
-  checkDisabled = (storyForm) => {
-    let keys = Object.keys(storyForm)
-    for(let aKey of keys){
-      if (!storyForm[aKey]){
-        return true
-      }
-    }
-    return false
-  }
-
   handleOnSave = () => {
     let stringToSave = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent())).replace("<br/>", "\\n");
+    let storyForm = this.props.storyForm;
     let textToSend = [];
     let order_id = 1;
     let styleArr = []
 
     stringToSave = stringToSave.replace(/&lt;/ugi, "<").replace(/&gt;/ugi, ">").replace(/(&amp;|&*nbsp;)/ugi, "");
 
-    console.log(stringToSave)
-
-    if(this.doesStoryExist(this.state.storyForm).length > 0){
+    if (this.doesStoryExist(this.state.storyForm).length > 0) {
       //Warning
       console.log("Story Exist!")
     }
     else {
-      if(this.state.storyForm.language !== "english") {
+      if (this.state.language !== "ENGSH") {
         stringToSave = stringToSave.replace(/(<br>)/ugi, "\\n")
-
         // Grab all text within <p> tags
-        stringToSave.replace(/<(.+?)\/p>/ugi, (match, ci) => {
+        stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           //Grab all styles within tag
           ci.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
+            console.log(c2)
             let styles = c2.split(";")
-            styles.map(aStyleProp => {
+            styles.forEach(function (aStyleProp) {
               let propArr = aStyleProp.split(':');
               let prop = {};
               prop[styleProperties[propArr[0]]] = propArr[1]
@@ -136,50 +105,40 @@ class StorySection extends Component {
           })
           let cleanLine = [];
           //grab all text within <span> tag
-          console.log(ci)
-          ci = ci.replace(/((p (.+?));">|(<span (.+?));">)|(<\/span>)|(<\/p>)|(<$)/ugi, "");
-            //(match, c3) => {
-            //console.log(c3)
-            //c3 = c3.replace("\\n", "")
-            //cleanLine.push(c3)
-          //})
-          cleanLine.push(ci)
-          //console.log(cleanLine)
-
-
+          ci.replace(/<span\b[^>]*>(.+?)<\/span>/ugi, (match, c3) => {
+            cleanLine.push(c3.replace("\\n", ""))
+          })
 
           let styleObj = styleArr.reduce(function (acc, x) {
             for (var key in x) acc[key] = x[key];
             return acc;
           }, {});
 
-          console.log(styleObj)
-
           //join array with spaces, then capture all segments where a whtiespace from joining is not needed
           // such as a comma or period
-          let finalText = cleanLine.filter(segment => segment !== " ").join(" ").replace(/([\u3131-\uD79D]\s[^\w\s|^\u3131-\uD79D])/ugi, (match, c4)=>{
+          let finalText = cleanLine.filter(segment => segment !== " ").join(" ").replace(/([\u3131-\uD79D]\s[^\w\s|^\u3131-\uD79D])/ugi, (match, c4) => {
             return c4.replace(/\s+/, "").trim()
           })
-
           // handle whitespace around quotations
-          finalText = finalText.replace(/[\s]"\s/ugi, (match, c5)=>{
+          finalText = finalText.replace(/[\s]"\s/ugi, (match, c5) => {
             return ' "'
           })
 
           textToSend.push({
             text: finalText,
             order_id,
-            style: styleObj
+            style: styleObj,
+            language: this.state.language
           })
           order_id++
         })
       }
-      else{
+      else {
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
           let lineSegment = {};
           match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
             let styles = c2.split(";")
-            styles.map(aStyleProp => {
+            styles.forEach(function (aStyleProp) {
               let propArr = aStyleProp.split(':');
               let prop = {};
               prop[styleProperties[propArr[0]]] = propArr[1]
@@ -196,12 +155,22 @@ class StorySection extends Component {
             lineSegment["order_id"] = order_id
             order_id++
           })
-          textToSend.push(lineSegment)
+          textToSend.push({
+            ...lineSegment,
+            language: this.state.language
+          })
         })
       }
+      let createdDate = new Date()
+      storyForm["instructor"] = this.props.auth.user.id
+      storyForm.language = this.state.language;
+      storyForm.createdDate = createdDate;
+      storyForm.lastUpdated = createdDate
 
-      //this.props.addToStory(textToSend, this.state.storyForm);
-      //this.props.addStoryInfo(this.state.storyForm);
+      if(textToSend.length > 0) {
+        this.props.addStoryInfo(storyForm);
+        this.props.addToStory(textToSend, storyForm);
+      }
     }
   }
 
@@ -210,30 +179,20 @@ class StorySection extends Component {
   }
 
   handleOnChangeField = name => event => {
-    let storyForm = this.state.storyForm;
     let language = null;
-    storyForm[name] = event.target.value
-    if(name ==="titleRom") {
-      storyForm["storyName"] = event.target.value.toLowerCase();
-    }
-
-    else if (name ==="language"){
-      language = languages.find(function(aLanguage,index){
-        return(aLanguage.value === event.target.value)
-      })
-    }
+    language = languages.find(function (aLanguage, index) {
+      return (aLanguage.value === event.target.value)
+    })
     this.setState({
-      storyForm,
-      saveDisabled: this.checkDisabled(storyForm) || this.state.editorState.getCurrentContent().hasText(),
-      language: language && language.label
-
+      language: language && language.value,
+      editorState: EditorState.createEmpty()
     })
   }
 
   doesStoryExist = (storyInfo) => {
     let {instructor} = this.props;
-    if(!instructor.storyList) return false;
-    return instructor.storyList.filter(aStory =>{
+    if (!instructor.storyLists) return false;
+    return instructor.storyLists.filter(aStory => {
       return (
         storyInfo === aStory
       )
@@ -249,221 +208,164 @@ class StorySection extends Component {
   render() {
     const {editorState, tabValue} = this.state;
     return (
-      <div className={'addStoryContainer'}>
-          <Grid container>
-            <Grid item xs={2}/>
-            <Grid item xs={8}>
-              <Tabs
-                value={this.state.tabValue}
-                onChange={this.handleOnChangeTab}
-                indicatorColor="primary"
-                textColor="primary"
-                centered
-              >
-                <Tab label="EDIT"/>
-                <Tab label="PREVIEW"/>
-              </Tabs>
-            </Grid>
-            <Grid item xs={2}>
-              <Button key={this.props.key} className={'story-section-save-button'} style={{float: "right"}} onClick={() => this.handleOnSave()} disabled={this.state.saveDisabled}>Save</Button>
-            </Grid>
+      <div style={{marginBottom: "56px", width: "100%"}}>
+        <Grid container>
+          <Grid item xs={2}/>
+          <Grid item xs={8}>
+            <Tabs
+              value={this.state.tabValue}
+              onChange={this.handleOnChangeTab}
+              indicatorColor="primary"
+              textColor="primary"
+              centered
+            >
+              <Tab label="EDIT"/>
+              <Tab label="PREVIEW"/>
+            </Tabs>
           </Grid>
           {
-            tabValue === 0 ?
-              <Grid container>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-name"
-                    label="Story Title"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("titleKorn")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-author"
-                    label="Story Author"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("authorKorn")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    id="story-class"
-                    select
-                    label="Class"
-                    value={this.state.storyForm.class}
-                    onChange={this.handleOnChangeField('class')}
-                    margin="normal"
-                    style={{width: "100%"}}
-                  >
-                    {classes.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-name-romanization"
-                    label="Story Name (Romanization)"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("titleRom")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-author-romanize"
-                    label="Story Author (Romanization)"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("authorRom")}
-                    style={{whiteSpace: "noWrap"}}
-                  />
-                </Grid>
-                <Grid item xs={1}/>
-                <Grid item xs={3}>
-                  <TextField
-                    required
-                    id="story-title-english"
-                    label="Story Title (English)"
-                    margin="normal"
-                    variant="outlined"
-                    onChange={this.handleOnChangeField("titleEng")}
-                    style={{whiteSpace: "noWrap"}}
-
-                  />
-                </Grid>
-                <Grid item xs={3}>
-                  <TextField
-                    id="story-language"
-                    select
-                    label="Language"
-                    value={this.state.storyForm.language}
-                    onChange={this.handleOnChangeField('language')}
-                    helperText="Please select your Language"
-                    margin="normal"
-                  >
-                    {languages.map(option => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-
-                <Grid item xs={12}>
-                  <div>
-                    {
-                      this.state.storyForm.language === "english" ?
-                        <Editor
-                          editorState={editorState}
-                          wrapperClassName="editor-wrapper"
-                          editorClassName="editor-editor"
-                          onEditorStateChange={this.onEditorStateChange}
-                          localization={{
-                            locale: 'ko',
-                          }}
-                          handlePastedText={(text, html, editorState) => {
-                            return false
-                          }} /> : this.state.storyForm.language === "modernKorean" ?
-                        <Editor
-                          editorState={editorState}
-                          wrapperClassName="editor-wrapper"
-                          editorClassName="editor-editor"
-                          onEditorStateChange={this.onEditorStateChange}
-                          localization={{
-                            locale: 'ko',
-                          }}
-                          toolbar={{
-                            fontFamily: {
-                              options: ['NanumBarunGothic YetHangul','Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-                              className: undefined,
-                              component: undefined,
-                              dropdownClassName: undefined,
-                            }
-                          }}
-                        /> : this.state.storyForm.language === "middleKorean" ?
-                          <Editor
-                            editorState={editorState}
-                            wrapperClassName="editor-wrapper"
-                            editorClassName="editor-editor"
-                            onEditorStateChange={this.onEditorStateChange}
-                            localization={{
-                              locale: 'ko',
-                            }}
-                            toolbar={{
-                              fontFamily: {
-                                options: ['NanumBarunGothic YetHangul'],
-                                className: undefined,
-                                component: undefined,
-                                dropdownClassName: undefined,
-                              }
-                            }}
-                          /> :
-                          <Editor
-                            editorState={editorState}
-                            wrapperClassName="editor-wrapper"
-                            editorClassName="editor-editor"
-                            onEditorStateChange={this.onEditorStateChange}
-                            localization={{
-                              locale: 'ko',
-                            }}
-                            toolbar={{
-                              fontFamily: {
-                                options: ['NanumBarunGothic YetHangul','Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
-                                className: undefined,
-                                component: undefined,
-                                dropdownClassName: undefined,
-                              }
-                            }}
-                          />
-
-                    }
-                  </div>
-                </Grid>
-              </Grid> :
-              <div style={{overflow: 'scroll'}}>
-                <div>
-                  <h2>Preview {this.state.language  ? " - " + this.state.language : ""}</h2>
-                </div>
-                <Divider/>
-                <div style={{overflow: 'hidden'}}>
-                  <div className={'preview-container'}>
-                    {ReactHtmlParser(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
-                  </div>
-                </div>
-              </div>
-
+            <Grid item xs={2}>
+              <Button key={this.props.key}
+                      className={'story-section-save-button'}
+                      style={{float: "right"}}
+                      onClick={() => this.handleOnSave()}
+                      disabled={false}>Save
+              </Button>
+            </Grid>
           }
-        <StatusMessage status="success" open={this.props.instructor.addNewStory} message={this.props.instructor.addNewStoryMessage} handleClose={this.props.handleStatusClose}/>
+        </Grid>
+        {tabValue === 0 ?
+          <Grid container>
+            <Grid item xs={3}>
+              <TextField
+                id="story-language"
+                select
+                label="Language"
+                value={this.state.language}
+                onChange={this.handleOnChangeField('language')}
+                helperText="Please select your Language"
+                margin="normal"
+              >
+                {languages.map(option => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <Grid item xs={12}/>
+            </Grid>
+            <Grid item xs={9}>
+              <div style={{
+                display: "flex",
+                "textAlign": "center",
+                justifyContent: "center",
+                height: "100%",
+                flexDirection: "column"
+              }}>
+                <p style={{color: "red", fontSize: "1em", fontWeight: "bold"}}>For Modern Korean stories please make sure
+                  "Source-Han-Serif-Korean" is selected from the font family BEFORE Copy & Pasting or typing text</p>
+              </div>
+            </Grid>
+            <div>
+              {
+                this.state.language === "ENGSH" ?
+                  <Editor
+                    editorState={editorState}
+                    wrapperClassName="editor-wrapper"
+                    editorClassName="editor-editor"
+                    onEditorStateChange={this.onEditorStateChange}
+                    localization={{
+                      locale: 'ko',
+                    }}
+                    handlePastedText={(text, html, editorState) => {
+                      return false
+                    }}/> : this.state.language === "MODKR" ?
+                  <Editor
+                    editorState={editorState}
+                    wrapperClassName="editor-wrapper wrapper-editor-modkr"
+                    editorClassName="editor-editor"
+                    customStyleMap={editorStyleMap}
+                    onEditorStateChange={this.onEditorStateChange}
+                    localization={{
+                      locale: 'ko',
+                    }}
+                    toolbar={{
+                      fontFamily: {
+                        options: ['source-han-serif-korean', 'NanumBarunGothic YetHangul'],
+                        className: undefined,
+                        component: undefined,
+                        dropdownClassName: undefined,
+                      }
+
+                    }}
+                    editorStyle={{
+                      fontFamily: "source-han-serif-korean !important"
+                    }}
+                  /> : this.state.language === "MIDKR" ?
+                    <Editor
+                      editorState={editorState}
+                      wrapperClassName="editor-wrapper"
+                      editorClassName="editor-editor"
+                      onEditorStateChange={this.onEditorStateChange}
+                      localization={{
+                        locale: 'ko',
+                      }}
+                      toolbar={{
+                        fontFamily: {
+                          options: ['NanumBarunGothic YetHangul'],
+                          className: undefined,
+                          component: undefined,
+                          dropdownClassName: undefined,
+                        }
+                      }}
+                    /> :
+                    <Editor
+                      editorState={editorState}
+                      wrapperClassName="editor-wrapper"
+                      editorClassName="editor-editor"
+                      onEditorStateChange={this.onEditorStateChange}
+                      localization={{
+                        locale: 'ko',
+                      }}
+                      toolbar={{
+                        fontFamily: {
+                          options: ['NanumBarunGothic YetHangul', 'Arial', 'Georgia', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
+                          className: undefined,
+                          component: undefined,
+                          dropdownClassName: undefined,
+                        }
+                      }}
+                    />
+
+
+              }
+            </div>
+          </Grid> :
+          <Grid container>
+            <Grid item xs={12}>
+              <div style={{overflow: 'scroll', width: "100%"}}>
+                <h2>Preview {this.state.language ? " - " + this.state.language : ""}</h2>
+                <Divider style={{color: "black", height: "8px"}}/>
+              </div>
+            </Grid>
+            <div className={'preview-container'} style={{overflow: 'hidden', minWidth: "100%"}}>
+              {ReactHtmlParser(draftToHtml(convertToRaw(editorState.getCurrentContent())))}
+            </div>
+          </Grid>
+        }
+        <StatusMessage status="success"
+                       open={this.props.instructor.addNewStory}
+                       message={this.props.instructor.addNewStoryMessage}
+                       handleClose={this.props.handleStatusClose}/>
+        <Divider/>
       </div>
-
-
     )
-
-
   }
-
-
 }
 
 const mapStateToProps = state => ({
-  instructor: state.instructor
+  instructor: state.instructor,
+  auth: state.auth
 });
 
 const mapDispatchToProps = ({

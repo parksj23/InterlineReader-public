@@ -16,7 +16,7 @@ class ClassList extends Component {
   componentWillMount(){
   }
 
-  renderClassStories = (name, aStory, classIndex) => {
+  renderClassStories = (aStory, classIndex) => {
     const {classes} = this.props
     return (
       <Grid
@@ -24,7 +24,7 @@ class ClassList extends Component {
           item: classes.cardContainer
         }}
         item xs={4} key={'story_badge' + classIndex}>
-        { <Link to={`/instructor/${this.props.component}/${aStory.storyName}`} className={'card-link'}>
+       { <Link to={`/instructor/${this.props.component}/${aStory.storyName}`} className={'card-link'}>
           <ClassCard story={aStory} style={{width: "100%"}}/>
         </Link>}
       </Grid>
@@ -40,7 +40,7 @@ class ClassList extends Component {
       <div className="class-list">
         { <Grid container >
           {storyList ? storyList.map((aClass,classIndex) => {
-            return this.renderClassStories("Stories", aClass, classIndex)
+            return this.renderClassStories(aClass, classIndex)
           }) : null}
         </Grid> }
       </div>

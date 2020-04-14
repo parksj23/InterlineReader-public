@@ -10,7 +10,8 @@
   "scripts": {
     "install-all": "npm install --prefix server && npm install --prefix client",
     "start": "npm install -g babel-cli && npm run server",
-    "server": "cd server && babel-node server.js",
+    "server": "cd server && NODE_ENV=production babel-node server.js",
+    "devServer": "cd server && NODE_ENV=development babel-node server.js",
     "client": "cd client && node scripts/start.js",
     "dev": "npm run server && npm run client",
     "heroku-postbuild": "cd server && npm install && cd ../client && npm install && npm run build"
@@ -27,7 +28,8 @@
   "homepage": "https://github.com/armaandh/interlinereader#readme",
   "dependencies": {
     "@openfonts/nanum-gothic_korean": "^1.44.0",
-    "fuzzy-search": "^3.0.2",
-    "react-floating-button-menu": "^2.0.6"
+    "aws-sdk": "^2.650.0",
+    "dotenv": "^8.2.0",
+    "fuzzy-search": "^3.0.2"
   }
 }

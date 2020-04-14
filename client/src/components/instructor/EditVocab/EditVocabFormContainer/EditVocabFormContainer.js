@@ -4,8 +4,8 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-
-import {startUpdatingEditVocab} from '../../../../actions/instructor';
+import StatusMessage from '../../../common/statusMessage/statusMessage';
+import {handleStatusClose, startUpdatingEditVocab} from '../../../../actions/instructor';
 
 class EditVocabFormContainer extends Component {
   constructor(props) {
@@ -61,8 +61,7 @@ class EditVocabFormContainer extends Component {
       _id: this.state._id,
       korean: this.state.korean,
       hanja: this.state.hanja,
-      english: this.state.english,
-      order_id: this.state.order_id
+      english: this.state.english
     }
     this.props.updateVocab(newVocab, this.props.storyTitle);
   }
@@ -151,26 +150,6 @@ class EditVocabFormContainer extends Component {
             </Grid>
           </Grid>
           <Grid item xs={1}/>
-          <Grid item xs={12}>
-            <Grid container>
-              <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                <span className={'edit-vocab-form-label'}>Order</span>
-              </Grid>
-              <Grid item xs={8}>
-                <TextField
-                  required
-                  id="order_id"
-                  margin="normal"
-                  onChange={this.handleOnChangeField("order_id")}
-                  style={{whiteSpace: "noWrap"}}
-                  value={this.state.order_id}
-                  fullWidth
-                  multiline
-                  disabled
-                />
-              </Grid>
-            </Grid>
-          </Grid>
           <Grid item xs={7}/>
           <Grid item xs={5}>
             <Button style={{marginRight: '4px'}}
@@ -187,6 +166,10 @@ class EditVocabFormContainer extends Component {
             >Delete</Button>
           </Grid>
         </Grid>
+        <StatusMessage status="success"
+                       open={this.props.statusMessage}
+                       message={this.props.statusMessage}
+                       handleClose={this.props.handleStatusClose}/>
       </div>
     );
   }
@@ -195,7 +178,8 @@ class EditVocabFormContainer extends Component {
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = ({
-  startUpdatingEditVocab
+  startUpdatingEditVocab,
+  handleStatusClose
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditVocabFormContainer);

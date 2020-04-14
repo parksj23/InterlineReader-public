@@ -1,4 +1,5 @@
 import axios from "axios";
+import queryStringify from 'querystringify';
 import {
   GET_VOCAB_AND_GRAMMAR_SUCCESS,
   INIT_STORY,
@@ -15,7 +16,7 @@ export const getVocabforStory = (story, storyInfo) => dispatch => {
     classType: 'all',
     storyInfo
   }
-  axios.get(`/api/stories/${storyInfo.class}/${story}`, {params}).then(res => {
+  axios.get(`/api/story/${storyInfo.class}/${story}`, {params}).then(res => {
     res.data.vocab.sort(function (a, b) {
       return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)
     })
@@ -31,47 +32,52 @@ export const getVocabforStory = (story, storyInfo) => dispatch => {
   })
 }
 
-export const initStory = (storyTitle, className) => dispatch => {
+export const initStory = (storyTitle) => dispatch => {
   let params = {
     responseType: 'application/json',
-    storyTitle,
-    className
+    storyTitle
   }
-
   let payload = {};
-
   return new Promise( (resolve,reject) => {
-    axios.get(`/api/stories/${storyTitle}`, {params}).then(res => {
-      res.data.vocab.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
-      res.data.grammar.sort(function (a, b) {return (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0)})
-      payload["storyInfo"] = res.data.storyInfo
-      payload["storyTitle"] = storyTitle
-      payload["vocab"] = res.data.vocab
-      payload["grammar"] = res.data.grammar
+    axios.get(`/api/story`, {params}).then(res => {
+      let languages = res.data.storyInfo.languages
+      languages.forEach(function(aLanguage) {
+        let data = res.data[`${aLanguage}`]
+        if(data.vocabOrder && data.vocabList){
+          let {vocabOrder, vocabList} = data
+          let order = vocabOrder.order
+          vocabList.sort(function(a,b){
+            return order.indexOf(a._id) - order.indexOf(b._id);
+          })
+        }
+        if(data.grammarOrder && data.grammarList){
+          let {grammarOrder, grammarList} = data
+          let order = grammarOrder.order
+          grammarList.sort(function(a,b){
+            return order.indexOf(a._id) - order.indexOf(b._id);
+          })
+        }
+      })
+      payload = res.data
       return res.data.storyInfo
     }).then( storyInfo => {
-      axios.get(`/api/stories/${storyTitle}/storyText`, {params: {storyInfo}}).then(res => {
-        let storyTextKorn = res.data.storyTextKorn;
-        let storyTextEngl = res.data.storyTextEngl
-        let storyTextMidKorean = res.data.storyTextMidKorean
-        let storyTextHanmun = res.data.storyTextHanmun
-        storyTextKorn = storyTextKorn.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextEngl = storyTextEngl.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextMidKorean = storyTextMidKorean.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-        storyTextHanmun = storyTextHanmun.sort((a,b) => (a.order_id < b.order_id ? -1 : (a.order_id > b.order_id) ? 1 : 0))
-
-        payload["storyTextEngl"] = storyTextEngl;
-        payload["storyTextKorn"] = storyTextKorn;
-        payload["storyTextMidKorean"] = storyTextMidKorean
-        payload["storyTextHanmun"] = storyTextHanmun
+      let query = queryStringify.stringify(storyInfo)
+      axios.get(`/api/story/storyText?${query}`).then(res => {
+        let languages = Object.keys(res.data)
+        languages.forEach(function(aLanguage) {
+          payload[aLanguage] = {
+            ...payload[aLanguage],
+            storyText: res.data[aLanguage]
+          }
+        })
 
         dispatch({
           type: INIT_STORY,
           payload
         })
+        resolve(payload);
       })
     })
-    resolve(payload);
   })
 }
 

@@ -41,7 +41,9 @@ class GrammarSearch extends Component {
   }
 
   componentWillUnmount() {
-      if(this.props.analytics.sessions.length > 0) this.props.endGrammarSearch;
+      if(this.props.analytics.sessions.length > 0) {
+        this.props.endGrammarSearch();
+      }
   }
 
   renderVocab = vocabWord => {

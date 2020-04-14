@@ -13,10 +13,8 @@ class VocabContainer extends Component {
   }
 
   handleAddSavedWord =(vocabWord) => {
-    let vocabList = this.props.stories.vocabList.vocabList;
-    if(vocabList.indexOf(vocabWord.order_id) === -1){
+    if(this.props.sideBar.savedVocabIds.indexOf(vocabWord._id) === -1){
       this.props.addSavedWord(vocabWord)
-      this.props.addToSavedWords(vocabWord)
       this.props.addWord('success');
     }
   }
@@ -26,17 +24,6 @@ class VocabContainer extends Component {
 
   }
 
-  componentWillUnmount(){
-    if(this.props.stories.vocabList) {
-      let vocabList = this.props.stories.vocabList.vocabList;
-      let params = {
-        userId: this.props.userId,
-        storyTitle: this.props.stories.storyTitle,
-        vocabList
-      }
-      //this.props.updateSavedWords(params);
-    }
-  }
   render(){
     return(
         <div className={"vocab-Container"}>
@@ -54,7 +41,8 @@ class VocabContainer extends Component {
 const mapStateToProps = state => (
   {
     stories: state.stories,
-    userId: state.auth.user.id
+    userId: state.auth.user.id,
+    sideBar: state.sideBar
   }
 )
 

@@ -46,12 +46,11 @@ class NewVocabFormContainer extends Component {
 
   findOrderId() {
     let order_id = null
-    let text = this.props.editVocab.rawKoreanText
-    let vocabWords = Object.keys(this.props.editVocab.vocabSearch)
+    let text = this.props.editVocab.MODKR.rawKoreanText
+    let vocabWords = Object.keys(this.props.editVocab.MODKR.vocabSearch)
     let startIndex = 0;
     let startText = vocabWords[startIndex]
     let textSegment = text.substring(0,text.indexOf(startText));
-    console.log(textSegment)
 
     if (textSegment.includes(this.props.editVocab.userHighlightedText)) {return 0}
 
@@ -78,7 +77,6 @@ class NewVocabFormContainer extends Component {
 
   addNewVocab = () => {
     let newVocab = {
-      _id: this.state._id,
       korean: this.state.korean,
       hanja: this.state.hanja,
       english: this.state.english,
