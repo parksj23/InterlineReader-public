@@ -85,7 +85,6 @@ class StorySection extends Component {
 
     if (this.doesStoryExist(this.state.storyForm).length > 0) {
       //Warning
-      console.log("Story Exist!")
     }
     else {
       if (this.state.language !== "ENGSH") {

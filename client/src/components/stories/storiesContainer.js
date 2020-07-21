@@ -45,7 +45,6 @@ class StoriesContainer extends Component {
 
     const params = new URLSearchParams(search);
     const storyTitle = params.get('storyTitle'); // bar
-    console.log(this.props.location)
     this.setState({
       storyTitle,
     })

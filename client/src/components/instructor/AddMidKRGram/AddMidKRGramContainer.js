@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AddMidKRGram from "./AddMidKRGram";
 import StatusMessage from '../../common/statusMessage/statusMessage';
-import {getMiddleKoreanGram, handleStatusClose} from "../../../actions/instructor";
+import {setInstructorLoading, getMiddleKoreanGram, handleStatusClose} from "../../../actions/instructor";
 
 
 class AddMidKRGramContainer extends Component {
@@ -17,8 +17,9 @@ class AddMidKRGramContainer extends Component {
     this.props.getMiddleKoreanGram();
   }
 
-  componentWillUnmount() {
+  componentDidMount() {
   }
+
   render() {
     return (
       <div>
@@ -37,6 +38,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
+  setInstructorLoading,
   getMiddleKoreanGram ,
   handleStatusClose
 };

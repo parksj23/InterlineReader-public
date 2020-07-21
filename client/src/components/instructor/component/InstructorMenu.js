@@ -90,7 +90,7 @@ class InstructorMenu extends React.Component {
       <div className={classes.root}>
         <CssBaseline />
           <List>
-            <ListItem button key={'analytics'}
+            <ListItem button key={'analytics'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/analytics');
                         this.props.changeSelectedMenu("Analytics")
@@ -98,7 +98,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">bar_chart</i></ListItemIcon>
               <ListItemText primary={'Analytics'} />
             </ListItem>
-            <ListItem button key={'classes'}
+            <ListItem button key={'classes'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/classes');
                         this.props.changeSelectedMenu("Classes")
@@ -106,7 +106,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">library_books</i></ListItemIcon>
               <ListItemText primary={'Classes'} />
             </ListItem>
-            <ListItem button key={'addStory'}
+            <ListItem button key={'addStory'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/addStory')
                         this.props.changeSelectedMenu("Add Story")
@@ -114,7 +114,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
               <ListItemText primary={'Add Story'} />
             </ListItem>
-            <ListItem button key={'editVocab'}
+            <ListItem button key={'editVocab'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/editVocab');
                         this.props.changeSelectedMenu("Edit Vocabulary")
@@ -122,7 +122,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">sort_by_alpha</i></ListItemIcon>
               <ListItemText primary={'Edit Vocabulary'} />
             </ListItem>
-            <ListItem button key={'editGrammar'}
+            <ListItem button key={'editGrammar'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/editGrammar');
                         this.props.changeSelectedMenu("Edit Grammar")
@@ -130,7 +130,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Edit Grammar'} />
             </ListItem>
-            <ListItem button key={'addMidKRGram'}
+            <ListItem button key={'addMidKRGram'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/addMidKRGram');
                         this.props.changeSelectedMenu("Add Middle Korean")
@@ -138,7 +138,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Add Middle Korean Grammar'} />
             </ListItem>
-            <ListItem button key={'addMidKRVoc'}
+            <ListItem button key={'addMidKRVoc'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/addMidKRVocab');
                         this.props.changeSelectedMenu("Add Middle Korean Vocabulary")
@@ -146,7 +146,7 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Add Middle Korean Vocabulary'} />
             </ListItem>
-            <ListItem button key={'files'}
+            <ListItem button key={'files'} disabled={this.props.isLoading}
                       onClick={()=> {
                         this.props.history.push('/instructor/files');
                         this.props.changeSelectedMenu("Files")

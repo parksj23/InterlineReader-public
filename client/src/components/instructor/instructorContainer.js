@@ -53,6 +53,7 @@ class InstructorContainer extends Component {
                   <InstructorMenu
                     history={this.props.history}
                     changeSelectedMenu={this.props.changeSelectedMenu}
+                    isLoading={this.props.isLoading}
                   />
                   <Grid/>
                 </Grid>
@@ -102,7 +103,8 @@ class InstructorContainer extends Component {
 const mapStateToProps = state => ({
   selected: state.instructor.selectedMenu,
   headerName: state.instructor.headerName,
-  storyList: state.app.storyList
+  storyList: state.app.storyList,
+  isLoading: state.instructor.isLoading
 });
 
 const mapDispatchToProps = {

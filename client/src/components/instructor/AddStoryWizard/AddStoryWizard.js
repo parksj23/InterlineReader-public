@@ -59,7 +59,6 @@ class AddStoryWizard extends Component {
   }
   
   onEditorStateChange = (editorState) => {
-    console.log(editorState)
     this.setState({
       editorState,
       saveDisabled: this.checkDisabled(this.state.storyForm) || !editorState.getCurrentContent().hasText()

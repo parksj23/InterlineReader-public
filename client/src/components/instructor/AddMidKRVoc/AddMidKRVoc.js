@@ -10,6 +10,7 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
+import randomstring from 'randomstring';
 
 import {
   saveMidKrVocab, addMiddleKoreanVocab, updateMiddleKoreanVocabEntry, deleteMiddleKrVocabEntr
@@ -56,7 +57,12 @@ class AddMidKRVoc extends Component {
 
   handleAddVocab = () => {
     let vocabToAdd = {
-      ...this.state
+      romStem: this.state.romStem,
+      hankulStem: this.state.hankulStem,
+      here: this.state.here,
+      english: this.state.english,
+      hanja: this.state.hanja,
+      _id: `temp_${randomstring.generate(7)}`
     };
 
     delete vocabToAdd.vocabList
@@ -312,7 +318,7 @@ class AddMidKRVoc extends Component {
               <Grid item xs={12}>
                 <TablePaginationWrapper vocabList={this.props.vocabList}
                                         updateEntry={this.updateEntry}
-                                        deleteMidKRGram={this.deleteEntry}
+                                        deleteMidKRVoc={this.deleteEntry}
                 />
               </Grid>
             </Grid>

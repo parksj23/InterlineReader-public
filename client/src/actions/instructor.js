@@ -1,4 +1,5 @@
 import {
+  INSTRUCTOR_LOADING,
   CHANGE_INSTRUCTOR_SELECTED_MENU,
   ADD_NEW_STORY,
   ADD_STORY_INFO,
@@ -28,6 +29,7 @@ import {
   INSTRUCTOR_GET_MIDDLE_KR_GRAM,
   INSTRUCTOR_ADD_MIDKR_GRAMMAR,
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
+  INSTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_GRAM,
   INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
   INSTRUCTOR_GET_MIDKR_VOCAB,
@@ -44,6 +46,12 @@ import {
 import axios from "axios";
 import queryStringify from "querystringify";
 
+export const setInstructorLoading = (isLoading) => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: isLoading
+  })
+}
 export const initInstructor = storyList => dispatch => {
   const params = {
     responseType: "application/json",
@@ -70,6 +78,10 @@ export const initInstructor = storyList => dispatch => {
 };
 
 export const initEditVocab = storyTitle => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   let params = {
     responseType: "application/json",
     storyTitle
@@ -133,6 +145,10 @@ export const initEditVocab = storyTitle => dispatch => {
               type: INIT_EDIT_VOCAB,
               payload
             });
+            dispatch({
+              type: INSTRUCTOR_LOADING,
+              payload: false
+            })
             resolve(payload);
           });
       });
@@ -159,7 +175,10 @@ export const initEditGrammar = storyTitle => dispatch => {
     responseType: "application/json",
     storyTitle
   };
-
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   return new Promise((resolve) => {
     let payload = {};
     axios.get(`/api/story`, {params}).then(res => {
@@ -220,6 +239,10 @@ export const initEditGrammar = storyTitle => dispatch => {
               type: INIT_EDIT_GRAMMAR,
               payload
             });
+            dispatch({
+              type: INSTRUCTOR_LOADING,
+              payload: false
+            })
             resolve(payload);
           });
       });
@@ -285,12 +308,20 @@ export const getVocabulary = storyInfo => dispatch => {
     classType: "all",
     storyInfo
   };
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   return new Promise((resolve) => {
     axios.get("/api/instructor/getVocab", {params}).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_VOCAB,
         payload: res.data
       });
+      dispatch({
+        type: INSTRUCTOR_LOADING,
+        payload: false
+      })
       resolve(res.data);
     });
   });
@@ -302,12 +333,20 @@ export const getGrammar = storyInfo => dispatch => {
     classType: "all",
     storyInfo
   };
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   return new Promise((resolve) => {
     axios.get("/api/instructor/getGrammar", {params}).then(res => {
       dispatch({
         type: INSTRUCTOR_GET_GRAMMAR,
         payload: res.data
       });
+      dispatch({
+        type: INSTRUCTOR_LOADING,
+        payload: false
+      })
       resolve(res.data);
     });
   });
@@ -357,6 +396,10 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
     vocab,
     storyTitle
   };
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   axios.put("/api/instructor/editVocab/updateVocab", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_VOCAB,
@@ -365,6 +408,10 @@ export const updateVocab = (vocab, storyTitle) => dispatch => {
         message: "Successfully Updated Vocabulary"
       }
     });
+    dispatch({
+      type: INSTRUCTOR_LOADING,
+      payload: false
+    })
   });
 };
 
@@ -373,6 +420,10 @@ export const updateGrammar = (grammar, storyTitle) => dispatch => {
     grammar,
     storyTitle
   };
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   axios.put("/api/instructor/editGrammar/updateGrammar", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_UPDATE_GRAMMAR,
@@ -381,6 +432,10 @@ export const updateGrammar = (grammar, storyTitle) => dispatch => {
         message: "Successfully Updated Grammar"
       }
     });
+    dispatch({
+      type: INSTRUCTOR_LOADING,
+      payload: false
+    })
   });
 };
 
@@ -403,11 +458,19 @@ export const addNewVocabulary = (vocab, storyTitle) => dispatch => {
     vocab,
     storyTitle
   };
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   axios.put("/api/instructor/editVocab/addVocab", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_ADD_NEW_VOCAB,
       payload: resp.data.vocab
     });
+    dispatch({
+      type: INSTRUCTOR_LOADING,
+      payload: false
+    })
   });
 };
 
@@ -485,21 +548,11 @@ export const updateMiddleKrGrammarEntry = grammarList => dispatch => {
   })
 }
 
-export const deleteMiddleKrGrammarEntr = deleteGrammar => dispatch => {
-  let params = {
-    data: {
-      deleteGrammar
-    }
-  }
-  axios.delete("/api/instructor/midkr-gram", params).then(resp => {
-    dispatch({
-      type: INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
-      payload: resp.data.grammarList
-    })
-  })
-}
-
 export const saveMidKrGram = (grammarList, deletedGrammarList) => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   let params = {
     grammarList,
     deletedGrammarList
@@ -508,6 +561,10 @@ export const saveMidKrGram = (grammarList, deletedGrammarList) => dispatch => {
     dispatch({
       type: INSTRUCTOR_SAVE_MIDKR_GRAM,
       payload: resp.data.grammarList
+    })
+    dispatch({
+      type: INSTRUCTOR_LOADING,
+      payload: false
     })
   })
 }
@@ -528,19 +585,23 @@ export const addMiddleKoreanVocab = vocab => dispatch => {
     type: INSTRUCTOR_ADD_MIDKR_VOCAB,
     payload: {
       vocab,
-      status: "Grammar added successfully"
+      status: "Vocab added successfully"
     }
   })
 }
 
 export const updateMiddleKoreanVocabEntry = vocabList => dispatch => {
   dispatch({
-    type: INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
+    type: INSTRUCTOR_UPDATE_MIDKR_VOCAB,
     payload: vocabList
   })
 }
 
 export const saveMidKrVocab = (vocabList, deletedVocabList) => dispatch => {
+  dispatch({
+    type: INSTRUCTOR_LOADING,
+    payload: true
+  })
   let params = {
     vocabList,
     deletedVocabList
@@ -549,6 +610,10 @@ export const saveMidKrVocab = (vocabList, deletedVocabList) => dispatch => {
     dispatch({
       type: INSTRUCTOR_SAVE_MIDKR_VOCAB,
       payload: resp.data.vocabList
+    })
+    dispatch({
+      type: INSTRUCTOR_LOADING,
+      payload: false
     })
   })
 }

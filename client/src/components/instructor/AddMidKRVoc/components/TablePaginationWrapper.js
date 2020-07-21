@@ -11,6 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import TablePaginationActions from "./TablePaginationActions";
 import TableHead from "@material-ui/core/TableHead";
 import EditableTableRow from "./EditableTableRow";
+import randomstring from 'randomstring'
 
 const styles = theme => ({
   root: {
@@ -44,7 +45,7 @@ class TablePaginationWrapper extends React.Component {
 
   componentDidMount() {
     this.setState({
-      rows: this.props.grammarList
+      rows: this.props.vocabList
     });
   }
 
@@ -91,7 +92,7 @@ class TablePaginationWrapper extends React.Component {
                 {rows
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map(row => (
-                    <EditableTableRow row={row} updateEntry={this.props.updateEntry} deleteMidKRGram={this.props.deleteMidKRGram}/>
+                    <EditableTableRow key={`editMidKrRow_${randomstring.generate(7)}`} row={row} updateEntry={this.props.updateEntry} deleteMidKRVoc={this.props.deleteMidKRVoc}/>
                   ))}
                 {emptyRows > 0 && (
                   <TableRow style={{height: 56 * emptyRows}}>

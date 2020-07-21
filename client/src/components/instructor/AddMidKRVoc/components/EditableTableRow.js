@@ -5,6 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
+import randomstring from 'randomstring'
 
 const styles = theme => ({
   root: {
@@ -17,11 +18,17 @@ const styles = theme => ({
 });
 
 class EditableTableRow extends React.Component {
-  state = {
-    isEditable: false,
-    data: {},
-    oldData: {}
-  };
+  constructor() {
+    super();
+    this.state = {
+      isEditable: false,
+      data: {},
+      oldData: {}
+    };
+    this.handleOnChangeField.bind(this)
+    this.handleSave.bind(this)
+    this.handleDeleteEntry.bind(this)
+  }
 
   componentDidMount() {
     this.setState({
@@ -56,6 +63,9 @@ class EditableTableRow extends React.Component {
     });
   }
 
+  componentWillUnmount() {
+  }
+
   handleOnChangeField = name => event => {
     let newEdit = this.state.edit;
     newEdit[name] = event.target.value;
@@ -83,25 +93,23 @@ class EditableTableRow extends React.Component {
   };
 
   handleToggleEdit = () => {
-    let oldData = { ...this.state.data };
-    let edit = oldData;
     this.setState({
       isEditable: !this.state.isEditable,
-      oldData,
-      edit,
-      oldEdit: oldData
+      oldData: { ...this.state.data },
+      edit:  {...this.state.data },
+      oldEdit: { ...this.state.data }
     });
   };
 
   handleDeleteEntry = () => {
-    this.props.deleteMidKRGram(this.state.data)
+    this.props.deleteMidKRVoc(this.state.data)
   }
 
   render() {
     const {row} = this.props;
 
     return !this.state.isEditable ? (
-      <TableRow key={row._id}>
+      <TableRow key={randomstring.generate(7)}>
         <TableCell style={{width: '5%', maxHeight: '56px'}}>
           <div style={{display: "flex"}}>
             <IconButton onClick={this.handleToggleEdit}>
@@ -112,16 +120,16 @@ class EditableTableRow extends React.Component {
             </IconButton>
           </div>
         </TableCell>
-        <TableCell align="right" >{this.props.row.romStem}</TableCell>
-        <TableCell align="right" style={{ fontFamily: "NanumBarunGothic YetHangul" }}>{this.props.row.hankulStem}</TableCell>
-        <TableCell align="right" style={{ fontFamily: "NanumBarunGothic YetHangul" }}>{this.props.row.here}</TableCell>
+        <TableCell align="right" >{this.state.data.romStem}</TableCell>
+        <TableCell align="right" style={{ fontFamily: "NanumBarunGothic YetHangul" }}>{this.state.data.hankulStem}</TableCell>
+        <TableCell align="right" style={{ fontFamily: "NanumBarunGothic YetHangul" }}>{this.state.data.here}</TableCell>
         <TableCell
           align="right"
           style={{ fontFamily: "NanumBarunGothic YetHangul" }}
         >
-          {this.props.row.english}
+          {this.state.data.english}
         </TableCell>
-        <TableCell align="right">{this.props.row.hanja}</TableCell>
+        <TableCell align="right">{this.state.data.hanja}</TableCell>
       </TableRow>
     ) : (
       <TableRow key={row.id} padding="dense">

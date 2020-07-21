@@ -1,4 +1,5 @@
 import {
+  INSTRUCTOR_LOADING,
   CHANGE_INSTRUCTOR_SELECTED_MENU,
   ADD_NEW_STORY,
   GET_STORY_LIST,
@@ -33,7 +34,7 @@ import {
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
   INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
   INSTRUCTOR_ADD_MIDKR_VOCAB,
-  INTRUCTOR_UPDATE_MIDKR_VOCAB,
+  INSTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
   INSTRUCTOR_DELETE_MIDKR_VOCAB,
   INSTRUCTOR_GET_MIDKR_VOCAB,
@@ -75,7 +76,8 @@ const initialState = {
 
   },
   classes: [],
-  files: []
+  files: [],
+  isLoading: false
 };
 
 export default (state = initialState, action) => {
@@ -83,6 +85,11 @@ export default (state = initialState, action) => {
   let newGrammarList;
   let classes;
   switch (action.type) {
+    case INSTRUCTOR_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload
+      }
     case INSTRUCTOR_INIT:
       return {
         ...state,
@@ -101,7 +108,8 @@ export default (state = initialState, action) => {
     case CHANGE_INSTRUCTOR_SELECTED_MENU:
       return {
         ...state,
-        headerName: action.payload.headerName
+        headerName: action.payload.headerName,
+        disableInstructorMenu: true
       };
     case ADD_NEW_STORY:
       return {
@@ -413,7 +421,7 @@ export default (state = initialState, action) => {
         addMiddleVocab: newAddMiddleVocab
       }
     case INSTRUCTOR_SAVE_MIDKR_VOCAB:
-    case INTRUCTOR_UPDATE_MIDKR_VOCAB:
+    case INSTRUCTOR_UPDATE_MIDKR_VOCAB:
     case INSTRUCTOR_DELETE_MIDKR_VOCAB:
       newAddMiddleVocab = state.addMiddleVocab;
       newAddMiddleVocab.vocabList = action.payload;

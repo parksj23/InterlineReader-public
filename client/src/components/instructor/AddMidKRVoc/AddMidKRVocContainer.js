@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AddMidKRVoc from "./AddMidKRVoc";
 import StatusMessage from '../../common/statusMessage/statusMessage';
-import { getMiddleKoreanVocab, handleStatusClose } from "../../../actions/instructor";
+import {setInstructorLoading, getMiddleKoreanVocab, handleStatusClose } from "../../../actions/instructor";
 
 class AddMidKRVocContainer extends Component {
   constructor(props) {
@@ -12,6 +12,8 @@ class AddMidKRVocContainer extends Component {
 
   componentWillMount() {
     this.props.getMiddleKoreanVocab();
+  }
+  componentDidMount() {
   }
 
   componentWillUnmount() {}
@@ -33,7 +35,7 @@ const mapStateToProps = state => ({
   addMiddleKrVocab: state.instructor.addMiddleVocab
 });
 
-const mapDispatchToProps = { getMiddleKoreanVocab, handleStatusClose };
+const mapDispatchToProps = {setInstructorLoading, getMiddleKoreanVocab, handleStatusClose };
 
 export default connect(
   mapStateToProps,

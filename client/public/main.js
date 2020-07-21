@@ -6,7 +6,6 @@
 
 
 // });
-//console.log(Hangul.disassemble('가나다'));
 
 function openNav() {
 		document.getElementById("mySidenav").style.width = "375px";
@@ -47,6 +46,4 @@ $("tr td:first-child").hover(function(){
 			$(".context").mark(keyword, options);
 		}
 	});
-
-		//console.log(clickedWord);
 	})

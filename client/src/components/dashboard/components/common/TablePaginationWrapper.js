@@ -72,9 +72,6 @@ class TablePaginationWrapper extends React.Component {
 
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-    console.log(rows);
-    console.log(page,  rowsPerPage )
-
 
     return (
       <Paper className={classes.root}>

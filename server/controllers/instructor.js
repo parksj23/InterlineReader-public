@@ -185,7 +185,6 @@ exports.renameCollections = (req, res) => {
   MongoClient.connect(url, function (err, client) {
     if (err) throw err;
     let dbo = client.db(databaseName);
-    console.log(req);
     let oldName = req.oldName;
     let newName = oldName.substring(9);
     dbo.renameCollection(`${oldName}`, `${newName}`).then(err => {
@@ -784,23 +783,22 @@ exports.updateMiddleKoreanVoc = (vocab, res, next) => {
   MongoClient.connect(url, async function (err, client) {
     if (err) throw(err)
     var dbo = client.db(databaseName);
-    vocabList.map(aVocabEntry => {
+
+    for (const aVocabEntry of vocabList) {
       aVocabEntry["lastUpdated"] = new Date()
       let query = {
         _id: ObjectID(aVocabEntry._id)
       }
-
       delete aVocabEntry._id
-      dbo.collection("VOC_MIDKR_ALL").findOneAndUpdate(query, {$set: aVocabEntry}, {upsert: true})
-
-      deletedVocabList.forEach(aVocabEntry => {
-        let query = {
-          _id: ObjectID(aVocabEntry._id)
-        }
-        dbo.collection("VOC_MIDKR_ALL").findOneAndDelete(query)
-      })
-
-    })
+      let VOC_MIDKR_ALL = dbo.collection("VOC_MIDKR_ALL")
+      await VOC_MIDKR_ALL.findOneAndUpdate(query, {$set: aVocabEntry}, {upsert: true})
+    }
+    for (const aVocabEntry of deletedVocabList) {
+      let query = {
+        _id: ObjectID(aVocabEntry._id)
+      }
+      await dbo.collection("VOC_MIDKR_ALL").findOneAndDelete(query)
+    }
     dbo.collection("VOC_MIDKR_ALL").find().toArray(function (err, result) {
       if (err) throw(err)
       res.json({
