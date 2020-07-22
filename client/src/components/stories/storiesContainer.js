@@ -26,7 +26,7 @@ class StoriesContainer extends Component {
     this.state = {
       applicationDescription: "",
       storyTitle: "",
-      selectedLanguage: "MODKR",
+      selectedLanguage: "",
       storyInfo: null,
       showModal: false,
       isSpeedDialOpen: false,
@@ -58,12 +58,16 @@ class StoriesContainer extends Component {
       }
     }
     let storyInfo;
-      this.props.initStory(this.state.storyTitle).then(resp => {
+    this.props.initStory(this.state.storyTitle).then(resp => {
         storyInfo = resp.storyInfo
         this.props.getListOfSavedWords(this.props.userId, storyInfo._id).then(resp => {
           this.props.enableSideBarButton();
           this.props.getSavedWords(this.props.userId, storyInfo._id, resp.savedVocabIds, this.props.stories.selectedLanguage).then(resp => {
             this.props.disableLoading();
+            this.setState({
+              selectedLanguage: this.props.stories.selectedLanguage
+            })
+
           })
         })
     });
