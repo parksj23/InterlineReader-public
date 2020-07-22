@@ -76,6 +76,11 @@ export const initStory = (storyTitle) => dispatch => {
           payload
         })
         resolve(payload);
+      }).catch(error => {
+        dispatch({
+          type: INIT_STORY,
+          payload: {}
+        })
       })
     })
   })

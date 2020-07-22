@@ -43,8 +43,11 @@ router.get('/', async (req, res, next) => {
           db.collection(`STORY_KR_SUM`).find(query).limit(1).toArray(function (err, story_info) {
             if (err) reject(err);
             let storyInfo = story_info[0];
-            storyInfo._id = storyInfo._id.toString()
-            resolve(storyInfo)
+            if(storyInfo) {
+              storyInfo._id = storyInfo._id.toString()
+              resolve(storyInfo)
+            }
+            reject("Error Fetching Story Information")
           })
         })
       }
@@ -110,14 +113,14 @@ router.get('/', async (req, res, next) => {
           })
         })
       }
-      const storyInfo = await findStoryInfo();
-      let storyId = storyInfo._id;
-      let languages = storyInfo.languages;
-      let results = {
-        storyInfo
-      };
-      const findAllStoryInfoForLanguage = async (aLanguageCode, storyId) => {
-        results[`${aLanguageCode}`] = {}
+      findStoryInfo().then(storyInfo => {
+        let storyId = storyInfo._id;
+        let languages = storyInfo.languages;
+        let results = {
+          storyInfo
+        };
+        const findAllStoryInfoForLanguage = async (aLanguageCode, storyId) => {
+          results[`${aLanguageCode}`] = {}
           let vocabOrder = await findVocabOrder(aLanguageCode, storyId)
           let grammarOrder = await findGrammarOrder(aLanguageCode, storyId)
           let vocabList = await findStoryVocab(aLanguageCode, storyId)
@@ -130,13 +133,16 @@ router.get('/', async (req, res, next) => {
             grammarList
           }
         }
-      Promise.all(languages.map(aLanguageCode => findAllStoryInfoForLanguage(aLanguageCode, storyId)
-      )).then(resp => {
-        client.close();
-        res.send(results)
-    }).catch(err => {
-        console.log(err)
-      })
+        Promise.all(languages.map(aLanguageCode => findAllStoryInfoForLanguage(aLanguageCode, storyId)
+        )).then(resp => {
+          client.close();
+          res.send(results)
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch(error => {
+        res.status(503).send(error)
+      });
     });
   } catch (err) {
     next(err)
