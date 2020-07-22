@@ -11,7 +11,7 @@ import {
 } from '../constants/action-types';
 
 const initialState = {
-  selectedLanguage: "MODKR",
+  selectedLanguage: "",
   isSideBarOpen: false,
   openStatus: false,
   statusMessage:'',
@@ -23,7 +23,8 @@ export default (state = initialState, action) => {
     case INIT_STORY:
       return({
         ...state,
-        ...action.payload
+        ...action.payload,
+        selectedLanguage: action.payload.MODKR ? "MODKR" : action.payload.MIDKR ? "MIDKR" : "ENGSH"
       })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {
