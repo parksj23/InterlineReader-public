@@ -17,9 +17,6 @@ class AddMidKRGramContainer extends Component {
     this.props.getMiddleKoreanGram();
   }
 
-  componentDidMount() {
-  }
-
   render() {
     return (
       <div>

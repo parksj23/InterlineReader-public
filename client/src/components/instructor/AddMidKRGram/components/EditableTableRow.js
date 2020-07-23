@@ -5,6 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import IconButton from "@material-ui/core/IconButton";
 import TextField from "@material-ui/core/TextField";
+import randomstring from 'randomstring'
 
 const styles = theme => ({
   root: {
@@ -17,11 +18,17 @@ const styles = theme => ({
 });
 
 class EditableTableRow extends React.Component {
-  state = {
-    isEditable: false,
-    data: {},
-    oldData: {}
-  };
+  constructor() {
+    super();
+    this.state = {
+      isEditable: false,
+      data: {},
+      oldData: {}
+    };
+    this.handleOnChangeField.bind(this)
+    this.handleSave.bind(this)
+    this.handleDeleteEntry.bind(this)
+  }
 
   componentDidMount() {
     this.setState({
@@ -95,13 +102,11 @@ class EditableTableRow extends React.Component {
   };
 
   handleToggleEdit = () => {
-    let oldData = { ...this.state.data };
-    let edit = oldData;
     this.setState({
       isEditable: !this.state.isEditable,
-      oldData,
-      edit,
-      oldEdit: oldData
+      oldData: {...this.state.data},
+      edit: {...this.state.data},
+      oldEdit: {...this.state.data}
     });
   };
 
@@ -113,7 +118,7 @@ class EditableTableRow extends React.Component {
     const {row } = this.props;
 
     return !this.state.isEditable ? (
-      <TableRow key={row._id}>
+      <TableRow key={randomstring.generate(7)}>
         <TableCell style={{width: '5%', maxHeight: '56px'}}>
           <div style={{display: "flex"}}>
             <IconButton onClick={this.handleToggleEdit}>
@@ -124,30 +129,30 @@ class EditableTableRow extends React.Component {
             </IconButton>
           </div>
         </TableCell>
-        <TableCell align="right">{this.props.row.engCat}</TableCell>
-        <TableCell align="right">{this.props.row.annotation}</TableCell>
-        <TableCell align="right">{this.props.row.romShape}</TableCell>
+        <TableCell align="right">{this.state.data.engCat}</TableCell>
+        <TableCell align="right">{this.state.data.annotation}</TableCell>
+        <TableCell align="right">{this.state.data.romShape}</TableCell>
         <TableCell
           align="right"
           style={{ fontFamily: "NanumBarunGothic YetHangul" }}
         >
-          {this.props.row.hankulShape}
+          {this.state.data.hankulShape}
         </TableCell>
-        <TableCell align="right">{this.props.row.romExample}</TableCell>
+        <TableCell align="right">{this.state.data.romExample}</TableCell>
         <TableCell
           align="right"
           style={{ fontFamily: "NanumBarunGothic YetHangul" }}
         >
-          {this.props.row.hankulExample}
+          {this.state.data.hankulExample}
         </TableCell>
         <TableCell
           align="right"
           style={{ fontFamily: "NanumBarunGothic YetHangul" }}
         >
-          {this.props.row.ur}
+          {this.state.data.ur}
         </TableCell>
-        <TableCell align="right">{this.props.row.engTransExample}</TableCell>
-        <TableCell align="right">{this.props.row.lineNumber}</TableCell>
+        <TableCell align="right">{this.state.data.engTransExample}</TableCell>
+        <TableCell align="right">{this.state.data.lineNumber}</TableCell>
       </TableRow>
     ) : (
       <TableRow key={row.id} padding="dense">

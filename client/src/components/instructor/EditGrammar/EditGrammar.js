@@ -8,6 +8,7 @@ import "./EditGrammar.css"
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
 import EditGrammarFormContainer from './EditGrammarFormContainer/EditGrammarFormContainer';
 import NewGrammarFormContainer from './EditGrammarFormContainer/NewGrammarFormContainer';
+import randomstring from 'randomstring'
 
 import Grid from '@material-ui/core/Grid';
 
@@ -26,8 +27,7 @@ class EditGrammar extends Component {
     this.props.initEditGrammar(storyName);
   }
 
-  componentWillUnmount(){
-  }
+
   handleSelectHighlight = (selectedText) => {
     let selectedGrammarInfo = this.props.editGrammar.MODKR.grammarSearch[selectedText]
     this.props.updateSelectedGrammar(selectedGrammarInfo);

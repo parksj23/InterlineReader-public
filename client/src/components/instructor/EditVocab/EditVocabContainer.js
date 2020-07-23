@@ -15,8 +15,6 @@ class EditVocabularyContainer extends Component {
     this.state = {
     }
   }
-  componentWillMount(){
-  }
 
   componentWillUnmount(){
     this.props.resetEditVocab()

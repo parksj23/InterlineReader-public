@@ -12,6 +12,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 
 import { addMiddleKoreanGrammar, saveMidKrGram,updateMiddleKrGrammarEntry } from "../../../actions/instructor";
+import randomstring from "randomstring";
 
 class AddMidKRGram extends Component {
   constructor(props) {
@@ -38,8 +39,6 @@ class AddMidKRGram extends Component {
     })
   }
 
-  componentWillMount() {}
-
   componentWillUnmount() {
     this.props.saveMidKrGram(this.props.grammarList, this.state.deletedGrammar);
   }
@@ -57,13 +56,20 @@ class AddMidKRGram extends Component {
     });
   };
 
-
   handleAddGrammar = () => {
     let grammarToAdd = {
-      ...this.state
+      engCat: this.state.engCat,
+      annotation: this.state.annotation,
+      romShape: this.state.romShape,
+      hankulShape: this.state.hankulShape,
+      romExample: this.state.romExample,
+      hankulExample: this.state.hankulExample,
+      ur: this.state.ur,
+      engTransExample: this.state.engTransExample,
+      lineNumber: this.state.lineNumber,
+      _id: `temp_${randomstring.generate(7)}`
     };
 
-    delete grammarToAdd.grammarList
     grammarToAdd["createdDate"] = new Date();
     grammarToAdd["lastUpdated"] = new Date();
     let newGrammarList = this.state.grammarList;
@@ -77,7 +83,7 @@ class AddMidKRGram extends Component {
       romExample: "",
       hankulExample: "",
       ur: "",
-      engTranExample: "",
+      engTransExample: "",
       lineNumber: "",
       expanded: false
     })
@@ -110,7 +116,9 @@ class AddMidKRGram extends Component {
       }
     }
     this.props.updateMiddleKrGrammarEntry(grammarList);
-
+    this.setState({
+      updatedDeletedEntries
+    })
     this.forceUpdate();
   }
 
@@ -123,7 +131,7 @@ class AddMidKRGram extends Component {
       romExample: "",
       hankulExample: "",
       ur: "",
-      engTranExample: "",
+      engTransExample: "",
       lineNumber: "",
       expanded: false
     });
