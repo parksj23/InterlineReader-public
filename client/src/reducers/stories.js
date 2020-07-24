@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
       return({
         ...state,
         ...action.payload,
-        selectedLanguage: action.payload.MODKR ? "MODKR" : action.payload.MIDKR ? "MIDKR" : "ENGSH"
+        selectedLanguage: action.payload.MODKR ? "MODKR" : action.payload.MIDKR ? "MIDKR" : action.payload.HANMN ? "HANMN" : "ENGSH"
       })
     case GET_VOCAB_AND_GRAMMAR_SUCCESS:
       return {
