@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Divider from "@material-ui/core/Divider";
 import "../../styles/stories.css";
 import Grid from '@material-ui/core/Grid';
+import randomstring from 'randomstring';
 
 
 var Highlight = require('react-highlighter');
@@ -112,7 +113,7 @@ class StoryText extends Component {
                       phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
                     }
                     return (
-                      <div key={"storySeg_" + index}>
+                      <div key={`storySeg_${randomstring.generate(8)}`}>
                         {
                           React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, phraseArr)
                         }
@@ -127,7 +128,7 @@ class StoryText extends Component {
                       </Highlight>
                     )
                     return (
-                      <div key={"storySeg_" + index}>
+                      <div key={`storySeg_${randomstring.generate(8)}`}>
                         {
                           React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
                         }

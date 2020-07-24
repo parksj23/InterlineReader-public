@@ -171,7 +171,6 @@ class StoriesContainer extends Component {
           author = stories.storyInfo.authorKorn
           break;
         default:
-          text = stories.storyTextHanmun
           title = stories.storyInfo.titleKorn
           author = stories.storyInfo.authorKorn
       }
