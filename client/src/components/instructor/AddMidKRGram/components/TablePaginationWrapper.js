@@ -130,6 +130,9 @@ class TablePaginationWrapper extends React.Component {
 }
 
 TablePaginationWrapper.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  grammarList: PropTypes.object,
+  updateEntry: PropTypes.func.isRequired,
+  deleteMidKRGram: PropTypes.func.isRequired
 };
 export default withStyles(styles)(TablePaginationWrapper);

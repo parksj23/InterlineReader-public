@@ -6,6 +6,7 @@ import FirstPageIcon from "@material-ui/icons/FirstPage";
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
+import TablePagination from "@material-ui/core/TablePagination";
 
 const actionsStyles = theme => ({
   root: {
@@ -87,7 +88,12 @@ TablePaginationActions.propTypes = {
   onChangePage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  rowsPerPageOptions: PropTypes.array,
+  colSpan: PropTypes.number.isRequired,
+  SelectProps: PropTypes.object,
+  onChangeRowsPerPage: PropTypes.func,
+  ActionsComponent: PropTypes.element
 };
 
 export default withStyles(actionsStyles, { withTheme: true })(

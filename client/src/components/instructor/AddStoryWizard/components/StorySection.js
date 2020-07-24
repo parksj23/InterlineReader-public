@@ -47,7 +47,7 @@ const languages = [
     label: "Middle Korean"
   },
   {
-    value: "hanmun",
+    value: "HANMN",
     label: "Hanmun Original"
   }
 ]

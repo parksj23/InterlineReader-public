@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -466,9 +467,12 @@ class AddMidKRGram extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-});
-
 const mapDispatchToProps = { addMiddleKoreanGrammar, saveMidKrGram, updateMiddleKrGrammarEntry};
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddMidKRGram);
+AddMidKRGram.propTypes = {
+  addMiddleKoreanGrammar: PropTypes.func.isRequired,
+  saveMidKrGram: PropTypes.func.isRequired,
+  updateMiddleKrGrammarEntry: PropTypes.func.isRequired
+}
+
+export default connect({}, mapDispatchToProps)(AddMidKRGram);

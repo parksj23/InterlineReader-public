@@ -55,7 +55,7 @@ const Story = (props) => {
         }
         {
           props.stories.HANMN && props.stories.HANMN.storyText ?
-            <Tooltip title="Hanmun" placement="left" onClick={()=> handleTranslate("hanmun")}>
+            <Tooltip title="Hanmun" placement="left" onClick={()=> handleTranslate("HANMN")}>
               <Fab color="primary" className={classes.fab}>
                 Han
               </Fab>

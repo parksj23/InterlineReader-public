@@ -1,0 +1,53 @@
+---
+name: Editable Table
+menu: Adding Middle Korean Grammar
+---
+
+import { Playground, Props } from 'docz'
+import TablePaginationWrapper from './TablePaginationWrapper'
+import EditableTableRow from './EditableTableRow'
+import TablePaginationActions from './TablePaginationActions'
+
+# Overview
+This component is to display existing Middle Korean Grammar that is editable with pagination. it consist of three components:
+
+```javascript
+<TablePaginationWrapper/>
+```
+## TablePaginationWrapper
+
+This presentational component accepts the list of Middle Korean Grammar and renders the table and table actions
+
+### Props
+
+<Props of={TablePaginationWrapper} />
+
+### Basic Usage
+
+### CSS Styling
+
+
+## TablePaginationActions
+
+This presentational component renders the nagivation of the table. The available functions are:
+- Navigate next/prev pages in the table
+- Change the number of rows to display
+
+### Props
+
+<Props of={TablePaginationActions} />
+
+### Basic Usage
+
+### CSS Styling
+
+## Editable Table
+
+This presentational component renders the Middle Korean grammer where each row is an entry
+
+### Props
+<Props of={EditableTableRow} />
+
+### Basic Usage
+
+### CSS Styling

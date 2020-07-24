@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import AddMidKRGram from "./AddMidKRGram";
 import StatusMessage from '../../common/statusMessage/statusMessage';
@@ -39,6 +40,16 @@ const mapDispatchToProps = {
   getMiddleKoreanGram ,
   handleStatusClose
 };
+
+AddMidKRGramContainer.propTypes = {
+  /**
+   * Object containing Existing Middle Korean Grammar
+   */
+  addMiddleKrGram: PropTypes.object.isRequired,
+  setInstructorLoading: PropTypes.func.isRequired,
+  getMiddleKoreanGram: PropTypes.func.isRequired,
+  handleStatusClose: PropTypes.func.isRequired
+}
 
 export default connect(
   mapStateToProps,
