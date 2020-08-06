@@ -228,7 +228,7 @@ class StorySection extends Component {
                       className={'story-section-save-button'}
                       style={{float: "right"}}
                       onClick={() => this.handleOnSave()}
-                      disabled={false}>Save
+                      disabled={this.props.saveDisabled}>Save
               </Button>
             </Grid>
           }

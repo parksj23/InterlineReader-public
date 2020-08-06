@@ -149,7 +149,7 @@ class AddStoryWizard extends Component {
     let sections = []
 
     for(let i = 0; i < this.state.numOfSections ; i++){
-      sections.push(<StorySection isFirst={i===0}  key={`story-section-${i}`} storyForm={this.state.storyForm} instructorId={this.props.user.instructorId}/>);
+      sections.push(<StorySection  saveDisabled={this.state.saveDisabled} isFirst={i===0}  key={`story-section-${i}`} storyForm={this.state.storyForm} instructorId={this.props.user.instructorId}/>);
     }
     return sections;
   }
@@ -168,7 +168,7 @@ class AddStoryWizard extends Component {
           </Grid>
         </div>
         <Grid container>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField
               required
               id="story-name"
@@ -176,11 +176,10 @@ class AddStoryWizard extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.handleOnChangeField("titleKorn")}
-              style={{whiteSpace: "noWrap"}}
+              style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
             />
           </Grid>
-          <Grid item xs={1}/>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField
               required
               id="story-author"
@@ -188,11 +187,10 @@ class AddStoryWizard extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.handleOnChangeField("authorKorn")}
-              style={{whiteSpace: "noWrap"}}
+              style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
             />
           </Grid>
-          <Grid item xs={1}/>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField
               required
               id="story-name-romanization"
@@ -200,11 +198,10 @@ class AddStoryWizard extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.handleOnChangeField("titleRom")}
-              style={{whiteSpace: "noWrap"}}
+              style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
             />
           </Grid>
-          <Grid item xs={1}/>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField
               required
               id="story-author-romanize"
@@ -212,11 +209,10 @@ class AddStoryWizard extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.handleOnChangeField("authorRom")}
-              style={{whiteSpace: "noWrap"}}
+              style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
             />
           </Grid>
-          <Grid item xs={1}/>
-          <Grid item xs={3}>
+          <Grid item xs={4}>
             <TextField
               required
               id="story-title-english"
@@ -224,8 +220,7 @@ class AddStoryWizard extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.handleOnChangeField("titleEng")}
-              style={{whiteSpace: "noWrap"}}
-
+              style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
             />
           </Grid>
         </Grid>
