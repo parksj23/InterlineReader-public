@@ -134,7 +134,10 @@ class StorySection extends Component {
       }
       else {
         stringToSave.replace(/<(.+?)<\/p>/ugi, (match, ci) => {
-          let lineSegment = {};
+          let lineSegment = {
+            text:  "",
+            order_id
+          };
           match.replace(/[^p]style="(.+?);">/ugi, (match, c2) => {
             let styles = c2.split(";")
             styles.forEach(function (aStyleProp) {
@@ -152,14 +155,15 @@ class StorySection extends Component {
           ci.replace(/>(.+)/ugi, (match, c3) => {
             lineSegment["text"] = c3.replace(/(&amp;|[&*]nbsp;)/ugi, "");
             lineSegment["order_id"] = order_id
-            order_id++
           })
           textToSend.push({
             ...lineSegment,
             language: this.state.language
           })
+          order_id++
         })
       }
+
       let createdDate = new Date()
       storyForm["instructor"] = this.props.auth.user.id
       storyForm.language = this.state.language;
