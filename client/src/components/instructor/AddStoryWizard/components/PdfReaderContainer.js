@@ -40,7 +40,7 @@ class PdfReaderContainer extends Component {
           <TextField
             id="story-class"
             select
-            label="Class"
+            label="PDF"
             value={this.props.pdfUrl}
             onChange={this.props.handleOnChangeField('pdfUrl')}
             margin="normal"
