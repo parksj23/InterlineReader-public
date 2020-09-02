@@ -130,7 +130,7 @@ class StoriesContainer extends Component {
       savedWords: this.props.sideBar.savedWords
     }
     this.props.updateSavedWords(params);
-    if(this.props.analytics.sessions.length > 0)this.props.endGrammarSearchSession();
+    //if(this.props.analytics.sessions.length > 0)this.props.endGrammarSearchSession();
     this.props.leaveStories();
     this.props.resetSTories(hypothesisURL.split("&")[0] + `&${Math.floor(Math.random()*100000)}`);
     this.props.resetSideBar();
