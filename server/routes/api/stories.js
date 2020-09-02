@@ -58,11 +58,11 @@ router.get('/', async (req, res, next) => {
           }
           db.collection(`VOC_${language}_ORDER`).find(query).toArray(function (err, order_result) {
             if (err) reject(err)
+            let orderList = []
             if(order_result && order_result.length > 0) {
               let tmpOrderList =  order_result[0].order
-              let orderList = []
               tmpOrderList.sort((a,b) => a.order_id - b.order_id)
-              tmpOrderList.map(aVocab => orderList.push(aVocab.vocabId))
+              tmpOrderList.forEach(aVocab => orderList.push(aVocab.vocabId))
               order_result[0].order = orderList;
               resolve(order_result[0])
             }
@@ -94,10 +94,12 @@ router.get('/', async (req, res, next) => {
           let query = {
             storyList: {$all: [`${storyId}`]}
           }
+          console.log("Vocab List query")
+          console.log(query.storyList)
           db.collection(`VOC_${language}_ALL`).find(query).toArray(function (err, result) {
             if (err) reject(err)
             if(result && result.length > 0) resolve(result)
-            else resolve()
+            else resolve([])
           })
         })
       }
@@ -109,7 +111,7 @@ router.get('/', async (req, res, next) => {
           db.collection(`GRAM_${language}_ALL`).find(query).toArray(function (err, gram_result) {
             if (err) reject(err)
             if(gram_result && gram_result.length > 0) resolve(gram_result)
-            else resolve()
+            else resolve([])
           })
         })
       }

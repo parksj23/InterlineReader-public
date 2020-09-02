@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import Divider from "@material-ui/core/Divider";
 import "./StoryText.css";
 import Grid from '@material-ui/core/Grid';
+import randomstring from "randomstring";
 
 
-var Highlight = require('react-highlighter');
+const Highlight = require('react-highlighter');
 
 class StoryText extends Component {
 
@@ -13,15 +14,6 @@ class StoryText extends Component {
     this.state = {
       highlightSelection: null
     }
-  }
-
-  componentDidMount(){
-  }
-
-  componentWillUnmount() {
-  }
-
-  componentDidUpdate(prevProps, prevState){
   }
 
 
@@ -99,11 +91,10 @@ class StoryText extends Component {
             </span>
             </div>
             <Divider style={{marginBottom: "0.5rem"}}/>
-            {
-              this.props.editVocab.MODKR.storyText.map((aSegment, index) => {
-                let text = aSegment.text
+            <div>{
+              this.props.text.map((aSegment, index) => {
+                const text = aSegment.text
                 let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
-
                 if (textSection) {
                   let phraseArr = []
                   if (text.indexOf("<") > 0) {
@@ -158,24 +149,24 @@ class StoryText extends Component {
                     </div>
                   )
                 }
-
                 else {
                   let childComponent = (
-                    <Highlight key={`d-phrase-key-${index}`}search={this.props.searchWord} matchStyle={{color: 'red'}}>
+                    <Highlight key={`storySeg_${randomstring.generate(8)}`} search={this.props.searchWord} matchStyle={{color: 'red'}}>
                       {aSegment.text}
                     </Highlight>
                   )
                   return (
-                    <div key={"storySeg_" + index}>
+                    <div>
                       {
                         //armaandh: Added font size changes here
-                        React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
+                        React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}, key: `storySeg_${randomstring.generate(8)}`}, childComponent)
                       }
                     </div>
                   )
                 }
               })
             }
+            </div>
           </div>
         </Grid>
       </Grid>

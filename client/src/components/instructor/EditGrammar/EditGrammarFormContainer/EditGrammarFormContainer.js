@@ -63,7 +63,7 @@ class EditGrammarFormContainer extends Component {
       pattern: this.state.pattern,
       here: this.state.here
     }
-    this.props.updateGrammar(newGrammar, this.props.storyTitle);
+    this.props.updateGrammar(newGrammar, this.props.storyId);
     this.setState({
       openStatus: true
     })
@@ -76,7 +76,7 @@ class EditGrammarFormContainer extends Component {
       pattern: this.state.pattern,
       here: this.state.here
     }
-    this.props.deleteGrammar(grammar, this.props.storyTitle);
+    this.props.deleteGrammar(grammar, this.props.storyId);
   }
 
   render() {

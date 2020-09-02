@@ -41,7 +41,7 @@ class EditGrammar extends Component {
       <div className="edit-Vocabulary">
         <Grid container>
           <Grid item xs={6}>{
-            this.props.editGrammar && this.props.editGrammar.storyInfo && !this.props.editGrammar.highlightTextUpdating  ?
+            this.props.editGrammar && this.props.editGrammar.storyInfo && !this.props.editGrammar.highlightTextUpdating  && this.props.editGrammar.MODKR ?
               <StoryTextContainer
                 text={this.props.editGrammar.MODKR.storyText}
                 searchWord={grammarSearch}
@@ -49,7 +49,7 @@ class EditGrammar extends Component {
                 updateUserHighlightedText={this.props.updateUserHighlightedText}
                 startUpdatingHighlightedText={this.props.startUpdatingHighlightedText}
                 editGrammar={this.props.editGrammar}
-              /> : null
+              /> : <div style={{color: "red", fontSize: '26pt'}}> Please add a Modern Korean Story first!</div>
           }
           </Grid>
           <Grid item xs={6}>
@@ -58,11 +58,10 @@ class EditGrammar extends Component {
                 <EditGrammarFormContainer
                   grammarList={this.props.editGrammar.grammarList}
                   selectedGrammar={editGrammar.selectedGrammar}
-                  storyTitle={this.props.editGrammar.storyInfo.storyName}
+                  storyId={this.props.editGrammar.storyInfo._id}
                   updateGrammar={this.props.updateGrammar}
                   deleteGrammar={this.props.deleteGrammar}
                   statusMessage={this.props.editGrammar.ediGrammarStatusMessage}
-
                 /> : null
             }
             {
@@ -70,7 +69,7 @@ class EditGrammar extends Component {
                 <NewGrammarFormContainer
                   editGrammar={this.props.editGrammar}
                   userHighlightedText={this.props.editGrammar.userHighlightedText}
-                  storyTitle={this.props.editGrammar.storyInfo.storyName}
+                  storyId={this.props.editGrammar.storyInfo._id}
                 /> : null
             }
           </Grid>

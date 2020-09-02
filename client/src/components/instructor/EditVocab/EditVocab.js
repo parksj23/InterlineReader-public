@@ -42,13 +42,14 @@ class EditVocab extends Component {
 
   render() {
     let vocabSearch = this.props.editVocab && this.props.editVocab.MODKR 
-        && this.props.editVocab.MODKR.vocabSearch ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|")) : null;
+        && Object.keys(this.props.editVocab.MODKR.vocabSearch).length > 0 ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|")) : null;
+
     let {editVocab} = this.props
     return (
       <div className="edit-Vocabulary">
         <Grid container>
           <Grid item xs={6}>{
-            this.props.editVocab && this.props.editVocab.storyInfo && !this.props.editVocab.highlightTextUpdating  ?
+            this.props.editVocab && this.props.editVocab.storyInfo && !this.props.editVocab.highlightTextUpdating  && this.props.editVocab.MODKR?
               <StoryTextContainer
                 text={this.props.editVocab.MODKR.storyText}
                 searchWord={vocabSearch}
@@ -56,7 +57,7 @@ class EditVocab extends Component {
                 updateUserHighlightedText={this.props.updateUserHighlightedText}
                 startUpdatingHighlightedText={this.props.startUpdatingHighlightedText}
                 editVocab={this.props.editVocab}
-              /> : null
+              /> : <div style={{color: "red", fontSize: '26pt'}}> Please add a Modern Korean Story first!</div>
           }
           </Grid>
           <Grid item xs={6}>
@@ -65,11 +66,11 @@ class EditVocab extends Component {
                 <EditVocabFormContainer
                   vocabList={this.props.editVocab.vocabList}
                   selectedVocab={editVocab.selectedVocab}
-                  storyTitle={this.props.editVocab.storyInfo.storyName}
+                  storyId={this.props.editVocab.storyInfo._id}
                   updateVocab={this.props.updateVocab}
                   deleteVocab={this.props.deleteVocab}
                   statusMessage={this.props.editVocab.editVocabStatusMessage}
-
+                  editVocab={this.props.editVocab}
                 /> : null
             }
             {
@@ -77,7 +78,7 @@ class EditVocab extends Component {
                 <NewVocabFormContainer
                   editVocab={this.props.editVocab}
                   userHighlightedText={this.props.editVocab.userHighlightedText}
-                  storyTitle={this.props.editVocab.storyInfo.storyName}
+                  storyId={this.props.editVocab.storyInfo._id}
                 /> : null
             }
           </Grid>

@@ -62,8 +62,7 @@ class StorySection extends Component {
       previewLabel: "korean",
       openStatus: false,
       statusMessage: "",
-      saveDisabled: true,
-      language: "ENGSH"
+      language: "ENGSH",
     };
 
   }
@@ -188,7 +187,7 @@ class StorySection extends Component {
     })
     this.setState({
       language: language && language.value,
-      editorState: EditorState.createEmpty()
+      editorState: EditorState.createEmpty(),
     })
   }
 
@@ -206,6 +205,10 @@ class StorySection extends Component {
     this.setState({
       openStatus: false
     })
+  }
+
+  myBlockStyleFn = (contentBlock) => {
+    return 'modernKorean-font';
   }
 
   render() {
@@ -289,6 +292,7 @@ class StorySection extends Component {
                     editorClassName="editor-editor"
                     customStyleMap={editorStyleMap}
                     onEditorStateChange={this.onEditorStateChange}
+                    placeholder={`IMPORTANT! Before adding text, follow these steps. \n 1. Click the text box\n 2. Change font to Source-HanSerif-Korean \n 3. Click Text box \n4. start adding text`}
                     localization={{
                       locale: 'ko',
                     }}
@@ -339,8 +343,6 @@ class StorySection extends Component {
                         }
                       }}
                     />
-
-
               }
             </div>
           </Grid> :

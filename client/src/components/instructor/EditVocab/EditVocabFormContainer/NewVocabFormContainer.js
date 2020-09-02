@@ -47,7 +47,7 @@ class NewVocabFormContainer extends Component {
   findOrderId() {
     let order_id = null
     let text = this.props.editVocab.MODKR.rawKoreanText
-    let vocabWords = Object.keys(this.props.editVocab.MODKR.vocabSearch)
+    let vocabWords = this.props.editVocab.MODKR.vocabSearch ? Object.keys(this.props.editVocab.MODKR.vocabSearch) : []
     let startIndex = 0;
     let startText = vocabWords[startIndex]
     let textSegment = text.substring(0,text.indexOf(startText));
@@ -82,7 +82,7 @@ class NewVocabFormContainer extends Component {
       english: this.state.english,
       order_id: this.state.order_id
     }
-    this.props.addNewVocabulary(newVocab, this.props.storyTitle);
+    this.props.addNewVocabulary(newVocab, this.props.storyId);
   }
 
   handleCancel = () => {

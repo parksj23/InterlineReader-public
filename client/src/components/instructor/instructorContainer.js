@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import Instructor from "./component/Instructor";
 import {changeSelectedMenu, initInstructor} from "../../actions/instructor";
 import {disableSideBarButton} from "../../actions/dashboard";
-import AddStoryWizard from "./AddStoryWizard/AddStoryWizard";
 import EditGrammarContainer from "./EditGrammar/EditGrammarContainer";
 import EditVocabContainer from "./EditVocab/EditVocabContainer";
 import addMidKRGramContainer from "./AddMidKRGram/AddMidKRGramContainer";
@@ -17,6 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import "./style/instructor.css";
+import AddStoryWizardContainer from "./AddStoryWizard/AddStoryWizardContainer";
 
 class InstructorContainer extends Component {
   constructor(props) {
@@ -68,7 +68,7 @@ class InstructorContainer extends Component {
                       <Route path="/instructor/classes" component={ClassesContainer}/>
                       <Route
                         path="/instructor/addStory"
-                        component={AddStoryWizard}
+                        component={AddStoryWizardContainer}
                       />
                       <Route
                         path="/instructor/editGrammar"

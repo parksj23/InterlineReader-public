@@ -5,3 +5,7 @@
 .editor-editor{
   border: solid #000000 1rem
 }
+
+.modernKorean-font {
+  font-family: 'source-han-serif-korean', sans-serif;
+}
