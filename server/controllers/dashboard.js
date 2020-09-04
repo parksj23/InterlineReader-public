@@ -65,15 +65,10 @@ exports.getDashboard = (req,res,next) => {
       let korn410StoriesList =[]
       let korn420StoriesList=[]
 
-      console.log("Korn 410 class: " + korn410Class)
       listOfStories.forEach(aStory => {
-        console.log(korn410Class.storyList)
-        console.log(aStory)
         if(korn410Class && korn410Class.storyList.indexOf(aStory._id.toString()) > -1) korn410StoriesList.push(aStory)
         if(korn420Class && korn420Class.storyList.indexOf(aStory._id.toString()) > -1) korn420StoriesList.push(aStory)
       })
-      console.log(korn410StoriesList)
-
       let allStories;
       let korn410Stories;
       let korn420Stories;
