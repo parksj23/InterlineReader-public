@@ -13,7 +13,7 @@ Install the dependencies..
 $ npm run install-all
 ```
 
-Run app
+Run app 
 
 ```sh
 $ npm run dev
