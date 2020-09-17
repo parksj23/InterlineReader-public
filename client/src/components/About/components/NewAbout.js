@@ -1,7 +1,7 @@
+import React from 'react';
 import logo from '../../../assets/ILReader_Logo-with-tagline2.png';
 import ubcLogo from '../../../assets/UbcReaderLogo.png';
 import '../style/about.css';
-import React from 'react';
 
 const NewAbout = () => {
     return(
@@ -19,11 +19,12 @@ const NewAbout = () => {
                 and collaborate.</p>
             <div style={{ textAlign: 'right', margin: '10%', marginTop: '0' }}>
                 <h1>Contributors</h1>
-                <p>(Click to contact)</p>
+                <p>(Click to contact by email)</p>
                 <br/>
-                <div><p style={{fontWeight: "700"}}>Software Development: <a href="https://www.linkedin.com/in/hee-su-kim-098044163/" target="_top">Hee Su Kim</a>, <a href="https://www.linkedin.com/in/amy-george-ubc/" target="_top">Amy George</a>, <a href="https://www.linkedin.com/in/ahong1/" target="_top">Alfred Hong</a>, <a href="https://www.linkedin.com/in/armaan-dhanji/" target="_top">Armaan Dhanji</a></p></div>
-                <div><p style={{fontWeight: "700"}}>Project Co-ordinators: <a href="https://www.linkedin.com/in/amy-george-ubc/" target="_top">Amy George</a>, <a href="mailto:dawndkim@alumni.ubc.ca" target="_top">Dawn Kim</a></p></div>
-                <div><p style={{fontWeight: "700"}}>Principal Investigator: <a href="https://asia.ubc.ca/profile/ross-king/" target="_top">Dr. Ross King</a></p></div>
+                <div><p style={{fontWeight: "700"}}><a href="mailto:alf.hong91@gmail.com" target="_top">Software Development: Alfred Hong</a> and <a href="mailto:dhanjiarmaan@gmail.com" target="_top">Armaan Dhanji</a></p></div>
+                <div><p style={{fontWeight: "700"}}><a href="mailto:dawndkim@alumni.ubc.ca" target="_top">Site Design &amp; Project Co-ordinator: Dawn Kim</a></p></div>
+                <div><p style={{fontWeight: "700"}}><a href="mailto:amy.george@ubc.ca" target="_top">Project Co-ordinator: Amy George</a></p></div>
+                <div><p style={{fontWeight: "700"}}><a href="mailto:Ross.King@ubc.ca" target="_top">Principal Investigator: Dr. Ross King</a></p></div>
             </div>
         </div>
     )
