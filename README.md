@@ -13,7 +13,19 @@ Install the dependencies..
 $ npm run install-all
 ```
 
-Run app
+Run app 
+
+For Windows user:
+
+```sh
+$ npm install -g win-node-env
+```
+Then from onwards, run
+```sh
+$ npm run windows
+```
+
+For Linux/Mac users:
 
 ```sh
 $ npm run dev

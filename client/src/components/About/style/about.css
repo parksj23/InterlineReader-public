@@ -1,8 +1,21 @@
 .about-logo {
     text-align: center;
-    margin-top: 20px;
+    width: 600px;
+    display: flex;
+}
+
+.about-ubc-logo {
+    text-align: center;
+    width: 200px;
+    margin: 50px 0;
 }
 
 .about-section{
     text-align: center;
+}
+
+.logo-container {
+    width: 100%;
+    padding: 3% 10%;
+    background: linear-gradient(to right, #8e9eab, #eef2f3);
 }
