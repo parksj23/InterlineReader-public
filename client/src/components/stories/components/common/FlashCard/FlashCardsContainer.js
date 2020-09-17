@@ -83,7 +83,7 @@ class FlashCardContainer extends Component {
   render(){
     let question = this.state.vocabQueue[0]
     return(
-      <Card style={{position: 'fixed', top: '20vh', left: '10vw', height: '450px', width: '850px'}}>
+      <Card style={{position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', height: '450px', width: '850px'}}>
         <Grid container style={{height: '100%'}} justify={'center'}>
           <Grid item xs={12}
                 style={{
@@ -117,7 +117,7 @@ class FlashCardContainer extends Component {
             <Grid item xs={12}>
                 <Divider />
                 <div className={'Flashcards-question-count'} style={{marginTop: '8px', float: 'left'}}>
-                  <h4>{`Question ${this.state.answeredQuestions.length}/${this.state.vocabQueue.length + this.state.answeredQuestions.length}` }</h4>
+                  <h4>{`Question ${this.state.answeredQuestions.length + 1}/${this.state.vocabQueue.length + this.state.answeredQuestions.length}` }</h4>
                 </div>
                 <div style={{float: 'right'}}>
                   <Button disabled={!this.state.answeredCurrentQuestion} className={ 'Flashcard-options-button-next'} variant="outlined" color="primary" style={{margin: '6px'}} onClick={()=>this.handleNextQuestion(question)}> NEXT </Button>

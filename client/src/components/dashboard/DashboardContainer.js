@@ -32,7 +32,7 @@ class DashboardContainer extends Component {
 
   render() {
     return (
-      <div className="dashboardContainer">
+      <div className="dashboardContainer" style={{marginTop: '1.5rem'}}>
           <Switch>
             <Route exact path="/dashboard" component={() => this.renderDashboard("ALL")} />
             <Route path='/dashboard/middleKorean' component={MiddleKoreanContainer} />
