@@ -42,7 +42,7 @@ class GrammarSearch extends Component {
 
   componentWillUnmount() {
       if(this.props.analytics.sessions.length > 0) {
-        this.props.endGrammarSearch();
+        //this.props.endGrammarSearch();
       }
   }
 

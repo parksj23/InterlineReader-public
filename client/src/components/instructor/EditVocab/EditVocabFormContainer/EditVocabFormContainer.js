@@ -63,7 +63,7 @@ class EditVocabFormContainer extends Component {
       hanja: this.state.hanja,
       english: this.state.english
     }
-    this.props.updateVocab(newVocab, this.props.storyTitle);
+    this.props.updateVocab(newVocab, this.props.editVocab.storyInfo._id);
   }
 
   handleDeleteVocab = () => {
@@ -74,7 +74,7 @@ class EditVocabFormContainer extends Component {
       english: this.state.english,
       order_id: this.state.order_id
     }
-    this.props.deleteVocab(vocab, this.props.storyTitle);
+    this.props.deleteVocab(vocab, this.props.storyId);
   }
 
 

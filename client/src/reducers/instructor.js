@@ -98,12 +98,19 @@ export default (state = initialState, action) => {
     case INIT_EDIT_VOCAB:
       return {
         ...state,
-        editVocab: action.payload
+        editVocab: {
+          ...state.editVocab,
+          ...action.payload
+        }
       };
     case INIT_EDIT_GRAMMAR:
       return {
         ...state,
-        editGrammar: action.payload
+        editGrammar: {
+          ...state.editGrammar,
+          ...action.payload
+        }
+
       };
     case CHANGE_INSTRUCTOR_SELECTED_MENU:
       return {

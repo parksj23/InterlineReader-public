@@ -31,7 +31,6 @@ import {
   INTRUCTOR_UPDATE_MIDKR_GRAMMAR,
   INSTRUCTOR_UPDATE_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_GRAM,
-  INSTRUCTOR_DELETE_MIDKR_GRAMMAR,
   INSTRUCTOR_GET_MIDKR_VOCAB,
   INSTRUCTOR_ADD_MIDKR_VOCAB,
   INSTRUCTOR_SAVE_MIDKR_VOCAB,
@@ -92,6 +91,7 @@ export const initEditVocab = storyTitle => dispatch => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
+      payload.storyInfo = storyInfo
 
       languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
@@ -101,7 +101,6 @@ export const initEditVocab = storyTitle => dispatch => {
           vocabList.sort(function (a, b) {
             return order.indexOf(a._id) - order.indexOf(b._id);
           });
-
           let vocabSearch = {};
           vocabList.forEach(aVocab => {
             if (
@@ -185,6 +184,7 @@ export const initEditGrammar = storyTitle => dispatch => {
       let languages = res.data.storyInfo.languages;
 
       let storyInfo = res.data.storyInfo;
+      payload.storyInfo = storyInfo
 
       languages.forEach(aLanguage => {
         let data = res.data[`${aLanguage}`];
@@ -391,10 +391,10 @@ export const startUpdatingHighlightedText = component => dispatch => {
   });
 };
 
-export const updateVocab = (vocab, storyTitle) => dispatch => {
+export const updateVocab = (vocab, storyId) => dispatch => {
   let params = {
     vocab,
-    storyTitle
+    storyId
   };
   dispatch({
     type: INSTRUCTOR_LOADING,
@@ -453,10 +453,10 @@ export const startUpdatingEditGrammar = () => dispatch => {
   });
 };
 
-export const addNewVocabulary = (vocab, storyTitle) => dispatch => {
+export const addNewVocabulary = (vocab, storyId) => dispatch => {
   let params = {
     vocab,
-    storyTitle
+    storyId
   };
   dispatch({
     type: INSTRUCTOR_LOADING,
@@ -474,10 +474,10 @@ export const addNewVocabulary = (vocab, storyTitle) => dispatch => {
   });
 };
 
-export const addNewGrammar = (grammar, storyTitle) => dispatch => {
+export const addNewGrammar = (grammar, storyId) => dispatch => {
   let params = {
     grammar,
-    storyTitle
+    storyId
   };
   axios.put("/api/instructor/editGrammar/addGrammar", params).then(resp => {
     dispatch({
@@ -487,10 +487,10 @@ export const addNewGrammar = (grammar, storyTitle) => dispatch => {
   });
 };
 
-export const deleteVocab = (vocab, storyTitle) => dispatch => {
+export const deleteVocab = (vocab, storyId) => dispatch => {
   let params = {
     vocab,
-    storyTitle
+    storyId
   };
   axios.put("/api/instructor/editVocab/deleteVocab", params).then(resp => {
     dispatch({
@@ -500,10 +500,10 @@ export const deleteVocab = (vocab, storyTitle) => dispatch => {
   });
 };
 
-export const deleteGrammar = (grammar, storyTitle) => dispatch => {
+export const deleteGrammar = (grammar, storyId) => dispatch => {
   let params = {
     grammar,
-    storyTitle
+    storyId
   };
   axios.put("/api/instructor/editGrammar/deleteGrammar", params).then(resp => {
     dispatch({

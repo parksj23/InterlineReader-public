@@ -89,7 +89,7 @@ class NewGrammarFormContainer extends Component {
       here: this.state.here,
       order_id: this.state.order_id
     }
-    this.props.addNewGrammar(newGrammar, this.props.storyTitle);
+    this.props.addNewGrammar(newGrammar, this.props.storyId);
   }
 
   handleCancel = () => {

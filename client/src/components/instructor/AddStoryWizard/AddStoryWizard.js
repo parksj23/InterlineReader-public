@@ -46,18 +46,32 @@ class AddStoryWizard extends Component {
   }
 
   componentWillMount(){
-    this.props.getFiles(this.props.user);
+    //this.props.getFiles(this.props.user);
   }
 
-  onComponentDidMount = () => {
-    this.setState({
-      storyForm: {
-        ...this.state.storyForm,
-        instructor: this.props.auth.user.id
-      }
-    })
+  componentDidMount = () => {
+    console.log(this.props.storyInfo)
+    if(this.props.storyInfo){
+      this.setState({
+        storyForm: {
+          ...this.state.storyForm,
+          ...this.props.storyInfo,
+          instructor: this.props.user.id,
+        },
+        saveDisabled: false
+      })
+    }
+    else{
+      this.setState({
+        storyForm: {
+          ...this.state.storyForm,
+          instructor: this.props.user.id,
+        },
+        saveDisabled: true
+      })
+    }
   }
-  
+
   onEditorStateChange = (editorState) => {
     this.setState({
       editorState,
@@ -67,12 +81,15 @@ class AddStoryWizard extends Component {
 
   checkDisabled = (storyForm) => {
     let keys = ["authorKorn", "authorRom", "titleKorn", "titleRom", "titleEng", "storyName", "language"]
-    for(let aKey of keys){
-      if (!storyForm[aKey]){
-        return true
+    let saveDisabled = true
+    keys.forEach( aKey => {
+      console.log(aKey)
+      console.log(storyForm[aKey])
+      if (!storyForm[aKey] || storyForm[aKey] === ""){
+        saveDisabled = false
       }
-    }
-    return false
+    })
+    return saveDisabled
   }
 
   handleOnChangeTab = (event, value) => {
@@ -87,7 +104,7 @@ class AddStoryWizard extends Component {
     }
     this.setState({
       storyForm,
-      saveDisabled: this.checkDisabled(storyForm),
+      saveDisabled:!this.checkDisabled(storyForm),
     })
   }
 
@@ -102,16 +119,6 @@ class AddStoryWizard extends Component {
     for(let aSection of sectionSaveButtons){
       aSection.click();
     }
-  }
-
-  doesStoryExist = (storyInfo) => {
-    let {instructor} = this.props;
-    if(!instructor.storyList) return false;
-    return instructor.storyList.filter(aStory =>{
-      return (
-        storyInfo === aStory
-      )
-    })
   }
 
   handleStatusClose = () => {
@@ -154,10 +161,10 @@ class AddStoryWizard extends Component {
     return sections;
   }
 
-
   render() {
+    let {storyForm} = this.state
     return (
-      <div className={'addStoryContainer'}>
+      <div className={'addStory'}>
         <div style={{paddingLeft: "12px", display: "flex", borderBottom: "solid 1px #000"}}>
           <Grid container style={{marginTop: "12px"}}>
             <Grid item xs={8}/>
@@ -177,6 +184,8 @@ class AddStoryWizard extends Component {
               variant="outlined"
               onChange={this.handleOnChangeField("titleKorn")}
               style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
+              value={storyForm.titleKorn}
+              disabled={this.props.storyInfo}
             />
           </Grid>
           <Grid item xs={4}>
@@ -188,6 +197,8 @@ class AddStoryWizard extends Component {
               variant="outlined"
               onChange={this.handleOnChangeField("authorKorn")}
               style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
+              value={storyForm.authorKorn}
+              disabled={this.props.storyInfo}
             />
           </Grid>
           <Grid item xs={4}>
@@ -199,6 +210,8 @@ class AddStoryWizard extends Component {
               variant="outlined"
               onChange={this.handleOnChangeField("titleRom")}
               style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
+              value={storyForm.titleRom}
+              disabled={this.props.storyInfo}
             />
           </Grid>
           <Grid item xs={4}>
@@ -210,6 +223,8 @@ class AddStoryWizard extends Component {
               variant="outlined"
               onChange={this.handleOnChangeField("authorRom")}
               style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
+              value={storyForm.authorRom}
+              disabled={this.props.storyInfo}
             />
           </Grid>
           <Grid item xs={4}>
@@ -221,6 +236,8 @@ class AddStoryWizard extends Component {
               variant="outlined"
               onChange={this.handleOnChangeField("titleEng")}
               style={{whiteSpace: "noWrap", width: '100%', paddingLeft: '8px', paddingRight: '8px'}}
+              value={storyForm.titleEng}
+              disabled={this.props.storyInfo}
             />
           </Grid>
         </Grid>
