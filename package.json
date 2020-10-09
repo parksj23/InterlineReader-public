@@ -31,6 +31,7 @@
     "@openfonts/nanum-gothic_korean": "^1.44.0",
     "aws-sdk": "^2.650.0",
     "dotenv": "^8.2.0",
-    "fuzzy-search": "^3.0.2"
+    "fuzzy-search": "^3.0.2",
+    "react-star-rating-component": "^1.4.1"
   }
 }

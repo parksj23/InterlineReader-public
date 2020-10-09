@@ -1,7 +1,8 @@
-import React from 'react'
+import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button'
-import './FlashCardsContent.css'
+import Button from '@material-ui/core/Button';
+import StarRatingComponent from 'react-star-rating-component';
+import './FlashCardsContent.css';
 
 const styles = {
     flashcardbuttonCorrect: {
@@ -26,12 +27,25 @@ const styles = {
 }
 
 const FlashCard = (props) => {
-    let {question, classes} = props
+    let {question, classes, isSaved} = props;
+
     return (
         <div className={'Flashcards-question-container'}>
             <div className={'Flasscards-question'}>
                 {
-                    question ? <h1>{question.vocabEng}</h1> : null
+                    question ?
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <StarRatingComponent
+                                name="favourite"
+                                starCount={1}
+                                value={isSaved? 1:0}
+                                onStarClick={() => isSaved? props.handleUnsave(question.vocabId) : props.handleSave(question.vocabId)}
+                                renderStarIcon={() => <span style={{ fontSize: '35px'}}>&#9733;</span>}
+                                emptyStarColor="gray"
+                            />
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <h1>{question.vocabEng}</h1>
+                        </div> : null
                 }
             </div>
             <div className={'Flashcards-options-container'}>

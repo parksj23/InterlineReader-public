@@ -16,3 +16,10 @@
     justify-content: center;
     text-align: center;
 }
+
+.Flashcards-question-count {
+    margin-top: 8px;
+    float: left;
+    display: flex;
+    width: 50%;
+}

@@ -64,9 +64,9 @@ class StoryText extends Component {
               {
                 this.props.text.map((aSegment, index) => {
                   let text = aSegment.text
-                  console.log(text)
+                  //console.log(text)
                   let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
-                  console.log(textSection)
+                  //console.log(textSection)
 
                   if (textSection) {
                     let phraseArr = []

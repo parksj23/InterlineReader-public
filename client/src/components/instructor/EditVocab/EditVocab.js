@@ -79,6 +79,7 @@ class EditVocab extends Component {
                   editVocab={this.props.editVocab}
                   userHighlightedText={this.props.editVocab.userHighlightedText}
                   storyId={this.props.editVocab.storyInfo._id}
+                  handleSelectHighlight={this.handleSelectHighlight}
                 /> : null
             }
           </Grid>

@@ -16,8 +16,7 @@ class EditGrammarFormContainer extends Component {
       pattern: null,
       here: null,
       order_id: null,
-      disableEditButton: true,
-      openStatus: false
+      disableEditButton: true
     }
     this.validateInputs.bind(this)
   }
@@ -45,15 +44,22 @@ class EditGrammarFormContainer extends Component {
   }
 
   handleOnChangeField = name => event => {
-    let disableEditButton = !this.validateInputs();
+    let disableEditButton = !this.validateInputs(name, event.target.value);
     this.setState({
       [name]: event.target.value,
       disableEditButton
     })
   }
 
-  validateInputs (){
-    return (this.state.sentence !== null && this.state.pattern !== null && this.state.here !== null)
+  validateInputs (name, value){
+      if (name === "sentence" && value === "")
+          return false;
+      else if (name === "pattern" && value === "")
+          return false;
+      else if (name === "here" && value === "")
+          return false;
+      else
+          return (this.state.sentence !== null && this.state.pattern !== null && this.state.here !== null && this.state._id !== null && this.state._id !== undefined)
   }
 
   handleEditGrammar = () => {
@@ -63,10 +69,7 @@ class EditGrammarFormContainer extends Component {
       pattern: this.state.pattern,
       here: this.state.here
     }
-    this.props.updateGrammar(newGrammar, this.props.storyId);
-    this.setState({
-      openStatus: true
-    })
+    this.props.updateGrammar(newGrammar, this.props.editGrammar.storyInfo._id);
   }
 
   handleDeleteGrammar = () => {
@@ -90,6 +93,14 @@ class EditGrammarFormContainer extends Component {
           </Grid>
           <Grid item xs={1} />
         </Grid>
+          {this.state.disableEditButton?
+              this.state._id === null || this.state._id === undefined?
+                  <p style={{color: 'white', backgroundColor: 'darkred', padding: '2% 5%', margin: '10%', fontSize: '20px', width: 'fit-content'}}> !! Page Refresh Required !! </p>
+                  :
+                  <p style={{color: 'white', backgroundColor: 'slategrey', padding: '2% 5%', margin: '10%', fontSize: '20px', width: 'fit-content'}}> Please Edit the Grammar to Enable the Edit Button. </p>
+              :
+              <span/>
+          }
         <Grid container>
           <Grid item xs={12}>
             <Grid container>
@@ -106,6 +117,8 @@ class EditGrammarFormContainer extends Component {
                   value={this.state.sentence}
                   fullWidth
                   multiline
+                  placeholder="This field must be non-empty to be able to edit."
+                  disabled={this.state._id === null || this.state._id === undefined}
                 />
               </Grid>
             </Grid>
@@ -126,6 +139,8 @@ class EditGrammarFormContainer extends Component {
                   value={this.state.pattern}
                   fullWidth
                   multiline
+                  placeholder="This field must be non-empty to be able to edit."
+                  disabled={this.state._id === null || this.state._id === undefined}
                 />
               </Grid>
             </Grid>
@@ -146,6 +161,8 @@ class EditGrammarFormContainer extends Component {
                   value={this.state.here}
                   fullWidth
                   multiline
+                  placeholder="This field must be non-empty to be able to edit."
+                  disabled={this.state._id === null || this.state._id === undefined}
                 />
               </Grid>
             </Grid>
@@ -170,6 +187,7 @@ class EditGrammarFormContainer extends Component {
                     variant="contained"
                     color="secondary"
                     onClick={this.handleDeleteGrammar}
+                    disabled={this.state._id === null || this.state._id === undefined}
             >Delete</Button>
           </Grid>
         </Grid>
