@@ -68,7 +68,6 @@ export const getMiddleKorean = () => dispatch => {
 export const getModernKorean = () => dispatch => {
   return new Promise((resolve, reject) => {
     axios.get("/api/dashboard/modernKorean").then(resp => {
-      console.log(resp.data)
       dispatch({
         type: DASHBOARD_GET_MODKR,
         payload: resp.data

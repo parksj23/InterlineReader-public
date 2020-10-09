@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 import { setCurrentUser, logoutUser } from './actions/auth';
 import { endGrammarSearchSession } from './actions/analytics'
 import setAuthToken from './utils/setAuthToken';
-
+import { withCookies } from 'react-cookie';
 import { Provider } from 'react-redux';
 import store from './store';
 import axios from 'axios'
@@ -115,7 +115,7 @@ class App extends Component {
               <Route path="/cleaner" component={Cleaner} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
-                <PrivateRoute path='/story' component={Story} />
+                  <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
                 <PrivateRoute path='/instructor' component={Instructor} />
               </Switch>
 
@@ -128,4 +128,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withCookies(App);

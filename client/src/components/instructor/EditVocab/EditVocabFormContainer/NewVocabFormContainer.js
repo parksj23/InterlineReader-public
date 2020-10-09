@@ -181,7 +181,7 @@ class NewVocabFormContainer extends Component {
           </Grid>
           <Grid item xs={7}/>
           <Grid item xs={5}>
-            <Button style={{marginRight: '4px'}} variant="contained" color="primary" onClick={this.addNewVocab}>Add</Button>
+            <Button style={{marginRight: '4px'}} variant="contained" color="primary" onClick={() => {this.props.handleSelectHighlight(''); this.addNewVocab()}}>Add</Button>
             <Button style={{marginLeft: '4px'}} variant="contained" color="secondary" onClick={this.handleCancel}>Cancel</Button>
           </Grid>
         </Grid>

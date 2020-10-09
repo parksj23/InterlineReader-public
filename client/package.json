@@ -50,6 +50,7 @@
     "re-resizable": "^4.9.0",
     "react": "^16.13.1",
     "react-content-loader": "^3.4.1",
+    "react-cookie": "^4.0.3",
     "react-dev-utils": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.12.13",

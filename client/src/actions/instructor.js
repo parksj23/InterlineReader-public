@@ -479,11 +479,19 @@ export const addNewGrammar = (grammar, storyId) => dispatch => {
     grammar,
     storyId
   };
+    dispatch({
+        type: INSTRUCTOR_LOADING,
+        payload: true
+    })
   axios.put("/api/instructor/editGrammar/addGrammar", params).then(resp => {
     dispatch({
       type: INSTRUCTOR_ADD_NEW_GRAMMAR,
       payload: resp.data.grammar
     });
+      dispatch({
+          type: INSTRUCTOR_LOADING,
+          payload: false
+      })
   });
 };
 
@@ -698,7 +706,6 @@ export const uploadDroppedFiles = (acceptedFiles, user) => dispatch => {
               createdDate: new Date(),
               modifiedDate: new Date()
             }).then(resp => {
-              console.log(resp)
               if (resp.data.value) {
                 dispatch({
                   type: INSTRUCTOR_ADD_FILE,
