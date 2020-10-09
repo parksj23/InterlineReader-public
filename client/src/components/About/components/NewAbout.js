@@ -1,6 +1,7 @@
 import logo from '../../../assets/ILReader_Logo-with-tagline2.png';
 import ubcLogo from '../../../assets/UbcReaderLogo.png';
 import '../style/about.css';
+import React from 'react';
 
 const NewAbout = () => {
     return(
