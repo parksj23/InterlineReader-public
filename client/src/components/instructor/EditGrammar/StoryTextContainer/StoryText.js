@@ -48,6 +48,8 @@ class StoryText extends Component {
     if (typeof window.getSelection !== "undefined") {
       text = window.getSelection().toString();
       if(text !== ""){
+        if (text === "close-add-form")
+            this.props.handleSelectHighlight('')
         this.props.startUpdatingHighlightedText("Grammar");
         this.props.updateUserHighlightedText(text, "Grammar");
       }

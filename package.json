@@ -1,5 +1,5 @@
 {
-  "name": "interlinereader",
+  "name": "interlinereaderapi",
   "version": "2.0.0",
   "description": "Platform for reading foreign literary texts",
   "main": "server.js",
@@ -14,6 +14,7 @@
     "devServer": "cd server && NODE_ENV=development babel-node server.js",
     "client": "cd client && node scripts/start.js",
     "dev": "npm run server && npm run client",
+    "windows": "concurrently \"npm run client\" \"npm run devServer\"",
     "heroku-postbuild": "cd server && npm install && cd ../client && npm install && npm run build"
   },
   "repository": {
@@ -28,8 +29,11 @@
   "homepage": "https://github.com/armaandh/interlinereader#readme",
   "dependencies": {
     "@openfonts/nanum-gothic_korean": "^1.44.0",
+    "all": "0.0.0",
     "aws-sdk": "^2.650.0",
     "dotenv": "^8.2.0",
-    "fuzzy-search": "^3.0.2"
+    "eslint": "^7.10.0",
+    "fuzzy-search": "^3.0.2",
+    "react-star-rating-component": "^1.4.1"
   }
 }

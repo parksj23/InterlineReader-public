@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import  {fetchLogo} from "../../actions/about";
 import "./style/about.css";
 import About from './components/About';
+import NewAbout from './components/NewAbout';
 
 
 class AboutContainer extends Component {
@@ -19,12 +20,19 @@ class AboutContainer extends Component {
     render() {
         const {logo} = this.props.about;
         return (
-            <Grid container>
-                <Grid item xs={1} />
-                <Grid item xs={10} >
-                    <About logo={logo}/>
+            <div>
+                <NewAbout/>
+                <br/>
+                {/*
+                <Grid container>
+                    <Grid item xs={1} />
+                    <Grid item xs={10} >
+                        <About logo={logo}/>
+                    </Grid>
                 </Grid>
-            </Grid>
+                */}
+            </div>
+
         );
     }
 }

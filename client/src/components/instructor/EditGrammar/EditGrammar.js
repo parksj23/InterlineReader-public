@@ -28,13 +28,20 @@ class EditGrammar extends Component {
 
 
   handleSelectHighlight = (selectedText) => {
-    let selectedGrammarInfo = this.props.editGrammar.MODKR.grammarSearch[selectedText]
-    this.props.updateSelectedGrammar(selectedGrammarInfo);
+    if (selectedText !== "") {
+        let selectedGrammarInfo = this.props.editGrammar.MODKR.grammarSearch[selectedText]
+        this.props.updateSelectedGrammar(selectedGrammarInfo);
+    }
+
   }
 
   render() {
+    // let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch ?
+    //     new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|"), "g") : null;
 
-    let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch ? new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|"), "g") : null;
+      console.log(this.props.editGrammar)
+      let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch &&
+      Object.keys(this.props.editGrammar.MODKR.grammarSearch).length > 0 ? new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|")) : null;
     let {editGrammar} = this.props
     return (
       <div className="edit-Vocabulary">
@@ -61,6 +68,7 @@ class EditGrammar extends Component {
                   updateGrammar={this.props.updateGrammar}
                   deleteGrammar={this.props.deleteGrammar}
                   statusMessage={this.props.editGrammar.ediGrammarStatusMessage}
+                  editGrammar={this.props.editGrammar}
                 /> : null
             }
             {
@@ -69,6 +77,7 @@ class EditGrammar extends Component {
                   editGrammar={this.props.editGrammar}
                   userHighlightedText={this.props.editGrammar.userHighlightedText}
                   storyId={this.props.editGrammar.storyInfo._id}
+                  handleSelectHighlight={this.handleSelectHighlight}
                 /> : null
             }
           </Grid>

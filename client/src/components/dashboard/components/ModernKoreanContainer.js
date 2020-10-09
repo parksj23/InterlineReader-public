@@ -76,7 +76,7 @@ class ModernKoreanContainer extends Component {
 
   render() {
     return (
-      <div className="dashboard-midKorean">
+      <div className="dashboard-midKorean" style={{marginTop: '1.5rem'}}>
         <Grid container>
           <Grid item xs={2}/>
           <Grid item xs={8}>

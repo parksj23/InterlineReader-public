@@ -60,7 +60,7 @@ class NewGrammarFormContainer extends Component {
   findOrderId() {
     let order_id = null
     let text = this.props.editGrammar.MODKR.rawKoreanText
-    let grammarWords = Object.keys(this.props.editGrammar.MODKR.grammarSearch)
+    let grammarWords = this.props.editGrammar.MODKR.grammarSearch? Object.keys(this.props.editGrammar.MODKR.grammarSearch) : [];
     let startIndex = 0;
     let startText = grammarWords[startIndex]
     let textSegment = text.substring(0,text.indexOf(startText));
@@ -192,7 +192,7 @@ class NewGrammarFormContainer extends Component {
             <Button style={{marginRight: '4px'}}
                     variant="contained"
                     color="primary"
-                    onClick={this.handleAddNewGrammar}
+                    onClick={() => {this.props.handleSelectHighlight('close-add-form'); this.handleAddNewGrammar()}}
                     disabled={this.state.disableEditButton}
 
             >Add</Button>
