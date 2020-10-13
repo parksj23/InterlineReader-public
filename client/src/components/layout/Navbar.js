@@ -80,7 +80,7 @@ class Navbar extends Component {
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item">
                                     <Link className={currentPath==="/dashboard/modernKorean"? "selected": "nav-link"} to="/dashboard/modernKorean">
-                                        Modern korean
+                                        Modern Korean
                                     </Link>
                                 </li>
                                 <li className="nav-item">

@@ -8,6 +8,7 @@ import {
   STORY_IS_LOADING,
   STORY_IS_NOT_LOADING,
   SAVE_HYPOTHESIS,
+    UPDATE_SAVED_GRAMMARS
 } from '../constants/action-types';
 
 const initialState = {
@@ -32,11 +33,16 @@ export default (state = initialState, action) => {
         vocab: action.payload.vocab,
         grammar: action.payload.grammar,
       };
-    case UPDATE_SAVED_WORDS:
-      return {
-        ...state,
-        vocabList: action.payload
-      }
+      case UPDATE_SAVED_WORDS:
+          return {
+              ...state,
+              vocabList: action.payload
+          }
+      case UPDATE_SAVED_GRAMMARS:
+          return {
+              ...state,
+              grammarList: action.payload
+          }
     case LEAVE_STORY:
       return {
         ...initialState

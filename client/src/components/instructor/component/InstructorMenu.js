@@ -12,7 +12,8 @@ const drawerWidth = 200;
 const styles = theme => ({
   root: {
     display: 'flex',
-    height: '100%'
+    height: '100%',
+      background: '#c0d0e5'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -91,7 +92,7 @@ class InstructorMenu extends React.Component {
     return (
       <div className={classes.root}>
         <CssBaseline />
-          <List>
+          <List style={{color: 'white'}}>
             <ListItem button key={'analytics'}
                       onClick={()=> {
                         this.props.history.push('/instructor/analytics');

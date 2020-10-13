@@ -227,7 +227,7 @@ class FlashCardContainer extends Component {
                                     :
                                     <h4 style={{marginRight: '5%'}}>{`Question ${this.state.answeredQuestions.length + 1}/${this.state.vocabQueue.length + this.state.answeredQuestions.length}`}</h4>
                                 }
-                                <Button variant="contained" color="primary" onClick={() => this.handleStartOver()}>Start Over</Button>
+                                <Button variant="contained" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
                             </div>
                             <div style={{float: 'right'}}>
                                 <Button disabled={!this.state.answeredCurrentQuestion}

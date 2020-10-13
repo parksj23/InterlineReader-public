@@ -53,12 +53,14 @@ class Register extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="register">
+      <div className="register" style={{backgroundImage: 'linear-gradient( 109.6deg,  rgba(121,203,202,1) 11.2%, rgba(119,161,211,1) 91.1% )'}}>
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
+            <div className="col-md-8 m-auto" style={{ padding: '10% 10% 15% 10%'}}>
               <h1 className="display-4 text-center">Sign Up</h1>
+                <br/><br/>
               <p className="lead text-center">Create your Interline Reader account</p>
+                <br/><br/>
               <form onSubmit={this.onSubmit} noValidate >
                 <TextFieldGroup
                   placeholder="Name"
@@ -98,7 +100,7 @@ class Register extends Component {
                   onChange={this.onChange}
                   error={errors.password2}
                 />
-                <input type="submit" className="btn btn-info btn-block mt-4" />
+                <input type="submit" className="btn btn-info btn-block mt-4" style={{backgroundColor: '#00284d'}}/>
               </form>
             </div>
           </div>

@@ -15,30 +15,30 @@ import {connect} from "react-redux";
 
 const vocabTableHeaders = [
   {
-    label: "korean",
+    label: "Korean",
     value: "korean"
   },
   {
-    label: "hanja",
+    label: "Hanja",
     value: "hanja"
   },
   {
-    label: "english",
+    label: "English",
     value: "english"
   }
 ]
 
 const grammarTableHeaders = [
   {
-    label: "sentence",
+    label: "Sentence",
     value: "sentence"
   },
   {
-    label: "pattern",
+    label: "Pattern",
     value: "pattern"
   },
   {
-    label: "here",
+    label: "Here",
     value: "here"
   }
 ]
@@ -76,27 +76,25 @@ class ModernKoreanContainer extends Component {
 
   render() {
     return (
-      <div className="dashboard-midKorean" style={{marginTop: '1.5rem'}}>
-        <Grid container>
-          <Grid item xs={2}/>
-          <Grid item xs={8}>
+      <div className="dashboard-midKorean">
+          <div className="instructor-heading">
+              <h2 style={{fontWeight: 'bold'}}>Modern Korean Vocabularies and Grammars</h2>
+              <p>View and search vocabularies and grammars from all Modern Korean stories.</p>
+          </div>
             <Tabs
               value={this.state.tabValue}
               onChange={this.handleOnChangeTab}
               indicatorColor="primary"
               textColor="primary"
               centered
+              style={{padding: '2%'}}
             >
               <Tab label="Vocabulary"/>
               <Tab label="Grammar"/>
             </Tabs>
-          </Grid>
-        </Grid>
 
-        <Grid container>
-          <Grid item xs={12} style={{padding: "12px"}}>
             { this.props.dashboard.modKr.modKrGram && this.props.dashboard.modKr.modKrVoc ?
-              <Paper>
+              <Paper style={{padding: '0 10% 10% 10%', height:'100%', boxShadow: 'none'}}>
                 {this.state.tabValue === 0 ?
                   <div>
                     <ExpansionPanel>
@@ -148,10 +146,6 @@ class ModernKoreanContainer extends Component {
                 }
               </Paper> : null
             }
-          </Grid>
-        </Grid>
-        <Grid container>
-        </Grid>
       </div>
     );
   }

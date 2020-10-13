@@ -5,13 +5,15 @@ import {
   TOGGLE_SIDEBAR,
   GET_SAVED_WORDS,
   GET_LIST_OF_SAVED_WORDS,
+    GET_LIST_OF_SAVED_GRAMMARS,
   UPDATE_SAVED_WORDS,
   ADD_SAVED_WORD, DELETE_SAVED_WORD,
   RESET_STATUS,
   ENABLE_SIDEBAR_BUTTON,
   RESET_SIDEBAR,
   ADD_TO_SAVED_WORD,
-  REMOVE_FROM_SAVED_WORD
+  REMOVE_FROM_SAVED_WORD,
+    ADD_SAVED_GRAMMAR, DELETE_SAVED_GRAMMAR
 } from "../constants/action-types";
 
 
@@ -114,6 +116,43 @@ export const updateSavedWords = params => dispatch => {
     })
   })
 
+}
+
+export const getListOfSavedGrammars = (userId, storyId) => dispatch => {
+    let params = {
+        userId,
+        storyId
+    };
+    return new Promise ((resolve, reject) => {
+        resolve(axios.get(`/api/savedGrammars/getListOfSavedGrammars`, {params}).then(res=> {
+            if (res.data) {
+                dispatch({
+                    type: GET_LIST_OF_SAVED_GRAMMARS,
+                    payload: res.data.savedGrammarIds
+                })
+            }
+            return res.data
+        }))
+    })
+};
+
+
+export const addSavedGrammar = (userId, storyId, savedGrammarIds, grammar) => dispatch => {
+    axios.put(`/api/savedGrammars/updateSavedGrammars`, {userId: userId , storyId: storyId, savedGrammarIds: savedGrammarIds.concat([grammar._id])}).then(res=>{
+        dispatch({
+            type: ADD_SAVED_GRAMMAR,
+            payload: grammar
+        })
+    })
+}
+
+export const deleteSavedGrammar = (userId, storyId, savedGrammarIds) => dispatch => {
+    axios.put(`/api/savedGrammars/updateSavedGrammars`, {userId: userId , storyId: storyId, savedGrammarIds: savedGrammarIds}).then(res=> {
+        dispatch({
+            type: DELETE_SAVED_WORD,
+            payload: savedGrammarIds
+        })
+    })
 }
 
 export const handleStatusClose = () => dispatch => {

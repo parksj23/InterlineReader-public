@@ -31,7 +31,7 @@ const Story = (props) => {
             <div className='translateContainer' >
                 {
                     props.stories.MODKR && props.stories.MODKR.storyText ?
-                        <Tooltip title="Modern Korean" aria-label="Flashcard" placement="left">
+                        <Tooltip title="Modern Korean" aria-label="Flashcard" placement="left" style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" aria-label="add" className={classes.fab} onClick={()=> handleTranslate("MODKR")}>
                                 Kor
                             </Fab>
@@ -39,7 +39,7 @@ const Story = (props) => {
                 }
                 {
                     props.stories.ENGSH && props.stories.ENGSH.storyText ?
-                        <Tooltip title="English" placement="left">
+                        <Tooltip title="English" placement="left" style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" className={classes.fab}  onClick={()=> handleTranslate("ENGSH")}>
                                 Eng
                             </Fab>
@@ -47,7 +47,7 @@ const Story = (props) => {
                 }
                 {
                     props.stories.MIDKR && props.stories.MIDKR.storyText ?
-                        <Tooltip title="Middle Korean" placement="left">
+                        <Tooltip title="Middle Korean" placement="left" style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" className={classes.fab} onClick={()=> handleTranslate("MIDKR")}>
                                 Mid
                             </Fab>
@@ -55,7 +55,7 @@ const Story = (props) => {
                 }
                 {
                     props.stories.HANMN && props.stories.HANMN.storyText ?
-                        <Tooltip title="Hanmun" placement="left" onClick={()=> handleTranslate("HANMN")}>
+                        <Tooltip title="Hanmun" placement="left" onClick={()=> handleTranslate("HANMN")} style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" className={classes.fab}>
                                 Han
                             </Fab>
@@ -63,7 +63,7 @@ const Story = (props) => {
                 }
                 {
                     props.stories.MODKR && props.stories.MODKR.storyText ?
-                        <Tooltip title="Flashcards" placement="left" onClick={() => handleFlashCards(false)}>
+                        <Tooltip title="Flashcards" placement="left" onClick={() => handleFlashCards(false)} style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" className={classes.fab}>
                                 FC
                             </Fab>
@@ -71,7 +71,7 @@ const Story = (props) => {
                 }
                 {
                     props.stories.MODKR && props.stories.MODKR.storyText ?
-                        <Tooltip title="Saved Flashcards" placement="left" onClick={() => handleFlashCards(true)}>
+                        <Tooltip title="Saved Flashcards" placement="left" onClick={() => handleFlashCards(true)} style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" className={classes.fab}>
                                 &#9733;FC
                             </Fab>
@@ -79,7 +79,7 @@ const Story = (props) => {
                 }
                 {
                     props.stories.storyInfo.pdfUrl ?
-                        <Tooltip title="Original Text" placement="left" onClick={handleOriginalText}>
+                        <Tooltip title="Original Text" placement="left" onClick={handleOriginalText} style={{backgroundColor: '#00284d'}}>
                             <Fab color="primary" className={classes.fab}>
                                 OT
                             </Fab>

@@ -66,6 +66,7 @@ app.use('/api/dashboard', require('./routes/api/dashboard'));
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
 app.use('/api/story', require('./routes/api/stories'));
 app.use('/api/savedWords', require('./routes/api/savedWords'));
+app.use('/api/savedGrammars', require('./routes/api/savedGrammars'));
 app.use('/api/instructor', require("./routes/api/instructor"));
 app.use('/api/analytics', require("./routes/api/analytics"));
 app.use('/api/files', require('./routes/api/files'))

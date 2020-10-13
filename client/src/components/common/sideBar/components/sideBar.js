@@ -7,6 +7,7 @@ import Tab from '@material-ui/core/Tab';
 import Vocab from './Vocab/VocabContainer';
 import Grammar from './Grammar/GrammarContainer';
 import SavedWords from './SavedWords/SavedWordsContainer';
+import SavedGrammars from './SavedGrammars/SavedGrammarsContainer';
 import GrammarSearch from './GrammarSearch/GrammarSearch';
 import Dictionary from './Dictionary/Dictionary';
 import Resizable from 're-resizable';
@@ -60,20 +61,22 @@ const SideBar = (props) => {
             </div> */}
             <AppBar id="appbar" position="static" classes={{root: classes.appBarRoot}}>
               <Tabs className="sideBar-tabs" classes={{root: classes.tabsRoot, flexContainer: classes.flexContainer, indicator: classes.indicator}} value={props.tab} onChange={props.handleTabChange} 
-                    scrollButtons='auto'>
+                    scrollButtons='auto' style={{overflow: 'hidden'}}>
                 <Tab label="어휘"/>
                 <Tab label="문법"/>
-                <Tab label="저장한 단어"/>
+                  <Tab label="저장한 단어"/>
+                  <Tab label="저장한 문법"/>
                 <Tab label="문법검색"/>
                 <Tab label="사전"/>
                 <i style={{cursor:"pointer", fontSize: "28px", position:"absolute", "bottom":"0", "right": "0"}} className="material-icons" onClick={()=>props.toggleDrawer('left', false)}>arrow_back_ios</i>
               </Tabs>
             </AppBar>
-            {props.tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAddVocab}/></div>}
-            {props.tab === 1 && <div><Grammar grammar={grammar}/></div>}
-            {props.tab === 2 && <div><SavedWords story={props.story}/></div>}
-            {props.tab === 3 && <div><GrammarSearch story={props.story} storyInfo={props.storyInfo}/></div>}
-            <div style={{display: props.tab === 4 ? 'block' : 'none'}}><Dictionary/></div>
+            {props.tab === 0 && <div><Vocab vocab={vocab} addWord={props.handleAdd}/></div>}
+            {props.tab === 1 && <div><Grammar grammar={grammar} addGrammar={props.handleAdd}/></div>}
+              {props.tab === 2 && <div><SavedWords story={props.story}/></div>}
+              {props.tab === 3 && <div><SavedGrammars grammar={grammar} story={props.story}/></div>}
+            {props.tab === 4 && <div><GrammarSearch story={props.story} storyInfo={props.storyInfo}/></div>}
+            <div style={{display: props.tab === 5 ? 'block' : 'none'}}><Dictionary/></div>
           </div>
         </Resizable>
       </Drawer>

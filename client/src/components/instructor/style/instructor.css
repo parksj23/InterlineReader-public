@@ -1,12 +1,11 @@
 .instructor {
     height: 100%;
     width: 100%;
-    padding-left: 12px;
-    padding-right: 32px;
 }
 
 .instructor-heading{
-    padding-left: 12px;
+    padding: 5% 4%;
+    background: linear-gradient(to right, #8e9eab, #eef2f3);
 }
 
 .instructor-heading h2 {

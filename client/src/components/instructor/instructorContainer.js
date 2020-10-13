@@ -13,7 +13,6 @@ import Stories from "./stories/Stories";
 import InstructorMenu from "./component/InstructorMenu";
 import FilesContainer from './Files/FilesContainer'
 import Grid from "@material-ui/core/Grid";
-import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
 import "./style/instructor.css";
 import AddStoryWizardContainer from "./AddStoryWizard/AddStoryWizardContainer";
@@ -44,8 +43,7 @@ class InstructorContainer extends Component {
           <Grid container style={{height: "100%", overflow: "scroll"}}>
             <Grid item xs={12}>
               <div className="instructor-heading">
-                <h2>{this.props.headerName}</h2>
-                <Divider/>
+                <h2 style={{fontWeight: 'bold'}}>{this.props.headerName}</h2>
               </div>
             </Grid>
               <Grid container style={{height: "100%"}}>

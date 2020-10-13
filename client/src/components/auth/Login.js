@@ -54,12 +54,14 @@ class Login extends Component {
     const { errors } = this.state;
 
     return (
-      <div className="login">
+      <div className="login" style={{backgroundImage: 'linear-gradient( 109.6deg,  rgba(121,203,202,1) 11.2%, rgba(119,161,211,1) 91.1% )'}}>
         <div className="container">
           <div className="row">
-            <div className="col-md-8 m-auto">
+            <div className="col-md-8 m-auto" style={{ padding: '10% 10% 25% 10%'}}>
               <h1 className="display-4 text-center">Log In</h1>
+                <br/><br/>
               <p className="lead text-center">Sign in to your Interline Reader account</p>
+                <br/><br/>
               <form noValidate onSubmit={this.onSubmit} >
                 <TextFieldGroup
                   placeholder="Email Address or username"
@@ -77,8 +79,8 @@ class Login extends Component {
                   onChange={this.onChange}
                   error={errors.password}
                 />
-                <Link to="/login/forgot" className="small">Forgot password</Link>
-                <input onChange={this.onChange} type="submit" className="btn btn-info btn-block mt-4" />
+                <Link to="/login/forgot" className="small" style={{color: 'darkblue'}}>Forgot password</Link>
+                <input onChange={this.onChange} type="submit" className="btn btn-info btn-block mt-4" style={{backgroundColor: '#00284d'}}/>
               </form>
             </div>
           </div>
