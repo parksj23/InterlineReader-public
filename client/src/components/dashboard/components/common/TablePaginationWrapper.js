@@ -24,7 +24,7 @@ const styles = theme => ({
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: '#00284d',
     color: theme.palette.common.white
   },
   body: {

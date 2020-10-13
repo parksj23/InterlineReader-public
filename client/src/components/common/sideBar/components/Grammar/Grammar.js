@@ -5,6 +5,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = {
   tableCell: {
@@ -31,6 +32,7 @@ const Grammar = (props) => {
           <TableCell>Sentence</TableCell>
           <TableCell>Pattern</TableCell>
           <TableCell>Context</TableCell>
+            <TableCell> </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -42,6 +44,7 @@ const Grammar = (props) => {
                          onClick={() =>{props.updateHighlightWord(grammar.sentence, "grammar"); scrollToPos()} }>{grammar.sentence}</TableCell>
               <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.pattern}</TableCell>
               <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.here}</TableCell>
+                <TableCell onClick={ ()=> props.handleAddSavedGrammar(grammar)}><Tooltip disableFocusListener title="Save Grammar"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
             </TableRow>
           )
         })}

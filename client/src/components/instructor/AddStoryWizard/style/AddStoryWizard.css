@@ -1,12 +1,27 @@
 
-
 .addStoryContainer {
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .editor-area{
     height: 100%;
+}
+
+.add-new-button {
+    position: relative;
+}
+
+.add-icon {
+    margin: 10%;
+    color: white;
+}
+
+.add-button-link {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .action-area{

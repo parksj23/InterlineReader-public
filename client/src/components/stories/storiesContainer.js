@@ -13,6 +13,7 @@ import {endGrammarSearchSession} from '../../actions/analytics'
 
 import {
     getListOfSavedWords,
+    getListOfSavedGrammars,
     getSavedWords,
     enableSideBarButton,
     resetSideBar,
@@ -80,8 +81,9 @@ class StoriesContainer extends Component {
                         selectedLanguage: this.props.stories.selectedLanguage
                     })
 
-                })
+                });
             })
+            this.props.getListOfSavedGrammars(this.props.userId, storyInfo._id);
         });
     }
 
@@ -282,7 +284,7 @@ const mapDispatchToProps = ({
     getVocabforStory, getListOfSavedWords, initStory,
     getSavedWords, leaveStories, enableSideBarButton, resetSTories, resetSideBar,
     disableSideBarButton, updateSavedWords, enableLoading, disableLoading, saveHypothesisLink,
-    endGrammarSearchSession
+    endGrammarSearchSession, getListOfSavedGrammars
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

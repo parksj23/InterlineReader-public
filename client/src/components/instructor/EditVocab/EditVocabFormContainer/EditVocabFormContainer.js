@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import StatusMessage from '../../../common/statusMessage/statusMessage';
 import {handleStatusClose, startUpdatingEditVocab} from '../../../../actions/instructor';
+import Divider from '@material-ui/core/Divider';
 
 class EditVocabFormContainer extends Component {
     constructor(props) {
@@ -52,12 +53,12 @@ class EditVocabFormContainer extends Component {
     }
 
     validateInputs (name, value){
-      if (name === "korean" && value === "")
-        return false;
-      else if (name === "english" && value === "")
-        return false;
-      else
-        return (this.state.korean !== null && this.state.english !== null && this.state._id !== null && this.state._id !== undefined)
+        if (name === "korean" && value === "")
+            return false;
+        else if (name === "english" && value === "")
+            return false;
+        else
+            return (this.state.korean !== null && this.state.english !== null && this.state._id !== null && this.state._id !== undefined)
     }
 
     handleEditVocab = () => {
@@ -85,104 +86,71 @@ class EditVocabFormContainer extends Component {
     render() {
         let {selectedVocab} = this.props
         return (
-            <div className="edit-Vocabulary-form-container">
-                <Grid container>
-                    <Grid item xs={1} />
-                    <Grid item xs={10} justify={'center'}>
-                        <h2 className={'edit-vocab-form-title'}>Vocab Selected: {selectedVocab.korean}</h2>
-                    </Grid>
-                    <Grid item xs={1} />
-                </Grid>
+            <div className="edit-Vocabulary-form-container" style={{textAlign: 'center'}}>
+                <h2 className={'edit-vocab-form-title'}>Vocab Selected: &nbsp;&nbsp;&nbsp;&nbsp;<span style={{fontWeight:'bold'}}>{selectedVocab.korean}</span></h2>
+                <br/><br/>
                 {this.state.disableEditButton?
                     this.state._id === null || this.state._id === undefined?
-                        <p style={{color: 'white', backgroundColor: 'darkred', padding: '2% 5%', margin: '10%', fontSize: '20px', width: 'fit-content'}}> !! Page Refresh Required !! </p>
+                        <p style={{color: 'white', backgroundColor: 'darkred', padding: '1% 5%', fontSize: '15px', width: '70%', display: 'inline-block'}}> !! Page Refresh Required !! </p>
                         :
-                        <p style={{color: 'white', backgroundColor: 'slategrey', padding: '2% 5%', margin: '10%', fontSize: '20px', width: 'fit-content'}}> Please Edit the Vocab to Enable the Edit Button. </p>
+                        <p style={{color: 'white', backgroundColor: 'darkred', padding: '1% 5%', fontSize: '15px', width: '70%', display: 'inline-block'}}> Please Edit the Vocab to Enable the Edit Button. </p>
                     :
                     <span/>
                 }
                 <Grid container>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <span className={'edit-vocab-form-label'}>Korean</span>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <TextField
-                                    required
-                                    id="korean"
-                                    margin="normal"
-                                    onChange={this.handleOnChangeField("korean")}
-                                    style={{whiteSpace: "noWrap"}}
-                                    value={this.state.korean}
-                                    fullWidth
-                                    multiline
-                                    placeholder="This field must be non-empty to be able to edit."
-                                    disabled={this.state._id === null || this.state._id === undefined}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1}/>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <span className={'edit-vocab-form-label'}>Hanja</span>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <TextField
-                                    required
-                                    id="hanja"
-                                    margin="normal"
-                                    onChange={this.handleOnChangeField("hanja")}
-                                    style={{whiteSpace: "noWrap"}}
-                                    value={this.state.hanja}
-                                    fullWidth
-                                    multiline
-                                    disabled={this.state._id === null || this.state._id === undefined}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1}/>
-                    <Grid item xs={12}>
-                        <Grid container>
-                            <Grid item xs={2} style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                                <span className={'edit-vocab-form-label'}>English</span>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <TextField
-                                    required
-                                    id="english"
-                                    margin="normal"
-                                    onChange={this.handleOnChangeField("english")}
-                                    style={{whiteSpace: "noWrap"}}
-                                    value={this.state.english}
-                                    fullWidth
-                                    multiline
-                                    placeholder="This field must be non-empty to be able to edit."
-                                    disabled={this.state._id === null || this.state._id === undefined}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={1}/>
-                    <Grid item xs={7}/>
-                    <Grid item xs={5}>
-                        <Button style={{marginRight: '4px'}}
-                                variant="contained"
-                                color="primary"
-                                onClick={this.handleEditVocab}
-                                disabled={this.state.disableEditButton}
-                        >Edit</Button>
-                        <Button style={{marginLeft: '4px'}}
-                                variant="contained"
-                                color="secondary"
-                                onClick={this.handleDeleteVocab}
-                                disabled={this.state._id === null || this.state._id === undefined}
-                        >Delete</Button>
-                    </Grid>
+                    <div style={{display: 'flex', width: '100%'}}>
+                        <span style={{width: '40%'}}>Korean</span>
+                        <TextField
+                            required
+                            id="korean"
+                            onChange={this.handleOnChangeField("korean")}
+                            style={{whiteSpace: "noWrap", width: '40%'}}
+                            value={this.state.korean}
+                            multiline
+                            placeholder="This field must be non-empty to be able to edit."
+                            disabled={this.state._id === null || this.state._id === undefined}
+                        />
+                    </div>
+                    <br/><br/>
+                    <div style={{display: 'flex', width: '100%'}}>
+                        <span style={{width: '40%'}}>Hanja</span>
+                        <TextField
+                            required
+                            id="hanja"
+                            onChange={this.handleOnChangeField("hanja")}
+                            style={{whiteSpace: "noWrap", width: '40%'}}
+                            value={this.state.hanja}
+                            multiline
+                            disabled={this.state._id === null || this.state._id === undefined}
+                        />
+                    </div>
+                    <br/><br/>
+                    <div style={{display: 'flex', width: '100%'}}>
+                        <span style={{width: '40%'}}>English</span>
+                        <TextField
+                            required
+                            id="english"
+                            onChange={this.handleOnChangeField("english")}
+                            style={{whiteSpace: "noWrap", width: '40%'}}
+                            value={this.state.english}
+                            multiline
+                            disabled={this.state._id === null || this.state._id === undefined}
+                        />
+                    </div>
+                    <br/><br/><br/>
                 </Grid>
+                <div style={{width: '100%', display: 'block'}}>
+                    <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}}
+                            variant="contained"
+                            onClick={this.handleEditVocab}
+                            disabled={this.state.disableEditButton}
+                    >Edit</Button>
+                    <Button style={{marginLeft: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}}
+                            variant="contained"
+                            onClick={this.handleDeleteVocab}
+                            disabled={this.state._id === null || this.state._id === undefined}
+                    >Delete</Button>
+                </div>
                 <StatusMessage status="success"
                                open={this.props.statusMessage}
                                message={this.props.statusMessage}
