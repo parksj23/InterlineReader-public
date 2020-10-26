@@ -42,7 +42,7 @@ const Grammar = (props) => {
               <TableCell classes={{root: classes.cursor}}
                          style={{cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}}
                          onClick={() =>{props.updateHighlightWord(grammar.sentence, "grammar"); scrollToPos()} }>{grammar.sentence}</TableCell>
-              <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.pattern}</TableCell>
+                <TableCell style={pointerButton} classes={{root: classes.cursor}}><div dangerouslySetInnerHTML={{ __html: grammar.pattern }} /></TableCell>
               <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.here}</TableCell>
                 <TableCell onClick={ ()=> props.handleAddSavedGrammar(grammar)}><Tooltip disableFocusListener title="Save Grammar"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
             </TableRow>
