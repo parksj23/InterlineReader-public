@@ -39,6 +39,8 @@ const styles ={
 const SideBar = (props) => {
 
   const{story, vocab, grammar, left, classes} = props;
+    vocab.sort((a, b) => parseInt(a.order_id) - parseInt(b.order_id));
+    grammar.sort((a, b) => parseInt(a.order_id) - parseInt(b.order_id));
   return (
     <div className={story}>
       <Drawer id={"DrawerContainer"} variant="persistent" open={left} onClose={()=>props.toggleDrawer('left', false)}>

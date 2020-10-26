@@ -87,8 +87,7 @@ class InstructorMenu extends React.Component {
   render() {
     const { classes} = this.props;
 
-    // TODO: As a temporary measure, disabled Intructor menu disabling function because there is a bug somewhere. Need to identify the issue further later.
-      // TODO: i.e., <ListItem button key={'analytics'} disabled={this.props.isLoading}
+      // Original: <ListItem ... disabled={this.props.isLoading}
     return (
       <div className={classes.root}>
         <CssBaseline />
