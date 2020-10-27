@@ -11,7 +11,7 @@ import AddStoryWizard from "./AddStoryWizard";
 import {connect} from "react-redux";
 import {Grid, Button} from "@material-ui/core";
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ClassCard from "./components/classCard";
+import ClassCard from "../Common/StoryList/classCard";
 
 
 class AddStoryWizardContainer extends Component {
@@ -70,7 +70,7 @@ class AddStoryWizardContainer extends Component {
         if(storyLists && storyLists.allStories) {
             storyLists.allStories.forEach((aStory, index) => {
                 classCards.push(
-                    <Grid item xs={4} key={'story_badge' + aStory._id} style={{padding: '12px'}}>
+                    <Grid item xs={4} key={'story_badge' + aStory._id} style={{padding: '18px'}}>
                         {<Link to={`/instructor/addStory/${aStory._id}`} className={'card-link'}>
                             <ClassCard story={aStory} style={{width: "100%"}}/>
                         </Link>}

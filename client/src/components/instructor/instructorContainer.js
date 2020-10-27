@@ -5,6 +5,7 @@ import Instructor from "./component/Instructor";
 import {changeSelectedMenu, initInstructor} from "../../actions/instructor";
 import {disableSideBarButton} from "../../actions/dashboard";
 import EditGrammarContainer from "./EditGrammar/EditGrammarContainer";
+import EditStoryContainer from './EditStory/EditStoryContainer';
 import EditVocabContainer from "./EditVocab/EditVocabContainer";
 import addMidKRGramContainer from "./AddMidKRGram/AddMidKRGramContainer";
 import addMidKRVocContainer from "./AddMidKRVoc/AddMidKRVocContainer"
@@ -64,10 +65,14 @@ class InstructorContainer extends Component {
                         component={Stories}
                       />
                       <Route path="/instructor/classes" component={ClassesContainer}/>
-                      <Route
-                        path="/instructor/addStory"
-                        component={AddStoryWizardContainer}
-                      />
+                        <Route
+                            path="/instructor/addStory"
+                            component={AddStoryWizardContainer}
+                        />
+                        <Route
+                            path="/instructor/editStory"
+                            component={EditStoryContainer}
+                        />
                       <Route
                         path="/instructor/editGrammar"
                         component={EditGrammarContainer}
