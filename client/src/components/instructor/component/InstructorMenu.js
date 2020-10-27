@@ -109,14 +109,22 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">library_books</i></ListItemIcon>
               <ListItemText primary={'Classes'} />
             </ListItem>
-            <ListItem button key={'addStory'}
-                      onClick={()=> {
-                        this.props.history.push('/instructor/addStory')
-                        this.props.changeSelectedMenu("Add Story")
-                      }}>
-              <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
-              <ListItemText primary={'Add Story'} />
-            </ListItem>
+              <ListItem button key={'addStory'}
+                        onClick={()=> {
+                            this.props.history.push('/instructor/addStory')
+                            this.props.changeSelectedMenu("Add Story")
+                        }}>
+                  <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
+                  <ListItemText primary={'Add Story'} />
+              </ListItem>
+              <ListItem button key={'editStory'}
+                        onClick={()=> {
+                            this.props.history.push('/instructor/editStory')
+                            this.props.changeSelectedMenu("Edit Story")
+                        }}>
+                  <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
+                  <ListItemText primary={'Edit Story'} />
+              </ListItem>
             <ListItem button key={'editVocab'}
                       onClick={()=> {
                         this.props.history.push('/instructor/editVocab');
