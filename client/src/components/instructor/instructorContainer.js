@@ -13,10 +13,10 @@ import ClassesContainer from './Classes/ClassesContainer';
 import Stories from "./stories/Stories";
 import InstructorMenu from "./component/InstructorMenu";
 import FilesContainer from './Files/FilesContainer'
+import AddStoryWizardContainer from "./AddStoryWizard/AddStoryWizardContainer";
+import "./style/instructor.css";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import "./style/instructor.css";
-import AddStoryWizardContainer from "./AddStoryWizard/AddStoryWizardContainer";
 
 class InstructorContainer extends Component {
   constructor(props) {
