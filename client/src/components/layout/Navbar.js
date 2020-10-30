@@ -79,23 +79,23 @@ class Navbar extends Component {
                         <div className="collapse navbar-collapse" id="mobile-nav">
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item">
-                                    <Link className={currentPath==="/dashboard/modernKorean"? "selected-navbar": "nav-link"} to="/dashboard/modernKorean">
+                                    <Link className={currentPath==="/dashboard/modernKorean"? "selected": "nav-link"} to="/dashboard/modernKorean">
                                         Modern Korean
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className={currentPath==="/dashboard/KORN410"? "selected-navbar": "nav-link"} to="/dashboard/KORN410">
+                                    <Link className={currentPath==="/dashboard/KORN410"? "selected": "nav-link"} to="/dashboard/KORN410">
                                         KORN 410
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className={currentPath==="/about"? "selected-navbar": "nav-link"} to="/about">
+                                    <Link className={currentPath==="/about"? "selected": "nav-link"} to="/about">
                                         About
                                     </Link>
                                 </li>
                                 {(Object.keys(user).length>=1 && !user.isStudent) && (
                                     <li className="nav-item">
-                                        <Link className={currentPath.includes("/instructor")? "selected-navbar": "nav-link"} to="/instructor"> Instructor Panel</Link>
+                                        <Link className={currentPath.includes("/instructor")? "selected": "nav-link"} to="/instructor"> Instructor Panel</Link>
                                     </li>)
                                 }
                             </ul>

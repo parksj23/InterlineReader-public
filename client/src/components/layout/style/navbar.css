@@ -1,4 +1,4 @@
-.selected-navbar {
+.selected {
     color: rgba(255,255,255,.85);
     border-bottom: 1px solid dodgerblue;
     padding: .5rem .5rem;
@@ -6,7 +6,7 @@
     display: block;
 }
 
-.selected-navbar:hover {
+.selected:hover {
     color: rgba(255,255,255,.85);
     text-decoration: none;
 }
