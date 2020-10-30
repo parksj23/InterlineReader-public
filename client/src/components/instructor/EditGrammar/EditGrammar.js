@@ -29,11 +29,8 @@ class EditGrammar extends Component {
 
     handleSelectHighlight = (selectedText) => {
         if (selectedText !== "") {
-            if (this.props.editGrammar.MODKR.grammarSearch) {
-                let selectedGrammarInfo = this.props.editGrammar.MODKR.grammarSearch[selectedText]
-                this.props.updateSelectedGrammar(selectedGrammarInfo);
-            } else
-                this.props.updateSelectedGrammar(undefined);
+            let selectedGrammarInfo = this.props.editGrammar.MODKR.grammarSearch[selectedText]
+            this.props.updateSelectedGrammar(selectedGrammarInfo);
         }
 
     }
@@ -41,6 +38,8 @@ class EditGrammar extends Component {
     render() {
         // let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch ?
         //     new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|"), "g") : null;
+
+        console.log(this.props.editGrammar)
         let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch &&
         Object.keys(this.props.editGrammar.MODKR.grammarSearch).length > 0 ? new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|")) : null;
         let {editGrammar} = this.props

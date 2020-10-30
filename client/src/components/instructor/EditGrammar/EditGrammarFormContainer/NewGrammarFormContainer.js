@@ -6,7 +6,6 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 import {startUpdatingEditGrammar, addNewGrammar, cancelSelection} from '../../../../actions/instructor';
-import Popover from "@material-ui/core/es/Popover/Popover";
 
 class NewGrammarFormContainer extends Component {
     constructor(props) {
@@ -17,8 +16,7 @@ class NewGrammarFormContainer extends Component {
             pattern: null,
             here: null,
             order_id: null,
-            disableEditButton: true,
-            anchorEl: null
+            disableEditButton: true
         }
         this.validateInputs.bind(this)
         this.findOrderId.bind(this)
@@ -30,8 +28,7 @@ class NewGrammarFormContainer extends Component {
             sentence: this.props.editGrammar.userHighlightedText,
             pattern: null,
             here: null,
-            order_id: null,
-            anchorEl: null
+            order_id: null
         })
     }
 
@@ -43,25 +40,10 @@ class NewGrammarFormContainer extends Component {
                 sentence: this.props.editGrammar.userHighlightedText,
                 pattern: null,
                 here: null,
-                order_id: order_id,
-                anchorEl: null
+                order_id: order_id
             })
         }
     }
-
-    handleClickHelp = (event) => {
-        this.setState({
-            ...this.state,
-            anchorEl: event.currentTarget
-        });
-    };
-
-    handleCloseHelp = () => {
-        this.setState({
-            ...this.state,
-            anchorEl: null
-        });
-    };
 
     handleOnChangeField = name => event => {
         let disableEditButton = !this.validateInputs();
@@ -115,7 +97,6 @@ class NewGrammarFormContainer extends Component {
     }
 
     render() {
-        const open = Boolean(this.state.anchorEl);
         return (
             <div style={{textAlign: 'center', position: 'fixed'}}>
                 <h2 className={'edit-vocab-form-title'}>Grammar Selected: &nbsp;&nbsp;&nbsp;&nbsp;<span style={{fontWeight:'bold'}}>{this.props.editGrammar.userHighlightedText}</span></h2>
@@ -135,33 +116,7 @@ class NewGrammarFormContainer extends Component {
                     </div>
                     <br/><br/>
                     <div style={{display: 'flex', width: '100%'}}>
-                        <span style={{width: '40%'}}>
-                            Pattern
-                            &nbsp;
-                            <span className="material-icons" onMouseOver={this.handleClickHelp}>help</span>
-                            <Popover
-                                open={open}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                                onClose={this.handleCloseHelp}
-                                anchorEl={this.state.anchorEl}
-                                transformOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'right',
-                                }}
-                            >
-                                <p style={{fontWeight: 'bold'}}>Bold:</p>
-                                Wrap the section you want to bold with &lt;b&gt; and &lt;/b&gt;. <br/> Example) My name is &lt;b&gt;John Doe&lt;/b&gt;
-                                <br/><br/>
-                                <p style={{fontWeight: 'bold'}}>Italicize:</p>
-                                Wrap the section you want to italicize with &lt;i&gt; and &lt;/i&gt;. <br/>Example) That is &lt;i&gt;awesome&lt;/i&gt;
-                                <br/><br/>
-                                <p style={{fontWeight: 'bold'}}>Bold & Italicize:</p>
-                                Wrap the section you want to bold AND italicize with &lt;i&gt; and &lt;/i&gt;, AND &lt;b&gt; and &lt;/b&gt;. <br/>Example) &lt;b&gt;&lt;i&gt;Wow&lt;/i&gt;&lt;/b&gt;
-                            </Popover>
-                        </span>
+                        <span style={{width: '40%'}}>Pattern</span>
                         <TextField
                             required
                             id="pattern"
