@@ -7,7 +7,7 @@ import EditStoryTable from './EditStoryTable'
 
 const headers = [
     {
-        label: "Lines (Double-click to Edit)",
+        label: "Lines (Click on the Pencil Icon to edit. You can only edit ONE row at a time.)",
         value: "text"
     }
 ];
@@ -39,6 +39,22 @@ class EditStory extends Component {
         });
     }
 
+    forceRefresh = () => {
+        let storyInfo = this.props.stories;
+        let kor = [];
+        let eng = [];
+
+        storyInfo.MODKR.storyText.forEach(line => {
+            kor.push({order_id: line.order_id, text: line.text, id: line._id})});
+        storyInfo.ENGSH.storyText.forEach(line => {
+            eng.push({order_id: line.order_id, text: line.text, id: line._id})});
+
+        this.setState({
+            rowsKOR: kor,
+            rowsENG: eng
+        });
+    };
+
     render() {
         const {rowsKOR, rowsENG} = this.state;
 
@@ -47,12 +63,20 @@ class EditStory extends Component {
                 <h1 style={{padding: '2% 5%'}}>KOREAN</h1>
                 <EditStoryTable
                     tableHeaders={headers}
-                    list={rowsKOR}/>
+                    list={rowsKOR}
+                    storyName={this.props.match.params.storyName}
+                    language="kor"
+                    forceRefresh={this.forceRefresh}
+                />
 
                 <h1 style={{padding: '2% 5%'}}>ENGLISH</h1>
                 <EditStoryTable
                     tableHeaders={headers}
-                    list={rowsENG}/>
+                    list={rowsENG}
+                    storyName={this.props.match.params.storyName}
+                    language="eng"
+                    forceRefresh={this.forceRefresh}
+                />
                 <br/><br/>
             </div>
         );

@@ -98,6 +98,7 @@ export const RESET_STORIES = "RESET_STORIES";
 export const STORY_IS_LOADING = "STORY_IS_LOADING";
 export const STORY_IS_NOT_LOADING = "STORY_IS_NOT_LOADING";
 export const SAVE_HYPOTHESIS = "SAVE_HYPOTHESIS";
+export const UPDATE_LINE = "UPDATE_LINE";
 
 //Analytics
 
