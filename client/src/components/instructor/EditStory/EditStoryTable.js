@@ -33,16 +33,28 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell);
 
 class EditStoryTable extends React.Component {
-    state = {
-        rows: [],
-        page: 0,
-        rowsPerPage: 5
-    };
+
+    constructor() {
+        super();
+        this.state = {
+            rows: [],
+            page: 0,
+            rowsPerPage: 5,
+            isEditing: false
+        };
+    }
 
     componentDidMount() {
         this.setState({
             rows: this.props.list
         });
+    }
+
+    handleEditStatus = bool => {
+        this.setState({
+            ...this.state,
+            isEditing: bool
+        })
     }
 
     handleChangePage = (event, page) => {
@@ -89,7 +101,7 @@ class EditStoryTable extends React.Component {
                                 {rows
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map(row => (
-                                        <EditableTableRow row={row} tableHeaders={this.props.tableHeaders}/>
+                                        <EditableTableRow row={row} tableHeaders={this.props.tableHeaders} handleEditStatus={this.handleEditStatus} forceRefresh={this.props.forceRefresh} editStatus={this.state.isEditing} storyName={this.props.storyName} language={this.props.language}/>
                                     ))}
                                 {emptyRows > 0 && (
                                     <TableRow style={{height: 56 * emptyRows}}>

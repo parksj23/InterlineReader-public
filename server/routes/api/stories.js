@@ -272,4 +272,34 @@ router.get('/:story/storyInfo', async (req, res, next) => {
   }
 });
 
+router.put('/updateLine', async (req, res, next) => {
+  let lineToUpdate = req.body; //storyName, _id, text
+    try {
+        MongoClient.connect(url, async function (err, client) {
+            if (err) throw err;
+            let db = client.db(databaseName);
+            let collection = 'TEXT_' + lineToUpdate.storyName.toUpperCase();
+
+            const updateLine = () => {
+                return new Promise((resolve, reject) => {
+                    db.collection(collection).updateOne(
+                        {_id : ObjectId(lineToUpdate._id)},
+                        { $set: { "text" : lineToUpdate.text } }
+                    ).then(() => resolve()).catch(() => reject())
+                })
+            };
+
+            const line = await updateLine();
+
+            client.close();
+            res.send({
+                line
+            })
+        })
+    }
+    catch (err) {
+        next(err)
+    }
+});
+
 module.exports = router;
