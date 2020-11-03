@@ -97,7 +97,7 @@ export const addSavedWord = vocab => dispatch => {
     type: ADD_SAVED_WORD,
     payload: vocab
   })
-
+    alert('Selected vocabulary has been successfully added to the saved list.')
 }
 
 export const deleteSavedWord = vocab => dispatch => {
@@ -105,7 +105,7 @@ export const deleteSavedWord = vocab => dispatch => {
     type: DELETE_SAVED_WORD,
     payload: vocab
   })
-
+    alert('Selected vocabulary has been successfully removed from the saved list.')
 }
 
 export const updateSavedWords = params => dispatch => {
@@ -142,7 +142,8 @@ export const addSavedGrammar = (userId, storyId, savedGrammarIds, grammar) => di
         dispatch({
             type: ADD_SAVED_GRAMMAR,
             payload: grammar
-        })
+        });
+        alert('Selected grammar has been successfully added to the saved list.')
     })
 }
 
@@ -151,7 +152,8 @@ export const deleteSavedGrammar = (userId, storyId, savedGrammarIds) => dispatch
         dispatch({
             type: DELETE_SAVED_WORD,
             payload: savedGrammarIds
-        })
+        });
+        alert('Selected grammar has been successfully removed from the saved list.')
     })
 }
 

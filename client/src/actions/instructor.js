@@ -412,6 +412,7 @@ export const updateVocab = (vocab, storyId) => dispatch => {
       type: INSTRUCTOR_LOADING,
       payload: false
     })
+      alert('Edit Successful.')
   });
 };
 
@@ -436,6 +437,7 @@ export const updateGrammar = (grammar, storyTitle) => dispatch => {
       type: INSTRUCTOR_LOADING,
       payload: false
     })
+      alert('Edit Successful.')
   });
 };
 
@@ -471,6 +473,7 @@ export const addNewVocabulary = (vocab, storyId) => dispatch => {
       type: INSTRUCTOR_LOADING,
       payload: false
     })
+      alert('New vocabulary successfully added.')
   });
 };
 
@@ -492,6 +495,7 @@ export const addNewGrammar = (grammar, storyId) => dispatch => {
           type: INSTRUCTOR_LOADING,
           payload: false
       })
+      alert('New grammar successfully added.')
   });
 };
 
@@ -506,6 +510,7 @@ export const deleteVocab = (vocab, storyId) => dispatch => {
       payload: resp.data.vocab
     });
   });
+    alert('Delete Successful.')
 };
 
 export const deleteGrammar = (grammar, storyId) => dispatch => {
@@ -519,6 +524,7 @@ export const deleteGrammar = (grammar, storyId) => dispatch => {
       payload: resp.data.grammar
     });
   });
+    alert('Delete Successful.')
 };
 
 export const cancelSelection = () => dispatch => {

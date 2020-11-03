@@ -30,8 +30,8 @@ const SavedGrammars = (props) => {
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell>Sentence</TableCell>
-                    <TableCell>Pattern</TableCell>
+                    <TableCell style={{width: '25%'}}>Sentence</TableCell>
+                    <TableCell style={{width: '30%'}}>Pattern</TableCell>
                     <TableCell>Context</TableCell>
                     <TableCell> </TableCell>
                 </TableRow>
@@ -42,7 +42,7 @@ const SavedGrammars = (props) => {
                         return (
                             <TableRow key={"grammar_" + index}>
                                 <TableCell classes={{root: classes.cursor}}
-                                           style={{cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}}
+                                           style={{cursor: 'pointer', paddingRight: "25px"}}
                                            onClick={() =>{props.updateHighlightWord(grammar.sentence, "grammar"); scrollToPos()} }>{grammar.sentence}</TableCell>
                                 <TableCell>{grammar.pattern}</TableCell>
                                 <TableCell>{grammar.here}</TableCell>
