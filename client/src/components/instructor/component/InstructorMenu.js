@@ -139,6 +139,14 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Edit Grammar'} />
             </ListItem>
+              <ListItem button key={'addMidKRVoc'}
+                        onClick={()=> {
+                            this.props.history.push('/instructor/addMidKRVocab');
+                            this.props.changeSelectedMenu("Add Middle Korean Vocabulary")
+                        }}>
+                  <ListItemIcon><i className="material-icons">sort_by_alpha</i></ListItemIcon>
+                  <ListItemText primary={'Add Middle Korean Vocabulary'} />
+              </ListItem>
             <ListItem button key={'addMidKRGram'}
                       onClick={()=> {
                         this.props.history.push('/instructor/addMidKRGram');
@@ -147,20 +155,12 @@ class InstructorMenu extends React.Component {
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
               <ListItemText primary={'Add Middle Korean Grammar'} />
             </ListItem>
-            <ListItem button key={'addMidKRVoc'}
-                      onClick={()=> {
-                        this.props.history.push('/instructor/addMidKRVocab');
-                        this.props.changeSelectedMenu("Add Middle Korean Vocabulary")
-                      }}>
-              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
-              <ListItemText primary={'Add Middle Korean Vocabulary'} />
-            </ListItem>
             <ListItem button key={'files'}
                       onClick={()=> {
                         this.props.history.push('/instructor/files');
                         this.props.changeSelectedMenu("Files")
                       }}>
-              <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
+              <ListItemIcon><i className="material-icons">attachment</i></ListItemIcon>
               <ListItemText primary={'Files'} />
             </ListItem>
           </List>
