@@ -116,6 +116,7 @@ class NewGrammarFormContainer extends Component {
 
     render() {
         const open = Boolean(this.state.anchorEl);
+        console.log(this.state)
         return (
             <div style={{textAlign: 'center', position: 'fixed'}}>
                 <h2 className={'edit-vocab-form-title'}>Grammar Selected: &nbsp;&nbsp;&nbsp;&nbsp;<span style={{fontWeight:'bold'}}>{this.props.editGrammar.userHighlightedText}</span></h2>

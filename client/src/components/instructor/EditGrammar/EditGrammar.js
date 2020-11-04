@@ -46,8 +46,8 @@ class EditGrammar extends Component {
         // let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch ?
         //     new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|"), "g") : null;
         let grammarSearch = this.props.editGrammar && this.props.editGrammar.MODKR && this.props.editGrammar.MODKR.grammarSearch &&
-        Object.keys(this.props.editGrammar.MODKR.grammarSearch).length > 0 ? new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|")) : null;
-        let {editGrammar} = this.props
+        Object.keys(this.props.editGrammar.MODKR.grammarSearch).length > 0 ? new RegExp(Object.keys(this.props.editGrammar.MODKR.grammarSearch).join("|").replaceAll(")", "\\)").replaceAll("(", "\\(")) : null;
+        let {editGrammar} = this.props;
         return (
             <div className="edit-Vocabulary">
                 <Grid container>
