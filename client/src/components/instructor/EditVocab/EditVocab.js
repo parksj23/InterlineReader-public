@@ -34,7 +34,7 @@ class EditVocab extends Component {
   }
 
    componentWillUnmount(){
-    this.props.resetEditVocab();
+    this.props.resetEditVocab()
    }
 
   handleSelectHighlight = (selectedText) => {
@@ -44,7 +44,7 @@ class EditVocab extends Component {
 
   render() {
     let vocabSearch = this.props.editVocab && this.props.editVocab.MODKR 
-        && Object.keys(this.props.editVocab.MODKR.vocabSearch).length > 0 ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|")) : null;
+        && Object.keys(this.props.editVocab.MODKR.vocabSearch).length > 0 ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|").replaceAll(")", "\\)").replaceAll("(", "\\(")) : null;
 
     let {editVocab} = this.props
       console.log(this.props.editVocab)

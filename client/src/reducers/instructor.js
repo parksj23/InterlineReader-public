@@ -104,13 +104,21 @@ export default (state = initialState, action) => {
         }
       };
     case INIT_EDIT_GRAMMAR:
+        let temp = action.payload;
+        let tempGrammarSearch = action.payload.MODKR.grammarSearch;
+        if (tempGrammarSearch !== null && tempGrammarSearch !== undefined) {
+            let newGrammarSearch = {};
+            Object.keys(tempGrammarSearch).map(key => {
+                newGrammarSearch[key.replace(/\\/g, '').replace(/\\/g, '')] = tempGrammarSearch[key]
+            });
+            temp['MODKR']['grammarSearch'] = newGrammarSearch
+        }
       return {
         ...state,
         editGrammar: {
           ...state.editGrammar,
-          ...action.payload
+          ...temp
         }
-
       };
     case CHANGE_INSTRUCTOR_SELECTED_MENU:
       return {
