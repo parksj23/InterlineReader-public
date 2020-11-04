@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import {
-    initEditGrammar, updateSelectedGrammar, startUpdatingHighlightedText, updateUserHighlightedText, updateGrammar, deleteGrammar
+    initEditGrammar, updateSelectedGrammar, startUpdatingHighlightedText, updateUserHighlightedText, updateGrammar, deleteGrammar, resetEditGrammar
 } from "../../../actions/instructor";
 import "./EditGrammar.css"
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
 import EditGrammarFormContainer from './EditGrammarFormContainer/EditGrammarFormContainer';
 import NewGrammarFormContainer from './EditGrammarFormContainer/NewGrammarFormContainer';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -26,6 +27,9 @@ class EditGrammar extends Component {
         this.props.initEditGrammar(storyName);
     }
 
+    componentWillUnmount(){
+        this.props.resetEditGrammar();
+    }
 
     handleSelectHighlight = (selectedText) => {
         if (selectedText !== "") {
@@ -55,7 +59,11 @@ class EditGrammar extends Component {
                                 updateUserHighlightedText={this.props.updateUserHighlightedText}
                                 startUpdatingHighlightedText={this.props.startUpdatingHighlightedText}
                                 editGrammar={this.props.editGrammar}
-                            /> : <div style={{color: "red", fontSize: '26pt'}}> Loading . . . </div>
+                            /> :
+                            <div style={{position: 'relative', padding: '17%'}}>
+                                <h3 style={{position: 'absolute', top:'50%', left: '50%', transform: 'translate(-50%,-50%)'}}>Loading Story . . .</h3>
+                                <LinearProgress style={{width: '50%', position: 'absolute', left: '50%', transform: 'translate(-50%,1500%)'}}/>
+                            </div>
                     }
                     </Grid>
                     <Grid item xs={6}>
@@ -99,7 +107,8 @@ const mapDispatchToProps = ({
     startUpdatingHighlightedText,
     updateUserHighlightedText,
     updateGrammar,
-    deleteGrammar
+    deleteGrammar,
+    resetEditGrammar
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditGrammar);

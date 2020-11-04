@@ -7,12 +7,13 @@ import {
   updateUserHighlightedText,
   clearSelectedVocab,
   startUpdatingHighlightedText,
-  updateVocab, deleteVocab
+  updateVocab, deleteVocab, resetEditVocab
 } from "../../../actions/instructor";
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
 import EditVocabFormContainer from './EditVocabFormContainer/EditVocabFormContainer';
 import NewVocabFormContainer from './EditVocabFormContainer/NewVocabFormContainer'
 import './EditVocab.css';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Grid from '@material-ui/core/Grid';
 
@@ -33,6 +34,7 @@ class EditVocab extends Component {
   }
 
    componentWillUnmount(){
+    this.props.resetEditVocab();
    }
 
   handleSelectHighlight = (selectedText) => {
@@ -58,7 +60,11 @@ class EditVocab extends Component {
                 updateUserHighlightedText={this.props.updateUserHighlightedText}
                 startUpdatingHighlightedText={this.props.startUpdatingHighlightedText}
                 editVocab={this.props.editVocab}
-              /> : <div style={{color: "red", fontSize: '26pt'}}> Loading . . .</div>
+              /> :
+                <div style={{position: 'relative', padding: '17%'}}>
+                    <h3 style={{position: 'absolute', top:'50%', left: '50%', transform: 'translate(-50%,-50%)'}}>Loading Story . . .</h3>
+                    <LinearProgress style={{width: '50%', position: 'absolute', left: '50%', transform: 'translate(-50%,1500%)'}}/>
+                </div>
           }
           </Grid>
           <Grid item xs={6}>
@@ -103,7 +109,8 @@ const mapDispatchToProps = ({
   clearSelectedVocab,
   startUpdatingHighlightedText,
   updateVocab,
-  deleteVocab
+  deleteVocab,
+    resetEditVocab
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditVocab);
