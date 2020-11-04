@@ -27,6 +27,7 @@ import {ClipLoader} from 'react-spinners';
 import Modal from '@material-ui/core/Modal'
 import FlashCardsContainer from './components/common/FlashCard/FlashCardsContainer';
 import OriginalText from './components/common/OriginalText/OriginalTextContainer';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 class StoriesContainer extends Component {
     constructor(props) {
@@ -225,6 +226,7 @@ class StoriesContainer extends Component {
                 break;
             default:
         }
+
         return (
             stories[this.state.selectedLanguage] ?
                 <div className={'story-container'}>
@@ -264,7 +266,11 @@ class StoriesContainer extends Component {
                                stories={this.props.stories}
                         /> : null}
                 </div>
-                : null
+                :
+                <div style={{position: 'relative', padding: '17%'}}>
+                    <h3 style={{position: 'absolute', top:'50%', left: '50%', transform: 'translate(-50%,-50%)'}}>Loading Story . . .</h3>
+                    <LinearProgress style={{width: '50%', position: 'absolute', left: '50%', transform: 'translate(-50%,1500%)'}}/>
+                </div>
         );
     }
 }
