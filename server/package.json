@@ -4,7 +4,7 @@
   "description": "Platform for reading foreign literary texts",
   "main": "server.js",
   "engines": {
-    "node": "8.6.0",
+    "node": "8.2.1",
     "npm": "6.1.0"
   },
   "scripts": {
@@ -41,7 +41,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-simple": "^0.5.6",
     "mongodb": "^3.6.2",
-    "mongoose": "^5.10.12",
+    "mongoose": "^5.10.11",
     "nodemon": "^1.19.4",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
