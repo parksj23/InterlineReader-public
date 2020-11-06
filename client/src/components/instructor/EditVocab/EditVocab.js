@@ -45,6 +45,7 @@ class EditVocab extends Component {
         && Object.keys(this.props.editVocab.MODKR.vocabSearch).length > 0 ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|")) : null;
 
     let {editVocab} = this.props
+      console.log(this.props.editVocab)
     return (
       <div className="edit-Vocabulary">
         <Grid container>
@@ -57,7 +58,7 @@ class EditVocab extends Component {
                 updateUserHighlightedText={this.props.updateUserHighlightedText}
                 startUpdatingHighlightedText={this.props.startUpdatingHighlightedText}
                 editVocab={this.props.editVocab}
-              /> : <div style={{color: "red", fontSize: '26pt'}}> Please add a Modern Korean Story first!</div>
+              /> : <div style={{color: "red", fontSize: '26pt'}}> Loading . . .</div>
           }
           </Grid>
           <Grid item xs={6}>
@@ -79,6 +80,7 @@ class EditVocab extends Component {
                   editVocab={this.props.editVocab}
                   userHighlightedText={this.props.editVocab.userHighlightedText}
                   storyId={this.props.editVocab.storyInfo._id}
+                  handleSelectHighlight={this.handleSelectHighlight}
                 /> : null
             }
           </Grid>

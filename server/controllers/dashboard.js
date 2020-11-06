@@ -48,7 +48,8 @@ exports.getDashboard = (req,res,next) => {
       const findClass = (className) => {
         return new Promise((resolve,reject) => {
           let query = {
-            className
+            className,
+            status: "active"
           }
           console.log("Query:" + query)
           db.collection("CLASSES").find(query).toArray(function(err, classResult) {

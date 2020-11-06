@@ -290,7 +290,7 @@ exports.addVocab = (req, res, next) => {
               storyList.push(storyId);
               newVocabEntry["storyList"] = storyList;
               newVocabEntry["createdDate"] = new Date();
-              newVocabEntry["lastUpdated"] = new Date();
+              newVocabEntry["lastUpdated"] = new Date();4
             } else {
               newVocabEntry = vocabResult[0];
               newVocabEntry = {
@@ -298,6 +298,7 @@ exports.addVocab = (req, res, next) => {
                 ...vocab,
                 lastUpdated: new Date()
               };
+              newVocabEntry.storyList.length === 0? newVocabEntry.storyList = [storyId] : newVocabEntry.storyList.push(storyId);
             }
 
             db
@@ -339,7 +340,7 @@ exports.addVocab = (req, res, next) => {
                             .collection(`VOC_MODKR_ORDER`)
                             .updateOne(
                               vocabOrderQuery,
-                              {$set: {order: order}},
+                              {$set: {order: order, lastUpdated: new Date()}},
                               {upsert: true},
                               function (err, result) {
                                 if (err) throw err;
@@ -514,6 +515,10 @@ exports.deleteVocab = (req, res, next) => {
                 let orderQuery = {
                   storyId: storyId
                 };
+                  if (storyList.length === 0) {
+                      db.collection(`VOC_MODKR_ALL`).deleteOne(query);
+                  }
+
                 db
                   .collection(`VOC_MODKR_ORDER`)
                   .find(orderQuery)
@@ -615,6 +620,9 @@ exports.deleteGrammar = (req, res, next) => {
                 let orderQuery = {
                   storyId: storyId
                 };
+                  if (storyList.length === 0) {
+                      db.collection(`GRAM_MODKR_ALL`).deleteOne(query);
+                  }
                 db
                   .collection(`GRAM_MODKR_ORDER`)
                   .find(orderQuery)
