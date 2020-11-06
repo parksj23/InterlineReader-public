@@ -4,7 +4,7 @@
   "description": "Platform for reading foreign literary texts",
   "main": "server.js",
   "engines": {
-    "node": "8.2.1",
+    "node": "8.6.0",
     "npm": "6.1.0"
   },
   "scripts": {
@@ -28,12 +28,12 @@
   },
   "homepage": "https://github.com/armaandh/interlinereader#readme",
   "dependencies": {
-    "@openfonts/nanum-gothic_korean": "^1.44.0",
+    "@openfonts/nanum-gothic_korean": "^1.44.1",
     "all": "0.0.0",
-    "aws-sdk": "^2.650.0",
+    "aws-sdk": "^2.786.0",
     "dotenv": "^8.2.0",
-    "eslint": "^7.10.0",
-    "fuzzy-search": "^3.0.2",
+    "eslint": "^7.12.1",
+    "fuzzy-search": "^3.2.1",
     "react-star-rating-component": "^1.4.1"
   }
 }
