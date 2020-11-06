@@ -6,8 +6,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/core/styles';
 import Divider from "@material-ui/core/Divider";
 import IconButton from '@material-ui/core/IconButton';
-import Popover from "@material-ui/core/es/Popover/Popover";
-import Button from "@material-ui/core/es/Button/Button";
+import Popover from '@material-ui/core/Popover';
+import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 const styles = {

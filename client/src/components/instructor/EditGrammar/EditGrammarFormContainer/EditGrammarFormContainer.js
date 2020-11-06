@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import Popover from '@material-ui/core/Popover';
 import StatusMessage from '../../../common/statusMessage/statusMessage';
 import {startUpdatingEditGrammar, handleStatusClose} from '../../../../actions/instructor';
 
@@ -16,7 +17,8 @@ class EditGrammarFormContainer extends Component {
             pattern: null,
             here: null,
             order_id: null,
-            disableEditButton: true
+            disableEditButton: true,
+            anchorEl: null
         }
         this.validateInputs.bind(this)
     }
@@ -27,7 +29,8 @@ class EditGrammarFormContainer extends Component {
             sentence: this.props.selectedGrammar.sentence,
             pattern: this.props.selectedGrammar.pattern,
             here: this.props.selectedGrammar.here,
-            order_id: this.props.selectedGrammar.order_id
+            order_id: this.props.selectedGrammar.order_id,
+            anchorEl: null
         })
     }
 
@@ -38,10 +41,25 @@ class EditGrammarFormContainer extends Component {
                 sentence: this.props.selectedGrammar.sentence,
                 pattern: this.props.selectedGrammar.pattern,
                 here: this.props.selectedGrammar.here,
-                order_id: this.props.selectedGrammar.order_id
+                order_id: this.props.selectedGrammar.order_id,
+                anchorEl: null
             })
         }
     }
+
+    handleClickHelp = (event) => {
+        this.setState({
+            ...this.state,
+            anchorEl: event.currentTarget
+        });
+    };
+
+    handleCloseHelp = () => {
+        this.setState({
+            ...this.state,
+            anchorEl: null
+        });
+    };
 
     handleOnChangeField = name => event => {
         let disableEditButton = !this.validateInputs(name, event.target.value);
@@ -84,6 +102,7 @@ class EditGrammarFormContainer extends Component {
 
     render() {
         let {selectedGrammar} = this.props
+        const open = Boolean(this.state.anchorEl);
         return (
             <div style={{textAlign: 'center', position: 'fixed'}}>
                 <h2 className={'edit-vocab-form-title'}>Grammar Selected: &nbsp;&nbsp;&nbsp;&nbsp;<span style={{fontWeight:'bold'}}>{selectedGrammar.sentence}</span></h2>
@@ -112,7 +131,32 @@ class EditGrammarFormContainer extends Component {
                     </div>
                     <br/><br/>
                     <div style={{display: 'flex', width: '100%'}}>
-                        <span style={{width: '40%'}}>Pattern</span>
+                        <span style={{width: '40%'}}>
+                            Pattern&nbsp;
+                            <span className="material-icons" onMouseOver={this.handleClickHelp}>help</span>
+                            <Popover
+                                open={open}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                onClose={this.handleCloseHelp}
+                                anchorEl={this.state.anchorEl}
+                                transformOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                            >
+                                <p style={{fontWeight: 'bold'}}>Bold:</p>
+                                Wrap the section you want to bold with &lt;b&gt; and &lt;/b&gt;. <br/> Example) My name is &lt;b&gt;John Doe&lt;/b&gt;
+                                <br/><br/>
+                                <p style={{fontWeight: 'bold'}}>Italicize:</p>
+                                Wrap the section you want to italicize with &lt;i&gt; and &lt;/i&gt;. <br/>Example) That is &lt;i&gt;awesome&lt;/i&gt;
+                                <br/><br/>
+                                <p style={{fontWeight: 'bold'}}>Bold & Italicize:</p>
+                                Wrap the section you want to bold AND italicize with &lt;i&gt; and &lt;/i&gt;, AND &lt;b&gt; and &lt;/b&gt;. <br/>Example) &lt;b&gt;&lt;i&gt;Wow&lt;/i&gt;&lt;/b&gt;
+                            </Popover>
+                        </span>
                         <TextField
                             required
                             id="pattern"
