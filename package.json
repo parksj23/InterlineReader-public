@@ -4,7 +4,7 @@
   "description": "Platform for reading foreign literary texts",
   "main": "server.js",
   "engines": {
-    "node": "8.2.1",
+    "node": "8.6.0",
     "npm": "6.1.0"
   },
   "scripts": {
