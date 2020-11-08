@@ -35,9 +35,11 @@ class FlashCardContainer extends Component {
 
         vocabList.forEach(function (aVocab) {
             let options = []
+            let eng = aVocab.english.split(":").length > 1? aVocab.english.split(":")[1].trim() : aVocab.english;
+            let kor = aVocab.english.split(":").length > 1? aVocab.english.split(":")[0].trim() : aVocab.korean;
             let question = {
-                vocabKor: aVocab.korean,
-                vocabEng: aVocab.english,
+                vocabKor: kor,
+                vocabEng: eng,
                 isAnswer: true
             }
             options.push(question)

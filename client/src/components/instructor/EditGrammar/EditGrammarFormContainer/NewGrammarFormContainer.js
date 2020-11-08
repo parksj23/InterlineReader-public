@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
 import {startUpdatingEditGrammar, addNewGrammar, cancelSelection} from '../../../../actions/instructor';
-import Popover from "@material-ui/core/es/Popover/Popover";
+import Popover from "@material-ui/core/Popover/Popover";
 
 class NewGrammarFormContainer extends Component {
     constructor(props) {
