@@ -109,7 +109,7 @@ class StoryText extends Component {
                       let plainText = text.slice(text.lastIndexOf(">") + 1);
                       let childComponent = (
                         <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                          {plainText}
+                            <div dangerouslySetInnerHTML={{ __html: plainText}} />
                         </Highlight>
                       )
                       phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
@@ -126,7 +126,7 @@ class StoryText extends Component {
                   else {
                     let childComponent = (
                       <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                        {aSegment.text}
+                        <div dangerouslySetInnerHTML={{ __html: aSegment.text}} />
                       </Highlight>
                     )
                     return (

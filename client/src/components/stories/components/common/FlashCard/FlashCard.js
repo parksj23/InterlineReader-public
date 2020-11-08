@@ -28,7 +28,6 @@ const styles = {
 
 const FlashCard = (props) => {
     let {question, classes, isSaved} = props;
-
     return (
         <div className={'Flashcards-question-container'}>
             <div className={'Flasscards-question'}>
@@ -44,7 +43,7 @@ const FlashCard = (props) => {
                                 emptyStarColor="gray"
                             />
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <h1>{question.vocabEng.split(": ").length > 1? question.vocabEng.split(": ")[1] : question.vocabEng}</h1>
+                            <h1>{question.vocabEng.split(":").length > 1? question.vocabEng.split(":")[1].trim() : question.vocabEng}</h1>
                         </div> : null
                 }
             </div>

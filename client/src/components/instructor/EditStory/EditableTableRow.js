@@ -71,7 +71,7 @@ class EditableTableRow extends React.Component {
                 <TableCell className={classes.tableCell} style={{ fontFamily: "NanumBarunGothic YetHangul" }}>
                     {this.state.isEditable?
                             <span style={{display: 'flex', width: '100%'}}>
-                                <input style={{width: '90%'}} value={this.state.data.text} type='text' onChange={this.handleChange}/>
+                                <textarea style={{width: '90%', overflowWrap: 'break-word'}} value={this.state.data.text} onChange={this.handleChange}/>
                                 <CheckCircleIcon style={{width: '10%', cursor: 'pointer'}} onClick={() => this.handleSubmit()}/>
                             </span>
                             :
