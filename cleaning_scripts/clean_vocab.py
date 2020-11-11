@@ -42,6 +42,7 @@ for index, i in enumerate(voc.iterrows()):
     elif type(k4) == str:
         eng = k4
     mod_kr = {"korean": kor,
+              "stem": kor,
               "createdDate": {"$date": {"$numberLong": "1599430742443"}}, "english": eng, "hanja": han,
               "lastUpdated": {"$date": {"$numberLong": "1599430742443"}}, "order_id": {"$numberInt": index},
               "storyList": [story]}
@@ -50,5 +51,5 @@ for index, i in enumerate(voc.iterrows()):
 
 # print(vocab_arr)
 
-with open('./vocabulary/sanhaeng_voc.json', 'w') as file:
+with open('./vocabulary/sanhaeng_voc_stem_added.json', 'w') as file:
     json.dump(vocab_arr, file)
