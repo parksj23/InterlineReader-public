@@ -15,7 +15,20 @@ class SavedWordsContainer extends Component {
 
   handleDelete = (vocabWord) => {
     if(this.props.sideBar.savedVocabIds.indexOf(vocabWord._id) !== -1){
-      this.props.deleteSavedWord(vocabWord);
+      this.props.deleteSavedWord(vocabWord)
+
+        let savedVocabIds = this.props.sideBar.savedVocabIds;
+        let index = savedVocabIds.indexOf(vocabWord._id);
+        if(index > -1) {
+            savedVocabIds.splice(index,1);
+        }
+        let params = {
+            userId: this.props.userId,
+            storyId: this.props.stories.storyInfo._id,
+            savedVocabIds: savedVocabIds,
+            savedWords: this.props.sideBar.savedWords
+        }
+        this.props.updateSavedWords(params);
     }
   }
 
