@@ -16,6 +16,7 @@ const styles = {
 
 const Story = (props) => {
     const {text, searchWord, classes, title, author, language, handleTranslate, handleFlashCards, handleOriginalText} = props;
+    console.log(text)
     return(
         <div>
             <Paper elevation={1} style={props.sideBar && props.sideBar.isSideBarOpen ? {marginLeft: props.sideBar.drawerSize.width+ "px"} : null}>

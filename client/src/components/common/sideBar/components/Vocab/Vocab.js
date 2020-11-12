@@ -17,7 +17,8 @@ const styles ={
 const scrollToPos = () => {
   setTimeout(() =>{
     let highlightedPos = document.getElementsByClassName("highlight")[0]
-    highlightedPos.scrollIntoView({ block: 'start',  behavior: 'smooth' })
+    if (highlightedPos !== undefined)
+        highlightedPos.scrollIntoView({ block: 'start',  behavior: 'smooth' })
   },1000)
 }
 
@@ -41,7 +42,7 @@ const Vocab = (props) =>{
               const temp = aVocab.english.split(":");
             return (
               <TableRow key={'vocab' + index}>
-                <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean, "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
+                <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean.trim(), "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
                   <TableCell>{temp.length > 1? temp[0].trim() : '-'}</TableCell>
                   <TableCell style={pointerButton}>{temp.length > 1? temp[1].trim() : aVocab.english}</TableCell>
                   <TableCell style={pointerButton}>{aVocab.hanja}</TableCell>

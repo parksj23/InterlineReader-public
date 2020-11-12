@@ -3,9 +3,7 @@ import Divider from "@material-ui/core/Divider";
 import "../../styles/stories.css";
 import Grid from '@material-ui/core/Grid';
 import randomstring from 'randomstring';
-
-
-var Highlight = require('react-highlighter');
+import Highlight from 'react-highlighter';
 
 class StoryText extends Component {
 
@@ -46,6 +44,7 @@ class StoryText extends Component {
   }
 
   render() {
+    console.log(this.props.searchWord)
     return (
       <Grid container>
         <Grid item md={1}/>
@@ -64,6 +63,7 @@ class StoryText extends Component {
               {
                 this.props.text.map((aSegment, index) => {
                   let text = aSegment.text
+
                   //console.log(text)
                   let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
                   //console.log(textSection)
@@ -109,7 +109,7 @@ class StoryText extends Component {
                       let plainText = text.slice(text.lastIndexOf(">") + 1);
                       let childComponent = (
                         <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                            <div dangerouslySetInnerHTML={{ __html: plainText}} />
+                            {plainText}
                         </Highlight>
                       )
                       phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
@@ -121,14 +121,27 @@ class StoryText extends Component {
                         }
                       </div>
                     )
-                  }
-
-                  else {
-                    let childComponent = (
-                      <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                        <div dangerouslySetInnerHTML={{ __html: aSegment.text}} />
-                      </Highlight>
-                    )
+                  }else {
+                      let childComponent;
+                    if (this.props.searchWord !== "!F#%GWF#$") {
+                        let tempSearchWordArray = text.replace(this.props.searchWord, '@@'+this.props.searchWord+'@@').split('@@');
+                        childComponent = (
+                            <span>
+                                {tempSearchWordArray.map(text =>
+                                    text === this.props.searchWord?
+                                    (
+                                        <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
+                                            {text}
+                                        </Highlight>
+                                    ) : (
+                                            <span dangerouslySetInnerHTML={{__html: text}}/>
+                                        )
+                                )}
+                            </span>
+                        )
+                    } else {
+                        childComponent = (<div dangerouslySetInnerHTML={{__html: text}}/>)
+                    }
                     return (
                       <div key={`storySeg_${randomstring.generate(8)}`}>
                         {
