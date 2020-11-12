@@ -3,3 +3,4 @@
 /node_modules
 .env
 /cleaning_scripts/db_management/
+/cleaning_scripts/db_management/mongo script
