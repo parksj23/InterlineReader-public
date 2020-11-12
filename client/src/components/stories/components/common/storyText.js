@@ -3,12 +3,23 @@ import Divider from "@material-ui/core/Divider";
 import "../../styles/stories.css";
 import Grid from '@material-ui/core/Grid';
 import randomstring from 'randomstring';
-
-
-var Highlight = require('react-highlighter');
+import Highlight from 'react-highlighter';
 
 class StoryText extends Component {
+    constructor() {
+        super();
+        this.state = {
+            vocabList : [],
+            grammarList : []
+        }
+    }
 
+    componentWillMount() {
+        this.setState({
+            vocabList: this.props.vocabList,
+            grammarList: this.props.grammarList
+        })
+    }
   handleInlineTags = (phrase, tagArray) => {
     let highligherComponents = []
 
@@ -45,7 +56,88 @@ class StoryText extends Component {
 
   }
 
+  renderWithToggled = (text, vocabOrGrammar) => {
+        let includedVocabOrGrammar = [];
+        let list = vocabOrGrammar === 'v'? this.props.vocabList : this.props.grammarList;
+        for (let i = 0; i<list.length ; i++) {
+            let temp = vocabOrGrammar === 'v'? list[i].korean : list[i].sentence;
+            if (temp !== null && text.indexOf(temp) > -1) {
+                temp = temp.trim();
+                if (temp !== "")
+                    includedVocabOrGrammar.push(temp);
+            }
+        }
+
+        if (includedVocabOrGrammar.length > 0) {
+            let tempText = text;
+            includedVocabOrGrammar.forEach(v => {
+                tempText = tempText.replaceAll(v, '@@'+v+'@@');
+            });
+            let tempSearchWordArray = tempText.split('@@'); // i.e., ['...', '호랑이', '...', '출판사']
+            let childComponent = (
+                <span>
+                    {tempSearchWordArray.map(text =>
+                            includedVocabOrGrammar.indexOf(text) > -1 && text !== ""?
+                                (
+                                    <span dangerouslySetInnerHTML={{__html: text}} style={{color: 'red'}}/>
+                                ) : (
+                                    <span dangerouslySetInnerHTML={{__html: text}}/>
+                                )
+                    )}
+                    </span>
+            );
+            return (
+                <div>
+                    {
+                        React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
+                    }
+                </div>
+            )
+        } else {
+            let childComponent = (<div dangerouslySetInnerHTML={{__html: text}}/>);
+            return (
+                <div>
+                    {
+                        React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
+                    }
+                </div>
+            )
+        }
+  };
+
+    renderWithoutToggle = (text) => {
+        let childComponent;
+        if (this.props.searchWord !== "!F#%GWF#$") {
+            let tempSearchWordArray = text.replace(this.props.searchWord, '@@'+this.props.searchWord+'@@').split('@@');
+            childComponent = (
+                <span>
+                                {tempSearchWordArray.map(text =>
+                                    text === this.props.searchWord?
+                                        (
+                                            <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
+                                                {text}
+                                            </Highlight>
+                                        ) : (
+                                            <span dangerouslySetInnerHTML={{__html: text}}/>
+                                        )
+                                )}
+                            </span>
+            )
+        } else {
+            childComponent = (<div dangerouslySetInnerHTML={{__html: text}}/>)
+        }
+        return (
+            <div>
+                {
+                    React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
+                }
+            </div>
+        )
+    };
+
   render() {
+
+      const {toggleVocab, toggleGrammar} = this.props;
     return (
       <Grid container>
         <Grid item md={1}/>
@@ -64,6 +156,7 @@ class StoryText extends Component {
               {
                 this.props.text.map((aSegment, index) => {
                   let text = aSegment.text
+
                   //console.log(text)
                   let textSection = text.match(/<\s*.*>(.*?)<\s*\/.*>/g)
                   //console.log(textSection)
@@ -109,7 +202,7 @@ class StoryText extends Component {
                       let plainText = text.slice(text.lastIndexOf(">") + 1);
                       let childComponent = (
                         <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                            <div dangerouslySetInnerHTML={{ __html: plainText}} />
+                            {plainText}
                         </Highlight>
                       )
                       phraseArr.push(React.createElement('span', {style: aSegment.style}, childComponent))
@@ -121,21 +214,10 @@ class StoryText extends Component {
                         }
                       </div>
                     )
-                  }
-
-                  else {
-                    let childComponent = (
-                      <Highlight search={this.props.searchWord} matchStyle={{color: 'red'}}>
-                        <div dangerouslySetInnerHTML={{ __html: aSegment.text}} />
-                      </Highlight>
-                    )
-                    return (
-                      <div key={`storySeg_${randomstring.generate(8)}`}>
-                        {
-                          React.createElement('p', {style: {textAlign: "left", fontSize: "14pt"}}, childComponent)
-                        }
-                      </div>
-                    )
+                  }else {
+                      if (toggleVocab && !toggleGrammar) return this.renderWithToggled(text, 'v');
+                      else if (toggleGrammar && !toggleVocab) return this.renderWithToggled(text, 'g');
+                      else return this.renderWithoutToggle(text);
                   }
                 })
               }

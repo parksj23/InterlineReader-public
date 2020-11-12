@@ -15,6 +15,13 @@ const styles= {
     paddingLeft: "8px"
   }
 }
+const scrollToPos = () => {
+    setTimeout(() =>{
+        let highlightedPos = document.getElementsByClassName("highlight")[0]
+        if (highlightedPos !== undefined)
+            highlightedPos.scrollIntoView({ block: 'start',  behavior: 'smooth' })
+    },1000)
+}
 
 const SavedWords = (props) => {
   const {savedWords, classes} = props;
@@ -33,7 +40,7 @@ const SavedWords = (props) => {
             const temp = aVocab.english.split(":");
             return (
           <TableRow key={'savedWord_'+vocabIndex}>
-            <TableCell style={{whiteSpace: "nowrap"}}>{aVocab.korean}</TableCell>
+            <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean.trim(), "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
               <TableCell>{temp.length > 1? temp[0].trim() : '-'}</TableCell>
             <TableCell>{temp.length > 1? temp[1].trim() : aVocab.english}</TableCell>
             <TableCell onClick={()=> props.handleDelete(aVocab)}><Tooltip disableFocusListener title="Delete Word" style={{cursor: 'pointer'}}><i className="material-icons" classes={{root: classes.icons}}>delete</i></Tooltip></TableCell>

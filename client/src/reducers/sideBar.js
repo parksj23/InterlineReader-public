@@ -62,8 +62,8 @@ export default (state = initialState, action) => {
             savedWords.push(action.payload)
             return{
                 ...state,
-                savedVocabIds,
-                savedWords
+                savedVocabIds: savedVocabIds,
+                savedWords: savedWords
             }
         case ADD_SAVED_GRAMMAR:
             savedGrammarIds = state.savedGrammarIds;
@@ -85,8 +85,8 @@ export default (state = initialState, action) => {
             }
             return{
                 ...state,
-                savedWords,
-                savedVocabIds
+                savedWords: savedWords,
+                savedVocabIds: savedVocabIds
             }
         case DELETE_SAVED_GRAMMAR:
             // savedGrammarIds = state.savedGrammarIds

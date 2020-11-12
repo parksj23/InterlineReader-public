@@ -20,7 +20,8 @@ const styles= {
 const scrollToPos = () => {
     setTimeout(() =>{
         let highlightedPos = document.getElementsByClassName("highlight")[0]
-        highlightedPos.scrollIntoView({ block: 'start',  behavior: 'smooth' })
+        if (highlightedPos !== undefined)
+            highlightedPos.scrollIntoView({ block: 'start',  behavior: 'smooth' })
     },1000)
 }
 
@@ -43,7 +44,7 @@ const SavedGrammars = (props) => {
                             <TableRow key={"grammar_" + index}>
                                 <TableCell classes={{root: classes.cursor}}
                                            style={{cursor: 'pointer', paddingRight: "25px"}}
-                                           onClick={() =>{props.updateHighlightWord(grammar.sentence, "grammar"); scrollToPos()} }>{grammar.sentence}</TableCell>
+                                           onClick={() =>{props.updateHighlightWord(grammar.sentence.trim(), "grammar"); scrollToPos()} }>{grammar.sentence}</TableCell>
                                 <TableCell>{grammar.pattern}</TableCell>
                                 <TableCell>{grammar.here}</TableCell>
                                 <TableCell onClick={()=> props.handleDelete(grammar)}><Tooltip disableFocusListener title="Delete Grammar" style={{cursor: 'pointer'}}><i className="material-icons" classes={{root: classes.icons}}>delete</i></Tooltip></TableCell>
