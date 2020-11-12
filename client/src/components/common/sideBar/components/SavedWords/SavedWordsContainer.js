@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../../../actions/sideBar";
 import SavedWords from './SavedWords';
+import {updateHighlightedWord} from "../../../../../actions/vocab";
 
 class SavedWordsContainer extends Component {
 
@@ -18,11 +19,15 @@ class SavedWordsContainer extends Component {
     }
   }
 
+    updateHighlightWord = (vocabWord, type) =>{
+        this.props.updateHighlightedWord(vocabWord, type)
+    }
+
   render(){
     const savedWords = this.props.sideBar.savedWords;
     return(
       <div>
-        <SavedWords savedWords={savedWords} handleDelete={this.handleDelete}/>
+        <SavedWords savedWords={savedWords} handleDelete={this.handleDelete} updateHighlightWord={this.updateHighlightWord}/>
       </div>
     )
   }
@@ -40,7 +45,8 @@ const mapStateToProps = state => (
 const mapDispatchToProps = ({
   getSavedWords,
   deleteSavedWord,
-  updateSavedWords
+  updateSavedWords,
+    updateHighlightedWord
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedWordsContainer);
