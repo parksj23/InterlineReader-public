@@ -15,6 +15,20 @@ class VocabContainer extends Component {
   handleAddSavedWord =(vocabWord) => {
     if(this.props.sideBar.savedVocabIds.indexOf(vocabWord._id) === -1){
       this.props.addSavedWord(vocabWord)
+        let savedVocabIds = this.props.sideBar.savedVocabIds;
+      let savedWords = this.props.sideBar.savedWords;
+        let index = savedVocabIds.indexOf(vocabWord._id);
+        if(index === -1) {
+            savedVocabIds.push(vocabWord._id);
+            savedWords.push(vocabWord)
+        }
+        let params = {
+            userId: this.props.userId,
+            storyId: this.props.stories.storyInfo._id,
+            savedVocabIds: savedVocabIds,
+            savedWords: savedWords
+        }
+        this.props.updateSavedWords(params);
       this.props.addWord('success');
     }
   }
