@@ -113,7 +113,7 @@ const Story = (props) => {
                 {
                     props.stories.MODKR && props.stories.MODKR.storyText && language === "MODKR"?
                         <span>
-                            <Tooltip title="Modern Korean" aria-label="Flashcard" placement="left" style={{backgroundColor: '#00284d'}}>
+                            <Tooltip title="Toggle highlight for vocabs/grammars in the sidebar" aria-label="highlight" placement="left" style={{backgroundColor: '#00284d'}}>
                                 <Fab color="primary" aria-label="add" className={classes.fab} onClick={()=> handleTranslate("MODKR")}>
                                     <FormatPaintIcon onClick={handleClick}/>
                                 </Fab>
