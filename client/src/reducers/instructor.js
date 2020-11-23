@@ -314,23 +314,31 @@ export default (state = initialState, action) => {
         ...state,
         editVocab: newEditVocab
       };
-    case INSTRUCTOR_ADD_NEW_GRAMMAR:
-      newEditGrammar = state.editGrammar;
-      newGrammarList = state.editGrammar.MODKR.grammarList;
-      newGrammarList.forEach(function(aGrammar) {
-        if (aGrammar >= action.payload.order_id) {
-          aGrammar.order_id++;
-        }
-      });
-      newGrammarList.splice(action.payload.order_id - 1, 0, action.payload);
-      newEditGrammar.MODKR.grammarList = newGrammarList;
-      newEditGrammar.MODKR.grammarSearch[action.payload.sentence] =
-        action.payload;
-      newEditGrammar.highlightTextUpdating = false;
-      return {
-        ...state,
-        editGrammar: newEditGrammar
-      };
+      case INSTRUCTOR_ADD_NEW_GRAMMAR:
+          newEditGrammar = state.editGrammar;
+          if (state.editGrammar.MODKR.grammarList) {
+              newGrammarList = state.editGrammar.MODKR.grammarList;
+              newGrammarList.forEach(function(aGrammar) {
+                  if (aGrammar >= action.payload.order_id) {
+                      aGrammar.order_id++;
+                  }
+              });
+              newGrammarList.splice(action.payload.order_id - 1, 0, action.payload);
+              newEditGrammar.MODKR.grammarList = newGrammarList;
+              newEditGrammar.MODKR.grammarSearch[action.payload.sentence] =
+                  action.payload;
+          } else {
+              newGrammarList = [action.payload];
+              newEditGrammar.MODKR.grammarList = newGrammarList;
+              newEditGrammar.MODKR.grammarSearch = [];
+              newEditGrammar.MODKR.grammarSearch[action.payload.sentence] = action.payload;
+          }
+
+          newEditGrammar.highlightTextUpdating = false;
+          return {
+              ...state,
+              editGrammar: newEditGrammar
+          };
     case INSTRUCTOR_RESET_EDIT_VOCAB:
       return {
         ...state,

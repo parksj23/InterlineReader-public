@@ -39,15 +39,20 @@ class EditableTableRow extends React.Component {
     });
   }
 
-  renderCells = (row, classes, colHeaders) => {
-    let cellArr = []
-    colHeaders.forEach(aCell => {
-      cellArr.push(
-        <TableCell className={classes.tableCell} align="right" style={{ fontFamily: "NanumBarunGothic YetHangul" }}>
-        {row[aCell.value]}</TableCell>)
-    })
-    return cellArr;
-  }
+    renderCells = (row, classes, colHeaders) => {
+        let cellArr = []
+        colHeaders.forEach(aCell => {
+            cellArr.push(
+                <TableCell className={classes.tableCell} align="right" style={{ fontFamily: "NanumBarunGothic YetHangul" }}>
+                    {aCell === "Pattern"?
+                        row[aCell.value]
+                        :
+                        <p dangerouslySetInnerHTML={{ __html: row[aCell.value] }} />
+                    }
+                </TableCell>)
+        })
+        return cellArr;
+    }
 
   render() {
     const {row, classes, tableHeaders} = this.props;
