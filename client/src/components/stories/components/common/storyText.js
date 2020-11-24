@@ -177,9 +177,9 @@ class StoryText extends Component {
 
                         //if there are two or more inline HTML tags
                         if (numberOfInlineTags.length > 2) {
-                          phraseArr.push(this.handleInlineTags(phrase, numberOfInlineTags))
-                        }
-                        else {
+                            //phraseArr.push(this.handleInlineTags(phrase, numberOfInlineTags))
+                            phraseArr.push(<div dangerouslySetInnerHTML={{__html: phrase}}/>)
+                        } else {
                           //if there is text before the first HTML tag
                           let openTag = phrase.slice(phrase.indexOf("<") + 1, phrase.indexOf(">"))
                           if (openTag.indexOf(" ") >= 0) {
