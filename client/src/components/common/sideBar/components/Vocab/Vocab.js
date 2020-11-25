@@ -25,6 +25,7 @@ const scrollToPos = () => {
 const Vocab = (props) =>{
   const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
   const{vocab, classes} = props;
+  console.log(vocab)
   return(
     <Table className={'table'} classes={{root: classes.root}}>
       <TableHead>
@@ -39,12 +40,11 @@ const Vocab = (props) =>{
       <TableBody>
         {vocab ?
           vocab.map((aVocab, index) => {
-              const temp = aVocab.english.split(":");
             return (
               <TableRow key={'vocab' + index}>
                 <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean.trim(), "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
-                  <TableCell>{temp.length > 1? temp[0].trim() : '-'}</TableCell>
-                  <TableCell style={pointerButton}>{temp.length > 1? temp[1].trim() : aVocab.english}</TableCell>
+                  <TableCell>{aVocab.stem}</TableCell>
+                  <TableCell style={pointerButton}>{aVocab.english}</TableCell>
                   <TableCell style={pointerButton}>{aVocab.hanja}</TableCell>
                 <TableCell onClick={ ()=> props.handleAddSavedWord(aVocab)}><Tooltip disableFocusListener title="Save Vocab"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
             </TableRow>)
