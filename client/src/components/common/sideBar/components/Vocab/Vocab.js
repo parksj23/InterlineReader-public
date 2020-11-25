@@ -30,10 +30,10 @@ const Vocab = (props) =>{
     <Table className={'table'} classes={{root: classes.root}}>
       <TableHead>
         <TableRow>
-            <TableCell style={{maxWidth: "116px", paddingRight: "25px"}}> 한국어 </TableCell>
-            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> stem </TableCell>
-          <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 영어 </TableCell>
-            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 한자 </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingRight: "25px"}}> Korean </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> Dictionary Form </TableCell>
+          <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> English </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> Hanja </TableCell>
           <TableCell> </TableCell>
         </TableRow>
       </TableHead>
