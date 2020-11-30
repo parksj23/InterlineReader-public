@@ -29,20 +29,20 @@ const SavedWords = (props) => {
     <Table>
       <TableHead>
         <TableRow>
-            <TableCell>한국어</TableCell>
-            <TableCell>stem</TableCell>
-          <TableCell>영어</TableCell>
-          <TableCell></TableCell>
+            <TableCell style={{maxWidth: "116px", paddingRight: "25px"}}> 한국어 </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> stem </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 영어 </TableCell>
+            <TableCell style={{maxWidth: "116px", paddingLeft: "12px"}}> 한자 </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         {savedWords ? savedWords.map((aVocab, vocabIndex) => {
-            const temp = aVocab.english.split(":");
             return (
           <TableRow key={'savedWord_'+vocabIndex}>
             <TableCell style={{whiteSpace: "nowrap", cursor: 'pointer', paddingRight: "25px"}} onClick={() => {props.updateHighlightWord(aVocab.korean.trim(), "vocab"); scrollToPos()}}>{aVocab.korean}</TableCell>
-              <TableCell>{temp.length > 1? temp[0].trim() : '-'}</TableCell>
-            <TableCell>{temp.length > 1? temp[1].trim() : aVocab.english}</TableCell>
+              <TableCell>{aVocab.stem}</TableCell>
+              <TableCell>{aVocab.english}</TableCell>
+              <TableCell>{aVocab.hanja}</TableCell>
             <TableCell onClick={()=> props.handleDelete(aVocab)}><Tooltip disableFocusListener title="Delete Word" style={{cursor: 'pointer'}}><i className="material-icons" classes={{root: classes.icons}}>delete</i></Tooltip></TableCell>
           </TableRow>
         )}) : <TableRow/>}

@@ -167,7 +167,7 @@ class StoriesContainer extends Component {
         this.setState({
             savedGrammars: temp
         });
-        this.props.addSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, temp, this.props.stories[this.state.selectedLanguage].grammarList);
+        this.props.addSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, temp, this.props.stories[this.state.selectedLanguage].grammarList, false);
     };
 
     handleGramFlashCardUnsave = (grammarId) => {
@@ -176,7 +176,7 @@ class StoriesContainer extends Component {
         this.setState({
             savedGrammars: tempList
         });
-        this.props.deleteSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, tempList);
+        this.props.deleteSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, tempList, false);
     };
 
     handleOriginalText = () => {

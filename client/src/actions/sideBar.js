@@ -137,23 +137,25 @@ export const getListOfSavedGrammars = (userId, storyId) => dispatch => {
 };
 
 
-export const addSavedGrammar = (userId, storyId, savedGrammarIds, grammar) => dispatch => {
+export const addSavedGrammar = (userId, storyId, savedGrammarIds, grammar, shouldAlert) => dispatch => {
     axios.put(`/api/savedGrammars/updateSavedGrammars`, {userId: userId , storyId: storyId, savedGrammarIds: savedGrammarIds.concat([grammar._id])}).then(res=>{
         dispatch({
             type: ADD_SAVED_GRAMMAR,
             payload: grammar
         });
-        alert('Selected grammar has been successfully added to the saved list.')
+        if (shouldAlert)
+            alert('Selected grammar has been successfully added to the saved list.')
     })
 }
 
-export const deleteSavedGrammar = (userId, storyId, savedGrammarIds) => dispatch => {
+export const deleteSavedGrammar = (userId, storyId, savedGrammarIds, shouldAlert) => dispatch => {
     axios.put(`/api/savedGrammars/updateSavedGrammars`, {userId: userId , storyId: storyId, savedGrammarIds: savedGrammarIds}).then(res=> {
         dispatch({
             type: DELETE_SAVED_WORD,
             payload: savedGrammarIds
         });
-        alert('Selected grammar has been successfully removed from the saved list.')
+        if (shouldAlert)
+            alert('Selected grammar has been successfully removed from the saved list.')
     })
 }
 
