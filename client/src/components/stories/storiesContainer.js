@@ -17,7 +17,9 @@ import {
     getSavedWords,
     enableSideBarButton,
     resetSideBar,
-    updateSavedWords
+    updateSavedWords,
+    addSavedGrammar,
+    deleteSavedGrammar
 } from "../../actions/sideBar";
 import {disableSideBarButton} from '../../actions/dashboard';
 import './styles/stories.css';
@@ -42,7 +44,9 @@ class StoriesContainer extends Component {
             isSpeedDialOpen: false,
             modalComponent: "",
             savedVocabs: [],
-            openFiltered: false
+            savedGrammars: [],
+            openFiltered: false,
+            flashCardType: "voc"
         }
         this.handleTranslate.bind(this)
         this.handleFlashCards.bind(this)
@@ -84,7 +88,11 @@ class StoriesContainer extends Component {
 
                 });
             })
-            this.props.getListOfSavedGrammars(this.props.userId, storyInfo._id);
+            this.props.getListOfSavedGrammars(this.props.userId, storyInfo._id).then(resp => {
+                this.setState({
+                    savedGrammars: resp.savedGrammarIds
+                });
+            });
         });
     }
 
@@ -116,7 +124,7 @@ class StoriesContainer extends Component {
         })
     }
 
-    handleFlashCardSave = (vocab) => {
+    handleVocFlashCardSave = (vocab) => {
         let temp = this.state.savedVocabs;
         temp.push(vocab);
         this.setState({
@@ -131,7 +139,7 @@ class StoriesContainer extends Component {
         this.props.updateSavedWords(params);
     }
 
-    handleFlashCardUnsave = (vocab) => {
+    handleVocFlashCardUnsave = (vocab) => {
         let temp = this.state.savedVocabs;
         let tempList = temp.filter(e => e !== vocab);
         this.setState({
@@ -145,6 +153,31 @@ class StoriesContainer extends Component {
         }
         this.props.updateSavedWords(params);
     }
+
+    setFlashCardType = (type) => {
+        // type is either "voc" or "gram"
+        this.setState({
+            flashCardType: type
+        })
+    };
+
+    handleGramFlashCardSave = (grammarId) => {
+        let temp = this.state.savedGrammars;
+        temp.push(grammarId);
+        this.setState({
+            savedGrammars: temp
+        });
+        this.props.addSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, temp, this.props.stories[this.state.selectedLanguage].grammarList);
+    };
+
+    handleGramFlashCardUnsave = (grammarId) => {
+        let temp = this.state.savedGrammars;
+        let tempList = temp.filter(e => e !== grammarId);
+        this.setState({
+            savedGrammars: tempList
+        });
+        this.props.deleteSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, tempList);
+    };
 
     handleOriginalText = () => {
         this.setState({
@@ -218,7 +251,9 @@ class StoriesContainer extends Component {
         switch (this.state.modalComponent) {
             case 'FlashCards':
                 modalComponent = <FlashCardsContainer savedVocabList={this.state.savedVocabs} vocabList={this.props.stories.MODKR.vocabList} storyTitle={this.state.storyTitle} cookies={this.props.cookies}
-                                                      handleSave={this.handleFlashCardSave} handleUnsave={this.handleFlashCardUnsave} openFiltered={this.state.openFiltered}/>
+                                  handleVocSave={this.handleVocFlashCardSave} handleVocUnsave={this.handleVocFlashCardUnsave} openFiltered={this.state.openFiltered} setFlashCardType={this.setFlashCardType}
+                                    flashCardType={this.state.flashCardType} handleGramSave={this.handleGramFlashCardSave} handleGramUnsave={this.handleGramFlashCardUnsave} grammarList={this.props.stories.MODKR.grammarList}
+                                      savedGrammarList={this.state.savedGrammars}/>
                 break;
             case 'OriginalText':
                 modalComponent = <OriginalText url={this.props.stories.storyInfo.pdfUrl}
@@ -290,7 +325,7 @@ const mapDispatchToProps = ({
     getVocabforStory, getListOfSavedWords, initStory,
     getSavedWords, leaveStories, enableSideBarButton, resetSTories, resetSideBar,
     disableSideBarButton, updateSavedWords, enableLoading, disableLoading, saveHypothesisLink,
-    endGrammarSearchSession, getListOfSavedGrammars
+    endGrammarSearchSession, getListOfSavedGrammars, addSavedGrammar, deleteSavedGrammar
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StoriesContainer);

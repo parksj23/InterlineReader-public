@@ -50,7 +50,6 @@ class AddStoryWizard extends Component {
   }
 
   componentDidMount = () => {
-    console.log(this.props.storyInfo)
     if(this.props.storyInfo){
       this.setState({
         storyForm: {

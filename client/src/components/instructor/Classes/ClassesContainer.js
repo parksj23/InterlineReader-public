@@ -75,8 +75,6 @@ class ClassesContainer extends Component {
   renderClass = (type, match) => {
     if(type === 'edit') {
       let classInfo = this.props.instructor.classes.find(aClass => {
-        console.log(aClass._id)
-        console.log(match.params.id)
         return aClass._id === match.params.id
       });
       console.log(classInfo)
