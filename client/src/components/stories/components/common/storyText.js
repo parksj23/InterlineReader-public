@@ -60,7 +60,7 @@ class StoryText extends Component {
         let includedVocabOrGrammar = [];
         let list = vocabOrGrammar === 'v'? this.props.vocabList : this.props.grammarList;
         for (let i = 0; i<list.length ; i++) {
-            let temp = vocabOrGrammar === 'v'? list[i].korean : list[i].sentence;
+            let temp = list[i].korean;
             if (temp !== null && text.indexOf(temp) > -1) {
                 temp = temp.trim();
                 if (temp !== "")
