@@ -59,7 +59,7 @@ const FlashCard = (props) => {
                             root: anOption.isAnswer && props.answeredCurrentQuestion ? classes.flashcardbuttonCorrect
                                 : !anOption.isAnswer && props.answeredCurrentQuestion ? classes.flashcardbuttonIncorrect
                                     : classes.defaultButton
-                        }} key={index} variant="outlined" color="default" style={{margin: '6px'}}
+                        }} key={index} variant="outlined" color="default" style={{margin: '6px', fontSize: flashCardType === "gram" && anOption.gramPattern.length > 30? '10px' : '14px'}}
                                 onClick={() => {
                                     if (flashCardType === "voc")
                                         answeredQuestion(anOption.vocabEng, question, anOption.isAnswer);
