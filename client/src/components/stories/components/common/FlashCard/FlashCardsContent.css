@@ -23,3 +23,14 @@
     display: flex;
     width: 50%;
 }
+
+.toggle-button {
+    width: fit-content;
+    height: fit-content;
+    color: white;
+    padding: 1% 5%;
+}
+
+.toggle-button:hover {
+    cursor: pointer;
+}

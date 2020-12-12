@@ -25,7 +25,6 @@ const scrollToPos = () => {
 const Vocab = (props) =>{
   const pointerButton = {cursor: 'pointer', maxWidth: "116px", paddingLeft: "8px"};
   const{vocab, classes} = props;
-  console.log(vocab)
   return(
     <Table className={'table'} classes={{root: classes.root}}>
       <TableHead>

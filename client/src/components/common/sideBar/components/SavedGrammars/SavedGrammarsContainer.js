@@ -20,7 +20,7 @@ class SavedGrammarsContainer extends Component {
             if(index > -1) {
                 savedGrammarIds.splice(index,1);
             }
-            this.props.deleteSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, savedGrammarIds);
+            this.props.deleteSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, savedGrammarIds, true);
         }
     }
 

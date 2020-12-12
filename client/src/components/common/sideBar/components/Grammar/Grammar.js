@@ -41,11 +41,11 @@ const Grammar = (props) => {
           return (
             <TableRow key={"grammar_" + index}>
               <TableCell classes={{root: classes.cursor}}
-                         style={{cursor: 'pointer', maxWidth: "116px", paddingRight: "25px"}}
+                         style={{cursor: 'pointer', width: "116px", paddingRight: "25px"}}
                          onClick={() =>{props.updateHighlightWord(grammar.korean.trim(), "grammar"); scrollToPos()} }>{grammar.korean}</TableCell>
-                <TableCell style={pointerButton} classes={{root: classes.cursor}}><div dangerouslySetInnerHTML={{ __html: grammar.pattern }} /></TableCell>
-                <TableCell style={pointerButton} classes={{root: classes.cursor}}><div dangerouslySetInnerHTML={{ __html: grammar.gloss }} /></TableCell>
-              <TableCell style={pointerButton} classes={{root: classes.cursor}}>{grammar.here}</TableCell>
+                <TableCell><div dangerouslySetInnerHTML={{ __html: grammar.pattern }} /></TableCell>
+                <TableCell><div dangerouslySetInnerHTML={{ __html: grammar.gloss }} /></TableCell>
+              <TableCell>{grammar.here}</TableCell>
                 <TableCell onClick={ ()=> props.handleAddSavedGrammar(grammar)}><Tooltip disableFocusListener title="Save Grammar"><i style={pointerButton} className="material-icons">add</i></Tooltip></TableCell>
             </TableRow>
           )

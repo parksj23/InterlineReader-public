@@ -31,9 +31,10 @@ const SavedGrammars = (props) => {
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell style={{width: '25%'}}>Sentence</TableCell>
-                    <TableCell style={{width: '30%'}}>Pattern</TableCell>
-                    <TableCell>Context</TableCell>
+                    <TableCell>Korean</TableCell>
+                    <TableCell>Pattern</TableCell>
+                    <TableCell>Gloss</TableCell>
+                    <TableCell>Here</TableCell>
                     <TableCell> </TableCell>
                 </TableRow>
             </TableHead>
@@ -43,9 +44,10 @@ const SavedGrammars = (props) => {
                         return (
                             <TableRow key={"grammar_" + index}>
                                 <TableCell classes={{root: classes.cursor}}
-                                           style={{cursor: 'pointer', paddingRight: "25px"}}
-                                           onClick={() =>{props.updateHighlightWord(grammar.sentence.trim(), "grammar"); scrollToPos()} }>{grammar.sentence}</TableCell>
-                                <TableCell>{grammar.pattern}</TableCell>
+                                           style={{cursor: 'pointer', width: "116px", paddingRight: "25px"}}
+                                           onClick={() =>{props.updateHighlightWord(grammar.korean.trim(), "grammar"); scrollToPos()} }>{grammar.korean}</TableCell>
+                                <TableCell><div dangerouslySetInnerHTML={{ __html: grammar.pattern }} /></TableCell>
+                                <TableCell><div dangerouslySetInnerHTML={{ __html: grammar.gloss }} /></TableCell>
                                 <TableCell>{grammar.here}</TableCell>
                                 <TableCell onClick={()=> props.handleDelete(grammar)}><Tooltip disableFocusListener title="Delete Grammar" style={{cursor: 'pointer'}}><i className="material-icons" classes={{root: classes.icons}}>delete</i></Tooltip></TableCell>
                             </TableRow>

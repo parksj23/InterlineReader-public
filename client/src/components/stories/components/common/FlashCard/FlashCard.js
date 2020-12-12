@@ -27,7 +27,7 @@ const styles = {
 }
 
 const FlashCard = (props) => {
-    let {question, classes, isSaved} = props;
+    let {question, classes, isSaved, flashCardType, handleUnsave, handleSave, answeredQuestion} = props;
     return (
         <div className={'Flashcards-question-container'}>
             <div className={'Flasscards-question'}>
@@ -38,12 +38,17 @@ const FlashCard = (props) => {
                                 name="favourite"
                                 starCount={1}
                                 value={isSaved? 1:0}
-                                onStarClick={() => isSaved? props.handleUnsave(question.vocabId) : props.handleSave(question.vocabId)}
+                                onStarClick={() => isSaved? handleUnsave(flashCardType === "voc"? question.vocabId : question.grammarId) :
+                                    handleSave(flashCardType==="voc"? question.vocabId : question.grammarId)}
                                 renderStarIcon={() => <span style={{ fontSize: '35px'}}>&#9733;</span>}
                                 emptyStarColor="gray"
                             />
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            <h1>{question.vocabEng.split(":").length > 1? question.vocabEng.split(":")[1].trim() : question.vocabEng}</h1>
+                            {
+                                flashCardType === "voc"?
+                                    <h1>{question.vocabEng.split(":").length > 1? question.vocabEng.split(":")[1].trim() : question.vocabEng}</h1> :
+                                    <h1 style={{fontSize: question.gramGloss.length > 80? '20px' : '40px'}}>{question.gramGloss}</h1>
+                            }
                         </div> : null
                 }
             </div>
@@ -54,8 +59,13 @@ const FlashCard = (props) => {
                             root: anOption.isAnswer && props.answeredCurrentQuestion ? classes.flashcardbuttonCorrect
                                 : !anOption.isAnswer && props.answeredCurrentQuestion ? classes.flashcardbuttonIncorrect
                                     : classes.defaultButton
-                        }} key={index} variant="outlined" color="default" style={{margin: '6px'}}
-                                onClick={() => props.answeredQuestion(anOption.vocabEng, question, anOption.isAnswer)}>{anOption.vocabKor}</Button>) : null
+                        }} key={index} variant="outlined" color="default" style={{margin: '6px', fontSize: flashCardType === "gram" && anOption.gramPattern.length > 30? '10px' : '14px'}}
+                                onClick={() => {
+                                    if (flashCardType === "voc")
+                                        answeredQuestion(anOption.vocabEng, question, anOption.isAnswer);
+                                    else
+                                        answeredQuestion(anOption.gramGloss, question, anOption.isAnswer)
+                                }}>{flashCardType==="voc"? anOption.vocabKor : anOption.gramPattern}</Button>) : null
                 }
             </div>
         </div>

@@ -47,7 +47,6 @@ class EditVocab extends Component {
         && Object.keys(this.props.editVocab.MODKR.vocabSearch).length > 0 ? new RegExp(Object.keys(this.props.editVocab.MODKR.vocabSearch).join("|").replaceAll(")", "\\)").replaceAll("(", "\\(")) : null;
 
     let {editVocab} = this.props
-      console.log(this.props.editVocab)
     return (
       <div className="edit-Vocabulary">
         <Grid container>

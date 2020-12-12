@@ -15,7 +15,7 @@ class GrammarContainer extends Component {
 
     handleAddSavedGrammar =(grammar) => {
         if(this.props.sideBar.savedGrammarIds.indexOf(grammar._id) === -1){
-            this.props.addSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, this.props.sideBar.savedGrammarIds, grammar)
+            this.props.addSavedGrammar(this.props.userId, this.props.stories.storyInfo._id, this.props.sideBar.savedGrammarIds, grammar, true);
             this.props.addGrammar('success');
         }
     }
