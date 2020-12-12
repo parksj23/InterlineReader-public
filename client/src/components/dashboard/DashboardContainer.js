@@ -6,7 +6,7 @@ import {dashboardInit, disableSideBarButton, enableDashboardLoading, disableDash
 import Dashboard from './components/Dashboard';
 import MiddleKoreanContainer from './components/MiddleKoreanContainer';
 import ModernKoreanContainer from './components/ModernKoreanContainer';
-
+import Dashboard351 from '../../KORN351/Dashboard';
 
 
 class DashboardContainer extends Component {
@@ -36,7 +36,8 @@ class DashboardContainer extends Component {
           <Switch>
             <Route exact path="/dashboard" component={() => this.renderDashboard("ALL")} />
             <Route path='/dashboard/middleKorean' component={MiddleKoreanContainer} />
-            <Route path='/dashboard/modernKorean' component={ModernKoreanContainer} />
+              <Route path='/dashboard/modernKorean' component={ModernKoreanContainer} />
+              <Route exact path='/dashboard/KORN351' component={Dashboard351} />
             <Route path='/dashboard/KORN410' component={() => this.renderDashboard("KORN410")} />
             <Route path='/dashboard/KORN420' component={() => this.renderDashboard("KORN420")} />
           </Switch>

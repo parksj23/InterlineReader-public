@@ -24,6 +24,7 @@ import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
+import DictionaryRadicalContainer from './KORN351/pages/DictionaryRadicalContainer';
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";
@@ -113,6 +114,7 @@ class App extends Component {
               <Route path="/success" component={Success} />
               <Route path="/about" component={About} />
               <Route path="/cleaner" component={Cleaner} />
+              <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                   <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
