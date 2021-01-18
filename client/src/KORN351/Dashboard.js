@@ -32,30 +32,30 @@ function Dashboard() {
             </div>
             <div className="card-container">
 
-                <Card className="card">
-                    <Link to="/dashboard/KORN351/dictionary/radical">
+                <Card className="card" onClick={() => {document.getElementById("lessonModal").style.display="block"}}>
+                    <h1>
                         <CardContent>
                             <Typography variant="h5" component="h2">
-                                Dictionary: Radical
+                                Lessons
                             </Typography>
                             <Typography className={classes.pos} color="textSecondary">
-                                Dictionary By Radical
+                                Main Texts & Practice Sentences
                             </Typography>
                             <Typography variant="body2" component="p">
-                                Search characters by radical
+                                View each lesson
                             </Typography>
                         </CardContent>
-                    </Link>
+                    </h1>
                 </Card>
 
                 <Card className="card">
                     <Link to="/">
                         <CardContent>
                             <Typography variant="h5" component="h2">
-                                Dictionary: Hangul
+                                Quizzes
                             </Typography>
                             <Typography className={classes.pos} color="textSecondary">
-                                Dictionary By Hangul
+                                Quiz yourself with various flash card decks
                             </Typography>
                             <Typography variant="body2" component="p">
                                 Search characters by Hangul
@@ -63,36 +63,108 @@ function Dashboard() {
                         </CardContent>
                     </Link>
                 </Card>
-                <Card className="card">
-                    <Link to="/">
+                <Card className="card" onClick={() => {document.getElementById("dictionaryModal").style.display="block"}}>
+                    <h1>
                         <CardContent>
                             <Typography variant="h5" component="h2">
-                                Dictionary: Lesson
+                                Dictionary
                             </Typography>
                             <Typography className={classes.pos} color="textSecondary">
-                                Dictionary By Lesson
+                                Search by Radical, Hangul or Lesson
                             </Typography>
                             <Typography variant="body2" component="p">
                                 Characters categorized by lessons
                             </Typography>
                         </CardContent>
-                    </Link>
+                    </h1>
                 </Card>
-                <Card className="card">
-                    <Link to="/">
-                        <CardContent>
-                            <Typography variant="h5" component="h2">
-                                KORN 351: Lessons
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                KORN 351 Lessons
-                            </Typography>
-                            <Typography variant="body2" component="p">
-                                View each lesson
-                            </Typography>
-                        </CardContent>
-                    </Link>
-                </Card>
+            </div>
+            <div id="dictionaryModal" className="modal">
+                <div className="modal-content">
+                    <span className="close" onClick={() => {document.getElementById("dictionaryModal").style.display="none"}}>&times;</span>
+                    <Typography variant="h5" component="h2">Choose how you would like to search . . .</Typography>
+                    <br/>
+                    <div style={{textAlign: 'center'}}>
+                        <Link to="/dashboard/KORN351/dictionary/radical">
+                            <div className="modal-options">By Radical</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/dictionary/radical">
+                            <div className="modal-options">By Hangul</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/dictionary/radical">
+                            <div className="modal-options">By Lesson</div>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+            <div id="lessonModal" className="modal">
+                <div className="modal-content">
+                    <span className="close" onClick={() => {document.getElementById("lessonModal").style.display="none"}}>&times;</span>
+                    <Typography variant="h5" component="h2">Choose a lesson . . .</Typography>
+                    <br/>
+                    <div style={{textAlign: 'center'}}>
+                        <Link to="/dashboard/KORN351/lesson/1">
+                            <div className="modal-options">Lesson 1</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/2">
+                            <div className="modal-options">Lesson 2</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/3">
+                            <div className="modal-options">Lesson 3</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/4">
+                            <div className="modal-options">Lesson 4</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/5">
+                            <div className="modal-options">Lesson 5</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/6">
+                            <div className="modal-options">Lesson 6</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/7">
+                            <div className="modal-options">Lesson 7</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/8">
+                            <div className="modal-options">Lesson 8</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/9">
+                            <div className="modal-options">Lesson 9</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/10">
+                            <div className="modal-options">Lesson 10</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/11">
+                            <div className="modal-options">Lesson 11</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/12">
+                            <div className="modal-options">Lesson 12</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/13">
+                            <div className="modal-options">Lesson 13</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/14">
+                            <div className="modal-options">Lesson 14</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/15">
+                            <div className="modal-options">Lesson 15</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/16">
+                            <div className="modal-options">Lesson 16</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/17">
+                            <div className="modal-options">Lesson 17</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/18">
+                            <div className="modal-options">Lesson 18</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/19">
+                            <div className="modal-options">Lesson 19</div>
+                        </Link>
+                        <Link to="/dashboard/KORN351/lesson/20">
+                            <div className="modal-options">Lesson 20</div>
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
     );

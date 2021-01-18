@@ -5,21 +5,46 @@
 
 .radical-result {
     width: 40%;
-    background-color: lightsteelblue;
+    background-color: whitesmoke;
     height: 100%;
+    padding: 5%;
     margin: 5%;
 }
 
 .radical-first-filter {
-    background-color: lightsteelblue;
+    background-color: whitesmoke;
     padding: 5%;
     height: 50%;
     margin: 5%;
 }
 
 .radical-second-filter {
-    background-color: lightsteelblue;
+    background-color: whitesmoke;
     margin: 5%;
     height: 50%;
     padding: 5%;
+}
+
+.character-box {
+    border: 1px solid black;
+    display: table-cell;
+    padding: 1% 5%;
+    background-color: white;
+}
+
+.character-box:hover {
+    background-color: #bdc1c9;
+    cursor: pointer;
+}
+
+.hanja {
+    width: 20%;
+    display: inline-table;
+    text-align: left;
+}
+
+.hangul {
+    width: 80%;
+    display: inline-table;
+    text-align: right;
 }

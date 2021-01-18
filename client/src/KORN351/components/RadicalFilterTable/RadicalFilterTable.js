@@ -5,6 +5,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import data from './radicalMockData';
+import './RadicalFilterTable.css';
+import Grid from "@material-ui/core/Grid";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -59,14 +62,14 @@ function resize() {
     }
 }
 
-export default function RadicalFilterTable() {
+export default function RadicalFilterTable(props) {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-
+    console.log(data)
 
     return (
         <div className={classes.root}>
@@ -97,26 +100,60 @@ export default function RadicalFilterTable() {
                 <Tab label="16 Strokes" {...a11yProps(16)} />
                 <Tab label="17 Strokes" {...a11yProps(17)} />
             </Tabs>
-            <TabPanel value={value} index={0}>
-                <iframe id="test" src="http://www.ubccjk.com/getCharacterImage/2/2/0/%E4%B8%80.png" onLoad={() => resize()}></iframe>
+            <TabPanel value={value} index={0} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                            <span className="hanja">{char.hanja}</span>
+                            <span className="hangul">{char.hangul}</span>
+                        </Grid>
+                    })}
+                </Grid>
+
             </TabPanel>
-            <TabPanel value={value} index={1}>
-                Item Two
+            <TabPanel value={value} index={1} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 1)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
             </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
+            <TabPanel value={value} index={2} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 2)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
             </TabPanel>
-            <TabPanel value={value} index={3}>
-                Item Four
+            <TabPanel value={value} index={3} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 3)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
             </TabPanel>
-            <TabPanel value={value} index={4}>
-                Item Five
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                Item Six
-            </TabPanel>
-            <TabPanel value={value} index={6}>
-                Item Seven
+            <TabPanel value={value} index={4} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 4)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
             </TabPanel>
         </div>
     );
