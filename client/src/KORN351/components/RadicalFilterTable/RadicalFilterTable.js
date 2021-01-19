@@ -80,6 +80,7 @@ export default function RadicalFilterTable(props) {
                 onChange={handleChange}
                 aria-label="Vertical tabs example"
                 className={classes.tabs}
+                indicatorColor="primary"
             >
                 <Tab label="ALL" {...a11yProps(0)} />
                 <Tab label="1 Stroke" {...a11yProps(1)} />
@@ -115,7 +116,7 @@ export default function RadicalFilterTable(props) {
                 <Grid container>
                     {data.map(char => {
                         if (char.stroke === 1)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
                                 <span className="hanja">{char.hanja}</span>
                                 <span className="hangul">{char.hangul}</span>
                             </Grid>
@@ -126,7 +127,7 @@ export default function RadicalFilterTable(props) {
                 <Grid container>
                     {data.map(char => {
                         if (char.stroke === 2)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
                                 <span className="hanja">{char.hanja}</span>
                                 <span className="hangul">{char.hangul}</span>
                             </Grid>
@@ -137,7 +138,7 @@ export default function RadicalFilterTable(props) {
                 <Grid container>
                     {data.map(char => {
                         if (char.stroke === 3)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
                                 <span className="hanja">{char.hanja}</span>
                                 <span className="hangul">{char.hangul}</span>
                             </Grid>
@@ -148,7 +149,7 @@ export default function RadicalFilterTable(props) {
                 <Grid container>
                     {data.map(char => {
                         if (char.stroke === 4)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
                                 <span className="hanja">{char.hanja}</span>
                                 <span className="hangul">{char.hangul}</span>
                             </Grid>

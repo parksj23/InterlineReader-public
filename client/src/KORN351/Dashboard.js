@@ -47,9 +47,8 @@ function Dashboard() {
                         </CardContent>
                     </h1>
                 </Card>
-
                 <Card className="card">
-                    <Link to="/">
+                    <h1>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 Quizzes
@@ -58,22 +57,37 @@ function Dashboard() {
                                 Quiz yourself with various flash card decks
                             </Typography>
                             <Typography variant="body2" component="p">
-                                Search characters by Hangul
+                                View flash card decks
                             </Typography>
                         </CardContent>
-                    </Link>
+                    </h1>
                 </Card>
                 <Card className="card" onClick={() => {document.getElementById("dictionaryModal").style.display="block"}}>
                     <h1>
                         <CardContent>
                             <Typography variant="h5" component="h2">
-                                Dictionary
+                                옥편
                             </Typography>
                             <Typography className={classes.pos} color="textSecondary">
-                                Search by Radical, Hangul or Lesson
+                                Search for a character easily by Radical, Hangul or Lesson
                             </Typography>
                             <Typography variant="body2" component="p">
-                                Characters categorized by lessons
+                                Search characters
+                            </Typography>
+                        </CardContent>
+                    </h1>
+                </Card>
+                <Card className="card">
+                    <h1>
+                        <CardContent>
+                            <Typography variant="h5" component="h2">
+                                From 한자 to 한문
+                            </Typography>
+                            <Typography className={classes.pos} color="textSecondary">
+                                After learning 한자 (漢字), try learning 한문 (漢文)
+                            </Typography>
+                            <Typography variant="body2" component="p">
+                                View various 사자성어 (四字成語)
                             </Typography>
                         </CardContent>
                     </h1>

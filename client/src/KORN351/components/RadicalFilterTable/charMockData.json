@@ -2,19 +2,29 @@
   {
     "hanja": "一",
     "hangul": "한 일",
-    "totalStrokeCount": 1,
-    "characterStorkeCount": 0,
     "meaning": "one; a, an; alone",
-    "primaryMeaning": "one; a unit",
-    "radical": "一"
+    "primaryHoonMeaning": "one; a unit",
+    "additionalHoonMeaning": "첫째; 온통; 낱낱; 한 번; 만일; 오로지; 모두; 어느; 어조사",
+    "totalStrokeCount": 1,
+    "characterStrokeCount": 0,
+    "radical": "一",
+    "radicalStrokeCount": 1,
+    "pronunciation": "일",
+    "hoonEum": "하나 일",
+    "lesson": 1
   },
   {
     "hanja": "丞",
     "hangul": "이을 승",
-    "totalStrokeCount": 1,
-    "characterStorkeCount": 0,
-    "meaning": "connect;linkljoin ... ",
-    "primaryMeaning": "one; a unit",
-    "radical": "一"
+    "totalStrokeCount": 6,
+    "characterStrokeCount": 5,
+    "meaning": "assist, aid, rescue",
+    "primaryHoonMeaning": "connect; link; join; tie; couple; brace",
+    "additionalHoonMeaning": "돕다(佐); 벼슬 이름(官名); 향상하다(向上)",
+    "radicalStrokeCount": 1,
+    "radical": "一",
+    "pronunciation": "승",
+    "hoonEum": "이을 승",
+    "lesson": 2
   }
 ]

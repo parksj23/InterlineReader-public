@@ -9,7 +9,15 @@ class DictionaryRadicalContainer extends Component {
     constructor() {
         super();
         this.state = {
-            filteredResult: []
+            filteredResult: [],
+            radical: '',
+            radicalStrokeCount: '',
+            totalStrokeCount: '',
+            characterStrokeCount: '',
+            meaning: '',
+            hoonEum: '',
+            primaryHoonMeaning: '',
+            additionalHoonMeaning: ''
         }
     }
 
@@ -28,7 +36,9 @@ class DictionaryRadicalContainer extends Component {
         })
     };
 
-    showCharacterAnimation = hanja => {
+    showCharacterAnimation = (hanja, char) => {
+        console.log(hanja)
+        console.log(char)
         document.getElementById("animation").innerHTML = `<div id="character-target-div"/>`;
         HanziWriter.create('character-target-div', hanja, {
             width: 100,
@@ -36,10 +46,22 @@ class DictionaryRadicalContainer extends Component {
             padding: 5,
             showOutline: true
         }).loopCharacterAnimation();
+
+        if (char !== undefined)
+            this.setState({
+                radical: char.radical,
+                radicalStrokeCount: char.radicalStrokeCount,
+                totalStrokeCount: char.totalStrokeCount,
+                characterStrokeCount: char.characterStrokeCount,
+                meaning: char.meaning,
+                hoonEum: char.hoonEum,
+                primaryHoonMeaning: char.primaryHoonMeaning,
+                additionalHoonMeaning: char.additionalHoonMeaning
+            })
     };
 
     render() {
-        const {filteredResult} = this.state;
+        const {filteredResult, radical, radicalStrokeCount, totalStrokeCount, characterStrokeCount, meaning, hoonEum, primaryHoonMeaning, additionalHoonMeaning} = this.state;
         return(
 
             <div style={{display: 'flex'}}>
@@ -53,17 +75,28 @@ class DictionaryRadicalContainer extends Component {
                         <Grid container>
                             {
                                 filteredResult.map(char => {
-                                    return <Grid item xs={3} className="character-box" onClick={() => this.showCharacterAnimation(char.hanja)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hangul}</span> </Grid>
+                                    return <Grid item xs={3} className="character-box" onClick={() => this.showCharacterAnimation(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hangul}</span> </Grid>
                                 })
                             }
                         </Grid>
                     </div>
                 </div>
                 <div className="radical-result">
-                    <p>Result:</p>
-                    <div id='animation'>
+                    <h3>Result:</h3>
+                    <span id='animation' style={{textAlign: 'center'}}>
                         <div id="character-target-div"/>
-                    </div>
+                    </span>
+                    <br/>
+                    <span id='result-info'>
+                        <p><b>Radical:</b>&nbsp;&nbsp; {radical}</p>
+                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
+                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
+                    </span>
                 </div>
             </div>
         )

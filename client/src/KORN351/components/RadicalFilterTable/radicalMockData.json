@@ -8,18 +8,21 @@
   {
     "stroke": 2,
     "hanja": "丿",
-    "hangul": "삐칠별"
+    "hangul": "삐칠별",
+    "lesson": 2
   },
   {
     "stroke": 3,
     "hanja": "丶",
-    "hangul": "불똥주"
+    "hangul": "불똥주",
+    "lesson": 1
   },
   {
     "stroke": 4,
     "hanja": "丁",
     "hangul": "정",
-    "radical": "一"
+    "radical": "一",
+    "lesson": 3
   },
   {
   "stroke": 1,
@@ -30,17 +33,20 @@
   {
     "stroke": 2,
     "hanja": "丿",
-    "hangul": "삐칠별"
+    "hangul": "삐칠별",
+    "lesson": 4
   },
   {
     "stroke": 3,
     "hanja": "丶",
-    "hangul": "불똥주"
+    "hangul": "불똥주",
+    "lesson": 5
   },
   {
     "stroke": 4,
     "hanja": "丁",
     "hangul": "정",
-    "radical": "一"
+    "radical": "一",
+    "lesson": 5
   }
 ]
