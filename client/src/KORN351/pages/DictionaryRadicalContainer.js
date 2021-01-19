@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './DictionaryRadicalContainer.css';
 import RadicalFilterTable from '../components/Dictionary/RadicalFilterTable/RadicalFilterTable';
-import data from '../components/Dictionary/charMockData';
+import data from '../charMockData';
 import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
 

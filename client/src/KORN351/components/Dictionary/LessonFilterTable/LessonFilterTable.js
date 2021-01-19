@@ -6,9 +6,9 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import characters from '../charMockData';
-import radicals from '../radicalMockData';
-import phonetics from '../phoneticsMockData';
+import characters from '../../../charMockData';
+import radicals from '../../../radicalMockData';
+import phonetics from '../../../phoneticsMockData';
 
 const StyledMenu = withStyles({
     paper: {

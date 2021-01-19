@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './DictionaryLessonContainer.css';
-import data from '../components/Dictionary/charMockData';
+import data from '../charMockData';
 import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
 import LessonFilterTable from "../components/Dictionary/LessonFilterTable/LessonFilterTable";
