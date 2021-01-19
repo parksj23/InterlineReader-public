@@ -28,6 +28,7 @@ import DictionaryRadicalContainer from './KORN351/pages/DictionaryRadicalContain
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";
+import DictionaryLessonContainer from "./KORN351/pages/DictionaryLessonContainer";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -115,6 +116,7 @@ class App extends Component {
               <Route path="/about" component={About} />
               <Route path="/cleaner" component={Cleaner} />
               <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
+                <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                   <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
