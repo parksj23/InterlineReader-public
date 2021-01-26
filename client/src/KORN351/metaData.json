@@ -1,0 +1,58 @@
+[
+  {
+    "hangulPrefix": "ㄱ",
+    "eum": ["가", "각", "간", "갈", "감", "갑"]
+  },
+  {
+    "hangulPrefix": "ㄴ",
+    "eum": ["나", "낙"]
+  },
+  {
+    "hangulPrefix": "ㄷ",
+    "eum": ["다", "단"]
+  },
+  {
+    "hangulPrefix": "ㄹ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅁ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅂ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅅ",
+    "eum": ["승"]
+  },
+  {
+    "hangulPrefix": "ㅇ",
+    "eum": ["일"]
+  },
+  {
+    "hangulPrefix": "ㅈ",
+    "eum": ["다", "단"]
+  },
+  {
+    "hangulPrefix": "ㅊ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅋ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅌ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅍ",
+    "eum": []
+  },
+  {
+    "hangulPrefix": "ㅎ",
+    "eum": []
+  }
+]

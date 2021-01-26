@@ -156,6 +156,149 @@ export default function RadicalFilterTable(props) {
                     })}
                 </Grid>
             </TabPanel>
+            <TabPanel value={value} index={5} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 5)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={6} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 6)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={7} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 7)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={8} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 8)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={9} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 9)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={10} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 10)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={11} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 11)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={12} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 12)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={13} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 13)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={14} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 14)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={15} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 15)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={16} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 16)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
+            <TabPanel value={value} index={17} className="tab-panel">
+                <Grid container>
+                    {data.map(char => {
+                        if (char.stroke === 17)
+                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.hanja)}>
+                                <span className="hanja">{char.hanja}</span>
+                                <span className="hangul">{char.hangul}</span>
+                            </Grid>
+                    })}
+                </Grid>
+            </TabPanel>
         </div>
     );
 }
