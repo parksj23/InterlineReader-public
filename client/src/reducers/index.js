@@ -1,14 +1,15 @@
 import { combineReducers } from 'redux';
-import app from './app';
-import auth from './auth';
-import errors from './error';
-import about from './about';
-import dashboard from './dashboard';
-import vocab from './vocab';
-import stories from './stories';
-import sideBar from './sideBar';
-import instructor from './instructor';
-import analytics from './analytics'
+import app from './KORN410/app';
+import auth from './KORN410/auth';
+import errors from './KORN410/error';
+import about from './KORN410/about';
+import dashboard from './KORN410/dashboard';
+import vocab from './KORN410/vocab';
+import stories from './KORN410/stories';
+import sideBar from './KORN410/sideBar';
+import instructor from './KORN410/instructor';
+import analytics from './KORN410/analytics';
+import okpyeon from './KORN351/Okpyeon';
 
 
 export default combineReducers({
@@ -21,5 +22,6 @@ export default combineReducers({
   stories,
   sideBar,
   instructor,
-  analytics
+  analytics,
+    okpyeon
 });

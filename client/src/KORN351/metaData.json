@@ -1,7 +1,7 @@
 [
   {
     "hangulPrefix": "ㄱ",
-    "eum": ["가", "각", "간", "갈", "감", "갑"]
+    "eum": ["가", "각", "간", "갈", "감", "갑", "갓", "강", "개", "객", "갯", "갱", "갹", "거", "걱", "건", "걸", "검", "겁", "것", "게", "격", "견", "결", "겸"]
   },
   {
     "hangulPrefix": "ㄴ",
@@ -13,15 +13,15 @@
   },
   {
     "hangulPrefix": "ㄹ",
-    "eum": []
+    "eum": ["라", "락"]
   },
   {
     "hangulPrefix": "ㅁ",
-    "eum": []
+    "eum": ["마", "막"]
   },
   {
     "hangulPrefix": "ㅂ",
-    "eum": []
+    "eum": ["박", "반"]
   },
   {
     "hangulPrefix": "ㅅ",
@@ -33,26 +33,26 @@
   },
   {
     "hangulPrefix": "ㅈ",
-    "eum": ["다", "단"]
+    "eum": ["자", "작"]
   },
   {
     "hangulPrefix": "ㅊ",
-    "eum": []
+    "eum": ["차", "착"]
   },
   {
     "hangulPrefix": "ㅋ",
-    "eum": []
+    "eum": ["쾌"]
   },
   {
     "hangulPrefix": "ㅌ",
-    "eum": []
+    "eum": ["타", "탁"]
   },
   {
     "hangulPrefix": "ㅍ",
-    "eum": []
+    "eum": ["파", "판"]
   },
   {
     "hangulPrefix": "ㅎ",
-    "eum": []
+    "eum": ["하", "학"]
   }
 ]

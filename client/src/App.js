@@ -24,12 +24,12 @@ import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
-import DictionaryRadicalContainer from './KORN351/pages/DictionaryRadicalContainer';
+import DictionaryRadicalContainer from './KORN351/pages/OkpyeonRadicalContainer';
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";
-import DictionaryLessonContainer from "./KORN351/pages/DictionaryLessonContainer";
-import DictionaryHangulContainer from "./KORN351/pages/DictionaryHangulContainer";
+import DictionaryLessonContainer from "./KORN351/pages/OkpyeonLessonContainer";
+import DictionaryHangulContainer from "./KORN351/pages/OkpyeonHangulContainer";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);

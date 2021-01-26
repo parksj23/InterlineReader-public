@@ -50,6 +50,14 @@ mongoose
 	.connect(db)
 	.then(() => console.log('MongoDB connected'))
 	.catch(err => console.log(err));
+
+const database = require('./database');
+database.connect(() => {
+    app.listen(5001, function () {
+        console.log('351 DB listening to Port 5001');
+    });
+});
+
 app.use(
 	express.urlencoded({ extended: false, limit: '10mb' }),
 	express.json({ limit: '10mb' })
@@ -60,16 +68,17 @@ app.use(function (req, res, next) {
 	next();
 });
 app.use(passport.initialize());
-app.use('/api/users', require('./routes/api/users'));
-app.use('/api/about', require('./routes/api/about'));
-app.use('/api/dashboard', require('./routes/api/dashboard'));
+app.use('/api/users', require('./routes/api/KORN410/users'));
+app.use('/api/about', require('./routes/api/KORN410/about'));
+app.use('/api/dashboard', require('./routes/api/KORN410/dashboard'));
 app.use('/images', express.static(path.join(__dirname, 'public/images')))
-app.use('/api/story', require('./routes/api/stories'));
-app.use('/api/savedWords', require('./routes/api/savedWords'));
-app.use('/api/savedGrammars', require('./routes/api/savedGrammars'));
-app.use('/api/instructor', require("./routes/api/instructor"));
-app.use('/api/analytics', require("./routes/api/analytics"));
-app.use('/api/files', require('./routes/api/files'))
+app.use('/api/story', require('./routes/api/KORN410/stories'));
+app.use('/api/savedWords', require('./routes/api/KORN410/savedWords'));
+app.use('/api/savedGrammars', require('./routes/api/KORN410/savedGrammars'));
+app.use('/api/instructor', require("./routes/api/KORN410/instructor"));
+app.use('/api/analytics', require("./routes/api/KORN410/analytics"));
+app.use('/api/files', require('./routes/api/KORN410/files'));
+app.use('/api/okpyeon', require('./routes/api/KORN351/Okpyeon'));
 app.use(handleErrors);
 
 if (process.env.NODE_ENV === 'production') {
