@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import './OkpyeonLessonContainer.css';
 import HanziWriter from 'hanzi-writer';
-import LessonFilterTable from "../components/Okpyeon/LessonFilterTable/LessonFilterTable";
+import LessonFilterTable from "../../components/Okpyeon/LessonFilterTable/LessonFilterTable";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../KORN351/actions/Okpyeon';
+import {getCharacters, getPhonetics} from '../../actions/Okpyeon';
 
 class DictionaryLessonContainer extends Component {
     constructor() {

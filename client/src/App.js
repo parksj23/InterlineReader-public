@@ -24,12 +24,14 @@ import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
-import DictionaryRadicalContainer from './KORN351/pages/OkpyeonRadicalContainer';
+import DictionaryRadicalContainer from './KORN351/pages/Okpyeon/OkpyeonRadicalContainer';
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";
-import DictionaryLessonContainer from "./KORN351/pages/OkpyeonLessonContainer";
-import DictionaryHangulContainer from "./KORN351/pages/OkpyeonHangulContainer";
+import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
+import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
+import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
+import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -119,6 +121,13 @@ class App extends Component {
               <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/hangul" component={DictionaryHangulContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-phonetics" component={AboutNewPhonetics} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja-combos" component={MainTextContainer} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                   <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>

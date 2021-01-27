@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import './OkpyeonRadicalContainer.css';
 import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
-import HangulFilterTable from "../components/Okpyeon/HangulFilterTable/HangulFilterTable";
+import HangulFilterTable from "../../components/Okpyeon/HangulFilterTable/HangulFilterTable";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../KORN351/actions/Okpyeon';
+import {getCharacters, getPhonetics} from '../../actions/Okpyeon';
 
 class DictionaryHangulContainer extends Component {
     constructor() {

@@ -10,18 +10,20 @@ import sideBar from './KORN410/sideBar';
 import instructor from './KORN410/instructor';
 import analytics from './KORN410/analytics';
 import okpyeon from './KORN351/Okpyeon';
+import lessons from './KORN351/Lessons';
 
 
 export default combineReducers({
-  app,
-  auth,
-  errors,
-  about,
-  dashboard,
-  vocab,
-  stories,
-  sideBar,
-  instructor,
-  analytics,
-    okpyeon
+    app,
+    auth,
+    errors,
+    about,
+    dashboard,
+    vocab,
+    stories,
+    sideBar,
+    instructor,
+    analytics,
+    okpyeon,
+    lessons
 });
