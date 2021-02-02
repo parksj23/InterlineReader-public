@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import './AboutNewPhonetics.css';
+import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 
 class AboutNewPhonetics extends Component {
     constructor(props) {
@@ -12,10 +13,11 @@ class AboutNewPhonetics extends Component {
     }
 
     render() {
-        const currLesson = this.props.match.params.lesson;
-
         return (
-            <div>Hello</div>
+            <div>
+                Hello
+                <NavigatingButtons />
+            </div>
         )
     }
 }

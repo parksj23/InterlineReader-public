@@ -105,6 +105,14 @@ class DictionaryLessonContainer extends Component {
                                     {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                 </div>
                         }
+                        {
+                            phonetic === '' || phonetic.sub_pronunciation === undefined? '' :
+                                <div style={{color: 'darkred'}}>
+                                    <br/>
+                                    <p>Note that this phonetic can also be read as <b>{phonetic.sub_pronunciation}</b>:</p>
+                                    {phonetic.sub_characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
+                                </div>
+                        }
                     </span>
                 </div>
             </div>
