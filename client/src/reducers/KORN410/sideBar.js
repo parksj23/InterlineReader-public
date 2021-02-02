@@ -2,7 +2,7 @@ import {
     GET_SAVED_WORDS,
     TOGGLE_SIDEBAR, UPDATE_DRAWER_SIZE, TOGGLE_SIDEBAR_BUTTON, GET_LIST_OF_SAVED_GRAMMARS, ADD_SAVED_GRAMMAR,
     ENABLE_SIDEBAR_BUTTON, RESET_SIDEBAR, ADD_SAVED_WORD, DELETE_SAVED_WORD, GET_LIST_OF_SAVED_WORDS, DELETE_SAVED_GRAMMAR
-} from '../../constants/action-types';
+} from '../../constants/410-action-types';
 
 const initialState = {
     savedVocabIds: [],

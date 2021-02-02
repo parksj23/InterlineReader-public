@@ -5,7 +5,7 @@ import {Route, Switch } from 'react-router-dom';
 import EditVocab from './EditVocab';
 
 
-import{ getVocabulary, resetEditVocab } from "../../../actions/instructor";
+import{ getVocabulary, resetEditVocab } from "../../../actions/KORN410/instructor";
 
 import Grid from '@material-ui/core/Grid'
 

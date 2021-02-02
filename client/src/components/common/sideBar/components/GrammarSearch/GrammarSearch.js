@@ -8,8 +8,8 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import TableRow from "@material-ui/core/TableRow";
-import { getVocabforStory } from "../../../../../actions/vocab";
-import {updateGrammarSearch,startGrammarSearch,endGrammarSearch} from '../../../../../actions/analytics'
+import { getVocabforStory } from "../../../../../actions/KORN410/vocab";
+import {updateGrammarSearch,startGrammarSearch,endGrammarSearch} from '../../../../../actions/KORN410/analytics'
 import Grid from "@material-ui/core/Grid";
 
 class GrammarSearch extends Component {

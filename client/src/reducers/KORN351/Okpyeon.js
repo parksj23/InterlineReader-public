@@ -3,7 +3,7 @@ import {
     GET_RADICALS,
     GET_PHONETICS,
     GET_EUM_FILTERS
-} from '../../KORN351/constants/action-types';
+} from '../../constants/351-action-types';
 
 const initialState = {
     characters: [],

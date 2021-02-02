@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import AddMidKRGram from "./AddMidKRGram";
 import StatusMessage from '../../common/statusMessage/statusMessage';
-import {setInstructorLoading, getMiddleKoreanGram, handleStatusClose} from "../../../actions/instructor";
+import {setInstructorLoading, getMiddleKoreanGram, handleStatusClose} from "../../../actions/KORN410/instructor";
 
 
 class AddMidKRGramContainer extends Component {

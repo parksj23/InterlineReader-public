@@ -1,4 +1,4 @@
-import {UPDATE_HIGHLIGHT_WORD, GET_VOCAB_SUCCESS} from '../../constants/action-types';
+import {UPDATE_HIGHLIGHT_WORD, GET_VOCAB_SUCCESS} from '../../constants/410-action-types';
 
 const initialState = {
   highlightedWord: "!F#%GWF#$"

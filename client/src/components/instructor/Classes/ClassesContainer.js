@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Classes from './Classes';
 import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import { getClasses, addNewClass, updateClass } from '../../../actions/instructor';
+import { getClasses, addNewClass, updateClass } from '../../../actions/KORN410/instructor';
 import {Route, Switch } from 'react-router-dom';
 import NewClass from './NewClass';
 

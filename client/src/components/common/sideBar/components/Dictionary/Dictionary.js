@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 
-import {getVocabforStory} from '../../../../../actions/vocab';
+import {getVocabforStory} from '../../../../../actions/KORN410/vocab';
 
 class Dictionary extends Component {
   render(){

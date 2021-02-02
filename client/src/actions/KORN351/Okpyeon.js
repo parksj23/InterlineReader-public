@@ -4,7 +4,7 @@ import {
     GET_RADICALS,
     GET_PHONETICS,
     GET_EUM_FILTERS
-} from "../constants/action-types";
+} from "../../constants/351-action-types";
 
 export const getCharacters = () => dispatch => {
     return new Promise((resolve, reject) => {

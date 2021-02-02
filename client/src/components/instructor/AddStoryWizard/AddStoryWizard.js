@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import './style/AddStoryWizard.css';
 import {EditorState} from 'draft-js';
-import {addToStory, addStoryInfo,handleStatusClose, getFiles} from '../../../actions/instructor';
+import {addToStory, addStoryInfo,handleStatusClose, getFiles} from '../../../actions/KORN410/instructor';
 import {connect} from 'react-redux';
 import StorySection from './components/StorySection';
 import TextField from '@material-ui/core/TextField';

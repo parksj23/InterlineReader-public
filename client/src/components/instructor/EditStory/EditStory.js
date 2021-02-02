@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     initStory
-} from '../../../actions/stories';
+} from '../../../actions/KORN410/stories';
 import EditStoryTable from './EditStoryTable'
 
 const headers = [

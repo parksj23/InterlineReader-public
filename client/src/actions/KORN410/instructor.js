@@ -41,7 +41,7 @@ import {
   INSTRUCTOR_GET_FILES,
   INSTRUCTOR_ADD_FILE,
   INSTRUCTOR_CLOSE_ADDMIDKRGRAM_STATUS
-} from "../constants/action-types";
+} from "../../constants/410-action-types";
 import axios from "axios";
 import queryStringify from "querystringify";
 

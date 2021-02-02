@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../../../actions/sideBar";
+import {getSavedWords, deleteSavedWord, updateSavedWords} from "../../../../../actions/KORN410/sideBar";
 import SavedWords from './SavedWords';
-import {updateHighlightedWord} from "../../../../../actions/vocab";
+import {updateHighlightedWord} from "../../../../../actions/KORN410/vocab";
 
 class SavedWordsContainer extends Component {
 

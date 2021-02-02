@@ -43,7 +43,7 @@ import {
   INSTRUCTOR_UPDATE_CLASS,
   INSTRUCTOR_GET_FILES,
   INSTRUCTOR_ADD_FILE
-} from "../../constants/action-types";
+} from "../../constants/410-action-types";
 
 const initialState = {
   selectedMenu: "Analytics",

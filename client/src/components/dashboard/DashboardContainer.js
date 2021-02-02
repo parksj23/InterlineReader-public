@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { sendEmailVerification } from '../../actions/auth';
+import { sendEmailVerification } from '../../actions/KORN410/auth';
 import { Route, Switch } from 'react-router-dom';
-import {dashboardInit, disableSideBarButton, enableDashboardLoading, disableDashboardLoading} from '../../actions/dashboard';
+import {dashboardInit, disableSideBarButton, enableDashboardLoading, disableDashboardLoading} from '../../actions/KORN410/dashboard';
 import Dashboard from './components/Dashboard';
 import MiddleKoreanContainer from './components/MiddleKoreanContainer';
 import ModernKoreanContainer from './components/ModernKoreanContainer';

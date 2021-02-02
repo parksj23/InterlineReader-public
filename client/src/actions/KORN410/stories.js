@@ -8,7 +8,7 @@ import {
     STORY_IS_LOADING, STORY_IS_NOT_LOADING,
     SAVE_HYPOTHESIS,
     UPDATE_LINE
-} from "../constants/action-types";
+} from "../../constants/410-action-types";
 
 
 export const getVocabforStory = (story, storyInfo) => dispatch => {

@@ -1,4 +1,4 @@
-import {GET_LOGO_SUCCESS} from "../../constants/action-types";
+import {GET_LOGO_SUCCESS} from "../../constants/410-action-types";
 
 export default (state = {}, action) => {
   switch (action.type) {

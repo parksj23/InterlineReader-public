@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
-import { resetPassword, checkURL } from '../../actions/auth';
+import { resetPassword, checkURL } from '../../actions/KORN410/auth';
 import NotFound from '../not-found/NotFound'
 
 

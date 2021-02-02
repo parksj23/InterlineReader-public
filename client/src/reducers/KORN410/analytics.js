@@ -1,4 +1,4 @@
-import { ANALYTICS_UPDATE_GRAMMAR_SEARCH, ANALYTICS_START_GRAMMAR_SEARCH_SESSION, ANALYTICS_END_GRAMMAR_SEARCH_SESSION } from "../../constants/action-types";
+import { ANALYTICS_UPDATE_GRAMMAR_SEARCH, ANALYTICS_START_GRAMMAR_SEARCH_SESSION, ANALYTICS_END_GRAMMAR_SEARCH_SESSION } from "../../constants/410-action-types";
 import sort from "fast-sort/sort.es5.min";
 const initialState = {
   sessions: []

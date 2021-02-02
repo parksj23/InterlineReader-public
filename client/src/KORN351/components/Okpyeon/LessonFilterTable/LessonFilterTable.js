@@ -6,9 +6,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
-import characters from '../../../charMockData';
-import radicals from '../../../radicalMockData';
-import phonetics from '../../../phoneticsMockData';
+import {getRadicals, getPhonetics, getCharacters} from "../../../../actions/KORN351/Okpyeon";
+import {connect} from "react-redux";
 
 const StyledMenu = withStyles({
     paper: {
@@ -41,7 +40,7 @@ const StyledMenuItem = withStyles((theme) => ({
     },
 }))(MenuItem);
 
-export default function LessonFilterTable(props) {
+function LessonFilterTable(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [currentLesson, setCurrLesson] = React.useState(1);
 
@@ -52,6 +51,15 @@ export default function LessonFilterTable(props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const {characters, phonetics, radicals} = props;
+
+    if (radicals.length === 0)
+        props.getRadicals();
+    if (characters.length === 0)
+        props.getCharacters();
+    if (phonetics.length === 0)
+        props.getPhonetics();
 
     return (
         <div className="lesson-filter-container">
@@ -175,3 +183,13 @@ export default function LessonFilterTable(props) {
         </div>
     );
 }
+
+const mapStateToProps = (state) => {
+    return {
+        radicals : state.okpyeon.radicals,
+        phonetics: state.okpyeon.phonetics,
+        characters: state.okpyeon.characters
+    };
+};
+
+export default connect(mapStateToProps, {getRadicals, getPhonetics, getCharacters})(LessonFilterTable);

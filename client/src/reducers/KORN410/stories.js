@@ -10,7 +10,7 @@ import {
     SAVE_HYPOTHESIS,
     UPDATE_SAVED_GRAMMARS,
     UPDATE_LINE
-} from '../../constants/action-types';
+} from '../../constants/410-action-types';
 
 const initialState = {
     selectedLanguage: "",

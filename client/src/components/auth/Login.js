@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/auth';
+import { loginUser } from '../../actions/KORN410/auth';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Login extends Component {

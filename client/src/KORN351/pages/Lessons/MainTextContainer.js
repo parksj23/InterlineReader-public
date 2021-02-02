@@ -1,13 +1,15 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-// import {disableSideBarButton} from '../../actions/dashboard';
 import { Link, withRouter } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import MainText from "../../components/Lessons/MainText/MainText";
-import {getMainText} from '../../actions/MainText';
+import {enableSideBarButton, resetSideBar} from '../../../actions/KORN410/sideBar';
+import {disableSideBarButton} from '../../../actions/KORN410/dashboard';
+import {getMainText} from '../../../actions/KORN351/MainText';
 import './MainTextContainer.css';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
+import SideBarContainer from '../../components/sideBar/sideBarContainer';
 
 class MainTextContainer extends Component {
     constructor(props) {
@@ -17,14 +19,13 @@ class MainTextContainer extends Component {
         }
     }
 
-
     componentWillMount() {
         const currLesson = this.props.match.params.lesson;
         this.props.getMainText(currLesson);
     }
 
     componentDidMount() {
-        //         this.props.enableSideBarButton();
+        this.props.enableSideBarButton();
     }
 
     foo = () => {
@@ -32,8 +33,8 @@ class MainTextContainer extends Component {
     }
 
     componentWillUnmount() {
-        // this.props.resetSideBar();
-        // this.props.disableSideBarButton();
+        this.props.resetSideBar();
+        this.props.disableSideBarButton();
     }
 
     render() {
@@ -43,7 +44,7 @@ class MainTextContainer extends Component {
             this.props.mainText !== '' ?
                 <div className={'story-container'}>
                     <div>
-                        {/*<SideBar />*/}
+                        <SideBarContainer />
                     </div>
                     <MainText/>
                     <div className='translateContainer' >
@@ -108,4 +109,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default withRouter(connect(mapStateToProps, {getMainText})(MainTextContainer));
+export default withRouter(connect(mapStateToProps, {getMainText, enableSideBarButton, resetSideBar, disableSideBarButton})(MainTextContainer));

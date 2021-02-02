@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Button} from '@material-ui/core';
 import {useDropzone} from 'react-dropzone';
-import {uploadDroppedFiles, getFiles} from "../../../actions/instructor"
+import {uploadDroppedFiles, getFiles} from "../../../actions/KORN410/instructor"
 import TablePaginationWrapper from './common/TablePaginationWrapper'
 const thumbsContainer = {
   display: 'flex',

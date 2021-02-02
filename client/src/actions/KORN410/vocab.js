@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {GET_VOCAB_SUCCESS, UPDATE_HIGHLIGHT_WORD} from "../constants/action-types";
+import {GET_VOCAB_SUCCESS, UPDATE_HIGHLIGHT_WORD} from "../../constants/410-action-types";
 
 
 export const getVocabforStory = (story) => dispatch => {

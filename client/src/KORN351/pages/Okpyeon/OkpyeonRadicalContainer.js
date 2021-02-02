@@ -5,7 +5,7 @@ import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../actions/Okpyeon';
+import {getCharacters, getPhonetics} from '../../../actions/KORN351/Okpyeon';
 
 class DictionaryRadicalContainer extends Component {
     constructor() {

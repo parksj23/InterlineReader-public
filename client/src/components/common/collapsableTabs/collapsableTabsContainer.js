@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import './styles/collapsableTabs.css';
 import CollapsableTabs from './component/CollapsableTabs';
-import {changeSelectedMenu} from '../../../actions/instructor';
+import {changeSelectedMenu} from '../../../actions/KORN410/instructor';
 import Grid from '@material-ui/core/Grid';
 
 class CollapsableTabsContainer extends Component {

@@ -6,7 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {connect} from "react-redux";
-import {getRadicals} from '../../../../KORN351/actions/Okpyeon';
+import {getRadicals} from '../../../../actions/KORN351/Okpyeon';
 import './RadicalFilterTable.css';
 import Grid from "@material-ui/core/Grid";
 
@@ -65,8 +65,6 @@ function RadicalFilterTable(props) {
     };
     if (props.radicals.length === 0)
         props.getRadicals();
-
-
 
     return (
         <div className={classes.root}>
@@ -302,7 +300,7 @@ function RadicalFilterTable(props) {
 
 const mapStateToProps = (state) => {
     return {
-        radicals : state.okpyeon.radicals,
+        radicals : state.okpyeon.radicals
     };
 };
 

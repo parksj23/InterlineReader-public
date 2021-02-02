@@ -4,7 +4,7 @@ import {
   DASHBOARD_IS_NOT_LOADING,
   DASHBOARD_GET_MIDKR,
   DASHBOARD_GET_MODKR
-} from '../../constants/action-types';
+} from '../../constants/410-action-types';
 
 const initialState = {
   isDashboardLoading: false,

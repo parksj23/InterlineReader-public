@@ -1,5 +1,5 @@
 import axios from "axios";
-import {GET_LOGO_SUCCESS} from "../constants/action-types";
+import {GET_LOGO_SUCCESS} from "../../constants/410-action-types";
 
 
 

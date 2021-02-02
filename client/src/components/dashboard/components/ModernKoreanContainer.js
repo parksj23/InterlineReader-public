@@ -7,7 +7,7 @@ import { Grid,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
   Typography} from "@material-ui/core";
-import {getModernKorean} from "../../../actions/dashboard";
+import {getModernKorean} from "../../../actions/KORN410/dashboard";
 import TablePaginationWrapper from './common/TablePaginationWrapper'
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Search from "./common/Search/Search"

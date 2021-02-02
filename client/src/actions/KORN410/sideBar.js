@@ -14,7 +14,7 @@ import {
   ADD_TO_SAVED_WORD,
   REMOVE_FROM_SAVED_WORD,
     ADD_SAVED_GRAMMAR, DELETE_SAVED_GRAMMAR
-} from "../constants/action-types";
+} from "../../constants/410-action-types";
 
 
 export const toggleSideBar = (isOpened, size) => dispatch => {

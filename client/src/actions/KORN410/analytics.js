@@ -3,7 +3,7 @@ import {
   ANALYTICS_END_GRAMMAR_SEARCH_SESSION,
   ANALYTICS_UPDATE_GRAMMAR_SEARCH,
   ANALYTICS_INIT_OVERVIEW
-} from "../constants/action-types";
+} from "../../constants/410-action-types";
 import axios from 'axios'
 
 

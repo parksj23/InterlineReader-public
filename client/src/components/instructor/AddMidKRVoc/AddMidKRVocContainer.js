@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AddMidKRVoc from "./AddMidKRVoc";
 import StatusMessage from '../../common/statusMessage/statusMessage';
-import {setInstructorLoading, getMiddleKoreanVocab, handleStatusClose } from "../../../actions/instructor";
+import {setInstructorLoading, getMiddleKoreanVocab, handleStatusClose } from "../../../actions/KORN410/instructor";
 
 class AddMidKRVocContainer extends Component {
   constructor(props) {

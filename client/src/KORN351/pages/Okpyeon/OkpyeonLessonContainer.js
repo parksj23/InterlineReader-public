@@ -4,7 +4,7 @@ import HanziWriter from 'hanzi-writer';
 import LessonFilterTable from "../../components/Okpyeon/LessonFilterTable/LessonFilterTable";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../actions/Okpyeon';
+import {getCharacters, getPhonetics} from '../../../actions/KORN351/Okpyeon';
 
 class DictionaryLessonContainer extends Component {
     constructor() {

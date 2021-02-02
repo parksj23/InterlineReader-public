@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { checkEmailVerUrl } from '../../actions/auth';
+import { checkEmailVerUrl } from '../../actions/KORN410/auth';
 import { Link } from 'react-router-dom';
 
 import NotFound from '../not-found/NotFound';

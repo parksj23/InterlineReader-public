@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {updateHighlightedWord} from '../../../../../actions/vocab';
-import {addSavedWord, updateSavedWords, addToSavedWords} from "../../../../../actions/sideBar";
+import {updateHighlightedWord} from '../../../../../actions/KORN410/vocab';
+import {addSavedWord, updateSavedWords, addToSavedWords} from "../../../../../actions/KORN410/sideBar";
 import Vocab from './Vocab';
 
 

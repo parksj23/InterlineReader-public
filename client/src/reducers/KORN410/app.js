@@ -1,4 +1,4 @@
-import {ADD_STORY_INFO, GET_STORY_LIST} from '../../constants/action-types';
+import {ADD_STORY_INFO, GET_STORY_LIST} from '../../constants/410-action-types';
 
 const initialState = {
   storyLists: {

@@ -1,4 +1,4 @@
-import { GET_ERRORS, CLEAR_ERRORS } from '../../constants/action-types';
+import { GET_ERRORS, CLEAR_ERRORS } from '../../constants/410-action-types';
 
 const initialState = {};
 

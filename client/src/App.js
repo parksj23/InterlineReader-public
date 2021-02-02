@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import { setCurrentUser, logoutUser } from './actions/auth';
-import { endGrammarSearchSession } from './actions/analytics'
+import { setCurrentUser, logoutUser } from './actions/KORN410/auth';
+import { endGrammarSearchSession } from './actions/KORN410/analytics'
 import setAuthToken from './utils/setAuthToken';
 import { withCookies } from 'react-cookie';
 import { Provider } from 'react-redux';
