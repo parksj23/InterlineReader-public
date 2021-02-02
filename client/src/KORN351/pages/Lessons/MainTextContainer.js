@@ -36,9 +36,7 @@ class MainTextContainer extends Component {
         return (
             this.props.mainText !== '' ?
                 <div className={'story-container'}>
-                    <div>
-                        <SideBarContainer />
-                    </div>
+                    <SideBarContainer />
                     <MainText/>
                     <NavigatingButtons />
                 </div>

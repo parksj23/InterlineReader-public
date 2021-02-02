@@ -17,9 +17,9 @@ const MainText = (props) => {
             <Grid item xs={12} md={10}>
                 <div className="col-lg-12 context engVer" style={{paddingBottom: "48px"}} id="theHeader">
                     <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
-                            <span style={{textAlign: 'left', width: "50%"}}>
-                              <h3> 제 {currLesson} 과</h3>
-                            </span>
+                            <h3 style={{textAlign: 'left', width: "50%"}}>
+                              제 {currLesson} 과
+                            </h3>
                     </div>
                     <Divider style={{marginBottom: "0.5rem"}}/>
                     <div className="main-text">

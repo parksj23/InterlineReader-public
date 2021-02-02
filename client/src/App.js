@@ -121,6 +121,7 @@ class App extends Component {
               <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/hangul" component={DictionaryHangulContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
+                <Route exact path="/dashboard/KORN351/quizzes" component={DictionaryLessonContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu" component={MainTextContainer} />
