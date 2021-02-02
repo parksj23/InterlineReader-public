@@ -32,6 +32,7 @@ import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonCont
 import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
 import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
 import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
+import Quizzes from "./KORN351/pages/Quizzes/Quizzes";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -121,7 +122,7 @@ class App extends Component {
               <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/hangul" component={DictionaryHangulContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
-                <Route exact path="/dashboard/KORN351/quizzes" component={DictionaryLessonContainer} />
+                <Route exact path="/dashboard/KORN351/quizzes" component={Quizzes} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu" component={MainTextContainer} />
