@@ -1,0 +1,36 @@
+.flashcard-options-button-correct {
+    color: #42b35b;
+    border: #42b35b
+}
+
+.flashcard-options-button-correct {
+    color: red;
+    border: red
+}
+
+.Flashcards-question-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    justify-content: center;
+    text-align: center;
+}
+
+.Flashcards-question-count {
+    margin-top: 8px;
+    float: left;
+    display: flex;
+    width: 50%;
+}
+
+.toggle-button {
+    width: fit-content;
+    height: fit-content;
+    color: white;
+    padding: 1% 5%;
+}
+
+.toggle-button:hover {
+    cursor: pointer;
+}

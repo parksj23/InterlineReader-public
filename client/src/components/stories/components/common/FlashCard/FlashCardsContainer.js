@@ -161,11 +161,9 @@ class FlashCardContainer extends Component {
                     let answeredQuestionsVoc = this.state.answeredQuestionsVoc;
                     let vocabQueue = this.state.vocabQueue;
 
-                    for (let i = 0; i < this.state.vocabQueue.length ; i++) {
-                        if (vocabQueue[0].vocabId !== savedQuestionIdVoc) {
-                            answeredQuestionsVoc.push(vocabQueue[0]);
-                            vocabQueue.splice(0,1);
-                        } else break;
+                    while (vocabQueue[0].vocabId !== savedQuestionIdVoc) {
+                        answeredQuestionsVoc.push(vocabQueue[0]);
+                        vocabQueue.splice(0,1);
                     }
 
                     let answeredQuestionsGram = this.state.answeredQuestionsGram;
