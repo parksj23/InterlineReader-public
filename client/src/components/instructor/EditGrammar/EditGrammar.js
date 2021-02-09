@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import {
     initEditGrammar, updateSelectedGrammar, startUpdatingHighlightedText, updateUserHighlightedText, updateGrammar, deleteGrammar, resetEditGrammar
-} from "../../../actions/instructor";
+} from "../../../actions/KORN410/instructor";
 import "./EditGrammar.css"
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
 import EditGrammarFormContainer from './EditGrammarFormContainer/EditGrammarFormContainer';

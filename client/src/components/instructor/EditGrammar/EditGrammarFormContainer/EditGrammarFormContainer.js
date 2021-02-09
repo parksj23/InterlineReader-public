@@ -6,7 +6,7 @@ import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import Popover from "@material-ui/core/Popover/Popover";
 import StatusMessage from '../../../common/statusMessage/statusMessage';
-import {startUpdatingEditGrammar, handleStatusClose} from '../../../../actions/instructor';
+import {startUpdatingEditGrammar, handleStatusClose} from '../../../../actions/KORN410/instructor';
 
 class EditGrammarFormContainer extends Component {
     constructor(props) {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
-import  {fetchLogo} from "../../actions/about";
+import  {fetchLogo} from "../../actions/KORN410/about";
 import "./style/about.css";
 import About from './components/About';
 import NewAbout from './components/NewAbout';

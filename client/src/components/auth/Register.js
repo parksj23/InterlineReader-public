@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { registerUser } from '../../actions/auth';
+import { registerUser } from '../../actions/KORN410/auth';
 import TextFieldGroup from '../common/TextFieldGroup';
 
 class Register extends Component {

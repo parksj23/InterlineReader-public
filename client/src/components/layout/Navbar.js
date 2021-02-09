@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { logoutUser } from '../../actions/auth';
-import {updateDrawerSize} from '../../actions/dashboard';
-import {toggleSideBar} from "../../actions/sideBar";
+import { logoutUser } from '../../actions/KORN410/auth';
+import {updateDrawerSize} from '../../actions/KORN410/dashboard';
+import {toggleSideBar} from "../../actions/KORN410/sideBar";
 import SideBarButton from './common/sideBarButton';
 import './style/navbar.css';
 

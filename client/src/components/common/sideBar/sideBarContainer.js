@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import './styles/sideBar.css';
-import {updateDrawerSize} from '../../../actions/dashboard';
+import {updateDrawerSize} from '../../../actions/KORN410/dashboard';
 import SideBar from './components/sideBar';
-import {toggleSideBar, getSavedWords, handleStatusClose, toggleDrawer, getListOfSavedWords} from "../../../actions/sideBar";
+import {toggleSideBar, getSavedWords, handleStatusClose, toggleDrawer, getListOfSavedWords} from "../../../actions/KORN410/sideBar";
 
 class SideBarContainer extends Component {
 

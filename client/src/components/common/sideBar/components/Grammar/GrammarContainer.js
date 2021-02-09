@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import Grammar from "./Grammar";
-import {updateHighlightedWord} from '../../../../../actions/vocab';
+import {updateHighlightedWord} from '../../../../../actions/KORN410/vocab';
 import {connect} from "react-redux";
-import {addSavedGrammar} from '../../../../../actions/sideBar';
+import {addSavedGrammar} from '../../../../../actions/KORN410/sideBar';
 
 class GrammarContainer extends Component {
     constructor(props) {

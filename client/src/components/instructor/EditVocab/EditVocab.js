@@ -8,7 +8,7 @@ import {
   clearSelectedVocab,
   startUpdatingHighlightedText,
   updateVocab, deleteVocab, resetEditVocab
-} from "../../../actions/instructor";
+} from "../../../actions/KORN410/instructor";
 import StoryTextContainer from './StoryTextContainer/StoryTextContainer';
 import EditVocabFormContainer from './EditVocabFormContainer/EditVocabFormContainer';
 import NewVocabFormContainer from './EditVocabFormContainer/NewVocabFormContainer'

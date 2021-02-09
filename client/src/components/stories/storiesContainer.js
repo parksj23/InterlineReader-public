@@ -8,8 +8,8 @@ import {
     enableLoading,
     disableLoading,
     saveHypothesisLink
-} from '../../actions/stories';
-import {endGrammarSearchSession} from '../../actions/analytics'
+} from '../../actions/KORN410/stories';
+import {endGrammarSearchSession} from '../../actions/KORN410/analytics'
 
 import {
     getListOfSavedWords,
@@ -20,8 +20,8 @@ import {
     updateSavedWords,
     addSavedGrammar,
     deleteSavedGrammar
-} from "../../actions/sideBar";
-import {disableSideBarButton} from '../../actions/dashboard';
+} from "../../actions/KORN410/sideBar";
+import {disableSideBarButton} from '../../actions/KORN410/dashboard';
 import './styles/stories.css';
 import Story from './components/story';
 import SideBar from '../common/sideBar/sideBarContainer'

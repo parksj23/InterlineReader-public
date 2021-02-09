@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import { setCurrentUser, logoutUser } from './actions/auth';
-import { endGrammarSearchSession } from './actions/analytics'
+import { setCurrentUser, logoutUser } from './actions/KORN410/auth';
+import { endGrammarSearchSession } from './actions/KORN410/analytics'
 import setAuthToken from './utils/setAuthToken';
 import { withCookies } from 'react-cookie';
 import { Provider } from 'react-redux';
@@ -24,11 +24,14 @@ import Cleaner from './components/Cleaner/CleanerContainer';
 import About from "./components/About/AboutContainer";
 import Story from "./components/stories/storiesContainer";
 import Instructor from './components/instructor/instructorContainer';
-import DictionaryRadicalContainer from './KORN351/pages/DictionaryRadicalContainer';
+import DictionaryRadicalContainer from './KORN351/pages/Okpyeon/OkpyeonRadicalContainer';
 
 import './App.css';
 import sort from "fast-sort/sort.es5.min";
-import DictionaryLessonContainer from "./KORN351/pages/DictionaryLessonContainer";
+import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
+import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
+import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
+import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -116,7 +119,15 @@ class App extends Component {
               <Route path="/about" component={About} />
               <Route path="/cleaner" component={Cleaner} />
               <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
+                <Route exact path="/dashboard/KORN351/dictionary/hangul" component={DictionaryHangulContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-phonetics" component={AboutNewPhonetics} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja-combos" component={MainTextContainer} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                   <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>

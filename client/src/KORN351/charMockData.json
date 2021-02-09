@@ -1,7 +1,7 @@
 [
   {
     "hanja": "一",
-    "hangul": "한 일",
+    "radicalHangul": "한일",
     "meaning": "one; a, an; alone",
     "primaryHoonMeaning": "one; a unit",
     "additionalHoonMeaning": "첫째; 온통; 낱낱; 한 번; 만일; 오로지; 모두; 어느; 어조사",
@@ -9,13 +9,14 @@
     "characterStrokeCount": 0,
     "radical": "一",
     "radicalStrokeCount": 1,
-    "pronunciation": "일",
+    "eum": "일",
     "hoonEum": "하나 일",
-    "lesson": 1
+    "lesson": 1,
+    "phonetic": "心"
   },
   {
     "hanja": "丞",
-    "hangul": "이을 승",
+    "radicalHangul": "이을 승",
     "totalStrokeCount": 6,
     "characterStrokeCount": 5,
     "meaning": "assist, aid, rescue",
@@ -23,8 +24,68 @@
     "additionalHoonMeaning": "돕다(佐); 벼슬 이름(官名); 향상하다(向上)",
     "radicalStrokeCount": 1,
     "radical": "一",
-    "pronunciation": "승",
+    "eum": "승",
     "hoonEum": "이을 승",
     "lesson": 2
+  },
+  {
+    "hanja": "伽",
+    "radicalHangul": "사람인",
+    "totalStrokeCount": 7,
+    "characterStrokeCount": 5,
+    "meaning": "transcription of sanskrit 'gha' in buddhist texts ('samgha', etc.); (nursing; attending; entertainer) (Jap.); tample; in Chinese this character is not used alone",
+    "primaryHoonMeaning": "a clause",
+    "additionalHoonMeaning": "ka, ga의 음역",
+    "radicalStrokeCount": 2,
+    "radical": "人",
+    "eum": "가",
+    "hoonEum": "절 가",
+    "lesson": 2,
+    "phonetic": "安"
+  },
+  {
+    "hanja": "心",
+    "radicalHangul": "사람인",
+    "totalStrokeCount": 7,
+    "characterStrokeCount": 5,
+    "meaning": "transcription of sanskrit 'gha' in buddhist texts ('samgha', etc.); (nursing; attending; entertainer) (Jap.); tample; in Chinese this character is not used alone",
+    "primaryHoonMeaning": "a clause",
+    "additionalHoonMeaning": "ka, ga의 음역",
+    "radicalStrokeCount": 2,
+    "radical": "心",
+    "eum": "가",
+    "hoonEum": "절 가",
+    "lesson": 2,
+    "phonetic": "心"
+  },
+  {
+    "hanja": "門",
+    "radicalHangul": "사람인",
+    "totalStrokeCount": 7,
+    "characterStrokeCount": 5,
+    "meaning": "transcription of sanskrit 'gha' in buddhist texts ('samgha', etc.); (nursing; attending; entertainer) (Jap.); tample; in Chinese this character is not used alone",
+    "primaryHoonMeaning": "a clause",
+    "additionalHoonMeaning": "ka, ga의 음역",
+    "radicalStrokeCount": 2,
+    "radical": "門",
+    "eum": "가",
+    "hoonEum": "절 가",
+    "lesson": 2,
+    "phonetic": "門"
+  },
+  {
+    "hanja": "安",
+    "radicalHangul": "사람인",
+    "totalStrokeCount": 7,
+    "characterStrokeCount": 5,
+    "meaning": "transcription of sanskrit 'gha' in buddhist texts ('samgha', etc.); (nursing; attending; entertainer) (Jap.); tample; in Chinese this character is not used alone",
+    "primaryHoonMeaning": "a clause",
+    "additionalHoonMeaning": "ka, ga의 음역",
+    "radicalStrokeCount": 2,
+    "radical": "安",
+    "eum": "가",
+    "hoonEum": "절 가",
+    "lesson": 2,
+    "phonetic": "安"
   }
 ]

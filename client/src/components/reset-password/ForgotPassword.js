@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import TextFieldGroup from '../common/TextFieldGroup';
-import { sendLinkToResetPassword } from '../../actions/auth';
+import { sendLinkToResetPassword } from '../../actions/KORN410/auth';
 
 class ForgotPassword extends Component {
 	state = {

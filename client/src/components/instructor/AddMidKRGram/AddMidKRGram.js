@@ -12,7 +12,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Typography from "@material-ui/core/Typography";
 
-import { addMiddleKoreanGrammar, saveMidKrGram,updateMiddleKrGrammarEntry } from "../../../actions/instructor";
+import { addMiddleKoreanGrammar, saveMidKrGram,updateMiddleKrGrammarEntry } from "../../../actions/KORN410/instructor";
 import randomstring from "randomstring";
 
 class AddMidKRGram extends Component {

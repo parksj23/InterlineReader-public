@@ -5,7 +5,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 import CreateIcon from '@material-ui/icons/Create';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { editStoryByLine } from '../../../actions/stories';
+import { editStoryByLine } from '../../../actions/KORN410/stories';
 import {connect} from "react-redux";
 
 const styles = theme => ({

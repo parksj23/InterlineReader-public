@@ -14,7 +14,7 @@ import randomstring from 'randomstring';
 
 import {
   saveMidKrVocab, addMiddleKoreanVocab, updateMiddleKoreanVocabEntry, deleteMiddleKrVocabEntr
-} from "../../../actions/instructor";
+} from "../../../actions/KORN410/instructor";
 
 class AddMidKRVoc extends Component {
   constructor(props) {

@@ -15,7 +15,7 @@ import {EditorState, convertToRaw} from 'draft-js';
 import {Editor} from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import ReactHtmlParser from 'react-html-parser';
-import {addToStory, addStoryInfo, handleStatusClose} from '../../../../actions/instructor';
+import {addToStory, addStoryInfo, handleStatusClose} from '../../../../actions/KORN410/instructor';
 import {connect} from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';

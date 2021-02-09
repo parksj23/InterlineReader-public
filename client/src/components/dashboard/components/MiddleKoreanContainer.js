@@ -9,7 +9,7 @@ import {
   ExpansionPanelDetails,
   Typography
 } from "@material-ui/core";
-import {getMiddleKorean} from "../../../actions/dashboard";
+import {getMiddleKorean} from "../../../actions/KORN410/dashboard";
 import {connect} from "react-redux";
 import TablePaginationWrapper from './common/TablePaginationWrapper'
 import Search from './common/Search/Search';

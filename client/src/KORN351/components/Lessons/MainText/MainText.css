@@ -1,0 +1,13 @@
+.main-text {
+    display: flex;
+}
+
+.text {
+    width: 50%;
+    padding: 7%;
+}
+
+.img {
+    width: 50%;
+    padding: 5%;
+}

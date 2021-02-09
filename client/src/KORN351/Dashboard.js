@@ -102,7 +102,7 @@ function Dashboard() {
                         <Link to="/dashboard/KORN351/dictionary/radical">
                             <div className="modal-options">By Radical</div>
                         </Link>
-                        <Link to="/dashboard/KORN351/dictionary/radical">
+                        <Link to="/dashboard/KORN351/dictionary/hangul">
                             <div className="modal-options">By Hangul</div>
                         </Link>
                         <Link to="/dashboard/KORN351/dictionary/lesson">

@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-import {initOverview} from '../../../../../actions/analytics'
+import {initOverview} from '../../../../../actions/KORN410/analytics'
 
 class AnalyticsContainer extends Component {
 

@@ -5,7 +5,7 @@ import {Route, Switch } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid'
 import EditGrammar from "./EditGrammar";
-import { getGrammar, resetEditGrammar} from "../../../actions/instructor";
+import { getGrammar, resetEditGrammar} from "../../../actions/KORN410/instructor";
 
 class EditGrammarContainer extends Component {
   constructor(props){
