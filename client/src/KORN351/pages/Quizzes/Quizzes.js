@@ -62,21 +62,7 @@ class Quizzes extends Component {
                                     Lesson 5
                                 </CardContent>
                             </Card>
-                            <Card variant="outlined" className="flashcard-deck-card">
-                                <CardContent >
-                                    Lesson 5
-                                </CardContent>
-                            </Card>
-                            <Card variant="outlined" className="flashcard-deck-card">
-                                <CardContent >
-                                    Lesson 5
-                                </CardContent>
-                            </Card>
-                            <Card variant="outlined" className="flashcard-deck-card">
-                                <CardContent >
-                                    Lesson 5
-                                </CardContent>
-                            </Card>
+
                         </div>
 
 
