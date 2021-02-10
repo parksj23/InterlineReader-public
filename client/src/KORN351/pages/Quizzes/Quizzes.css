@@ -1,9 +1,9 @@
 .flashcard-deck-card {
-    width: fit-content;
-    padding: 1% 3%;
+    padding: 1% 4%;
     margin-right: 2%;
     background-color: #00284d !important;
     color: white !important;
+    text-align: center;
 }
 
 .flashcard-deck-card:hover {
@@ -12,5 +12,12 @@
 }
 
 .flashcard-deck-container {
-    display: flex;
+    width: 100%;
+    overflow-x: scroll;
+    display: inline-flex;
+}
+
+.MuiCard-root {
+    overflow: visible !important;
+    padding-bottom: 0 !important;
 }

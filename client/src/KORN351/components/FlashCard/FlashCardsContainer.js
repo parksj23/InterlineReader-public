@@ -28,7 +28,7 @@ class FlashCardContainer extends Component {
         let numVocabsRequired = 4 - primaryQuestionList.length;
         if (0 < primaryQuestionList.length && primaryQuestionList.length < 4)
             for (let i = primaryQuestionList.length ; i < 4 ; i++) {
-                questionQueue.push({question: `Add ${numVocabsRequired} more vocabs`, answer: `Add ${numVocabsRequired} more vocabs`, _id: "1"})
+                primaryQuestionList.push({question: `Add ${numVocabsRequired} more vocabs`, answer: `Add ${numVocabsRequired} more vocabs`, _id: "1"})
             }
 
         primaryQuestionList.forEach(function (question) {
