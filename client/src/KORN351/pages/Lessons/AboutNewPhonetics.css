@@ -1,0 +1,16 @@
+.phonetics-card {
+    height: 330px;
+    margin: 4%;
+    padding: 2%;
+}
+
+.phonetics-card-content {
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+@media screen and (max-width: 1100px) {
+    .phonetics-card {
+        height: 430px;
+    }
+}

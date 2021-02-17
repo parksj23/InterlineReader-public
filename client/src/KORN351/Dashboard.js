@@ -48,6 +48,7 @@ function Dashboard() {
                     </h1>
                 </Card>
                 <Card className="card">
+                    <Link to="/dashboard/KORN351/quizzes"  style={{ textDecoration: 'none', color: 'black' }}>
                     <h1>
                         <CardContent>
                             <Typography variant="h5" component="h2">
@@ -61,6 +62,7 @@ function Dashboard() {
                             </Typography>
                         </CardContent>
                     </h1>
+                    </Link>
                 </Card>
                 <Card className="card" onClick={() => {document.getElementById("dictionaryModal").style.display="block"}}>
                     <h1>
@@ -99,13 +101,13 @@ function Dashboard() {
                     <Typography variant="h5" component="h2">Choose how you would like to search . . .</Typography>
                     <br/>
                     <div style={{textAlign: 'center'}}>
-                        <Link to="/dashboard/KORN351/dictionary/radical">
+                        <Link to="/dashboard/KORN351/dictionary/radical" style={{ textDecoration: 'none', color: 'black' }}>
                             <div className="modal-options">By Radical</div>
                         </Link>
-                        <Link to="/dashboard/KORN351/dictionary/hangul">
+                        <Link to="/dashboard/KORN351/dictionary/hangul" style={{ textDecoration: 'none', color: 'black' }}>
                             <div className="modal-options">By Hangul</div>
                         </Link>
-                        <Link to="/dashboard/KORN351/dictionary/lesson">
+                        <Link to="/dashboard/KORN351/dictionary/lesson" style={{ textDecoration: 'none', color: 'black' }}>
                             <div className="modal-options">By Lesson</div>
                         </Link>
                     </div>
