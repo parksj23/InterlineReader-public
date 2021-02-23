@@ -6,7 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import {connect} from "react-redux";
-import {getNewVocabulary} from "../../../../actions/KORN351/MainText";
+import {getNewVocabulary} from "../../../../actions/KORN351/Lessons";
 import {withRouter} from "react-router-dom";
 
 const styles ={

@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import './Quizzes.css';
 import { withCookies } from 'react-cookie';
 import {getCharacters, getPhonetics, getRadicals} from "../../../actions/KORN351/Okpyeon";
+import {getNewHanjaCombos} from "../../../actions/KORN351/Lessons";
 
 class Quizzes extends Component {
     constructor(props) {
@@ -29,6 +30,8 @@ class Quizzes extends Component {
             this.props.getPhonetics();
         if (this.props.radicals.length === 0)
             this.props.getRadicals();
+        if (this.props.newHanjaCombos.length === 0)
+            this.props.getNewHanjaCombos();
     }
 
     handleClose = () => {
@@ -43,7 +46,7 @@ class Quizzes extends Component {
     openModal = (topic, lesson) => {
         let quizTopic = topic + "-" + lesson;
 
-        const {characters, phonetics, radicals} = this.props;
+        const {characters, phonetics, radicals, newHanjaCombos} = this.props;
 
         let primQuestionList = [];
 
@@ -75,8 +78,45 @@ class Quizzes extends Component {
                     })
             });
         } else if (topic === "new-combo") {
+            newHanjaCombos.forEach(combo => {
+                if (lesson === "0") {
+                    // Build Cumulative
+                    primQuestionList.push({
+                        _id: combo._id,
+                        question: combo.hanja + ": " + combo.kor,
+                        answer: combo.eng
+                    })
+                } else {
+                    if (combo.lesson === lesson)
+                        primQuestionList.push({
+                            _id: combo._id,
+                            question: combo.hanja + ": " + combo.kor,
+                            answer: combo.eng
+                        })
+                }
+            });
         } else if (topic === "all-combo") {
+            if (lesson === "0")
+                newHanjaCombos.forEach(combo => {
+                    // Build Cumulative
+                    if (combo.isAllCombo)
+                        primQuestionList.push({
+                            _id: combo._id,
+                            question: combo.hanja + ": " + combo.kor,
+                            answer: combo.eng
+                        })
+                });
+            else
+                newHanjaCombos.forEach(combo => {
+                    if (combo.lesson === lesson && combo.isAllCombo)
+                        primQuestionList.push({
+                            _id: combo._id,
+                            question: combo.hanja + ": " + combo.kor,
+                            answer: combo.eng
+                        })
+                });
         } else if (topic === "prac-sent") {
+
         }
 
         this.setState({
@@ -424,7 +464,7 @@ class Quizzes extends Component {
 
                         <h5>New Combos Vocab</h5><br/>
                         <div className="flashcard-deck-container">
-                            <Card variant="outlined" className="flashcard-deck-card" onClick={() => {this.openModal("new-combo", "999")}}>
+                            <Card variant="outlined" className="flashcard-deck-card" onClick={() => {this.openModal("new-combo", "0")}}>
                                 <CardContent>
                                     Cumulative
                                 </CardContent>
@@ -534,7 +574,7 @@ class Quizzes extends Component {
 
                         <h5>All Combos Vocab</h5><br/>
                         <div className="flashcard-deck-container">
-                            <Card variant="outlined" className="flashcard-deck-card" onClick={() => {this.openModal("all-combo", "999")}}>
+                            <Card variant="outlined" className="flashcard-deck-card" onClick={() => {this.openModal("all-combo", "0")}}>
                                 <CardContent>
                                     Cumulative
                                 </CardContent>
@@ -644,7 +684,7 @@ class Quizzes extends Component {
 
                         <h5>Practice Sentences</h5><br/>
                         <div className="flashcard-deck-container">
-                            <Card variant="outlined" className="flashcard-deck-card" onClick={() => {this.openModal("prac-sent", "999")}}>
+                            <Card variant="outlined" className="flashcard-deck-card" onClick={() => {this.openModal("prac-sent", "0")}}>
                                 <CardContent>
                                     Cumulative
                                 </CardContent>
@@ -762,8 +802,9 @@ const mapStateToProps = (state) => {
     return {
         phonetics : state.okpyeon.phonetics,
         characters : state.okpyeon.characters,
-        radicals : state.okpyeon.radicals
+        radicals : state.okpyeon.radicals,
+        newHanjaCombos: state.lessons.newHanjaCombos
     };
 };
 
-export default withCookies(withRouter(connect(mapStateToProps, {getRadicals, getCharacters, getPhonetics})(Quizzes)));
+export default withCookies(withRouter(connect(mapStateToProps, {getRadicals, getCharacters, getPhonetics, getNewHanjaCombos})(Quizzes)));

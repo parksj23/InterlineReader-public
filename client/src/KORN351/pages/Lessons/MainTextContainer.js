@@ -5,7 +5,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import MainText from "../../components/Lessons/MainText/MainText";
 import {enableSideBarButton, resetSideBar} from '../../../actions/KORN410/sideBar';
 import {disableSideBarButton} from '../../../actions/KORN410/dashboard';
-import {getMainText} from '../../../actions/KORN351/MainText';
+import {getMainText} from '../../../actions/KORN351/Lessons';
 import '../../components/Lessons/NavigatingButtons/NavigatingButtons.css';
 import SideBarContainer from '../../components/sideBar/sideBarContainer';
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";

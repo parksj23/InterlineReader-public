@@ -1,6 +1,8 @@
 import {
     GET_MAIN_TEXT_AND_EX_SENTENCES,
-    GET_NEW_VOCABULARY
+    GET_NEW_VOCABULARY,
+    GET_NEW_HANJA_COMBOS,
+    GET_ABOUT_NEW_BUSU
 } from '../../constants/351-action-types';
 
 const initialState = {
@@ -8,7 +10,9 @@ const initialState = {
     subText: '',
     currentLesson: 1,
     exampleSentences: [],
-    newVocabulary: ''
+    newVocabulary: '',
+    newHanjaCombos: [],
+    aboutNewBusu: []
 };
 
 export default (state = initialState, action) => {
@@ -27,6 +31,18 @@ export default (state = initialState, action) => {
                 return({
                     ...state,
                     newVocabulary: action.payload
+                });
+        case GET_NEW_HANJA_COMBOS:
+            if (action.payload !== undefined)
+                return({
+                    ...state,
+                    newHanjaCombos: action.payload
+                });
+        case GET_ABOUT_NEW_BUSU:
+            if (action.payload !== undefined)
+                return({
+                    ...state,
+                    aboutNewBusu: action.payload
                 });
         default:
             return state;
