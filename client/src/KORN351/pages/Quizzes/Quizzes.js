@@ -47,7 +47,6 @@ class Quizzes extends Component {
 
     openModal = (topic, lesson) => {
         let quizTopic = topic + "-" + lesson;
-
         const {characters, phonetics, radicals, newHanjaCombos, pracSentences} = this.props;
         let temp = false;
         let primQuestionList = [];
