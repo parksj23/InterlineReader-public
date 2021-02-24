@@ -38,4 +38,13 @@ router.get("/getAboutNewBusu", (req, res) => {
     });
 });
 
+router.get("/getPracSentences", (req, res) => {
+    db.get().collection('PRAC_SENTENCES').find({}).toArray()
+        .then((result) => {
+            res.json(result);
+        }).catch(() => {
+        res.status(400).send('An error occurred in the database.');
+    });
+});
+
 module.exports = router;

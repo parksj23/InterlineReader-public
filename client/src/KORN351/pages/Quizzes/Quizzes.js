@@ -10,7 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import './Quizzes.css';
 import { withCookies } from 'react-cookie';
 import {getCharacters, getPhonetics, getRadicals} from "../../../actions/KORN351/Okpyeon";
-import {getNewHanjaCombos} from "../../../actions/KORN351/Lessons";
+import {getNewHanjaCombos, getPracticeSentences} from "../../../actions/KORN351/Lessons";
 
 class Quizzes extends Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class Quizzes extends Component {
         this.state = {
             showModal: false,
             primaryQuestionList: [],
-            secondaryQuestionList: [],
+            isPracSent: false,
             quizTopic: ''
         }
     }
@@ -32,6 +32,8 @@ class Quizzes extends Component {
             this.props.getRadicals();
         if (this.props.newHanjaCombos.length === 0)
             this.props.getNewHanjaCombos();
+        if (this.props.pracSentences.length === 0)
+            this.props.getPracticeSentences();
     }
 
     handleClose = () => {
@@ -46,8 +48,8 @@ class Quizzes extends Component {
     openModal = (topic, lesson) => {
         let quizTopic = topic + "-" + lesson;
 
-        const {characters, phonetics, radicals, newHanjaCombos} = this.props;
-
+        const {characters, phonetics, radicals, newHanjaCombos, pracSentences} = this.props;
+        let temp = false;
         let primQuestionList = [];
 
         if (topic === "new-chars") {
@@ -116,18 +118,36 @@ class Quizzes extends Component {
                         })
                 });
         } else if (topic === "prac-sent") {
-
+            temp = true;
+            if (lesson === "0")
+                pracSentences.forEach(sentence => {
+                    primQuestionList.push({
+                        _id: sentence._id,
+                        question: sentence.question,
+                        answer: sentence.answer
+                    })
+                });
+            else
+                pracSentences.forEach(sentence => {
+                    if (sentence.lesson === lesson)
+                        primQuestionList.push({
+                            _id: sentence._id,
+                            question: sentence.question,
+                            answer: sentence.answer
+                        })
+                });
         }
 
         this.setState({
             primaryQuestionList: primQuestionList,
             quizTopic: quizTopic,
-            showModal: true
+            showModal: true,
+            isPracSent: temp
         })
     };
 
     render() {
-        const {primaryQuestionList, secondaryQuestionList, quizTopic, showModal} = this.state;
+        const {primaryQuestionList, isPracSent, quizTopic, showModal} = this.state;
         return (
             <Grid container>
                 <Modal
@@ -136,7 +156,7 @@ class Quizzes extends Component {
                     open={showModal}
                     onClose={this.handleClose}
                 >
-                    <FlashCardContainer primaryQuestionList={primaryQuestionList} secondaryQuestionList={[]} quizTopic={quizTopic} cookies={this.props.cookies}/>
+                    <FlashCardContainer primaryQuestionList={primaryQuestionList} isPracSent={isPracSent} quizTopic={quizTopic} cookies={this.props.cookies}/>
                 </Modal>
                 <Grid item md={1}/>
                 <Grid item xs={12} md={10}>
@@ -803,8 +823,9 @@ const mapStateToProps = (state) => {
         phonetics : state.okpyeon.phonetics,
         characters : state.okpyeon.characters,
         radicals : state.okpyeon.radicals,
-        newHanjaCombos: state.lessons.newHanjaCombos
+        newHanjaCombos: state.lessons.newHanjaCombos,
+        pracSentences: state.lessons.pracSentences
     };
 };
 
-export default withCookies(withRouter(connect(mapStateToProps, {getRadicals, getCharacters, getPhonetics, getNewHanjaCombos})(Quizzes)));
+export default withCookies(withRouter(connect(mapStateToProps, {getRadicals, getCharacters, getPhonetics, getNewHanjaCombos, getPracticeSentences})(Quizzes)));

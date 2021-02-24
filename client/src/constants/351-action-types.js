@@ -13,3 +13,6 @@ export const GET_NEW_HANJA_COMBOS = "GET_NEW_HANJA_COMBOS";
 
 // Lesson - About New Busu
 export const GET_ABOUT_NEW_BUSU = "GET_ABOUT_NEW_BUSU";
+
+// Quizzes
+export const GET_PRAC_SENTENCES = "GET_PRAC_SENTENCES";

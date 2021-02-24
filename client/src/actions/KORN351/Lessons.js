@@ -3,7 +3,8 @@ import {
     GET_MAIN_TEXT_AND_EX_SENTENCES,
     GET_NEW_VOCABULARY,
     GET_NEW_HANJA_COMBOS,
-    GET_ABOUT_NEW_BUSU
+    GET_ABOUT_NEW_BUSU,
+    GET_PRAC_SENTENCES
 } from "../../constants/351-action-types";
 
 export const getMainText = lesson => dispatch => {
@@ -47,6 +48,18 @@ export const getAboutNewBusu = () => dispatch => {
         axios.get("/api/lesson/getAboutNewBusu").then(resp => {
             dispatch({
                 type: GET_ABOUT_NEW_BUSU,
+                payload: resp.data
+            });
+            resolve()
+        })
+    })
+};
+
+export const getPracticeSentences = () => dispatch => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/lesson/getPracSentences").then(resp => {
+            dispatch({
+                type: GET_PRAC_SENTENCES,
                 payload: resp.data
             });
             resolve()

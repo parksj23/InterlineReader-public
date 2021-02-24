@@ -5,6 +5,7 @@ import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
 import FlashCard from './FlashCard'
 import './FlashCardsContent.css'
+import PracticeSentencesFlashCard from "./PracticeSentencesFlashCard";
 
 class FlashCardContainer extends Component {
 
@@ -21,7 +22,7 @@ class FlashCardContainer extends Component {
     }
 
     componentDidMount() {
-        let {primaryQuestionList, secondaryQuestionList, quizTopic, cookies} = this.props;
+        let {primaryQuestionList, quizTopic, cookies} = this.props;
         let questionQueue = [];
 
         // Temp measure to fix infinite loop (Add static options) :
@@ -63,41 +64,41 @@ class FlashCardContainer extends Component {
                 questionId: question._id
             })
         });
-
-        if (secondaryQuestionList.length > 0) {
-            secondaryQuestionList.forEach(function (question) {
-                let options = [];
-                let a = question.answer;
-                let answer = {
-                    answer: a,
-                    isAnswer: true
-                };
-                options.push(answer);
-                let indexUsed = [];
-                for (let i = 0; i < 3; i++) {
-                    let index = Math.floor((Math.random() * +secondaryQuestionList.length));
-                    while (secondaryQuestionList[index] === question || indexUsed.indexOf(index) !== -1) {
-                        index = Math.floor((Math.random() * +secondaryQuestionList.length));
-                    }
-                    options.push({
-                        answer: secondaryQuestionList[index].answer,
-                        isAnswer: false
-                    });
-                    indexUsed.push(index);
-                }
-                let rotate = Math.floor((Math.random() * options.length + 1))
-                for (let i = 0; i < rotate; i++) {
-                    options.push(options[0]);
-                    options.splice(0, 1);
-                }
-                questionQueue.push({
-                    answer: question.answer,
-                    question: question.question,
-                    options: options,
-                    questionId: question._id
-                })
-            });
-        }
+        //
+        // if (secondaryQuestionList.length > 0) {
+        //     secondaryQuestionList.forEach(function (question) {
+        //         let options = [];
+        //         let a = question.answer;
+        //         let answer = {
+        //             answer: a,
+        //             isAnswer: true
+        //         };
+        //         options.push(answer);
+        //         let indexUsed = [];
+        //         for (let i = 0; i < 3; i++) {
+        //             let index = Math.floor((Math.random() * +secondaryQuestionList.length));
+        //             while (secondaryQuestionList[index] === question || indexUsed.indexOf(index) !== -1) {
+        //                 index = Math.floor((Math.random() * +secondaryQuestionList.length));
+        //             }
+        //             options.push({
+        //                 answer: secondaryQuestionList[index].answer,
+        //                 isAnswer: false
+        //             });
+        //             indexUsed.push(index);
+        //         }
+        //         let rotate = Math.floor((Math.random() * options.length + 1))
+        //         for (let i = 0; i < rotate; i++) {
+        //             options.push(options[0]);
+        //             options.splice(0, 1);
+        //         }
+        //         questionQueue.push({
+        //             answer: question.answer,
+        //             question: question.question,
+        //             options: options,
+        //             questionId: question._id
+        //         })
+        //     });
+        // }
 
         // Start from saved place
         const savedFlashCard = cookies.get(quizTopic);
@@ -111,8 +112,8 @@ class FlashCardContainer extends Component {
                     let questionQueue = this.state.questionQueue;
 
                     while (questionQueue[0].questionId !== savedQuestionId) {
-                            answeredQuestions.push(questionQueue[0]);
-                            questionQueue.splice(0,1);
+                        answeredQuestions.push(questionQueue[0]);
+                        questionQueue.splice(0,1);
                     }
 
                     this.setState({
@@ -226,11 +227,17 @@ class FlashCardContainer extends Component {
                             {isLastQuestion?
                                 <h1 style={{ textAlign: 'center', position: 'relative', bottom: '-35%' }}>Your Final Score Is: {score}/{answeredQuestions.length} </h1>
                                 :
-                                <FlashCard question={question}
-                                           answeredQuestion={this.answeredQuestion}
-                                           style={{width: '100%', height: '80%'}}
-                                           isSaved={isSaved}
-                                />
+                                this.props.isPracSent?
+                                    <PracticeSentencesFlashCard question={question}
+                                                                answeredQuestion={this.answeredQuestion}
+                                                                style={{width: '100%', height: '80%'}}
+                                                                isSaved={isSaved}/>
+                                    :
+                                    <FlashCard question={question}
+                                               answeredQuestion={this.answeredQuestion}
+                                               style={{width: '100%', height: '80%'}}
+                                               isSaved={isSaved}
+                                    />
                             }
 
                         </Grid>
