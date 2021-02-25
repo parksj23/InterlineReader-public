@@ -33,6 +33,8 @@ import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulCont
 import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
 import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
 import Quizzes from "./KORN351/pages/Quizzes/Quizzes";
+import NewHanjaCombos from "./KORN351/pages/Lessons/NewHanjaCombos";
+import AboutNewBusu from "./KORN351/pages/Lessons/AboutNewBusu";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -127,9 +129,9 @@ class App extends Component {
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power" component={MainTextContainer} />
-                <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu" component={AboutNewBusu} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-phonetics" component={AboutNewPhonetics} />
-                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja-combos" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja-combos" component={NewHanjaCombos} />
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                   <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>

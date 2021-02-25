@@ -3,7 +3,7 @@ import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
 import './MainText.css';
 import {connect} from "react-redux";
-import {getMainText} from '../../../../actions/KORN351/MainText';
+import {getMainText} from '../../../../actions/KORN351/Lessons';
 import img from './img.png';
 import { withRouter } from 'react-router-dom';
 

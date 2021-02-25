@@ -20,4 +20,31 @@ router.get("/getNewVocab", async (req, res) => {
     });
 });
 
+router.get("/getNewHanjaCombos", (req, res) => {
+    db.get().collection('NEW_HANJA_COMBO').find({}).toArray()
+        .then((result) => {
+            res.json(result);
+        }).catch(() => {
+        res.status(400).send('An error occurred in the database.');
+    });
+});
+
+router.get("/getAboutNewBusu", (req, res) => {
+    db.get().collection('ABOUT_NEW_BUSU').find({}).toArray()
+        .then((result) => {
+            res.json(result);
+        }).catch(() => {
+        res.status(400).send('An error occurred in the database.');
+    });
+});
+
+router.get("/getPracSentences", (req, res) => {
+    db.get().collection('PRAC_SENTENCES').find({}).toArray()
+        .then((result) => {
+            res.json(result);
+        }).catch(() => {
+        res.status(400).send('An error occurred in the database.');
+    });
+});
+
 module.exports = router;
