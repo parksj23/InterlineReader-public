@@ -29,21 +29,25 @@ class PracticeSentencesFlashCard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showAnswer: false
+            showAnswer: false,
+            prevQuestion: ''
         }
     }
 
-
-
     render()
     {
-        let {question, classes, answeredQuestion} = this.props;
+        let {question, classes, enableNextButton} = this.props;
         let answer = "";
         question.options.forEach(anOption => {
             if (anOption.isAnswer)
                 answer = anOption.answer;
         });
 
+        if (this.state.prevQuestion !== question.question)
+            this.setState({
+                prevQuestion: question.question,
+                showAnswer: false
+            });
         return (
             <div className={'Flashcards-question-container'}>
                 <div className={'Flasscards-question'}>
@@ -63,7 +67,7 @@ class PracticeSentencesFlashCard extends React.Component {
                     this.state.showAnswer?
                         <button onClick={() => {this.setState({showAnswer: false})}}>{answer}</button>
                         :
-                        <button onClick={() => {this.setState({showAnswer: true})}}>Show Answer</button>
+                        <button onClick={() => {this.setState({showAnswer: true}); enableNextButton();}}>Show Answer</button>
                 }
             </div>
         )

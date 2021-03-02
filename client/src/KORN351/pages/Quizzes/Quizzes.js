@@ -18,7 +18,7 @@ class Quizzes extends Component {
         this.state = {
             showModal: false,
             primaryQuestionList: [],
-            isPracSent: false,
+            isPracticeSentence: false,
             quizTopic: ''
         }
     }
@@ -141,12 +141,12 @@ class Quizzes extends Component {
             primaryQuestionList: primQuestionList,
             quizTopic: quizTopic,
             showModal: true,
-            isPracSent: temp
+            isPracticeSentence: temp
         })
     };
 
     render() {
-        const {primaryQuestionList, isPracSent, quizTopic, showModal} = this.state;
+        const {primaryQuestionList, isPracticeSentence, quizTopic, showModal} = this.state;
         return (
             <Grid container>
                 <Modal
@@ -155,7 +155,7 @@ class Quizzes extends Component {
                     open={showModal}
                     onClose={this.handleClose}
                 >
-                    <FlashCardContainer primaryQuestionList={primaryQuestionList} isPracSent={isPracSent} quizTopic={quizTopic} cookies={this.props.cookies}/>
+                    <FlashCardContainer primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} cookies={this.props.cookies}/>
                 </Modal>
                 <Grid item md={1}/>
                 <Grid item xs={12} md={10}>

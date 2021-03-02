@@ -44,7 +44,7 @@ class DictionaryLessonContainer extends Component {
         let temp = this.props.characters.filter(char => {
             return phonetic.phonetic === char.hanja
         });
-        this.showCharacterAnimation(temp[0].hanja, temp);
+        this.showCharacterAnimation(phonetic.phonetic, temp);
     };
 
     showCharacterAnimation = (hanja, char) => {

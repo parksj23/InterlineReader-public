@@ -65,9 +65,9 @@ class NewHanjaCombos extends Component {
                             {
                                 newHanjaCombos.map( combo => {
                                     return (
-                                        <Grid item xs={3} className="grid-card">
-                                            <Card variant="outlined" className="phonetics-card" style={{height: '100%'}}>
-                                                <CardContent  className="phonetics-card-content">
+                                        <Grid item xs={3}>
+                                            <Card variant="outlined">
+                                                <CardContent  className="new-hanja-card-content">
                                                     <div style={{display: 'flex'}}>
                                                     <Typography variant="h5" component="h2">
                                                         {combo.hanja}

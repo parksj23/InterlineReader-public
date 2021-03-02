@@ -134,6 +134,14 @@ class FlashCardContainer extends Component {
         });
     };
 
+    enableNextButton = () => {
+        this.setState({
+            answeredCurrentQuestion: true,
+            score: 0,
+            answeredCorrectly: true
+        })
+    };
+
     handleNextQuestion = (question) => {
         const { cookies, quizTopic } = this.props;
         const {questionQueue, answeredQuestions, score} = this.state;
@@ -227,9 +235,10 @@ class FlashCardContainer extends Component {
                             {isLastQuestion?
                                 <h1 style={{ textAlign: 'center', position: 'relative', bottom: '-35%' }}>Your Final Score Is: {score}/{answeredQuestions.length} </h1>
                                 :
-                                this.props.isPracSent?
+                                this.props.isPracticeSentence?
                                     <PracticeSentencesFlashCard question={question}
                                                                 answeredQuestion={this.answeredQuestion}
+                                                                enableNextButton={this.enableNextButton}
                                                                 style={{width: '100%', height: '80%'}}
                                                                 isSaved={isSaved}/>
                                     :

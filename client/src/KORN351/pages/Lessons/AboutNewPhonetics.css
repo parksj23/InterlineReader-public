@@ -1,10 +1,21 @@
 .phonetics-card {
     height: 330px;
-    margin: 4%;
     padding: 2%;
 }
 
 .phonetics-card-content {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 330px;
+}
+
+.grid-card {
+    margin: 1% !important;
+    max-width: 48% !important;
+}
+
+.new-hanja-card-content {
+    height: 200px;
     overflow-x: auto;
     overflow-y: auto;
 }
