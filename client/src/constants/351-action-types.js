@@ -16,3 +16,6 @@ export const GET_ABOUT_NEW_BUSU = "GET_ABOUT_NEW_BUSU";
 
 // Quizzes
 export const GET_PRAC_SENTENCES = "GET_PRAC_SENTENCES";
+
+// Lesson - New Hanja
+export const GET_NEW_HANJA = "GET_NEW_HANJA";

@@ -1,40 +1,41 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
-import { setCurrentUser, logoutUser } from './actions/KORN410/auth';
-import { endGrammarSearchSession } from './actions/KORN410/analytics'
-import setAuthToken from './utils/setAuthToken';
-import { withCookies } from 'react-cookie';
-import { Provider } from 'react-redux';
-import store from './store';
-import axios from 'axios'
-import PrivateRoute from './components/common/PrivateRoute';
-
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import Landing from './components/layout/Landing';
-import Register from './components/auth/Register';
-import Login from './components/auth/Login';
-import EmailVerification from './components/auth/EmailVerification';
-import DashboardContainer from './components/dashboard/DashboardContainer';
-import ForgotPassword from './components/reset-password/ForgotPassword';
-import ResetPassword from './components/reset-password/ResetPassword';
-import Success from './components/common/Success';
-import Cleaner from './components/Cleaner/CleanerContainer';
-import About from "./components/About/AboutContainer";
-import Story from "./components/stories/storiesContainer";
-import Instructor from './components/instructor/instructorContainer';
-import DictionaryRadicalContainer from './KORN351/pages/Okpyeon/OkpyeonRadicalContainer';
-
 import './App.css';
-import sort from "fast-sort/sort.es5.min";
-import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
-import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
-import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
-import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
-import Quizzes from "./KORN351/pages/Quizzes/Quizzes";
-import NewHanjaCombos from "./KORN351/pages/Lessons/NewHanjaCombos";
+
+import React, { Component } from 'react';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
+import { logoutUser, setCurrentUser } from './actions/KORN410/auth';
+
+import About from "./components/About/AboutContainer";
 import AboutNewBusu from "./KORN351/pages/Lessons/AboutNewBusu";
+import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
+import Cleaner from './components/Cleaner/CleanerContainer';
+import DashboardContainer from './components/dashboard/DashboardContainer';
+import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
+import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
+import DictionaryRadicalContainer from './KORN351/pages/Okpyeon/OkpyeonRadicalContainer';
+import EmailVerification from './components/auth/EmailVerification';
+import Footer from './components/layout/Footer';
+import ForgotPassword from './components/reset-password/ForgotPassword';
+import Instructor from './components/instructor/instructorContainer';
+import Landing from './components/layout/Landing';
+import Login from './components/auth/Login';
+import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
+import Navbar from './components/layout/Navbar';
+import NewHanjaCombos from "./KORN351/pages/Lessons/NewHanjaCombos";
+import NewHanjaContainer from "./KORN351/pages/Lessons/NewHanjaContainer";
+import PrivateRoute from './components/common/PrivateRoute';
+import { Provider } from 'react-redux';
+import Quizzes from "./KORN351/pages/Quizzes/Quizzes";
+import Register from './components/auth/Register';
+import ResetPassword from './components/reset-password/ResetPassword';
+import Story from "./components/stories/storiesContainer";
+import Success from './components/common/Success';
+import axios from 'axios'
+import { endGrammarSearchSession } from './actions/KORN410/analytics'
+import jwt_decode from 'jwt-decode';
+import setAuthToken from './utils/setAuthToken';
+import sort from "fast-sort/sort.es5.min";
+import store from './store';
+import { withCookies } from 'react-cookie';
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -126,7 +127,7 @@ class App extends Component {
                 <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
                 <Route exact path="/dashboard/KORN351/quizzes" component={Quizzes}/>
                 <Route exact path="/dashboard/KORN351/lesson/:lesson" component={MainTextContainer} />
-                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={MainTextContainer} />
+                <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja" component={NewHanjaContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power" component={MainTextContainer} />
                 <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu" component={AboutNewBusu} />

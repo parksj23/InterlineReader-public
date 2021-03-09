@@ -1,0 +1,19 @@
+.new-hanja {
+  padding: 20px;
+}
+
+.new-hanja-card {
+  padding: 2%;
+  margin: 4%;
+  text-align: left;
+  color: grey;
+}
+
+.new-hanja-box {
+  border: 1px solid grey;
+  border-radius: 5px;
+  display: flex;
+}
+.new-hanja-char {
+  text-align: center;
+}
