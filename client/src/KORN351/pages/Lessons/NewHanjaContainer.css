@@ -3,6 +3,7 @@
 }
 
 .new-hanja-card {
+  width: 100vh;
   padding: 2%;
   margin: 4%;
   text-align: left;
@@ -16,4 +17,8 @@
 }
 .new-hanja-char {
   text-align: center;
+}
+
+.new-hanja-con {
+  display: grid;
 }

@@ -32,7 +32,7 @@ const FlashCard = (props) => {
                 {
                     question ?
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <h1 style={{fontSize: question.question.length > 80? '20px' : '40px'}}>{question.question}</h1>
+                            <h2 style={{fontSize: question.question.length > 80? '20px' : '30px'}}>{question.question}</h2>
                         </div> : null
                 }
             </div>

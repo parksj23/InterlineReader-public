@@ -10,3 +10,20 @@
     color: rgba(255,255,255,.85);
     text-decoration: none;
 }
+
+.footer {
+    clear: both;
+    position: relative;
+    height: 50px;
+    margin-bottom: -50px;
+    color: white;
+    background-color: #333333;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        width: 0%;
+        height: 0%;
+    }
+}

@@ -74,9 +74,9 @@ class DictionaryLessonContainer extends Component {
         const {radical, radicalStrokeCount, totalStrokeCount, characterStrokeCount, meaning, hoonEum, primaryHoonMeaning, additionalHoonMeaning, radicalHangul, phonetic} = this.state;
         return(
 
-            <div style={{display: 'flex'}}>
+            <div className="okpyeon-lesson-container">
                 <LessonFilterTable showResult={this.selectCharacter} selectPhonetic={this.selectPhonetic}/>
-                <div className="radical-result">
+                <div className="lesson-result">
                     <h3>Result:</h3>
                     <span id='animation' style={{textAlign: 'center'}}>
                         <div id="character-target-div"/>

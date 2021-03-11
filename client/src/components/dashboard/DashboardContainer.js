@@ -34,7 +34,7 @@ class DashboardContainer extends Component {
     return (
       <div className="dashboardContainer">
           <Switch>
-            <Route exact path="/dashboard" component={() => this.renderDashboard("ALL")} />
+            <Route exact path="/dashboard" component={() => this.renderDashboard("KORN410")} />
             <Route path='/dashboard/middleKorean' component={MiddleKoreanContainer} />
               <Route path='/dashboard/modernKorean' component={ModernKoreanContainer} />
               <Route exact path='/dashboard/KORN351' component={Dashboard351} />

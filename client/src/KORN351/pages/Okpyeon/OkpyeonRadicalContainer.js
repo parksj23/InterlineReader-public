@@ -78,7 +78,7 @@ class DictionaryRadicalContainer extends Component {
         const {filteredResult, radical, radicalStrokeCount, totalStrokeCount, characterStrokeCount, meaning, hoonEum, primaryHoonMeaning, additionalHoonMeaning, radicalHangul, phonetic} = this.state;
         return(
 
-            <div style={{display: 'flex'}}>
+            <div className="okpyeon-radical-container">
                 <div className="radical-filter-container">
                     <div className="radical-first-filter">
                         <p>1) Select a radical to search by</p>

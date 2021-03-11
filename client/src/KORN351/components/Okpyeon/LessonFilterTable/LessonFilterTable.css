@@ -2,6 +2,12 @@
     width: 60%;
 }
 
+@media (max-width: 1000px) {
+    .lesson-filter-container {
+        width: 100%;
+    }
+}
+
 .lesson-filter {
     background-color: whitesmoke;
     height: 80%;

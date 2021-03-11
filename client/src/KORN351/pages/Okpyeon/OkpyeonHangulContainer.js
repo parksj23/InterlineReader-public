@@ -79,8 +79,8 @@ class DictionaryHangulContainer extends Component {
 
         return(
 
-            <div style={{display: 'flex'}}>
-                <div className="radical-filter-container">
+            <div className="okpyeon-hangul-container">
+                <div className="eum-filter-container">
                     <div className="radical-first-filter">
                         <p>1) Select a Hangul (as 음/音) to search by</p>
                         <HangulFilterTable filter={this.filterResult}/>
@@ -96,7 +96,7 @@ class DictionaryHangulContainer extends Component {
                         </Grid>
                     </div>
                 </div>
-                <div className="radical-result">
+                <div className="eum-result">
                     <h3>Result:</h3>
                     <span id='animation' style={{textAlign: 'center'}}>
                         <div id="character-target-div"/>

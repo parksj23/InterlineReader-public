@@ -1,0 +1,26 @@
+.okpyeon-lesson-container {
+    display: flex;
+}
+
+.lesson-result {
+    width: 40%;
+    background-color: whitesmoke;
+    height: 100%;
+    padding: 5%;
+    margin: 3%;
+    overflow-y: auto;
+}
+
+@media (max-width: 1000px) {
+    .okpyeon-lesson-container {
+        display: inline-block;
+        width: 100%;
+    }
+    .eum-filter-container{
+        width: 100%;
+    }
+    .lesson-result{
+        width: 94%;
+    }
+}
+

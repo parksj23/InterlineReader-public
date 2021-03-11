@@ -7,6 +7,7 @@ import HanziWriter from "hanzi-writer";
 import {connect} from "react-redux";
 import {getNewHanja} from "../../../actions/KORN351/Lessons";
 import { withRouter } from 'react-router-dom';
+import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 
 class NewHanjaContainer extends Component {
     constructor(props) {
@@ -116,6 +117,7 @@ class NewHanjaContainer extends Component {
                         </Grid>
                     </Grid>
                 </div>
+                <NavigatingButtons />
             </div>
         );
     }

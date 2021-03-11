@@ -3,7 +3,29 @@
     height: 100%;
 }
 
+.okpyeon-radical-container {
+    display: flex;
+}
+
 .radical-result {
+    width: 40%;
+    background-color: whitesmoke;
+    height: 100%;
+    padding: 5%;
+    margin: 3%;
+    overflow-y: auto;
+}
+
+.eum-filter-container {
+    width: 60%;
+    height: 100%;
+}
+
+.okpyeon-hangul-container {
+    display: flex;
+}
+
+.eum-result {
     width: 40%;
     background-color: whitesmoke;
     height: 100%;
@@ -25,6 +47,39 @@
     height: 50%;
     padding: 5%;
     overflow-y: auto;
+}
+
+@media (max-width: 1300px) {
+    .okpyeon-hangul-container {
+        display: inline-block;
+    }
+    .eum-filter-container{
+        width: 100%;
+    }
+    .eum-result{
+        width: 94%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .okpyeon-radical-container {
+        display: inline-block;
+    }
+    .radical-filter-container{
+        width: 100%;
+    }
+    .radical-result{
+        width: 94%;
+    }
+    h3 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 500px) {
+    h3 {
+        font-size: 13px;
+    }
 }
 
 .character-box {

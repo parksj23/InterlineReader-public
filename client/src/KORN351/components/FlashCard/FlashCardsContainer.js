@@ -194,14 +194,7 @@ class FlashCardContainer extends Component {
         const isLastQuestion = questionQueue.length === 0;
 
         return (
-            <Card style={{
-                position: 'fixed',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                height: '450px',
-                width: '850px'
-            }}>
+            <Card className="flashcard-container">
                 <Grid container style={{height: '100%'}} justify={'center'}>
                     <Grid item xs={12}
                           style={{
@@ -238,7 +231,6 @@ class FlashCardContainer extends Component {
                                 this.props.isPracticeSentence?
                                     <PracticeSentencesFlashCard question={question}
                                                                 answeredQuestion={this.answeredQuestion}
-                                                                enableNextButton={this.enableNextButton}
                                                                 style={{width: '100%', height: '80%'}}
                                                                 isSaved={isSaved}/>
                                     :
@@ -260,7 +252,7 @@ class FlashCardContainer extends Component {
                                     <h4 style={{marginRight: '5%'}}>{`Question ${answeredQuestions.length + 1}/${
                                     questionQueue.length + answeredQuestions.length}`}</h4>
                                 }
-                                <Button variant="contained" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
+                                <Button variant="contained" className="start-over-button-351" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
                             </div>
                             <div style={{float: 'right'}}>
                                 <Button disabled={!answeredCurrentQuestion}

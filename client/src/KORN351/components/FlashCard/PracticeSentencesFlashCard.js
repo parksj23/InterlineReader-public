@@ -30,28 +30,42 @@ class PracticeSentencesFlashCard extends React.Component {
         super(props);
         this.state = {
             showAnswer: false,
-            prevQuestion: ''
+            prevQuestion: '',
+            answer: ''
         }
     }
 
+    storeAnswer = (event) => {
+        this.setState({
+            answer: event.target.value
+        })
+    };
+
     render()
     {
-        let {question, classes, enableNextButton} = this.props;
+        let {question, answeredQuestion} = this.props;
         let answer = "";
         question.options.forEach(anOption => {
             if (anOption.isAnswer)
-                answer = anOption.answer;
+                answer = anOption;
         });
+        let actualAnswers = answer.answer.split(",");
+        actualAnswers = actualAnswers.map(ans => ans.trim());
+        let answerInput = this.state.answer.split(",");
+        answerInput = answerInput.map(ans => ans.trim());
 
-        if (this.state.prevQuestion !== question.question)
+        if (this.state.prevQuestion !== question.question) {
             this.setState({
                 prevQuestion: question.question,
-                showAnswer: false
+                showAnswer: false,
+                answer: ''
             });
+        }
+
         return (
             <div className={'Flashcards-question-container'}>
                 <div className={'Flasscards-question'}>
-                    <p style={{textAlign: 'left'}}>Translate the following sentence into English: </p>
+                    <p style={{textAlign: 'left'}}>Translate ONLY the Hanja(s) in the following sentence to Hangul(s) (Separate multiple answers with commas): </p>
                     <br/>
                     {
                         question ?
@@ -61,13 +75,14 @@ class PracticeSentencesFlashCard extends React.Component {
                     }
                 </div>
                 <br/><br/>
-                <input style={{width: '100%', height: '30%'}}/>
+                <input style={{width: '100%', height: '30%'}} onChange={this.storeAnswer} id="answer-field" value={this.state.answer}/>
                 <br/>
+
                 {
                     this.state.showAnswer?
-                        <button onClick={() => {this.setState({showAnswer: false})}}>{answer}</button>
+                        <button onClick={() => {this.setState({showAnswer: false})}}>{JSON.stringify(actualAnswers) !== JSON.stringify(answerInput)? 'INCORRECT. The answer is: ' + answer.answer : 'CORRECT'}</button>
                         :
-                        <button onClick={() => {this.setState({showAnswer: true}); enableNextButton();}}>Show Answer</button>
+                        <button onClick={() => {this.setState({showAnswer: true}); answeredQuestion(JSON.stringify(answerInput), {isAnswer: JSON.stringify(actualAnswers)}, JSON.stringify(actualAnswers) === JSON.stringify(answerInput))}}>Check Answer</button>
                 }
             </div>
         )

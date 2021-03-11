@@ -4,6 +4,12 @@
     width: 100%;
 }
 
+@media (max-width: 768px) {
+    .card-container {
+        display: inline-block;
+    }
+}
+
 .card {
     width: 35%;
     padding: 2%;
@@ -12,6 +18,13 @@
     background-color: #002145 !important;
     color: white !important;
     **/
+}
+
+@media (max-width: 768px) {
+    .card {
+        width: 90%;
+        padding: 7%;
+    }
 }
 
 .card:hover {
@@ -45,6 +58,13 @@
     overflow-y: auto;
 }
 
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 70%;
+    }
+}
+
 .modal-options {
     background-color: #bdc1c9;
     height: 100%;
@@ -73,3 +93,8 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.dashboard {
+    height: 100vh;
+}
+

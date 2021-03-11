@@ -58,10 +58,15 @@ footer {
 }
 
 .mainContainer {
-  width: 100%;
+  flex: 1;
 }
 
 .annotator-frame .annotator-bucket-bar {
   background-color: transparent!important;
 }
 
+.App {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
