@@ -42,7 +42,7 @@ class MainTextContainer extends Component {
                 </div>
                 :
                 <div style={{position: 'relative', padding: '17%'}}>
-                    <h3 style={{position: 'absolute', top:'50%', left: '50%', transform: 'translate(-50%,-50%)'}}>Loading Story . . .</h3>
+                    <h3 style={{position: 'absolute', top:'50%', left: '50%', transform: 'translate(-50%,-50%)'}}>Loading Lesson . . .</h3>
                     <LinearProgress style={{width: '50%', position: 'absolute', left: '50%', transform: 'translate(-50%,1500%)'}}/>
                 </div>
         );

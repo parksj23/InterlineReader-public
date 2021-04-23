@@ -2,23 +2,18 @@ import React, {Component} from "react";
 import {Route, Switch} from "react-router-dom";
 import {connect} from "react-redux";
 import Instructor from "./component/Instructor";
-import {changeSelectedMenu, initInstructor} from "../../actions/KORN410/instructor";
-import {disableSideBarButton} from "../../actions/KORN410/dashboard";
-import EditGrammarContainer from "./EditGrammar/EditGrammarContainer";
-import EditStoryContainer from './EditStory/EditStoryContainer';
-import EditVocabContainer from "./EditVocab/EditVocabContainer";
-import addMidKRGramContainer from "./AddMidKRGram/AddMidKRGramContainer";
-import addMidKRVocContainer from "./AddMidKRVoc/AddMidKRVocContainer"
-import ClassesContainer from './Classes/ClassesContainer';
-import Stories from "./stories/Stories";
 import InstructorMenu from "./component/InstructorMenu";
-import FilesContainer from './Files/FilesContainer'
-import AddStoryWizardContainer from "./AddStoryWizard/AddStoryWizardContainer";
 import "./style/instructor.css";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
+import {disableSideBarButton} from "../../../actions/KORN410/dashboard";
+import {changeSelectedMenu} from "../../../actions/KORN410/instructor";
+import LessonList from "./Common/StoryList/LessonList";
+import EditLesson from "../../components/InstructorPanel/EditLesson";
+import EditOkpyeon from "../../components/InstructorPanel/EditOkpyeon";
 
-class InstructorContainer extends Component {
+
+class Instructor351Container extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,8 +22,9 @@ class InstructorContainer extends Component {
     }
 
     componentWillMount() {
-        this.props.initInstructor(this.props.storyList);
+        //this.props.initInstructor(this.props.storyList);
         this.props.disableSideBarButton();
+        this.props.changeSelectedMenu("Edit Lesson")
     }
 
     handleChange = name => event => {
@@ -61,37 +57,24 @@ class InstructorContainer extends Component {
                                     <Switch>
                                         <Route
                                             exact
-                                            path="/instructor410"
-                                            component={Stories}
-                                        />
-                                        <Route path="/instructor410/classes" component={ClassesContainer}/>
-                                        <Route
-                                            path="/instructor410/addStory"
-                                            component={AddStoryWizardContainer}
+                                            path="/instructor351"
+                                            component={LessonList}
                                         />
                                         <Route
-                                            path="/instructor410/editStory"
-                                            component={EditStoryContainer}
+                                            exact
+                                            path="/instructor351/editLesson"
+                                            component={LessonList}
                                         />
+                                        <Route path="/instructor351/editLesson/:id"
+                                        component={EditLesson}/>
                                         <Route
-                                            path="/instructor410/editGrammar"
-                                            component={EditGrammarContainer}
+                                            exact
+                                            path="/instructor351/editOkpyeon"
+                                            component={LessonList}
                                         />
-                                        <Route
-                                            path="/instructor410/editVocab"
-                                            component={EditVocabContainer}
-                                        />
-                                        <Route
-                                            path="/instructor410/addMidKRGram"
-                                            component={addMidKRGramContainer}
-                                        />
-                                        <Route
-                                            path="/instructor410/addMidKRVocab"
-                                            component={addMidKRVocContainer}
-                                        />
-                                        <Route
-                                            path="/instructor410/files"
-                                            component={FilesContainer} />
+                                        <Route path="/instructor351/editOkpyeon/:id"
+                                               component={EditOkpyeon}/>
+
                                     </Switch>
                                 </Instructor>
                             </Grid>
@@ -112,14 +95,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     changeSelectedMenu,
-    initInstructor,
+    //initInstructor,
     disableSideBarButton
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(InstructorContainer);
+)(Instructor351Container);
 
 //If need to rename collection, add this
 /* <TextField

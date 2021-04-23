@@ -62,7 +62,7 @@ class ClassesContainer extends Component {
     return (
       <Grid container>
         <Grid item xs={12}>
-        <span style={{float: 'right'}}><Button variant='contained' onClick={() => this.props.history.push('/instructor/classes/newClass')}>New Class</Button></span>
+        <span style={{float: 'right'}}><Button variant='contained' onClick={() => this.props.history.push('/instructor410/classes/newClass')}>New Class</Button></span>
         </Grid>
         <Divider />
         <Grid item xs={12}>
@@ -103,10 +103,10 @@ class ClassesContainer extends Component {
         <Grid container>
           <Grid item xs={12}>
             <Switch>
-              <Route exact path="/instructor/classes" component={this.renderClassOverview} />
-              <Route path="/instructor/classes/newClass"
+              <Route exact path="/instructor410/classes" component={this.renderClassOverview} />
+              <Route path="/instructor410/classes/newClass"
                      component={({match}) => this.renderClass('new', match)} />
-              <Route path="/instructor/classes/editClass/:id" component={({match}) => this.renderClass('edit', match)} />
+              <Route path="/instructor410/classes/editClass/:id" component={({match}) => this.renderClass('edit', match)} />
             </Switch>
           </Grid>
         </Grid>

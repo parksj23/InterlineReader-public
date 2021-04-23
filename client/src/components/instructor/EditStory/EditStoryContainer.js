@@ -29,8 +29,8 @@ class EditStoryContainer extends Component {
                 <Grid container>
                     <Grid item xs={12}>
                         <Switch>
-                            <Route exact path="/instructor/editStory" component={this.renderStoryList} />
-                            <Route path="/instructor/editStory/:storyName" component={EditStory} />
+                            <Route exact path="/instructor410/editStory" component={this.renderStoryList} />
+                            <Route path="/instructor410/editStory/:storyName" component={EditStory} />
                         </Switch>
                     </Grid>
                 </Grid>

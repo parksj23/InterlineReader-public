@@ -16,9 +16,9 @@ class AnalyticsContainer extends Component {
         <div className={'instructor-analytics-container'}>
             <Grid container style={{marginTop: "12px"}}>
               <Switch>
-                <Route exact path="/instructor" component={this.renderAnalytics} />
-                <Route exact path="/instructor/analytics" component={this.renderAnalytics} />
-                <Route path={`/instructor/analytics/overview`} component={OverviewContainer} />
+                <Route exact path="/instructor410" component={this.renderAnalytics} />
+                <Route exact path="/instructor410/analytics" component={this.renderAnalytics} />
+                <Route path={`/instructor410/analytics/overview`} component={OverviewContainer} />
               </Switch>
               <Grid item xs={2}>
               </Grid>

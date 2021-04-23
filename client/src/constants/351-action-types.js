@@ -19,3 +19,11 @@ export const GET_PRAC_SENTENCES = "GET_PRAC_SENTENCES";
 
 // Lesson - New Hanja
 export const GET_NEW_HANJA = "GET_NEW_HANJA";
+
+
+// Instructor - Edit Lesson
+export const SAVE_MAIN_TEXT = "SAVE_MAIN_TEXT";
+export const SAVE_EX_SENTENCES = "SAVE_EX_SENTENCES";
+export const SAVE_OTHERS = "SAVE_OTHERS";
+
+export const SAVE_ABOUT_NEW_BUSU = "SAVE_ABOUT_NEW_BUSU";

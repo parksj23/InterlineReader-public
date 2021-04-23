@@ -1,0 +1,14 @@
+.instructor {
+    height: 100%;
+    width: 100%;
+}
+
+.instructor-heading{
+    padding: 5% 4%;
+    background: linear-gradient(to right, #8e9eab, #eef2f3);
+}
+
+.instructor-heading h2 {
+    font-size: 2.2rem;
+    font-weight: 400;
+}

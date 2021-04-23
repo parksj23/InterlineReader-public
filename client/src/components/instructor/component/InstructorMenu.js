@@ -92,7 +92,7 @@ class InstructorMenu extends React.Component {
           <List>
             <ListItem button key={'analytics'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/analytics');
+                        this.props.history.push('/instructor410/analytics');
                         this.props.changeSelectedMenu("Analytics")
                       }}>
               <ListItemIcon><i className="material-icons">bar_chart</i></ListItemIcon>
@@ -100,7 +100,7 @@ class InstructorMenu extends React.Component {
             </ListItem>
             <ListItem button key={'classes'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/classes');
+                        this.props.history.push('/instructor410/classes');
                         this.props.changeSelectedMenu("Classes")
                       }}>
               <ListItemIcon><i className="material-icons">library_books</i></ListItemIcon>
@@ -108,7 +108,7 @@ class InstructorMenu extends React.Component {
             </ListItem>
               <ListItem button key={'addStory'}
                         onClick={()=> {
-                            this.props.history.push('/instructor/addStory')
+                            this.props.history.push('/instructor410/addStory')
                             this.props.changeSelectedMenu("Add Story")
                         }}>
                   <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
@@ -116,7 +116,7 @@ class InstructorMenu extends React.Component {
               </ListItem>
               <ListItem button key={'editStory'}
                         onClick={()=> {
-                            this.props.history.push('/instructor/editStory')
+                            this.props.history.push('/instructor410/editStory')
                             this.props.changeSelectedMenu("Edit Story")
                         }}>
                   <ListItemIcon><i className="material-icons">chrome_reader_mode</i></ListItemIcon>
@@ -124,7 +124,7 @@ class InstructorMenu extends React.Component {
               </ListItem>
             <ListItem button key={'editVocab'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/editVocab');
+                        this.props.history.push('/instructor410/editVocab');
                         this.props.changeSelectedMenu("Edit Vocabulary")
                       }}>
               <ListItemIcon><i className="material-icons">sort_by_alpha</i></ListItemIcon>
@@ -132,7 +132,7 @@ class InstructorMenu extends React.Component {
             </ListItem>
             <ListItem button key={'editGrammar'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/editGrammar');
+                        this.props.history.push('/instructor410/editGrammar');
                         this.props.changeSelectedMenu("Edit Grammar")
                       }}>
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
@@ -140,7 +140,7 @@ class InstructorMenu extends React.Component {
             </ListItem>
               <ListItem button key={'addMidKRVoc'}
                         onClick={()=> {
-                            this.props.history.push('/instructor/addMidKRVocab');
+                            this.props.history.push('/instructor410/addMidKRVocab');
                             this.props.changeSelectedMenu("Add Middle Korean Vocabulary")
                         }}>
                   <ListItemIcon><i className="material-icons">sort_by_alpha</i></ListItemIcon>
@@ -148,7 +148,7 @@ class InstructorMenu extends React.Component {
               </ListItem>
             <ListItem button key={'addMidKRGram'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/addMidKRGram');
+                        this.props.history.push('/instructor410/addMidKRGram');
                         this.props.changeSelectedMenu("Add Middle Korean")
                       }}>
               <ListItemIcon><i className="material-icons">g_translate</i></ListItemIcon>
@@ -156,7 +156,7 @@ class InstructorMenu extends React.Component {
             </ListItem>
             <ListItem button key={'files'}
                       onClick={()=> {
-                        this.props.history.push('/instructor/files');
+                        this.props.history.push('/instructor410/files');
                         this.props.changeSelectedMenu("Files")
                       }}>
               <ListItemIcon><i className="material-icons">attachment</i></ListItemIcon>

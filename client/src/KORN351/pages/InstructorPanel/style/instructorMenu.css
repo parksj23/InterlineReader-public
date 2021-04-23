@@ -1,0 +1,11 @@
+.instructor-menu-link{
+    display: flex;
+}
+
+.instructor-menu-link:hover{
+    text-decoration: none;
+}
+
+.instructor-menu-link:focus{
+}
+

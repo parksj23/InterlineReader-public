@@ -80,6 +80,7 @@ app.use('/api/analytics', require("./routes/api/KORN410/analytics"));
 app.use('/api/files', require('./routes/api/KORN410/files'));
 app.use('/api/okpyeon', require('./routes/api/KORN351/Okpyeon'));
 app.use('/api/lesson', require('./routes/api/KORN351/Lessons'));
+app.use('/api/instructor351', require('./routes/api/KORN351/Instructor'));
 app.use(handleErrors);
 
 if (process.env.NODE_ENV === 'production') {

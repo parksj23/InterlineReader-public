@@ -71,7 +71,7 @@ class AddStoryWizardContainer extends Component {
             storyLists.allStories.forEach((aStory, index) => {
                 classCards.push(
                     <Grid item xs={4} key={'story_badge' + aStory._id} style={{padding: '18px'}}>
-                        {<Link to={`/instructor/addStory/${aStory._id}`} className={'card-link'}>
+                        {<Link to={`/instructor410/addStory/${aStory._id}`} className={'card-link'}>
                             <ClassCard story={aStory} style={{width: "100%"}}/>
                         </Link>}
                     </Grid>
@@ -82,7 +82,7 @@ class AddStoryWizardContainer extends Component {
             <Grid container style={{width: '100%', display: 'flex'}}>
                 {classCards}
                 <Grid item xs={4} key={'add_story'} style={{padding: '12px'}} className='add-new-button'>
-                    <Link to={`/instructor/addStory/new`} className='add-button-link'>
+                    <Link to={`/instructor410/addStory/new`} className='add-button-link'>
 
                         <Button key={this.props.key}
                                 disabled={this.props.saveDisabled}
@@ -115,9 +115,9 @@ class AddStoryWizardContainer extends Component {
         return (
             <div className={'addStoryContainer'}>
                 <Switch>
-                    <Route exact path="/instructor/addStory" component={() => this.renderClassStories()}/>
-                    <Route exact path="/instructor/addStory" component={() => this.renderAddStoryWizard()}/>
-                    <Route path="/instructor/addStory/:id" component={(routerProps) => this.renderAddStoryWizard(routerProps.match.params.id)}/>
+                    <Route exact path="/instructor410/addStory" component={() => this.renderClassStories()}/>
+                    <Route exact path="/instructor410/addStory" component={() => this.renderAddStoryWizard()}/>
+                    <Route path="/instructor410/addStory/:id" component={(routerProps) => this.renderAddStoryWizard(routerProps.match.params.id)}/>
                 </Switch>
             </div>
         )

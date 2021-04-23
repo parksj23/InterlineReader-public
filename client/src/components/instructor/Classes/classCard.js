@@ -39,7 +39,7 @@ const ClassCard = (props) => {
         </CardContent>
         <Divider/>
         <CardActions>
-          <IconButton onClick={()=> props.history.push(`/instructor/classes/editClass/${aClass._id}`)}><i className="material-icons">create</i></IconButton>
+          <IconButton onClick={()=> props.history.push(`/instructor410/classes/editClass/${aClass._id}`)}><i className="material-icons">create</i></IconButton>
         </CardActions>
       </Card>
     </Grid>)

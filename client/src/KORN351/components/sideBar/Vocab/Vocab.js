@@ -19,7 +19,6 @@ const Vocab = (props) =>{
     const{newVocab, classes, getNewVocabulary} = props;
     if (newVocab === '') getNewVocabulary(props.match.params.lesson);
 
-    console.log(newVocab);
     return(
         <div>
             <br/>

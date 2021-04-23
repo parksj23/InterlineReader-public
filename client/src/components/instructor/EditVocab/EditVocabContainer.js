@@ -29,8 +29,8 @@ class EditVocabularyContainer extends Component {
         <Grid container>
           <Grid item xs={12}>
             <Switch>
-              <Route exact path="/instructor/editVocab" component={this.renderStoryList} />
-              <Route path="/instructor/editVocab/:storyName" component={EditVocab} />
+              <Route exact path="/instructor410/editVocab" component={this.renderStoryList} />
+              <Route path="/instructor410/editVocab/:storyName" component={EditVocab} />
             </Switch>
           </Grid>
         </Grid>

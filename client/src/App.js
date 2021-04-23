@@ -16,6 +16,7 @@ import EmailVerification from './components/auth/EmailVerification';
 import Footer from './components/layout/Footer';
 import ForgotPassword from './components/reset-password/ForgotPassword';
 import Instructor from './components/instructor/instructorContainer';
+import Instructor351 from './KORN351/pages/InstructorPanel/instructorContainer';
 import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
@@ -136,7 +137,8 @@ class App extends Component {
               <Switch>
                 <PrivateRoute path="/dashboard" component={DashboardContainer} />
                   <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
-                <PrivateRoute path='/instructor' component={Instructor} />
+                  <PrivateRoute path='/instructor410' component={Instructor} />
+                  <PrivateRoute path='/instructor351' component={Instructor351} />
               </Switch>
 
             </div>

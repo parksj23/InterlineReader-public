@@ -28,8 +28,8 @@ class EditGrammarContainer extends Component {
        <Grid container>
          <Grid item xs={12}>
            <Switch>
-             <Route exact path="/instructor/editGrammar" component={this.renderStoryList} />
-             <Route path="/instructor/editGrammar/:storyName" component={EditGrammar} />
+             <Route exact path="/instructor410/editGrammar" component={this.renderStoryList} />
+             <Route path="/instructor410/editGrammar/:storyName" component={EditGrammar} />
            </Switch>
          </Grid>
        </Grid>
