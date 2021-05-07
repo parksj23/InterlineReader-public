@@ -22,6 +22,7 @@ import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
 import Navbar from './components/layout/Navbar';
+import NewBusuContainer from "./KORN351/pages/Lessons/NewBusuContainer";
 import NewHanjaCombos from "./KORN351/pages/Lessons/NewHanjaCombos";
 import NewHanjaContainer from "./KORN351/pages/Lessons/NewHanjaContainer";
 import PrivateRoute from './components/common/PrivateRoute';
