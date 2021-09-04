@@ -2,6 +2,7 @@ import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import './FlashCardsContent.css';
+import { getQuestionFontSize } from '../../../utils';
 
 const styles = {
     flashcardbuttonCorrect: {
@@ -70,7 +71,7 @@ class PracticeSentencesFlashCard extends React.Component {
                     {
                         question ?
                             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                <h1 style={{fontSize: question.question.length > 80 ? '20px' : '40px'}}>{question.question}</h1>
+                                <span style={{fontSize: getQuestionFontSize(question.question)}}>{question.question}</span>
                             </div> : null
                     }
                 </div>
