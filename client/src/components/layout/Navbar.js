@@ -65,7 +65,7 @@ class Navbar extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <SideBarButton toggleDrawer={this.toggleDrawer} isDisabled={this.props.sideBar.isButtonDisabled}/>
                     <div className="container">
-                        <Link className="navbar-brand" to="/">
+                        <Link className="navbar-brand" to="/about">
                             Interline Reader
                         </Link>
                         <button
@@ -78,16 +78,16 @@ class Navbar extends Component {
                         </button>
                         <div className="collapse navbar-collapse" id="mobile-nav">
                             <ul className="navbar-nav mr-auto">
-                                <li className="nav-item">
-                                    <Link className={currentPath==="/dashboard/modernKorean"? "selected-navbar": "nav-link"} to="/dashboard/modernKorean">
-                                        Modern Korean
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link className={currentPath==="/dashboard/KORN410"? "selected-navbar": "nav-link"} to="/dashboard/KORN410">
-                                        KORN 410
-                                    </Link>
-                                </li>
+                                {/*<li className="nav-item">*/}
+                                {/*    <Link className={currentPath==="/dashboard/modernKorean"? "selected-navbar": "nav-link"} to="/dashboard/modernKorean">*/}
+                                {/*        Modern Korean*/}
+                                {/*    </Link>*/}
+                                {/*</li>*/}
+                                {/*<li className="nav-item">*/}
+                                {/*    <Link className={currentPath==="/dashboard/KORN410"? "selected-navbar": "nav-link"} to="/dashboard/KORN410">*/}
+                                {/*        KORN 410*/}
+                                {/*    </Link>*/}
+                                {/*</li>*/}
                                 <li className="nav-item">
                                     <Link className={currentPath==="/dashboard/KORN351"? "selected-navbar": "nav-link"} to="/dashboard/KORN351">
                                         KORN 351
