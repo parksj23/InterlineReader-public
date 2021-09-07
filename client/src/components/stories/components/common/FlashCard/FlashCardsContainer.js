@@ -304,7 +304,7 @@ class FlashCardContainer extends Component {
     };
 
     render() {
-        const {setFlashCardType, flashCardType, savedVocabList, savedGrammarList, handleVocSave, handleGramSave, handleVocUnsave, handleGramUnsave} = this.props;
+        const {setFlashCardType, flashCardType, savedVocabList, savedGrammarList, handleVocSave, handleGramSave, handleVocUnsave, handleGramUnsave, onClose} = this.props;
         const {vocabQueue, grammarQueue, answeredCorrectly, scoreVoc, scoreGram, answeredQuestionsVoc, answeredQuestionsGram} = this.state;
 
         let question = flashCardType === "voc"? vocabQueue[0] : grammarQueue[0];
@@ -398,6 +398,9 @@ class FlashCardContainer extends Component {
                                 <Button variant="contained" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
                             </div>
                             <div style={{float: 'right'}}>
+                                <Button className={'Flashcard-options-button-next'} variant="contained"
+                                    style={{ margin: '6px'}}
+                                    onClick={onClose}> CLOSE </Button>
                                 <Button disabled={!this.state.answeredCurrentQuestion}
                                         className={'Flashcard-options-button-next'} variant="outlined" color="primary"
                                         style={{margin: '6px'}}

@@ -155,7 +155,7 @@ class Quizzes extends Component {
                     open={showModal}
                     onClose={this.handleClose}
                 >
-                    <FlashCardContainer primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} cookies={this.props.cookies}/>
+                    <FlashCardContainer onClose={this.handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} cookies={this.props.cookies}/>
                 </Modal>
                 <Grid item md={1}/>
                 <Grid item xs={12} md={10}>
