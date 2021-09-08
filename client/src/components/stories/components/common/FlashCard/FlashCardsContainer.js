@@ -1,37 +1,48 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
+import _ from 'lodash';
+
 import Card from '@material-ui/core/Card'
 import Grid from '@material-ui/core/Grid'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
-import FlashCard from './FlashCard'
+import FlashCard from './FlashCard';
+import StoreAccessor from '../../../../../utils/localStore';
 
-import './FlashCardsContent.css'
+import './FlashCardsContent.css';
 
 class FlashCardContainer extends Component {
 
     constructor(props) {
         super(props)
 
-        this.state = ({
-            vocabQueue: [],
-            grammarQueue: [],
-
-            answeredQuestionsVoc: [],
-            answeredQuestionsGram: [],
-
-            scoreVoc: 0,
-            scoreGram: 0,
-
+        this.state = {
+            answeredCorrectly: null,
             answeredCurrentQuestion: false,
-            answeredCorrectly: null
-        })
+            answeredQuestionsGram: [],
+            answeredQuestionsVoc: [],
+            grammarQueueById: {},
+            nextGrammarId: null,
+            nextVocabId: null,
+            scoreGram: 0,
+            scoreVoc: 0,
+            vocabQueueById: {},
+        };
+
+        const { storyTitle } = this.props;
+
+        const validStoryTitle = storyTitle.split(' ')[0];
+        this.flashcardsStore = new StoreAccessor(validStoryTitle + '-flashcards', );
+        this.savedFlashcardsStore = new StoreAccessor(validStoryTitle + '-saved-flashcards');
+
         this.answeredQuestion.bind(this)
     }
 
-    componentDidMount() {
-        let {vocabList, savedVocabList, openFiltered, cookies, storyTitle, grammarList, savedGrammarList} = this.props;
-        let vocabQueue = [];
-        let grammarQueue = [];
+    initialize() {
+        let {vocabList, savedVocabList, openFiltered, grammarList, savedGrammarList} = this.props;
+        const vocabQueueById = {};
+        const grammarQueueById = {};
 
         // Temp measure to fix infinite loop (Add static options) :
         let numVocabsRequired = 4 - vocabList.length;
@@ -45,7 +56,8 @@ class FlashCardContainer extends Component {
                 grammarList.push({english: `Add ${numGramsRequired} more vocabs`, korean: `Add ${numGramsRequired} more vocabs`, _id: "1"})
             }
 
-        vocabList.forEach(function (aVocab) {
+        _.shuffle(vocabList).forEach(function (aVocab) {
+            const vocabId = aVocab._id.toString();
             let options = []
             let eng = aVocab.english.split(":").length > 1? aVocab.english.split(":")[1].trim() : aVocab.english;
             let kor = aVocab.english.split(":").length > 1? aVocab.english.split(":")[0].trim() : aVocab.korean;
@@ -74,29 +86,26 @@ class FlashCardContainer extends Component {
                 options.splice(0, 1);
             }
             // Only show saved vocabs
+            const vocabObj = {
+                vocabKor: aVocab.korean,
+                vocabEng: aVocab.english,
+                options: options,
+                vocabId: vocabId
+            }
             if (openFiltered)
                 for (const savedVocab of savedVocabList) {
-                    if (savedVocab === aVocab._id) {
-                        vocabQueue.push({
-                            vocabKor: aVocab.korean,
-                            vocabEng: aVocab.english,
-                            options: options,
-                            vocabId: aVocab._id
-                        })
+                    if (savedVocab === vocabId) {
+                        vocabQueueById[vocabId] = vocabObj;
                         break;
                     }
                 }
             else {
-                vocabQueue.push({
-                    vocabKor: aVocab.korean,
-                    vocabEng: aVocab.english,
-                    options: options,
-                    vocabId: aVocab._id
-                })
+                vocabQueueById[vocabId] = vocabObj;
             }
         });
 
-        grammarList.forEach(function (aGram) {
+        _.shuffle(grammarList).forEach(function (aGram) {
+            const grammarId = aGram._id.toString();
             let options = []
             let gloss = aGram.gloss.split(":").length > 1? aGram.gloss.split(":")[1].trim() : aGram.gloss;
             let pattern = aGram.pattern.split(":").length > 1? aGram.pattern.split(":")[0].trim() : aGram.pattern;
@@ -124,163 +133,185 @@ class FlashCardContainer extends Component {
                 options.push(options[0])
                 options.splice(0, 1);
             }
+
+            const grammarObj = {
+                gramPattern: aGram.pattern,
+                gramGloss: aGram.gloss,
+                options: options,
+                grammarId: grammarId
+            }
             // Only show saved vocabs
             if (openFiltered)
                 for (const savedGrammar of savedGrammarList) {
-                    if (savedGrammar === aGram._id) {
-                        grammarQueue.push({
-                            gramPattern: aGram.pattern,
-                            gramGloss: aGram.gloss,
-                            options: options,
-                            grammarId: aGram._id
-                        });
+                    if (savedGrammar === grammarId) {
+                        grammarQueueById[grammarId] = grammarObj;
                         break;
                     }
                 }
             else {
-                grammarQueue.push({
-                    gramPattern: aGram.pattern,
-                    gramGloss: aGram.gloss,
-                    options: options,
-                    grammarId: aGram._id
-                })
+                grammarQueueById[grammarId] = grammarObj;
             }
         });
 
         // Start from saved place
-        let validStoryTitle = storyTitle.split(' ')[0];
-        const savedFlashCard = openFiltered? cookies.get(validStoryTitle+'-fav') : cookies.get(validStoryTitle);
-        this.setState({ vocabQueue, grammarQueue },
+        const savedFlashCard = openFiltered ? this.savedFlashcardsStore.get() : this.flashcardsStore.get();
+        const vocabQueue = Object.values(vocabQueueById);
+        console.log('------', grammarList);
+        const grammarQueue = Object.values(grammarQueueById);
+
+        this.setState({
+            vocabQueueById,
+            grammarQueueById,
+            nextVocabId: vocabQueue.length ? vocabQueue[0].vocabId : null,
+            nextGrammarId: grammarQueue.length ? grammarQueue[0].grammarId : null
+        },
             () => {
                 if (savedFlashCard) {
-                    const savedVocScore = savedFlashCard.scoreVoc;
-                    const savedGramScore = savedFlashCard.scoreGram;
-                    const savedQuestionIdVoc = savedFlashCard.questionIdVoc;
-                    const savedQuestionIdGram = savedFlashCard.questionIdGram;
+                    const savedVocScore = savedFlashCard.scoreVoc || 0;
+                    const savedGramScore = savedFlashCard.scoreGram || 0;
+                    const savedQuestionIdVoc = savedFlashCard.vocabQuestionIds || [];
+                    const savedQuestionIdGram = savedFlashCard.grammarQuestionIds || [];
 
-                    let answeredQuestionsVoc = this.state.answeredQuestionsVoc;
-                    let vocabQueue = this.state.vocabQueue;
-
-                    while (vocabQueue[0].vocabId !== savedQuestionIdVoc) {
-                        answeredQuestionsVoc.push(vocabQueue[0]);
-                        vocabQueue.splice(0,1);
-                    }
-
-                    let answeredQuestionsGram = this.state.answeredQuestionsGram;
-                    let grammarQueue = this.state.grammarQueue;
-
-                    for (let i = 0; i < this.state.grammarQueue.length ; i++) {
-                        if (grammarQueue[0].grammarId !== savedQuestionIdGram) {
-                            answeredQuestionsGram.push(grammarQueue[0]);
-                            grammarQueue.splice(0,1);
-                        } else break;
-                    }
+                    let answeredQuestionsVoc = vocabQueue.filter(voc => savedQuestionIdVoc.includes(voc.vocabId));
+                    let answeredQuestionsGram = grammarQueue.filter(gram => savedQuestionIdGram.includes(gram.grammarId));
+                
+                    const nextVocabId = answeredQuestionsVoc.length ? this.getNextVocabId(answeredQuestionsVoc) : vocabQueue.length ? vocabQueue[0].vocabId : null;
+                    const nextGrammarId = answeredQuestionsGram.length ? this.getNextGrammarId(answeredQuestionsGram) : grammarQueue.length ? grammarQueue[0].grammarId : null;
 
                     this.setState({
                         answeredCurrentQuestion: false,
                         answeredCorrectly: null,
-                        vocabQueue,
-                        grammarQueue,
+                        nextVocabId,
+                        nextGrammarId,
                         answeredQuestionsVoc,
                         answeredQuestionsGram,
                         scoreVoc: savedVocScore,
                         scoreGram: savedGramScore
                     });
-                }})
+                }});
+    }
+
+    componentDidMount() {
+        this.initialize();
+    }
+
+    componentWillUnmount() {
+        const { openFiltered } = this.props;
+        const { scoreGram, scoreVoc, answeredQuestionsVoc, answeredQuestionsGram } = this.state;
+        const store = openFiltered ? this.savedFlashcardsStore : this.flashcardsStore;
+
+        store.set({
+            scoreGram,
+            scoreVoc,
+            vocabQuestionIds: answeredQuestionsVoc.map(a => a.vocabId),
+            grammarQuestionIds: answeredQuestionsGram.map(a => a.grammarId)
+        })
     }
 
     answeredQuestion = (answer, question, isAnswer) => {
-        if (this.props.flashCardType === "voc")
-            this.setState({
+        if (this.props.flashCardType === 'voc') {
+            this.setState(prevState => ({
                 answeredCurrentQuestion: true,
-                scoreVoc: answer === question.vocabEng ? this.state.scoreVoc + 1 : this.state.scoreVoc,
+                scoreVoc: answer === question.vocabEng ? prevState.scoreVoc + 1 : prevState.scoreVoc,
                 answeredCorrectly: isAnswer
-            });
-        else if (this.props.flashCardType === "gram")
-            this.setState({
+            }));
+        }
+        else if (this.props.flashCardType === 'gram') {
+            this.setState(prevState => ({
                 answeredCurrentQuestion: true,
-                scoreGram: answer === question.gloss ? this.state.scoreGram + 1 : this.state.scoreGram,
+                scoreGram: answer === question.gloss ? prevState.scoreGram + 1 : prevState.scoreGram,
                 answeredCorrectly: isAnswer
-            });
+            }));
+        }
     };
 
-    handleNextQuestion = (question) => {
-        const { cookies, openFiltered, storyTitle } = this.props;
-        let {vocabQueue, answeredQuestionsVoc, grammarQueue, answeredQuestionsGram} = this.state;
-        let {flashCardType} = this.props;
-        let validStoryTitle = storyTitle.split(' ')[0];
+    getNextVocabId(answeredVocabQuestions) {
+        const { vocabQueueById } = this.state;
+        const remainingQuestions = Object.values(vocabQueueById).filter(v => !answeredVocabQuestions.map(a => a.vocabId).includes(v.vocabId));
+        if (remainingQuestions.length) {
+            return remainingQuestions[0].vocabId;
+        }
+    }
 
-        if (flashCardType === "voc") {
-            vocabQueue.splice(0, 1);
+    getNextGrammarId(answeredGrammarQuestions) {
+        const { grammarQueueById } = this.state;
+        const remainingQuestions = Object.values(grammarQueueById).filter(g => !answeredGrammarQuestions.map(a => a.grammarId).includes(g.grammarId));
+        if (remainingQuestions.length) {
+            return remainingQuestions[0].grammarId;
+        }
+    }
+
+    handleNextQuestion(question) {
+        const { openFiltered } = this.props;
+        let { answeredQuestionsGram, answeredQuestionsVoc, grammarQueueById, scoreGram, scoreVoc, vocabQueueById } = this.state;
+        let { flashCardType } = this.props;
+        const vocabQueue = Object.values(vocabQueueById);
+        const grammarQueue = Object.values(grammarQueueById);
+
+        if (flashCardType === 'voc') {
             answeredQuestionsVoc.push(question);
             this.setState({
                 answeredCurrentQuestion: false,
                 answeredCorrectly: null,
-                vocabQueue,
+                nextVocabId: this.getNextVocabId(answeredQuestionsVoc),
                 answeredQuestionsVoc
             });
-        } else if (flashCardType === "gram") {
-            grammarQueue.splice(0, 1);
+        } else if (flashCardType === 'gram') {
             answeredQuestionsGram.push(question);
             this.setState({
                 answeredCurrentQuestion: false,
                 answeredCorrectly: null,
-                grammarQueue,
+                nextGrammarId: this.getNextGrammarId(answeredQuestionsGram),
                 answeredQuestionsGram
             });
         }
 
-        if (vocabQueue.length === 0 && grammarQueue.length === 0)
-        // If reached end of questions, remove cookie
-            openFiltered? cookies.remove(validStoryTitle+'-fav') : cookies.remove(validStoryTitle);
-        else if (vocabQueue.length === 0) {
-            // Set cookie
-            const temp = {
-                scoreVoc: this.state.scoreVoc,
-                questionIdVoc: answeredQuestionsVoc[answeredQuestionsVoc.length - 1].vocabId,
+        const store = openFiltered ? this.savedFlashcardsStore : this.flashcardsStore;
+        const updatedFlashcardsInfo = {
+            scoreVoc,
+            scoreGram,
+        }
 
-                scoreGram: this.state.scoreGram,
-                questionIdGram: grammarQueue[0].grammarId
-            };
-            openFiltered? cookies.set(validStoryTitle+'-fav',temp) : cookies.set(validStoryTitle, temp)
-        } else if (grammarQueue.length === 0) {
-            // Set cookie
-            const temp = {
-                scoreVoc: this.state.scoreVoc,
-                questionIdVoc: vocabQueue[0].vocabId,
-
-                scoreGram: this.state.scoreGram,
-                questionIdGram: answeredQuestionsGram[answeredQuestionsGram.length - 1].grammarId
-            };
-            openFiltered? cookies.set(validStoryTitle+'-fav',temp) : cookies.set(validStoryTitle, temp)
+        const currentFlashcardsInfo = store.get() || { scoreVoc: 0, scoreGram: 0, vocabQuestionIds: [], grammarQuestionIds: [] };
+        if (currentFlashcardsInfo.vocabQuestionIds.length === vocabQueue.length && currentFlashcardsInfo.grammarQuestionIds.length === grammarQueue.length) {
+            store.remove();
+        } else if (currentFlashcardsInfo.vocabQuestionIds.length === vocabQueue.length) {
+            if (answeredQuestionsVoc.length) {
+                updatedFlashcardsInfo.vocabQuestionIds = [...currentFlashcardsInfo.vocabQuestionIds, _.last(answeredQuestionsVoc).vocabId];
+            } else {
+                updatedFlashcardsInfo.vocabQuestionIds = currentFlashcardsInfo.vocabQuestionIds;
+            }
+            updatedFlashcardsInfo.grammarQuestionIds = [grammarQueue[0].grammarId];
+            store.set(updatedFlashcardsInfo);
+        } else if (currentFlashcardsInfo.grammarQuestionIds.length === grammarQueue.length) {
+            if (answeredQuestionsGram.length) {
+                updatedFlashcardsInfo.grammarQuestionIds = [...currentFlashcardsInfo.grammarQuestionIds, _.last(answeredQuestionsGram).grammarId];
+            } else {
+                updatedFlashcardsInfo.grammarQuestionIds = currentFlashcardsInfo.grammarQuestionIds;
+            }
+            updatedFlashcardsInfo.vocabQuestionIds = [vocabQueue[0].vocabId];
+            store.set(updatedFlashcardsInfo);
         } else {
-            // Set cookie
-            const temp = {
-                scoreVoc: this.state.scoreVoc,
-                questionIdVoc: vocabQueue[0].vocabId,
-
-                scoreGram: this.state.scoreGram,
-                questionIdGram: grammarQueue[0].grammarId
-            };
-            openFiltered? cookies.set(validStoryTitle+'-fav',temp) : cookies.set(validStoryTitle, temp)
+            updatedFlashcardsInfo.grammarQuestionIds = [grammarQueue[0].grammarId];
+            updatedFlashcardsInfo.vocabQuestionIds = [vocabQueue[0].vocabId];
+            store.set(updatedFlashcardsInfo);
         }
     };
 
-    handleStartOver = () => {
-        const { cookies, openFiltered, storyTitle } = this.props;
-        let validStoryTitle = storyTitle.split(' ')[0];
+    handleStartOver() {
+        const { openFiltered } = this.props;
 
-        if (this.props.flashCardType === "voc") {
+        if (this.props.flashCardType === 'voc') {
             this.setState({
-                vocabQueue: [],
+                vocabQueueById: {},
                 answeredQuestionsVoc: [],
                 scoreVoc: 0,
                 answeredCurrentQuestion: false,
                 answeredCorrectly: null
             });
-        } else if (this.props.flashCardType === "gram") {
+        } else if (this.props.flashCardType === 'gram') {
             this.setState({
-                grammarQueue: [],
+                grammarQueueById: {},
                 answeredQuestionsGram: [],
                 scoreGram: 0,
                 answeredCurrentQuestion: false,
@@ -288,36 +319,38 @@ class FlashCardContainer extends Component {
             });
         }
 
-        let savedFlashCard = openFiltered? cookies.get(validStoryTitle+'-fav') : cookies.get(validStoryTitle);
-        if (this.props.flashCardType === "voc") {
+        let savedFlashCard = openFiltered? this.savedFlashcardsStore.get() : this.flashcardsStore.get();
+        if (this.props.flashCardType === 'voc') {
             savedFlashCard.scoreVoc = 0;
-        } else if (this.props.flashCardType === "gram") {
+        } else if (this.props.flashCardType === 'gram') {
             savedFlashCard.scoreGram = 0;
         }
 
-        if (savedFlashCard.scoreVoc === 0 && savedFlashCard.scoreGram === 0)
-            openFiltered? cookies.remove(validStoryTitle+'-fav') : cookies.remove(validStoryTitle);
-        else
-            openFiltered? cookies.set(validStoryTitle+'-fav',savedFlashCard) : cookies.set(validStoryTitle, savedFlashCard)
-
-        this.componentDidMount()
+        if (savedFlashCard.scoreVoc === 0 && savedFlashCard.scoreGram === 0) {
+            openFiltered? this.savedFlashcardsStore.remove() : this.flashcardsStore.remove();
+        } else {
+            openFiltered? this.savedFlashcardsStore.set(savedFlashCard) : this.flashcardsStore.set(savedFlashCard);
+        }
+        this.initialize();
     };
 
     render() {
-        const {setFlashCardType, flashCardType, savedVocabList, savedGrammarList, handleVocSave, handleGramSave, handleVocUnsave, handleGramUnsave, onClose} = this.props;
-        const {vocabQueue, grammarQueue, answeredCorrectly, scoreVoc, scoreGram, answeredQuestionsVoc, answeredQuestionsGram} = this.state;
+        const {setFlashCardType, flashCardType, savedVocabList, savedGrammarList, handleVocSave, handleGramSave, handleVocUnsave, handleGramUnsave} = this.props;
+        const {answeredCorrectly, scoreVoc, scoreGram, answeredQuestionsVoc, answeredQuestionsGram, nextVocabId, nextGrammarId, vocabQueueById, grammarQueueById} = this.state;
+        const vocabQueue = Object.values(vocabQueueById);
+        const grammarQueue = Object.values(grammarQueueById);
 
-        let question = flashCardType === "voc"? vocabQueue[0] : grammarQueue[0];
+        let question = flashCardType === 'voc'? vocabQueueById[nextVocabId] : grammarQueueById[nextGrammarId];
         let isSaved = false;
 
-        if (flashCardType === "voc")
+        if (flashCardType === 'voc')
             for (let savedVocab of savedVocabList) {
                 if (question && question.vocabId === savedVocab) {
                     isSaved = true;
                     break;
                 }
             }
-        else if (flashCardType === "gram")
+        else if (flashCardType === 'gram')
             for (let savedGram of savedGrammarList) {
                 if (question && question.grammarId === savedGram) {
                     isSaved = true;
@@ -325,7 +358,7 @@ class FlashCardContainer extends Component {
                 }
             }
 
-        const isLastQuestion = flashCardType === "voc"? vocabQueue.length === 0 : grammarQueue.length === 0;
+        const isLastQuestion = flashCardType === 'voc'? vocabQueue.length === answeredQuestionsVoc.length : grammarQueue.length === answeredQuestionsGram.length;
 
         return (
             <Card style={{
@@ -356,29 +389,29 @@ class FlashCardContainer extends Component {
                               style={{borderBottom: 'solid 1px rgba(0,0,0,0.12', height: '10%'}} xs={12}>
                             <Grid item xs={9} style={{display: 'flex'}}>
                                 <h2 style={{marginRight: '20px'}}>Flash Card Study</h2>
-                                <span className="toggle-button" style={{backgroundColor: flashCardType==="voc"? '#4da9ff' : "#00284d"}} onClick={() => {if (flashCardType!=="voc") setFlashCardType("voc")}}>Vocab</span>
-                                <span className="toggle-button" style={{backgroundColor: flashCardType==="voc"? '#00284d' : "#4da9ff"}} onClick={() => {if (flashCardType!=="gram") setFlashCardType("gram")}}>Gram</span>
+                                <span className="toggle-button" style={{backgroundColor: flashCardType==='voc'? '#4da9ff' : "#00284d"}} onClick={() => {if (flashCardType!=='voc') setFlashCardType('voc')}}>Vocab</span>
+                                <span className="toggle-button" style={{backgroundColor: flashCardType==='voc'? '#00284d' : "#4da9ff"}} onClick={() => {if (flashCardType!=='gram') setFlashCardType('gram')}}>Gram</span>
                             </Grid>
                             <Grid item xs={3} style={{textAlign: 'right'}}>
                                 {
                                     isLastQuestion?
-                                        <h2>{`Score: ${flashCardType === "voc"? scoreVoc : scoreGram}/${flashCardType === "voc"? answeredQuestionsVoc.length : answeredQuestionsGram.length}`}</h2>
+                                        <h2>{`Score: ${flashCardType === 'voc'? scoreVoc : scoreGram}/${flashCardType === 'voc'? answeredQuestionsVoc.length : answeredQuestionsGram.length}`}</h2>
                                         :
-                                        <h2>{`Score: ${flashCardType === "voc"? scoreVoc : scoreGram}/${flashCardType === "voc"? answeredQuestionsVoc.length + 1 : answeredQuestionsGram.length + 1}`}</h2>
+                                        <h2>{`Score: ${flashCardType === 'voc'? scoreVoc : scoreGram}/${flashCardType === 'voc'? answeredQuestionsVoc.length + 1 : answeredQuestionsGram.length + 1}`}</h2>
                                 }
                             </Grid>
                         </Grid>
                         <Grid item xs={12} justify={'center'} style={{height: '65%'}}>
                             {isLastQuestion?
-                                <h1 style={{ textAlign: 'center', position: 'relative', bottom: '-35%' }}>Your Final Score Is: {flashCardType === "voc"? scoreVoc : scoreGram}/{flashCardType === "voc"? answeredQuestionsVoc.length : answeredQuestionsGram.length} </h1>
+                                <h1 style={{ textAlign: 'center', position: 'relative', bottom: '-35%' }}>Your Final Score Is: {flashCardType === 'voc'? scoreVoc : scoreGram}/{flashCardType === 'voc'? answeredQuestionsVoc.length : answeredQuestionsGram.length} </h1>
                                 :
                                 <FlashCard question={question}
                                            answeredQuestion={this.answeredQuestion}
                                            answeredCurrentQuestion={this.state.answeredCurrentQuestion}
                                            style={{width: '100%', height: '80%'}}
                                            isSaved={isSaved}
-                                           handleSave={flashCardType === "voc"? handleVocSave : handleGramSave}
-                                           handleUnsave={flashCardType === "voc"? handleVocUnsave : handleGramUnsave}
+                                           handleSave={flashCardType === 'voc'? handleVocSave : handleGramSave}
+                                           handleUnsave={flashCardType === 'voc'? handleVocUnsave : handleGramUnsave}
                                            flashCardType={flashCardType}
                                 />
                             }
@@ -388,13 +421,13 @@ class FlashCardContainer extends Component {
                             <Divider/>
                             <div className={'Flashcards-question-count'}>
                                 {isLastQuestion?
-                                    <h4 style={{marginRight: '5%'}}>{`Question ${flashCardType === "voc"?
-                                        answeredQuestionsVoc.length : answeredQuestionsGram.length}/${flashCardType === "voc"?
-                                        vocabQueue.length + answeredQuestionsVoc.length : grammarQueue.length + answeredQuestionsGram.length}`}</h4>
+                                    <h4 style={{marginRight: '5%'}}>{`Question ${flashCardType === 'voc'?
+                                        answeredQuestionsVoc.length : answeredQuestionsGram.length}/${flashCardType === 'voc'?
+                                        vocabQueue.length: grammarQueue.length}`}</h4>
                                     :
-                                    <h4 style={{marginRight: '5%'}}>{`Question ${flashCardType === "voc"?
-                                        answeredQuestionsVoc.length + 1 : answeredQuestionsGram.length + 1}/${flashCardType === "voc"?
-                                        vocabQueue.length + answeredQuestionsVoc.length : grammarQueue.length + answeredQuestionsGram.length}`}</h4>
+                                    <h4 style={{marginRight: '5%'}}>{`Question ${flashCardType === 'voc'?
+                                        answeredQuestionsVoc.length + 1 : answeredQuestionsGram.length + 1}/${flashCardType === 'voc'?
+                                        vocabQueue.length: grammarQueue.length}`}</h4>
                                 }
                                 <Button variant="contained" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
                             </div>
@@ -416,4 +449,20 @@ class FlashCardContainer extends Component {
     }
 }
 
-export default FlashCardContainer
+
+FlashCardContainer.propTypes = {
+    flashCardType: PropTypes.string.isRequired,
+    grammarList: PropTypes.array.isRequired,
+    handleGramSave: PropTypes.func.isRequired,
+    handleGramUnsave: PropTypes.func.isRequired,
+    handleVocSave: PropTypes.func.isRequired,
+    handleVocUnsave: PropTypes.func.isRequired,
+    openFiltered: PropTypes.bool.isRequired,
+    savedGrammarList: PropTypes.array.isRequired,
+    savedVocabList: PropTypes.array.isRequired,
+    setFlashCardType: PropTypes.func.isRequired,
+    storyTitle: PropTypes.string.isRequired,
+    vocabList: PropTypes.array.isRequired,
+};
+
+export default FlashCardContainer;
