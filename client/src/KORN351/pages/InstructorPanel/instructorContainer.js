@@ -11,6 +11,7 @@ import {changeSelectedMenu} from "../../../actions/KORN410/instructor";
 import LessonList from "./Common/StoryList/LessonList";
 import EditLesson from "../../components/InstructorPanel/EditLesson";
 import EditOkpyeon from "../../components/InstructorPanel/EditOkpyeon";
+import InstructorTutorial from "./Tutorial/351InstructorTutorial";
 
 
 class Instructor351Container extends Component {
@@ -74,6 +75,11 @@ class Instructor351Container extends Component {
                                         />
                                         <Route path="/instructor351/editOkpyeon/:id"
                                                component={EditOkpyeon}/>
+                                        <Route
+                                            exact
+                                            path="/instructor351/tutorial"
+                                            component={InstructorTutorial}
+                                        />
 
                                     </Switch>
                                 </Instructor>
