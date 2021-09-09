@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './OkpyeonRadicalContainer.css';
 import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
@@ -46,8 +46,8 @@ class DictionaryHangulContainer extends Component {
         let temp = this.props.phonetics.filter(ph => {
             return ph.phonetic === char.phonetic
         });
-        let temp2 = temp.length === 1? temp[0] : '';
-        this.setState({ phonetic: temp2});
+        let temp2 = temp.length === 1 ? temp[0] : '';
+        this.setState({phonetic: temp2});
         this.showCharacterAnimation(hanja, char);
     };
 
@@ -75,9 +75,21 @@ class DictionaryHangulContainer extends Component {
     };
 
     render() {
-        const {filteredResult, radical, radicalStrokeCount, totalStrokeCount, characterStrokeCount, meaning, hoonEum, primaryHoonMeaning, additionalHoonMeaning, radicalHangul, phonetic} = this.state;
+        const {
+            filteredResult,
+            radical,
+            radicalStrokeCount,
+            totalStrokeCount,
+            characterStrokeCount,
+            meaning,
+            hoonEum,
+            primaryHoonMeaning,
+            additionalHoonMeaning,
+            radicalHangul,
+            phonetic
+        } = this.state;
 
-        return(
+        return (
 
             <div className="okpyeon-hangul-container">
                 <div className="eum-filter-container">
@@ -90,7 +102,10 @@ class DictionaryHangulContainer extends Component {
                         <Grid container>
                             {
                                 filteredResult.map(char => {
-                                    return <Grid item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
+                                    return <Grid item xs={3} className="character-box"
+                                                 onClick={() => this.selectCharacter(char.hanja, char)}> <span
+                                        className="hanja">{char.hanja}</span><span
+                                        className="hangul">{char.hoonEum}</span> </Grid>
                                 })
                             }
                         </Grid>
@@ -103,26 +118,42 @@ class DictionaryHangulContainer extends Component {
                     </span>
                     <br/>
                     <span id='result-info'>
-                        <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === ''? '' : '('+radicalHangul+')'}</p>
-                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
-                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
-                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
-                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
+                        <div>
+                                <div>
+                                    <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>
+                                        Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}
+                                    </p>
+                                    <p style={{padding: '0 0 5% 10%'}}><b>
+                                        Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' ? '' : '(' + radicalHangul + ')'}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                                </div>
+                            </div>
                         {
-                            phonetic === '' || phonetic === undefined? '' :
+                            phonetic === '' || phonetic === undefined ? '' :
                                 <div>
                                     <br/>
-                                    <Divider />
+                                    <Divider/>
                                     <br/>
                                     <h3>Phonetic:</h3>
                                     <br/>
-                                    <p>This character contains the phonetic element “ {phonetic.phonetic} ”. The phonetic element “ {phonetic.phonetic} ” indicates the following pronunciation(s):</p>
+                                    <p>This character contains the phonetic element “ {phonetic.phonetic} ”. The
+                                        phonetic element “ {phonetic.phonetic} ” indicates the following
+                                        pronunciation(s):</p>
                                     <b>&nbsp;&nbsp;&nbsp;&nbsp;{phonetic.pronunciation}</b>
-                                    <p>In the following Chinese character(s), the phonetic element “ {phonetic.phonetic} ” indicates the pronunciation  {phonetic.pronunciation} :</p>
-                                    {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
+                                    <p>In the following Chinese character(s), the phonetic element
+                                        “ {phonetic.phonetic} ” indicates the
+                                        pronunciation {phonetic.pronunciation} :</p>
+                                    {phonetic.characters.map(charac => {
+                                        return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>
+                                    })}
                                 </div>
                         }
                     </span>
@@ -134,8 +165,8 @@ class DictionaryHangulContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        characters : state.okpyeon.characters,
-        phonetics : state.okpyeon.phonetics
+        characters: state.okpyeon.characters,
+        phonetics: state.okpyeon.phonetics
     };
 };
 
