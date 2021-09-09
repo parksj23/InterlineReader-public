@@ -83,14 +83,19 @@ class DictionaryLessonContainer extends Component {
                     </span>
                     <br/>
                     <span id='result-info'>
-                        <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === ''? '' : '('+radicalHangul+')'}</p>
-                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
-                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
-                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
-                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
+                        {
+                            radical === '' || radical === undefined? '' :
+                            <div>
+                                <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === ''? '' : '('+radicalHangul+')'}</p>
+                                <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                                <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                                <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                                <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                                <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                                <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
+                                <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
+                            </div>
+                        }
                         {
                             phonetic === '' || phonetic === undefined? '' :
                                 <div>
