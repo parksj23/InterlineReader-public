@@ -334,7 +334,8 @@ class FlashCardContainer extends Component {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 height: '450px',
-                width: '850px'
+                maxWidth: '800px',
+                width: '100%'
             }}>
                 <Grid container style={{height: '100%'}} justify={'center'}>
                     <Grid item xs={12}
