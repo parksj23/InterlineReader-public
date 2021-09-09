@@ -37,6 +37,7 @@ import setAuthToken from './utils/setAuthToken';
 import sort from "fast-sort/sort.es5.min";
 import store from './store';
 import { withCookies } from 'react-cookie';
+import KORN351StudentTutorial from "./components/About/components/KORN351StudentTutorial";
 
 if (localStorage.jwtToken) {
   setAuthToken(localStorage.jwtToken);
@@ -123,6 +124,7 @@ class App extends Component {
               <Route path="/success" component={Success} />
               <Route path="/about" component={About} />
               <Route path="/cleaner" component={Cleaner} />
+              <Route path="/KORN351/tutorial" component={KORN351StudentTutorial} />
               <Route exact path="/dashboard/KORN351/dictionary/radical" component={DictionaryRadicalContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/hangul" component={DictionaryHangulContainer} />
                 <Route exact path="/dashboard/KORN351/dictionary/lesson" component={DictionaryLessonContainer} />
