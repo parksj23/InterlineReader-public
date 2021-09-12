@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button'
 import FlashCard from './FlashCard'
 import './FlashCardsContent.css'
 import PracticeSentencesFlashCard from "./PracticeSentencesFlashCard";
+import _ from 'lodash';
 
 class FlashCardContainer extends Component {
 
@@ -13,7 +14,7 @@ class FlashCardContainer extends Component {
         super(props);
 
         this.state = ({
-            questionQueue: [],
+            questionQueueById: {},
             answeredQuestions: [],
             score: 0,
             answeredCurrentQuestion: false,
@@ -24,6 +25,7 @@ class FlashCardContainer extends Component {
     componentDidMount() {
         let {primaryQuestionList, quizTopic, cookies} = this.props;
         let questionQueue = [];
+        const questionQueueById = {};
 
         // Temp measure to fix infinite loop (Add static options) :
         let numVocabsRequired = 4 - primaryQuestionList.length;
@@ -57,12 +59,14 @@ class FlashCardContainer extends Component {
                 options.push(options[0]);
                 options.splice(0, 1);
             }
-            questionQueue.push({
+            const quesObj = {
                 answer: question.answer,
                 question: question.question,
                 options: options,
                 questionId: question._id
-            })
+            };
+            questionQueue.push(quesObj);
+            questionQueueById[question._id] = quesObj;
         });
         //
         // if (secondaryQuestionList.length > 0) {
@@ -102,28 +106,31 @@ class FlashCardContainer extends Component {
 
         // Start from saved place
         const savedFlashCard = cookies.get(quizTopic);
-        this.setState({ questionQueue },
+        this.setState({ questionQueueById },
             () => {
                 if (savedFlashCard) {
-                    const savedScore = savedFlashCard.score;
-                    const savedQuestionId = savedFlashCard.questionId;
+                    const savedScore = savedFlashCard.score || 0;
+                    const savedQuestionIds = savedFlashCard.questionIds || [];
 
-                    let answeredQuestions = this.state.answeredQuestions;
-                    let questionQueue = this.state.questionQueue;
-
-                    while (questionQueue[0].questionId !== savedQuestionId) {
-                        answeredQuestions.push(questionQueue[0]);
-                        questionQueue.splice(0,1);
-                    }
+                    let answeredQuestions = questionQueue.filter(q => savedQuestionIds.includes(q.questionId));
+                    const nextQuestionId = answeredQuestions.length ? this.getNextQuestionId(answeredQuestions) : questionQueue.length ? questionQueue[0].questionId : null;
 
                     this.setState({
                         answeredCurrentQuestion: false,
                         answeredCorrectly: null,
-                        questionQueue,
+                        nextQuestionId,
                         answeredQuestions,
                         score: savedScore
                     });
                 }})
+    }
+
+    getNextQuestionId(answeredQuestions) {
+        const { questionQueueById } = this.state;
+        const remainingQuestions = Object.values(questionQueueById).filter(v => !answeredQuestions.map(a => a.questionId).includes(v.questionId));
+        if (remainingQuestions.length) {
+            return remainingQuestions[0].questionId;
+        }
     }
 
     answeredQuestion = (answer, question, isAnswer) => {
@@ -144,9 +151,9 @@ class FlashCardContainer extends Component {
 
     handleNextQuestion = (question) => {
         const { cookies, quizTopic } = this.props;
-        const {questionQueue, answeredQuestions, score} = this.state;
+        const {questionQueueById, answeredQuestions, score} = this.state;
 
-        questionQueue.splice(0, 1);
+        const questionQueue = Object.values(questionQueueById);
         answeredQuestions.push(question);
         this.setState({
             answeredCurrentQuestion: false,
@@ -155,16 +162,17 @@ class FlashCardContainer extends Component {
             answeredQuestions
         });
 
-        if (questionQueue.length === 0)
+        const currentFlashcardsInfo = cookies.get(quizTopic);
+        const updatedFlashcardsInfo = { score, questionIds: currentFlashcardsInfo.questionIds };
+        if (currentFlashcardsInfo.questionIds.length === questionQueue.length)
         // If reached end of questions, remove cookie
             cookies.remove(quizTopic);
         else {
             // Set cookie
-            const temp = {
-                score: score,
-                questionId: questionQueue[0].questionId
-            };
-            cookies.set(quizTopic, temp)
+            if (answeredQuestions.length) {
+                updatedFlashcardsInfo.questionIds = [...currentFlashcardsInfo.questionIds, _.last(answeredQuestions).questionId];
+            }
+            cookies.set(quizTopic, updatedFlashcardsInfo)
         }
     };
 
@@ -172,7 +180,7 @@ class FlashCardContainer extends Component {
         const { cookies, quizTopic } = this.props;
 
         this.setState({
-            questionQueue: [],
+            questionQueueById: {},
             answeredQuestions: [],
             score: 0,
             answeredCurrentQuestion: false,
@@ -187,12 +195,13 @@ class FlashCardContainer extends Component {
     };
 
     render() {
-        const {questionQueue, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly} = this.state;
+        const {questionQueueById, nextQuestionId, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly} = this.state;
         const { onClose } = this.props;
-        let question = questionQueue[0];
+        const questionQueue = Object.values(questionQueueById);
+        let question = questionQueue[nextQuestionId];
         let isSaved = false;
 
-        const isLastQuestion = questionQueue.length === 0;
+        const isLastQuestion = questionQueue.length === answeredQuestions.length;
 
         return (
             <Card className="flashcard-container">

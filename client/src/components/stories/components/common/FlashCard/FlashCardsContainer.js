@@ -335,7 +335,7 @@ class FlashCardContainer extends Component {
     };
 
     render() {
-        const {setFlashCardType, flashCardType, savedVocabList, savedGrammarList, handleVocSave, handleGramSave, handleVocUnsave, handleGramUnsave} = this.props;
+        const {setFlashCardType, flashCardType, savedVocabList, savedGrammarList, handleVocSave, handleGramSave, handleVocUnsave, handleGramUnsave, onClose} = this.props;
         const {answeredCorrectly, scoreVoc, scoreGram, answeredQuestionsVoc, answeredQuestionsGram, nextVocabId, nextGrammarId, vocabQueueById, grammarQueueById} = this.state;
         const vocabQueue = Object.values(vocabQueueById);
         const grammarQueue = Object.values(grammarQueueById);
