@@ -187,7 +187,8 @@ class FlashCardContainer extends Component {
     };
 
     render() {
-        const {onClose, questionQueue, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly} = this.state;
+        const {questionQueue, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly} = this.state;
+        const { onClose } = this.props;
         let question = questionQueue[0];
         let isSaved = false;
 
