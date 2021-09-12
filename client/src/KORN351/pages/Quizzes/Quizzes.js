@@ -157,7 +157,7 @@ class Quizzes extends Component {
                     aria-describedby="simple-modal-description"
                     open={showModal}
                 >
-                    <FlashCardContainer onClose={this.handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} lesson={lesson} cookies={this.props.cookies}/>
+                    <FlashCardContainer onClose={this.handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} lesson={lesson}/>
                 </Modal>
                 <Grid item md={1}/>
                 <Grid item xs={12} md={10}>
