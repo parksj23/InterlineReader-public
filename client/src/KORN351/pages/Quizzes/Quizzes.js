@@ -12,6 +12,7 @@ import { withCookies } from 'react-cookie';
 import {getCharacters, getPhonetics, getRadicals} from "../../../actions/KORN351/Okpyeon";
 import {getNewHanjaCombos, getPracticeSentences} from "../../../actions/KORN351/Lessons";
 
+
 class Quizzes extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +20,8 @@ class Quizzes extends Component {
             showModal: false,
             primaryQuestionList: [],
             isPracticeSentence: false,
-            quizTopic: ''
+            quizTopic: '',
+            lesson: null,
         }
     }
 
@@ -46,7 +48,7 @@ class Quizzes extends Component {
     };
 
     openModal = (topic, lesson) => {
-        let quizTopic = topic + "-" + lesson;
+        let quizTopic = topic;
         const {characters, phonetics, radicals, newHanjaCombos, pracSentences} = this.props;
         let temp = false;
         let primQuestionList = [];
@@ -139,23 +141,23 @@ class Quizzes extends Component {
 
         this.setState({
             primaryQuestionList: primQuestionList,
-            quizTopic: quizTopic,
+            quizTopic,
+            lesson,
             showModal: true,
             isPracticeSentence: temp
         })
     };
 
     render() {
-        const {primaryQuestionList, isPracticeSentence, quizTopic, showModal} = this.state;
+        const {primaryQuestionList, isPracticeSentence, quizTopic, showModal, lesson} = this.state;
         return (
             <Grid container>
                 <Modal
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                     open={showModal}
-                    onClose={this.handleClose}
                 >
-                    <FlashCardContainer onClose={this.handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} cookies={this.props.cookies}/>
+                    <FlashCardContainer onClose={this.handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} lesson={lesson} cookies={this.props.cookies}/>
                 </Modal>
                 <Grid item md={1}/>
                 <Grid item xs={12} md={10}>
