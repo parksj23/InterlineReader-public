@@ -1,50 +1,29 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import _ from 'lodash';
-
-import Card from '@material-ui/core/Card';
-import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FlashCard from './FlashCard';
+import React, {Component} from 'react';
+import Card from '@material-ui/core/Card'
+import Grid from '@material-ui/core/Grid'
+import Divider from '@material-ui/core/Divider'
+import Button from '@material-ui/core/Button'
+import FlashCard from './FlashCard'
+import './FlashCardsContent.css'
 import PracticeSentencesFlashCard from "./PracticeSentencesFlashCard";
-import StoreAccessor from '../../../utils/localStore';
-
-import './FlashCardsContent.css';
-import { QUIZ_TOPIC_MAP } from '../../../config';
-
 
 class FlashCardContainer extends Component {
+
     constructor(props) {
         super(props);
 
         this.state = ({
-            questionQueueById: {},
+            questionQueue: [],
             answeredQuestions: [],
             score: 0,
             answeredCurrentQuestion: false,
-            answeredCorrectly: null,
-            nextQuestionId: null,
-            openDialog: false
+            answeredCorrectly: null
         });
-
-        const storeKey = props.quizTopic + props.lesson;
-        this.store = new StoreAccessor(storeKey);
     }
 
     componentDidMount() {
-        this.initialize();
-    }
-
-    initialize() {
-        let { primaryQuestionList } = this.props;
-        const questionQueue = [];
-        const questionQueueById = {};
+        let {primaryQuestionList, quizTopic, cookies} = this.props;
+        let questionQueue = [];
 
         // Temp measure to fix infinite loop (Add static options) :
         let numVocabsRequired = 4 - primaryQuestionList.length;
@@ -53,8 +32,7 @@ class FlashCardContainer extends Component {
                 primaryQuestionList.push({question: `Add ${numVocabsRequired} more vocabs`, answer: `Add ${numVocabsRequired} more vocabs`, _id: "1"})
             }
 
-        _.shuffle(primaryQuestionList).forEach(function (question) {
-            const questionId = question._id.toString();
+        primaryQuestionList.forEach(function (question) {
             let options = [];
             let a = question.answer;
             let answer = {
@@ -79,14 +57,12 @@ class FlashCardContainer extends Component {
                 options.push(options[0]);
                 options.splice(0, 1);
             }
-            const quesObj = {
+            questionQueue.push({
                 answer: question.answer,
                 question: question.question,
-                options,
-                questionId: questionId
-            };
-            questionQueue.push(quesObj);
-            questionQueueById[questionId] = quesObj;
+                options: options,
+                questionId: question._id
+            })
         });
         //
         // if (secondaryQuestionList.length > 0) {
@@ -125,40 +101,37 @@ class FlashCardContainer extends Component {
         // }
 
         // Start from saved place
-        const savedFlashCard = this.store.get();
-        this.setState({ questionQueueById, nextQuestionId: questionQueue.length ? questionQueue[0].questionId : null },
+        const savedFlashCard = cookies.get(quizTopic);
+        this.setState({ questionQueue },
             () => {
                 if (savedFlashCard) {
-                    const savedScore = savedFlashCard.score || 0;
-                    const savedQuestionIds = savedFlashCard.questionIds || [];
+                    const savedScore = savedFlashCard.score;
+                    const savedQuestionId = savedFlashCard.questionId;
 
-                    let answeredQuestions = questionQueue.filter(q => savedQuestionIds.includes(q.questionId));
-                    const nextQuestionId = answeredQuestions.length ? this.getNextQuestionId(answeredQuestions) : questionQueue.length ? questionQueue[0].questionId : null;
+                    let answeredQuestions = this.state.answeredQuestions;
+                    let questionQueue = this.state.questionQueue;
+
+                    while (questionQueue[0].questionId !== savedQuestionId) {
+                        answeredQuestions.push(questionQueue[0]);
+                        questionQueue.splice(0,1);
+                    }
 
                     this.setState({
                         answeredCurrentQuestion: false,
                         answeredCorrectly: null,
-                        nextQuestionId,
+                        questionQueue,
                         answeredQuestions,
                         score: savedScore
                     });
-                }});
-    }
-
-    getNextQuestionId(answeredQuestions) {
-        const { questionQueueById } = this.state;
-        const remainingQuestions = Object.values(questionQueueById).filter(v => !answeredQuestions.map(a => a.questionId).includes(v.questionId));
-        if (remainingQuestions.length) {
-            return remainingQuestions[0].questionId;
-        }
+                }})
     }
 
     answeredQuestion = (answer, question, isAnswer) => {
-        this.setState(prevState => ({
+        this.setState({
             answeredCurrentQuestion: true,
-            score: answer === question.answer ? prevState.score + 1 : prevState.score,
+            score: answer === question.answer ? this.state.score + 1 : this.state.score,
             answeredCorrectly: isAnswer
-        }));
+        });
     };
 
     enableNextButton = () => {
@@ -170,78 +143,56 @@ class FlashCardContainer extends Component {
     };
 
     handleNextQuestion = (question) => {
-        const { questionQueueById, answeredQuestions} = this.state;
+        const { cookies, quizTopic } = this.props;
+        const {questionQueue, answeredQuestions, score} = this.state;
 
-        const questionQueue = Object.values(questionQueueById);
+        questionQueue.splice(0, 1);
         answeredQuestions.push(question);
         this.setState({
             answeredCurrentQuestion: false,
             answeredCorrectly: null,
-            nextQuestionId: this.getNextQuestionId(answeredQuestions),
+            questionQueue,
             answeredQuestions
         });
 
-        const currentFlashcardsInfo = this.store.get() || {};
-        if ((currentFlashcardsInfo.questionIds || []).length === questionQueue.length) {
-            this.store.remove()
+        if (questionQueue.length === 0)
+        // If reached end of questions, remove cookie
+            cookies.remove(quizTopic);
+        else {
+            // Set cookie
+            const temp = {
+                score: score,
+                questionId: questionQueue[0].questionId
+            };
+            cookies.set(quizTopic, temp)
         }
     };
 
     handleStartOver = () => {
+        const { cookies, quizTopic } = this.props;
+
         this.setState({
-            questionQueueById: {},
+            questionQueue: [],
             answeredQuestions: [],
             score: 0,
             answeredCurrentQuestion: false,
             answeredCorrectly: null
         });
 
-        let savedFlashCard = this.store.get();
+        let savedFlashCard = cookies.get(quizTopic);
         if (savedFlashCard !== undefined)
-            this.store.remove()
+            cookies.remove(quizTopic);
 
-        this.initialize();
+        this.componentDidMount()
     };
 
-    onCancelSave = () => {
-        this.store.remove()
-        this.setState({ openDialog: false });
-        this.props.onClose();
-    }
-
-    onCloseStudy = () => {
-        const { answeredQuestions, questionQueueById } = this.state;
-        const questionQueue = Object.values(questionQueueById);
-        if (answeredQuestions.length && answeredQuestions.length !== questionQueue.length) {
-            this.setState({ openDialog: true });
-        } else {
-            this.props.onClose();
-        }
-    }
-    
-    saveChanges = () => {
-        const { onClose } = this.props;
-        const { answeredQuestions, score } = this.state;
-        const currentFlashcardsInfo = this.store.get() || {};
-        const updatedFlashcardsInfo = { score, questionIds: currentFlashcardsInfo.questionIds || [] };
-
-        if (answeredQuestions.length) {
-            updatedFlashcardsInfo.questionIds = answeredQuestions.map(a => a.questionId);
-        }
-        this.store.set(updatedFlashcardsInfo);
-        this.setState({ openDialog: false });
-        onClose();
-    }
-
-
     render() {
-        const { questionQueueById, nextQuestionId, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly, openDialog } = this.state;
-        const { lesson, quizTopic } = this.props;
-        const questionQueue = Object.values(questionQueueById);
-        const question = questionQueueById[nextQuestionId];
-        const isSaved = false;
+        const {questionQueue, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly} = this.state;
+        const { onClose } = this.props;
+        let question = questionQueue[0];
+        let isSaved = false;
 
-        const isLastQuestion = questionQueue.length === answeredQuestions.length;
+        const isLastQuestion = questionQueue.length === 0;
 
         return (
             <Card className="flashcard-container">
@@ -268,9 +219,9 @@ class FlashCardContainer extends Component {
                             <Grid item xs={3} style={{textAlign: 'right'}}>
                                 {
                                     isLastQuestion?
-                                        <h3>{`Score: ${score}/${answeredQuestions.length}`}</h3>
+                                        <h2>{`Score: ${score}/${answeredQuestions.length}`}</h2>
                                         :
-                                        <h3>{`Score: ${score}/${answeredQuestions.length + 1}`}</h3>
+                                        <h2>{`Score: ${score}/${answeredQuestions.length + 1}`}</h2>
                                 }
                             </Grid>
                         </Grid>
@@ -280,17 +231,14 @@ class FlashCardContainer extends Component {
                                 :
                                 this.props.isPracticeSentence?
                                     <PracticeSentencesFlashCard question={question}
-                                        answeredQuestion={this.answeredQuestion}
-                                        answeredCurrentQuestion={answeredCurrentQuestion}
-                                        style={{width: '100%', height: '80%'}}
-                                        isSaved={isSaved}
-                                    />
+                                                                answeredQuestion={this.answeredQuestion}
+                                                                style={{width: '100%', height: '80%'}}
+                                                                isSaved={isSaved}/>
                                     :
                                     <FlashCard question={question}
-                                        answeredQuestion={this.answeredQuestion}
-                                        answeredCurrentQuestion={answeredCurrentQuestion}
-                                        style={{width: '100%', height: '80%'}}
-                                        isSaved={isSaved}
+                                               answeredQuestion={this.answeredQuestion}
+                                               style={{width: '100%', height: '80%'}}
+                                               isSaved={isSaved}
                                     />
                             }
 
@@ -298,42 +246,23 @@ class FlashCardContainer extends Component {
                         <Grid item xs={12}>
                             <Divider/>
                             <div className={'Flashcards-question-count'}>
-                                {isLastQuestion ?
-                                    <h4 style={{marginRight: '5%'}}>{`Question ${answeredQuestions.length}/${questionQueue.length}`}</h4>
+                                {isLastQuestion?
+                                    <h4 style={{marginRight: '5%'}}>{`Question ${answeredQuestions.length}/${
+                                    questionQueue.length + answeredQuestions.length}`}</h4>
                                     :
-                                    <h4 style={{marginRight: '5%'}}>{`Question ${answeredQuestions.length + 1}/${questionQueue.length}`}</h4>
+                                    <h4 style={{marginRight: '5%'}}>{`Question ${answeredQuestions.length + 1}/${
+                                    questionQueue.length + answeredQuestions.length}`}</h4>
                                 }
                                 <Button variant="contained" className="start-over-button-351" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
                             </div>
                             <div style={{float: 'right'}}>
                                 <Button className={'Flashcard-options-button-next'} variant="contained"
                                     style={{ margin: '6px'}}
-                                    onClick={this.onCloseStudy}> CLOSE </Button>
+                                    onClick={onClose}> CLOSE </Button>
                                 <Button disabled={!answeredCurrentQuestion}
-                                    className={'Flashcard-options-button-next'} variant="outlined" color="primary"
-                                    style={{margin: '6px'}}
-                                    onClick={() => this.handleNextQuestion(question)}> NEXT </Button>
-                                <Dialog
-                                    open={openDialog}
-                                    aria-labelledby="draggable-dialog-title"
-                                >
-                                    <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-                                        Save changes before closing?
-                                    </DialogTitle>
-                                    <DialogContent>
-                                    <DialogContentText>
-                                        Do you want to save your progress in the <strong>{QUIZ_TOPIC_MAP[quizTopic]} Lesson {lesson}</strong>
-                                    </DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                    <Button autoFocus onClick={this.onCancelSave} color="primary">
-                                        No, Close
-                                    </Button>
-                                    <Button onClick={this.saveChanges} color="primary">
-                                        Yes, Save
-                                    </Button>
-                                    </DialogActions>
-                                </Dialog>
+                                        className={'Flashcard-options-button-next'} variant="outlined" color="primary"
+                                        style={{margin: '6px'}}
+                                        onClick={() => this.handleNextQuestion(question)}> NEXT </Button>
                             </div>
                         </Grid>
 
@@ -344,12 +273,4 @@ class FlashCardContainer extends Component {
     }
 }
 
-FlashCardContainer.propTypes = {
-    isPracticeSentence: PropTypes.bool,
-    lesson: PropTypes.string.isRequired,
-    onClose: PropTypes.func.isRequired,
-    primaryQuestionList: PropTypes.array.isRequired,
-    quizTopic: PropTypes.string.isRequired,
-};
-
-export default FlashCardContainer;
+export default FlashCardContainer
