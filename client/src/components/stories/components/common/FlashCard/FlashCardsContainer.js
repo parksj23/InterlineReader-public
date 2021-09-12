@@ -156,7 +156,6 @@ class FlashCardContainer extends Component {
         // Start from saved place
         const savedFlashCard = openFiltered ? this.savedFlashcardsStore.get() : this.flashcardsStore.get();
         const vocabQueue = Object.values(vocabQueueById);
-        console.log('------', grammarList);
         const grammarQueue = Object.values(grammarQueueById);
 
         this.setState({
