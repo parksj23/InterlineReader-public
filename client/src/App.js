@@ -9,6 +9,7 @@ import AboutNewBusu from "./KORN351/pages/Lessons/AboutNewBusu";
 import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
 import Cleaner from './components/Cleaner/CleanerContainer';
 import Dashboard from "./KORN351/Dashboard";
+import DashboardContainer from "./components/dashboard/DashboardContainer";
 import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
 import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
 import DictionaryRadicalContainer from './KORN351/pages/Okpyeon/OkpyeonRadicalContainer';
@@ -150,7 +151,7 @@ class App extends Component {
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja-combos"
                                    component={NewHanjaCombos}/>
                             <Switch>
-                                <PrivateRoute path="/dashboard" component={Dashboard}/>
+                                <PrivateRoute path="/dashboard" component={DashboardContainer}/>
                                 <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
                                 <PrivateRoute path='/instructor410' component={Instructor}/>
                                 <PrivateRoute path='/instructor351' component={Instructor351}/>
