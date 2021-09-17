@@ -65,7 +65,7 @@ class Navbar extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <SideBarButton toggleDrawer={this.toggleDrawer} isDisabled={this.props.sideBar.isButtonDisabled}/>
                     <div className="container">
-                        <Link className="navbar-brand" to="/dashboard">
+                        <Link className="navbar-brand" to="/dashboard/KORN351">
                             Interline Reader
                         </Link>
                         <button
