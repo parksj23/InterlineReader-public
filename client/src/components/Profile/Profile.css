@@ -1,0 +1,9 @@
+.ir-Profile {
+    margin: 20px;
+}
+
+.ir-Profile-tabs {
+    margin-right: 20px;
+    background-color: #eee;
+    border-radius: 4px;
+}

@@ -17,6 +17,21 @@
     text-align: center;
 }
 
+.ir-Navbar-accountBtn span {
+    color: rgba(255,255,255,.5);
+    text-transform: capitalize;
+    font-family: 'source-han-serif-korean', sans-serif;
+    font-size: 15px;
+}
+
+.ir-Navbar-menuItem a {
+    color: black;
+}
+
+.ir-Navbar-menuItem a:hover {
+    text-decoration: none;
+}
+
 @media (max-width: 768px) {
     .footer {
         width: 0%;
