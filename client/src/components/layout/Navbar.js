@@ -65,7 +65,7 @@ class Navbar extends Component {
                 <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                     <SideBarButton toggleDrawer={this.toggleDrawer} isDisabled={this.props.sideBar.isButtonDisabled}/>
                     <div className="container">
-                        <Link className="navbar-brand" to="/about">
+                        <Link className="navbar-brand" to="/dashboard">
                             Interline Reader
                         </Link>
                         <button
@@ -96,6 +96,12 @@ class Navbar extends Component {
                                 <li className="nav-item">
                                     <Link className={currentPath==="/about"? "selected-navbar": "nav-link"} to="/about">
                                         About
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link className={currentPath === "/KORN351/tutorial" ? "selected-navbar" : "nav-link"}
+                                          to="/KORN351/tutorial">
+                                        Tutorial
                                     </Link>
                                 </li>
                                 {/*{(Object.keys(user).length>=1 && !user.isStudent) && (*/}

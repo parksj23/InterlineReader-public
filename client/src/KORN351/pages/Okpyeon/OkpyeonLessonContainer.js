@@ -83,14 +83,27 @@ class DictionaryLessonContainer extends Component {
                     </span>
                     <br/>
                     <span id='result-info'>
-                        <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === ''? '' : '('+radicalHangul+')'}</p>
-                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
-                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
-                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
-                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
+                        {
+                            radical === '' || radical === undefined? '' :
+                            <div>
+                                <div>
+                                    <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>
+                                        Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}
+                                    </p>
+                                    <p style={{padding: '0 0 5% 10%'}}><b>
+                                        Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === ''? '' : '('+radicalHangul+')'}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                                    <p style={{padding: '0 0 0 10%'}}><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                                </div>
+                            </div>
+                        }
                         {
                             phonetic === '' || phonetic === undefined? '' :
                                 <div>

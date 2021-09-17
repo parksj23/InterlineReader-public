@@ -121,6 +121,15 @@ class InstructorMenu extends React.Component {
                         <ListItemText primary={'Edit Okpyeon (Also for Lessons)'} />
                     </ListItem>
 
+                    <ListItem button key={'tutorial'}
+                              onClick={()=> {
+                                  this.props.history.push('/instructor351/tutorial');
+                                  this.props.changeSelectedMenu("Instructor User Guide")
+                              }}>
+                        <ListItemIcon><i className="material-icons">help</i></ListItemIcon>
+                        <ListItemText primary={'Instructor User Guide'} />
+                    </ListItem>
+
                 </List>
             </div>
         );
