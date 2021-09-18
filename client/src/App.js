@@ -142,7 +142,7 @@ class App extends Component {
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja"
                                    component={NewHanjaContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu"
-                                   component={MainTextContainer}/>
+                                   component={NewBusuContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power"
                                    component={MainTextContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu"
