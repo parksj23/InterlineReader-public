@@ -1,14 +1,7 @@
-import React, {useState} from "react";
+import React from "react";
 import {
-    Tabs,
-    Tab,
     Paper,
-    Typography,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails, makeStyles
 } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 function InstructorTutorial() {
     return (

@@ -8,7 +8,6 @@ import About from "./components/About/AboutContainer";
 import AboutNewBusu from "./KORN351/pages/Lessons/AboutNewBusu";
 import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
 import Cleaner from './components/Cleaner/CleanerContainer';
-import Dashboard from "./KORN351/Dashboard";
 import DashboardContainer from "./components/dashboard/DashboardContainer";
 import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
 import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
