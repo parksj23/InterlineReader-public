@@ -191,17 +191,17 @@ class FlashCardContainer extends Component {
 
     answeredQuestion = (answer, question, isAnswer) => {
         if (this.props.flashCardType === "voc")
-            this.setState({
+            this.setState(prevState => ({
                 answeredCurrentQuestion: true,
-                scoreVoc: answer === question.vocabEng ? this.state.scoreVoc + 1 : this.state.scoreVoc,
+                scoreVoc: answer === question.vocabEng ? prevState.scoreVoc + 1  : prevState.scoreVoc,
                 answeredCorrectly: isAnswer
-            });
+            }));
         else if (this.props.flashCardType === "gram")
-            this.setState({
+            this.setState(prevState => ({
                 answeredCurrentQuestion: true,
-                scoreGram: answer === question.gloss ? this.state.scoreGram + 1 : this.state.scoreGram,
+                scoreGram: answer === question.gloss ? prevState.scoreGram + 1 : prevState.scoreGram,
                 answeredCorrectly: isAnswer
-            });
+            }));
     };
 
     handleNextQuestion = (question) => {

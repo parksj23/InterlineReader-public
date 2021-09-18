@@ -253,7 +253,7 @@ class StoriesContainer extends Component {
                 modalComponent = <FlashCardsContainer savedVocabList={this.state.savedVocabs} vocabList={this.props.stories.MODKR.vocabList} storyTitle={this.state.storyTitle} cookies={this.props.cookies}
                                   handleVocSave={this.handleVocFlashCardSave} handleVocUnsave={this.handleVocFlashCardUnsave} openFiltered={this.state.openFiltered} setFlashCardType={this.setFlashCardType}
                                     flashCardType={this.state.flashCardType} handleGramSave={this.handleGramFlashCardSave} handleGramUnsave={this.handleGramFlashCardUnsave} grammarList={this.props.stories.MODKR.grammarList}
-                                      savedGrammarList={this.state.savedGrammars}/>
+                                      savedGrammarList={this.state.savedGrammars} onClose={this.handleClose} />
                 break;
             case 'OriginalText':
                 modalComponent = <OriginalText url={this.props.stories.storyInfo.pdfUrl}

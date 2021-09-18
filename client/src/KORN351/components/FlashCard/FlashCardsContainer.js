@@ -188,6 +188,7 @@ class FlashCardContainer extends Component {
 
     render() {
         const {questionQueue, answeredQuestions, score, answeredCurrentQuestion, answeredCorrectly} = this.state;
+        const { onClose } = this.props;
         let question = questionQueue[0];
         let isSaved = false;
 
@@ -255,6 +256,9 @@ class FlashCardContainer extends Component {
                                 <Button variant="contained" className="start-over-button-351" style={{backgroundColor: '#00284d', color: 'white'}} onClick={() => this.handleStartOver()}>Start Over</Button>
                             </div>
                             <div style={{float: 'right'}}>
+                                <Button className={'Flashcard-options-button-next'} variant="contained"
+                                    style={{ margin: '6px'}}
+                                    onClick={onClose}> CLOSE </Button>
                                 <Button disabled={!answeredCurrentQuestion}
                                         className={'Flashcard-options-button-next'} variant="outlined" color="primary"
                                         style={{margin: '6px'}}

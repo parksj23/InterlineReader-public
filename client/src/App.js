@@ -9,6 +9,7 @@ import AboutNewBusu from "./KORN351/pages/Lessons/AboutNewBusu";
 import AboutNewPhonetics from "./KORN351/pages/Lessons/AboutNewPhonetics";
 import Cleaner from './components/Cleaner/CleanerContainer';
 import Dashboard from "./KORN351/Dashboard";
+import DashboardContainer from "./components/dashboard/DashboardContainer";
 import DictionaryHangulContainer from "./KORN351/pages/Okpyeon/OkpyeonHangulContainer";
 import DictionaryLessonContainer from "./KORN351/pages/Okpyeon/OkpyeonLessonContainer";
 import DictionaryRadicalContainer from './KORN351/pages/Okpyeon/OkpyeonRadicalContainer';
@@ -21,6 +22,7 @@ import Landing from './components/layout/Landing';
 import Login from './components/auth/Login';
 import MainTextContainer from "./KORN351/pages/Lessons/MainTextContainer";
 import Navbar from './components/layout/Navbar';
+import NewBusuContainer from "./KORN351/pages/Lessons/NewBusuContainer";
 import NewHanjaCombos from "./KORN351/pages/Lessons/NewHanjaCombos";
 import NewHanjaContainer from "./KORN351/pages/Lessons/NewHanjaContainer";
 import PrivateRoute from './components/common/PrivateRoute';
@@ -140,7 +142,7 @@ class App extends Component {
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja"
                                    component={NewHanjaContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu"
-                                   component={MainTextContainer}/>
+                                   component={NewBusuContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power"
                                    component={MainTextContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu"
@@ -150,7 +152,7 @@ class App extends Component {
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-hanja-combos"
                                    component={NewHanjaCombos}/>
                             <Switch>
-                                <PrivateRoute path="/dashboard" component={Dashboard}/>
+                                <PrivateRoute path="/dashboard" component={DashboardContainer}/>
                                 <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
                                 <PrivateRoute path='/instructor410' component={Instructor}/>
                                 <PrivateRoute path='/instructor351' component={Instructor351}/>

@@ -3,6 +3,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import StarRatingComponent from 'react-star-rating-component';
 import './FlashCardsContent.css';
+import { getQuestionFontSize } from '../../../../../utils';
 
 const styles = {
     flashcardbuttonCorrect: {
@@ -28,6 +29,8 @@ const styles = {
 
 const FlashCard = (props) => {
     let {question, classes, isSaved, flashCardType, handleUnsave, handleSave, answeredQuestion} = props;
+    const vocabQuestion = question.vocabEng.split(":").length > 1 ? question.vocabEng.split(":")[1].trim() : question.vocabEng;
+
     return (
         <div className={'Flashcards-question-container'}>
             <div className={'Flasscards-question'}>
@@ -46,8 +49,8 @@ const FlashCard = (props) => {
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             {
                                 flashCardType === "voc"?
-                                    <h1>{question.vocabEng.split(":").length > 1? question.vocabEng.split(":")[1].trim() : question.vocabEng}</h1> :
-                                    <h1 style={{fontSize: question.gramGloss.length > 80? '20px' : '40px'}}>{question.gramGloss}</h1>
+                                    <span style={{fontSize: getQuestionFontSize(vocabQuestion)}}>{vocabQuestion}</span> :
+                                    <span style={{fontSize: getQuestionFontSize(question.gramGloss)}}>{question.gramGloss}</span>
                             }
                         </div> : null
                 }
