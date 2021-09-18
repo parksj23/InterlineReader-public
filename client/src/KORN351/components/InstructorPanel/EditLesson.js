@@ -2,10 +2,23 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import Button from '@material-ui/core/Button';
 import {getAboutNewBusu, getMainText, getNewHanjaCombos, getNewVocabulary} from "../../../actions/KORN351/Lessons";
-import {saveMainText, saveExampleSentence, saveOthers, saveAboutNewBusu, saveNewPhonetic, saveNewHanjaCombo, saveSideBarVocab, deleteAboutNewBusu, deleteNewHanjaCombo, deleteNewPhonetic} from "../../../actions/KORN351/Instructor";
+import {
+    saveMainText,
+    saveExampleSentence,
+    saveOthers,
+    saveAboutNewBusu,
+    saveNewPhonetic,
+    saveNewHanjaCombo,
+    saveSideBarVocab,
+    deleteAboutNewBusu,
+    deleteNewHanjaCombo,
+    deleteNewPhonetic
+} from "../../../actions/KORN351/Instructor";
 import "./EditLesson.css";
 import Divider from "@material-ui/core/Divider/Divider";
 import {getPhonetics} from "../../../actions/KORN351/Okpyeon";
+import {Accordion, AccordionDetails, AccordionSummary, Tab, Tabs, Typography} from "@material-ui/core";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 class EditLesson extends Component {
     constructor(props) {
@@ -119,6 +132,10 @@ class EditLesson extends Component {
         }
     }
 
+    handleOnChangeTab = (event, value) => {
+        this.setState({tabValue: value});
+    }
+
     handleMainTextChange = event => {
         this.setState({
             subText: event.target.value
@@ -166,11 +183,16 @@ class EditLesson extends Component {
             }
         });
 
-        this.props.saveAboutNewBusu(this.state.lesson, id, this.state[id+'word'].value.trim(), this.state[id+'def'].value.trim(), this.state[id+'busu'].value.trim(), this.state[id+'desc'].value.trim(), characters);
+        this.props.saveAboutNewBusu(this.state.lesson, id, this.state[id + 'word'].value.trim(), this.state[id + 'def'].value.trim(), this.state[id + 'busu'].value.trim(), this.state[id + 'desc'].value.trim(), characters);
     };
 
-    deleteNewBusu = (id) => {
-        this.props.deleteAboutNewBusu(this.state.lesson, id);
+    deleteNewBusu = (id, word) => {
+        if (window.confirm("Are you sure you want to delete " + word + " from 부수?")) {
+            this.props.deleteAboutNewBusu(this.state.lesson, id);
+            window.alert(word + " has been deleted!");
+        } else {
+            window.alert(word + "has NOT been deleted.");
+        }
     };
 
     saveNewPhonetics = (id) => {
@@ -182,18 +204,23 @@ class EditLesson extends Component {
         let subPronunciation = [];
         let subCharacters = [];
 
-        if (this.state[id+'sub-pronunciation'])
-            subPronunciation = this.state[id+'sub-pronunciation'].value.trim();
+        if (this.state[id + 'sub-pronunciation'])
+            subPronunciation = this.state[id + 'sub-pronunciation'].value.trim();
         if (this.state[id + 'sub-characters']) {
-            subCharacters = this.state[id+ 'sub-characters'].value.split("\n");
+            subCharacters = this.state[id + 'sub-characters'].value.split("\n");
             subCharacters = subCharacters.filter(ex => {
                 return ex.trim() !== "";
             });
         }
-        this.props.saveNewPhonetic(this.state.lesson, id, this.state[id+'phonetic'].value.trim(), this.state[id+'pronunciation'].value.trim(), examples, subPronunciation, subCharacters);
+        this.props.saveNewPhonetic(this.state.lesson, id, this.state[id + 'phonetic'].value.trim(), this.state[id + 'pronunciation'].value.trim(), examples, subPronunciation, subCharacters);
     };
-    deleteNewPhonetics = (id) => {
-        this.props.deleteNewPhonetic(this.state.lesson, id);
+    deleteNewPhonetics = (id, phonetic) => {
+        if (window.confirm("Are you sure you want to delete " + phonetic + " from phonetics?")) {
+            this.props.deleteNewPhonetic(this.state.lesson, id);
+            window.alert(phonetic + " has been deleted!");
+        } else {
+            window.alert(phonetic + "has NOT been deleted.");
+        }
     };
 
     saveNewHanjaCombo = (id) => {
@@ -203,8 +230,13 @@ class EditLesson extends Component {
 
         this.props.saveNewHanjaCombo(this.state.lesson, id, hanja, kor, eng);
     };
-    deleteNewHanjaCombo = (id) => {
-        this.props.deleteNewHanjaCombo(this.state.lesson, id);
+    deleteNewHanjaCombo = (id, hanja) => {
+        if (window.confirm("Are you sure you want to delete " + hanja + " from New 한자?")) {
+            this.props.deleteNewHanjaCombo(this.state.lesson, id);
+            window.alert(hanja + " has been deleted!");
+        } else {
+            window.alert(hanja + "has NOT been deleted.");
+        }
     };
 
     saveSideBarVocab = () => {
@@ -237,7 +269,14 @@ class EditLesson extends Component {
 
     render() {
         const {mainText, subText, exampleSentences} = this.props;
-        const {aboutNewBusu, phonetics, newHanjaCombos, lesson, newVocabMainText, newVocabExampleSentences} = this.state;
+        const {
+            aboutNewBusu,
+            phonetics,
+            newHanjaCombos,
+            lesson,
+            newVocabMainText,
+            newVocabExampleSentences
+        } = this.state;
 
         let newVocabMainTextStr = '';
         newVocabMainText.forEach(vocab => {
@@ -252,69 +291,144 @@ class EditLesson extends Component {
         return (
             <div className="edit-lesson-container">
                 <h1>Lesson {this.props.match.params.id}</h1>
+                <h5><i>Click on a category to edit</i></h5>
                 <br/><br/>
+
+                <div>
+                    <Tabs
+                        value={this.state.tabValue}
+                        onChange={this.handleOnChangeTab}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        centered
+                        style={{padding: '2%'}}
+                    >
+                        <Tab label="Main Lesson"/>
+                        <Tab label="새 부수에 대하여"/>
+                        <Tab label="About the New Phonetics"/>
+                        <Tab label="New 한자 Combos"/>
+                    </Tabs>
+                </div>
+
+                {this.state.tabValue === 0 &&
                 <div className="edit-lesson-background">
                     <h2>Main Text & Example Sentences (& Others)</h2>
-                    <Divider /><br/>
-                    <div>
-                        <h4>Main Text</h4>
-                        <textarea name="main-text" style={{overflowWrap: 'break-word'}} value={this.state.mainText} rows="7" className="edit-input" onChange={this.handleMainTextChange}/>
-                        <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%', textAlign: 'center'}} onClick={() => this.saveMainText()}>SAVE</Button>
-                        <br/><br/>
-                        <h4>Example Sentences</h4>
-                        {this.state.exampleSentences.map((num) => {
-                            let str = '';
-                            num.sentences.forEach(sentence => {
-                                str += sentence + '\n'
-                            });
-                            let unique = num.num;
-                            return <div style={{padding: '0 5%'}}>
-                                Num: {num.num}
-                                <br/>
-                                Sentences:
-                                <textarea style={{overflowWrap: 'break-word'}} rows="5" className="edit-input" ref={input => this.state[unique] = input}>
+                    <Divider/><br/>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                            <Typography>Main Text</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div>
+                                <textarea name="main-text" style={{width: "100%", overflowWrap: 'break-word'}}
+                                          value={this.state.mainText} rows="7" className="edit-input"
+                                          onChange={this.handleMainTextChange}/>
+                                <Button style={{
+                                    marginRight: '4px',
+                                    backgroundColor: '#00284d',
+                                    color: 'white',
+                                    width: '20%',
+                                    textAlign: 'center'
+                                }} onClick={() => this.saveMainText()}>SAVE</Button>
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                            <Typography>Example Sentences</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div>
+                                {this.state.exampleSentences.map((num) => {
+                                    let str = '';
+                                    num.sentences.forEach(sentence => {
+                                        str += sentence + '\n'
+                                    });
+                                    let unique = num.num;
+                                    return <div style={{padding: '0 5%'}}>
+                                        Num: {num.num}
+                                        <br/>
+                                        Sentences:
+                                        <textarea style={{overflowWrap: 'break-word'}} rows="5" className="edit-input"
+                                                  ref={input => this.state[unique] = input}>
                                     {str}
                                 </textarea>
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.saveExSentence(num.num)}>SAVE</Button>
-                                <br/><br/>
-                            </div>
-                        })}
-                        <br/><br/>
-                        {
-                            subText !== '' || subText !== null ?
-                                <div>
-                                    <h4>Others</h4>
-                                    <div style={{padding: '0 5%'}}>
-                                        Sub Heading:
-                                        <input type="text" defaultValue={this.state.subText.subHeading} style={{width: '50%'}} ref={input => this.subheading = input}/><br/>
-                                        Content:
-                                        <textarea style={{overflowWrap: 'break-word'}} rows="5" className="edit-input" defaultValue={subText.content} ref={input => this.subcontent = input}/>
+                                        <Button style={{
+                                            marginRight: '4px',
+                                            backgroundColor: '#00284d',
+                                            color: 'white',
+                                            width: '20%'
+                                        }} onClick={() => this.saveExSentence(num.num)}>SAVE</Button>
                                         <br/><br/>
                                     </div>
-                                    <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.saveOthers()}>SAVE</Button>
-                                </div> : ''
-                        }
-                        <br/><br/>
-                        <h4>Side-bar Vocabulary</h4>
-                        From Main Text:
-                        <textarea style={{overflowWrap: 'break-word'}} rows="7" className="edit-input" defaultValue={newVocabMainTextStr} ref={input => this.state['sidebar-mainText'] = input}/>
-                        <br/>
-                        From Example Sentences:
-                        <textarea style={{overflowWrap: 'break-word'}} rows="7" className="edit-input" defaultValue={newVocabExSentencesStr} ref={input => this.state['sidebar-exSent'] = input}/>
-                        <br/>
-                        <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.saveSideBarVocab()}>SAVE</Button>
-                    </div>
-                </div>
-                <br/><br/>
-                {/**<div className="edit-lesson-background">
-                    <h2>새 한자</h2>
-                    <Divider /><br/>
+                                })}
+                            </div>
 
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                            <Typography>Others</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            {
+                                subText !== '' || subText !== null ?
+                                    <div>
+                                        <div style={{padding: '0 5%'}}>
+                                            Sub Heading: <br/>
+                                            <textarea rows="3" input type="text"
+                                                      defaultValue={this.state.subText.subHeading}
+                                                      style={{width: '100%'}}
+                                                      ref={input => this.subheading = input}/><br/>
+                                            Content:
+                                            <textarea style={{overflowWrap: 'break-word'}} rows="5"
+                                                      className="edit-input" defaultValue={subText.content}
+                                                      ref={input => this.subcontent = input}/>
+                                            <br/><br/>
+                                        </div>
+                                        <Button style={{
+                                            marginRight: '4px',
+                                            backgroundColor: '#00284d',
+                                            color: 'white',
+                                            width: '20%'
+                                        }} onClick={() => this.saveOthers()}>SAVE</Button>
+                                    </div> : ''
+                            }
+                        </AccordionDetails>
+                    </Accordion>
+                    <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                            <Typography>Side-bar Vocabulary</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <div>
+                                From Main Text:
+                                <textarea style={{overflowWrap: 'break-word'}} rows="7" className="edit-input"
+                                          defaultValue={newVocabMainTextStr}
+                                          ref={input => this.state['sidebar-mainText'] = input}/>
+                                <br/>
+                                From Example Sentences:
+                                <textarea style={{overflowWrap: 'break-word'}} rows="7" className="edit-input"
+                                          defaultValue={newVocabExSentencesStr}
+                                          ref={input => this.state['sidebar-exSent'] = input}/>
+                                <br/>
+                                <Button style={{
+                                    marginRight: '4px',
+                                    backgroundColor: '#00284d',
+                                    color: 'white',
+                                    width: '20%'
+                                }} onClick={() => this.saveSideBarVocab()}>SAVE</Button>
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
                 </div>
-                <br/><br/>**/}
+                }
+
+
+                {this.state.tabValue === 1 &&
                 <div className="edit-lesson-background">
                     <h2>새 부수에 대하여</h2>
-                    <Divider /><br/>
+                    <Divider/><br/>
                     {
                         aboutNewBusu.map(busu => {
                             let str = '';
@@ -323,23 +437,65 @@ class EditLesson extends Component {
                             });
 
                             return <div>
-                                Word:  <input type="text" defaultValue={busu.word} style={{width: '25%'}} ref={input => this.state[busu._id + 'word'] = input}/><br/>
-                                Definition:  <input type="text" defaultValue={busu.def} style={{width: '25%'}} ref={input => this.state[busu._id + 'def'] = input}/><br/>
-                                Busu:  <input type="text" defaultValue={busu.busu} style={{width: '25%'}} ref={input => this.state[busu._id + 'busu'] = input}/><br/>
-                                Description: <input type="text" defaultValue={busu.description} style={{width: '100%'}} ref={input => this.state[busu._id + 'desc'] = input}/><br/>
-                                Examples:
-                                <textarea name="main-text" style={{overflowWrap: 'break-word'}} defaultValue={str} rows="7" className="edit-input" ref={input => this.state[busu._id] = input}/>
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.saveNewBusu(busu._id)}>SAVE</Button>
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.deleteNewBusu(busu._id)}>DELETE</Button>
-                                <br/><br/><br/>
+                                <Accordion key={busu._id}>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                        <Typography>{busu.word}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <div>
+                                            Word: <input type="text" defaultValue={busu.word} style={{width: '25%'}}
+                                                         ref={input => this.state[busu._id + 'word'] = input}/><br/>
+                                            <br/>
+                                            Definition: <textarea input type="text" defaultValue={busu.def}
+                                                                  style={{width: '25%'}}
+                                                                  ref={input => this.state[busu._id + 'def'] = input}/><br/>
+                                            <br/>
+                                            Busu: <textarea input type="text" defaultValue={busu.busu}
+                                                            style={{width: '25%'}}
+                                                            ref={input => this.state[busu._id + 'busu'] = input}/><br/>
+                                            <br/>
+                                            Description: <textarea rows="7" input type="text"
+                                                                   defaultValue={busu.description}
+                                                                   style={{width: '100%'}}
+                                                                   ref={input => this.state[busu._id + 'desc'] = input}/><br/>
+                                            <br/>
+                                            Examples:
+                                            <textarea name="main-text" style={{overflowWrap: 'break-word'}}
+                                                      defaultValue={str} rows="7" className="edit-input"
+                                                      ref={input => this.state[busu._id] = input}/>
+                                            <Button style={{
+                                                marginRight: '4px',
+                                                backgroundColor: '#00284d',
+                                                color: 'white',
+                                                width: '20%'
+                                            }} onClick={() => this.saveNewBusu(busu._id)}>SAVE</Button>
+                                            <Button style={{
+                                                marginRight: '4px',
+                                                backgroundColor: '#f6152f',
+                                                color: 'white',
+                                                width: '20%'
+                                            }} onClick={() => this.deleteNewBusu(busu._id, busu.word)}>DELETE</Button>
+                                        </div>
+                                    </AccordionDetails>
+                                </Accordion>
+                                <br/>
                             </div>
                         })
                     }
                 </div>
-                <br/><br/>
+                }
+                {/**<div className="edit-lesson-background">
+                 <h2>새 한자</h2>
+                 <Divider /><br/>
+
+                 </div>
+                 <br/><br/>**/}
+
+
+                {this.state.tabValue === 2 &&
                 <div className="edit-lesson-background">
                     <h2>About the New Phonetics</h2>
-                    <Divider /><br/>
+                    <Divider/><br/>
                     {
                         phonetics.map(phonetic => {
                             let str = '';
@@ -355,71 +511,144 @@ class EditLesson extends Component {
                             }
 
                             return <div>
-                                Phonetic:  <input type="text" defaultValue={phonetic.phonetic} style={{width: '25%'}} ref={input => this.state[phonetic._id + 'phonetic'] = input}/><br/>
-                                Pronunciation:  <input type="text" defaultValue={phonetic.pronunciation} style={{width: '25%'}} ref={input => this.state[phonetic._id + 'pronunciation'] = input}/><br/>
-                                Characters:
-                                <textarea name="characters" style={{overflowWrap: 'break-word'}} defaultValue={str} rows="7" className="edit-input" ref={input => this.state[phonetic._id] = input}/>
-                                {
-                                    phonetic.sub_pronunciation?
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                        <Typography>{phonetic.phonetic}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
                                         <div>
-                                            Sub-Pronunciation: <input type="text" defaultValue={phonetic.sub_pronunciation} style={{width: '25%'}} ref={input => this.state[phonetic._id + 'sub-pronunciation'] = input}/><br/>
-                                            Sub-Characters:
-                                            <textarea name="main-text" style={{overflowWrap: 'break-word'}} defaultValue={str2} rows="7" className="edit-input" ref={input => this.state[phonetic._id + 'sub-characters'] = input}/>
-                                        </div> : ''
-                                }
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.saveNewPhonetics(phonetic._id)}>SAVE</Button>
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '20%'}} onClick={() => this.deleteNewPhonetics(phonetic._id)}>DELETE</Button>
-                                <br/><br/><br/>
+                                            Phonetic: <input type="text" defaultValue={phonetic.phonetic}
+                                                             style={{width: '25%'}}
+                                                             ref={input => this.state[phonetic._id + 'phonetic'] = input}/><br/>
+                                            Pronunciation: <input type="text" defaultValue={phonetic.pronunciation}
+                                                                  style={{width: '25%'}}
+                                                                  ref={input => this.state[phonetic._id + 'pronunciation'] = input}/><br/>
+                                            Characters:
+                                            <textarea name="characters" style={{overflowWrap: 'break-word'}}
+                                                      defaultValue={str} rows="7" className="edit-input"
+                                                      ref={input => this.state[phonetic._id] = input}/>
+                                            {
+                                                phonetic.sub_pronunciation ?
+                                                    <div>
+                                                        Sub-Pronunciation: <input type="text"
+                                                                                  defaultValue={phonetic.sub_pronunciation}
+                                                                                  style={{width: '25%'}}
+                                                                                  ref={input => this.state[phonetic._id + 'sub-pronunciation'] = input}/><br/>
+                                                        Sub-Characters:
+                                                        <textarea name="main-text" style={{overflowWrap: 'break-word'}}
+                                                                  defaultValue={str2} rows="7" className="edit-input"
+                                                                  ref={input => this.state[phonetic._id + 'sub-characters'] = input}/>
+                                                    </div> : ''
+                                            }
+                                            <Button style={{
+                                                marginRight: '4px',
+                                                backgroundColor: '#00284d',
+                                                color: 'white',
+                                                width: '20%'
+                                            }} onClick={() => this.saveNewPhonetics(phonetic._id)}>SAVE</Button>
+                                            <Button style={{
+                                                marginRight: '4px',
+                                                backgroundColor: '#f6152f',
+                                                color: 'white',
+                                                width: '20%'
+                                            }}
+                                                    onClick={() => this.deleteNewPhonetics(phonetic._id, phonetic.phonetic)}>DELETE</Button>
+                                        </div>
+                                    </AccordionDetails>
+                                </Accordion>
+                                <br/>
                             </div>
                         })
                     }
                 </div>
-                <br/><br/>
+                }
+
+
+                {this.state.tabValue === 3 &&
                 <div className="edit-lesson-background">
                     <h2>New 한자 Combos</h2>
-                    <Divider /><br/>
+                    <Divider/><br/>
                     {
                         newHanjaCombos.map(combo => {
-                            return <div style={{textAlign: 'center'}}>
-                                Hanja:  <input type="text" defaultValue={combo.hanja} style={{width: '25%'}} ref={input => this.state[combo._id + 'hanja'] = input}/><br/>
-                                Korean:  <input type="text" defaultValue={combo.kor} style={{width: '25%'}} ref={input => this.state[combo._id + 'kor'] = input}/><br/>
-                                English:  <input type="text" defaultValue={combo.eng} style={{width: '25%'}} ref={input => this.state[combo._id + 'eng'] = input}/><br/>
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '10%'}} onClick={() => this.saveNewHanjaCombo(combo._id)}>SAVE</Button>
-                                <Button style={{marginRight: '4px', backgroundColor: '#00284d', color: 'white', width: '10%'}} onClick={() => this.deleteNewHanjaCombo(combo._id)}>DELETE</Button>
-                                <br/><br/><br/>
+                            return <div>
+                                <Accordion>
+                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+                                        <Typography>{combo.hanja} {combo.kor}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        Hanja: <input type="text" defaultValue={combo.hanja} style={{width: '25%'}}
+                                                      ref={input => this.state[combo._id + 'hanja'] = input}/>
+                                    </AccordionDetails>
+                                    <AccordionDetails>
+                                        Korean: <input type="text" defaultValue={combo.kor} style={{width: '25%'}}
+                                                       ref={input => this.state[combo._id + 'kor'] = input}/>
+                                    </AccordionDetails>
+                                    <AccordionDetails>
+                                        English: <input type="text" defaultValue={combo.eng} style={{width: '25%'}}
+                                                        ref={input => this.state[combo._id + 'eng'] = input}/>
+                                    </AccordionDetails>
+                                    <AccordionDetails>
+                                        <Button style={{
+                                            marginRight: '4px',
+                                            backgroundColor: '#00284d',
+                                            color: 'white',
+                                            width: '10%'
+                                        }} onClick={() => this.saveNewHanjaCombo(combo._id)}>SAVE</Button>
+                                        <Button style={{
+                                            marginRight: '4px',
+                                            backgroundColor: '#f6152f',
+                                            color: 'white',
+                                            width: '10%'
+                                        }}
+                                                onClick={() => this.deleteNewHanjaCombo(combo._id, combo.hanja)}>DELETE</Button>
+                                    </AccordionDetails>
+                                </Accordion>
+                                <br/>
                             </div>
                         })
                     }
                 </div>
+                }
             </div>
         );
     }
+
 }
 
 const mapStateToProps = state => ({
-    mainText : state.lessons.mainText,
-    subText : state.lessons.subText,
-    exampleSentences: state.lessons.exampleSentences,
-    aboutNewBusu : state.lessons.aboutNewBusu,
-    phonetics : state.okpyeon.phonetics,
-    newHanjaCombos : state.lessons.newHanjaCombos,
-    newVocab : state.lessons.newVocabulary
-});
+        mainText: state.lessons.mainText
+        ,
+        subText: state.lessons.subText
+        ,
+        exampleSentences: state.lessons.exampleSentences
+        ,
+        aboutNewBusu: state.lessons.aboutNewBusu
+        ,
+        phonetics: state.okpyeon.phonetics
+        ,
+        newHanjaCombos: state.lessons.newHanjaCombos
+        ,
+        newVocab: state.lessons.newVocabulary
+    }
 
-const mapDispatchToProps = {
-    getMainText,
-    getAboutNewBusu,
-    saveMainText,
-    saveExampleSentence,
-    saveOthers,
-    saveAboutNewBusu,
-    getPhonetics,
-    saveNewPhonetic,
-    getNewHanjaCombos,
-    saveNewHanjaCombo,
-    getNewVocabulary,
-    saveSideBarVocab,
-    deleteAboutNewBusu, deleteNewHanjaCombo, deleteNewPhonetic
-};
+);
 
-export default connect( mapStateToProps, mapDispatchToProps )(EditLesson);
+const mapDispatchToProps =
+    {
+        getMainText,
+        getAboutNewBusu,
+        saveMainText,
+        saveExampleSentence,
+        saveOthers,
+        saveAboutNewBusu,
+        getPhonetics,
+        saveNewPhonetic,
+        getNewHanjaCombos,
+        saveNewHanjaCombo,
+        getNewVocabulary,
+        saveSideBarVocab,
+        deleteAboutNewBusu, deleteNewHanjaCombo, deleteNewPhonetic
+    }
+;
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditLesson);
