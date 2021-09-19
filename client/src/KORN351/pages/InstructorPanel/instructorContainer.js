@@ -80,7 +80,6 @@ class Instructor351Container extends Component {
                                             path="/instructor351/tutorial"
                                             component={InstructorTutorial}
                                         />
-
                                     </Switch>
                                 </Instructor>
                             </Grid>

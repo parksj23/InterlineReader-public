@@ -36,7 +36,15 @@ class EditLesson extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        // const reloadCount = sessionStorage.getItem('reloadCount');
+        // if(reloadCount < 2) {
+        //     sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+        //     window.location.reload();
+        // } else {
+        //     sessionStorage.removeItem('reloadCount');
+        // }
+
         let lesson = this.props.match.params.id;
         let mainText = '';
         let subText = '';
@@ -291,7 +299,7 @@ class EditLesson extends Component {
         return (
             <div className="edit-lesson-container">
                 <h1>Lesson {this.props.match.params.id}</h1>
-                <h5><i>Click on a category to edit</i></h5>
+                <h5><i>Editing Lesson: Click on a category to edit</i></h5>
                 <br/><br/>
 
                 <div>

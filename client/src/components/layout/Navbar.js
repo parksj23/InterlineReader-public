@@ -111,7 +111,7 @@ class Navbar extends Component {
                                 {/*}*/}
                                 {(Object.keys(user).length>=1 && !user.isStudent) && (
                                     <li className="nav-item">
-                                        <Link className={currentPath.includes("/instructor351")? "selected-navbar": "nav-link"} to="/instructor351"> 351 Instructor Panel</Link>
+                                        <Link className={currentPath.includes("/instructor351/editLesson")? "selected-navbar": "nav-link"} to="/instructor351/editLesson"> 351 Instructor Panel</Link>
                                     </li>)
                                 }
                             </ul>

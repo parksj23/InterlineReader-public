@@ -9,6 +9,8 @@ import {
 import Button from '@material-ui/core/Button';
 import {Accordion, AccordionDetails, AccordionSummary, Tab, Tabs, Typography} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import {changeSelectedMenu} from "../../../actions/KORN410/instructor";
+
 
 class EditOkpyeon extends Component {
     constructor(props) {
@@ -20,7 +22,17 @@ class EditOkpyeon extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
+        const reloadCount = sessionStorage.getItem('reloadCount');
+        if(reloadCount < 2) {
+            sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+            window.location.reload();
+        } else {
+            sessionStorage.removeItem('reloadCount');
+        }
+
+        changeSelectedMenu("Edit Hanja Characters, Radicals & Phonetics (For Okpyeon & Lessons)")
+
         let lesson = parseInt(this.props.match.params.id);
         const {characters, phonetics, radicals} = this.props;
 
@@ -144,7 +156,7 @@ class EditOkpyeon extends Component {
         return (
             <div className="edit-lesson-container">
                 <h1>Lesson {this.props.match.params.id}</h1>
-                <h5><i>Click on a category to edit</i></h5>
+                <h5><i>Editing Okpyeon: Click on a category to edit</i></h5>
                 <br/><br/>
 
                 <div>
