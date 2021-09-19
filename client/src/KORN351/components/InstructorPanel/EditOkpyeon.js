@@ -85,7 +85,7 @@ class EditOkpyeon extends Component {
             this.props.deleteCharacter(parseInt(this.props.match.params.id), id);
             window.alert(hanja + " has been deleted!");
         } else {
-            window.alert(hanja + "has NOT been deleted.");
+            alert(hanja + " has NOT been deleted.");
         }
     };
 
@@ -117,7 +117,7 @@ class EditOkpyeon extends Component {
             this.props.deletePhonetic(parseInt(this.props.match.params.id), id);
             window.alert(phonetic + " has been deleted!");
         } else {
-            window.alert(phonetic + "has NOT been deleted.");
+            alert(phonetic + " has NOT been deleted.");
         }
     };
 
@@ -139,7 +139,7 @@ class EditOkpyeon extends Component {
             this.props.deleteRadical(parseInt(this.props.match.params.id), id);
             window.alert(radical + " has been deleted!");
         } else {
-            window.alert(radical + "has NOT been deleted.");
+            alert(radical + " has NOT been deleted.");
         }
     };
 

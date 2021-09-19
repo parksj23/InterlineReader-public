@@ -199,7 +199,7 @@ class EditLesson extends Component {
             this.props.deleteAboutNewBusu(this.state.lesson, id);
             window.alert(word + " has been deleted!");
         } else {
-            window.alert(word + "has NOT been deleted.");
+            alert(word + "has NOT been deleted.");
         }
     };
 
@@ -227,7 +227,7 @@ class EditLesson extends Component {
             this.props.deleteNewPhonetic(this.state.lesson, id);
             window.alert(phonetic + " has been deleted!");
         } else {
-            window.alert(phonetic + "has NOT been deleted.");
+            alert(phonetic + " has NOT been deleted.");
         }
     };
 
@@ -243,7 +243,8 @@ class EditLesson extends Component {
             this.props.deleteNewHanjaCombo(this.state.lesson, id);
             window.alert(hanja + " has been deleted!");
         } else {
-            window.alert(hanja + "has NOT been deleted.");
+            console.log(this.props);
+            alert(hanja + " has NOT been deleted.");
         }
     };
 
