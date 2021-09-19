@@ -22,10 +22,15 @@ class Instructor351Container extends Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         //this.props.initInstructor(this.props.storyList);
         this.props.disableSideBarButton();
-        this.props.changeSelectedMenu("Edit Lesson")
+
+        if(window.location.href.indexOf("editOkpyeon") > -1) {
+            this.props.changeSelectedMenu("Edit Hanja Characters, Radicals & Phonetics (For Okpyeon & Lessons)")
+        } else {
+            this.props.changeSelectedMenu("Edit Lesson")
+        }
     }
 
     handleChange = name => event => {
