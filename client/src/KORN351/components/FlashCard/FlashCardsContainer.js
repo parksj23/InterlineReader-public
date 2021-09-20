@@ -33,7 +33,7 @@ class FlashCardContainer extends Component {
             openDialog: false
         });
 
-        const storeKey = props.quizTopic + props.lesson;
+        const storeKey = '351inprogress:' + props.quizTopic + ':' + props.lesson;
         this.store = new StoreAccessor(storeKey);
     }
 
