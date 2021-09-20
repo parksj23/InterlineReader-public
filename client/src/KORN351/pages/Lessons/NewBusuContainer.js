@@ -18,6 +18,14 @@ class NewBusuContainer extends Component {
     }
 
     componentWillMount() {
+        const reloadCount = sessionStorage.getItem('reloadCount');
+        if(reloadCount < 2) {
+            sessionStorage.setItem('reloadCount', String(reloadCount + 1));
+            window.location.reload();
+        } else {
+            sessionStorage.removeItem('reloadCount');
+        }
+
       if (this.props.newBusu.length === 0 || this.props.newBusu === undefined) {
           this.props.getRadicals().then(() => {
                   const currLesson = this.props.match.params.lesson;
