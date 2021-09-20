@@ -12,26 +12,22 @@ const styles = {
 }
 
 class LessonList extends Component {
-
-  componentWillMount(){
-  }
-
   renderClassStories = (lesson, classIndex) => {
     const {classes, match} = this.props;
     return (
-      <Grid
-        classes={{
-          item: classes.cardContainer
-        }}
-        item xs={4} key={'story_badge' + classIndex}>
-       {match.url.includes("editLesson")? <Link to={`/instructor351/editLesson/${lesson}`} className={'card-link'}>
-          <ClassCard lesson={lesson} style={{width: "100%"}}/>
-        </Link> :
-           <Link to={`/instructor351/editOkpyeon/${lesson}`} className={'card-link'}>
-               <ClassCard lesson={lesson} style={{width: "100%"}}/>
-           </Link>
-       }
-      </Grid>
+        <div>
+          <ul>
+            <li>
+              {match.url.includes("editLesson")? <Link to={`/instructor351/editLesson/${lesson}`} className={'card-link'}>
+                    Lesson {lesson}
+                  </Link> :
+                  <Link to={`/instructor351/editOkpyeon/${lesson}`} className={'card-link'}>
+                    Lesson {lesson}
+                  </Link>
+              }
+            </li>
+          </ul>
+        </div>
     )
   }
 
@@ -41,13 +37,13 @@ class LessonList extends Component {
     const storyList = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
     return (
 
-      <div className="class-list">
-        { <Grid container >
-          {storyList ? storyList.map((lesson,classIndex) => {
-            return this.renderClassStories(lesson, classIndex)
-          }) : null}
-        </Grid> }
-      </div>
+        <div className="class-list">
+          { <ul >
+            {storyList ? storyList.map((lesson,classIndex) => {
+              return this.renderClassStories(lesson, classIndex)
+            }) : null}
+          </ul> }
+        </div>
     );
   }
 }
