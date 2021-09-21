@@ -27,6 +27,7 @@ import NewHanjaContainer from "./KORN351/pages/Lessons/NewHanjaContainer";
 import PrivateRoute from './components/common/PrivateRoute';
 import {Provider} from 'react-redux';
 import Quizzes from "./KORN351/pages/Quizzes/Quizzes";
+import Profile from './components/Profile/Profile';
 import Register from './components/auth/Register';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Story from "./components/stories/storiesContainer";
@@ -152,6 +153,7 @@ class App extends Component {
                                    component={NewHanjaCombos}/>
                             <Switch>
                                 <PrivateRoute path="/dashboard" component={DashboardContainer}/>
+                                <PrivateRoute path="/profile" component={Profile}/>
                                 <PrivateRoute path='/story' component={Story} cookies={this.props.cookies}/>
                                 <PrivateRoute path='/instructor410' component={Instructor}/>
                                 <PrivateRoute path='/instructor351' component={Instructor351}/>

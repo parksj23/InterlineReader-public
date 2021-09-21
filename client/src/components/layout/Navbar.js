@@ -6,9 +6,19 @@ import { logoutUser } from '../../actions/KORN410/auth';
 import {updateDrawerSize} from '../../actions/KORN410/dashboard';
 import {toggleSideBar} from "../../actions/KORN410/sideBar";
 import SideBarButton from './common/sideBarButton';
+import { Button, Menu, MenuItem } from '@material-ui/core';
+
 import './style/navbar.css';
 
 class Navbar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            anchorEl: null
+        };
+    }
+
     onLogoutClick = (e) => {
         e.preventDefault();
         this.props.logoutUser();
@@ -27,22 +37,49 @@ class Navbar extends Component {
             [side]: open,
         });
     };
+  
+    handleClick = (event) => {
+        this.setState({ anchorEl: event.currentTarget });
+    }
+
+    handleClose = () => {
+        this.setState({ anchorEl: null });
+    }
 
     render() {
+        const { anchorEl } = this.state;
+        const open = Boolean(anchorEl);
         const currentPath = this.props.location.pathname;
         const { isAuthenticated, user } = this.props.auth;
         const authLinks = (
             <ul className="navbar-nav ml-auto">
                 <li className="nav-item">
-                    <a
-                        href=""
-                        className="nav-link"
-                        onClick={this.onLogoutClick}
+                    <Button
+                        id="basic-button"
+                        className="ir-Navbar-accountBtn"
+                        aria-controls="basic-menu"
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={this.handleClick}
                     >
-                        Logout
-                    </a>
+                        Account
+                    </Button>
+                    <Menu
+                        id="basic-menu"
+                        className="ir-Navbar-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={this.handleClose}
+                        MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem onClick={this.handleClose} className="ir-Navbar-menuItem"><Link to="/profile">Profile</Link></MenuItem>
+                        <MenuItem onClick={this.onLogoutClick}>Logout</MenuItem>
+                    </Menu>
                 </li>
             </ul>
+            
         );
 
         const guestLinks = (
