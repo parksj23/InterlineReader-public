@@ -79,9 +79,9 @@ const MainText = (props) => {
                     <div>
                         <b>From the Example Sentences:</b>
                         <br/>
-                        <div style={{display: 'flex', width: '100%'}}>
+                        <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
                             {exampleSentences.map(obj => {
-                                return <div style={{margin: '3%'}}><b>{obj.num}</b> <br/><br/> {obj.sentences.map(sentence => {return <p>{sentence}</p>})} <br/> </div>
+                                return <div style={{marginTop: 14}}><b>{obj.num}</b> <br/><br/> {obj.sentences.map(sentence => {return <p>{sentence}</p>})} <br/> </div>
                             })}
                         </div>
                     </div>
