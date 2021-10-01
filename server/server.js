@@ -5,6 +5,9 @@ const path = require('path');
 const handleErrors = require('./helpers/handleErrors');
 require('./models/User');
 require('./models/Story');
+require('./models/Yemun');
+require('./models/WordPower');
+
 require('./config/passport')(passport);
 require('dotenv').config();
 //const swaggerJSDoc = require('swagger-jsdoc');
@@ -81,6 +84,7 @@ app.use('/api/files', require('./routes/api/KORN410/files'));
 app.use('/api/okpyeon', require('./routes/api/KORN351/Okpyeon'));
 app.use('/api/lesson', require('./routes/api/KORN351/Lessons'));
 app.use('/api/instructor351', require('./routes/api/KORN351/Instructor'));
+app.use('/api/wordPower', require('./routes/api/KORN351/WordPower'));
 app.use(handleErrors);
 
 if (process.env.NODE_ENV === 'production') {
