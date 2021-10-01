@@ -6,8 +6,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
+import { IconButton } from '@material-ui/core';
 import {getRadicals, getPhonetics, getCharacters} from "../../../../actions/KORN351/Okpyeon";
 import {connect} from "react-redux";
+import _ from 'lodash';
 
 const StyledMenu = withStyles({
     paper: {
@@ -43,6 +45,11 @@ const StyledMenuItem = withStyles((theme) => ({
 function LessonFilterTable(props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [currentLesson, setCurrLesson] = React.useState(1);
+    const lessons = _.range(1, 20);
+    const selectItem = (lesson) => {
+        setCurrLesson(lesson);
+        handleClose();
+    }
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -64,79 +71,30 @@ function LessonFilterTable(props) {
     return (
         <div className="lesson-filter-container">
             <div className="lesson-filter">
-                <h2 className="lesson-button" onClick={handleClick}>
-                    Lesson {currentLesson}
-                </h2>
-                <StyledMenu
-                    id="customized-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                    style={{height: '50%'}}
-                >
-                    <StyledMenuItem onClick={() => setCurrLesson(1)}>
-                        <ListItemText primary="Lesson 1" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(2)}>
-                        <ListItemText primary="Lesson 2" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(3)}>
-                        <ListItemText primary="Lesson 3" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(4)}>
-                        <ListItemText primary="Lesson 4" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(5)}>
-                        <ListItemText primary="Lesson 5" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(6)}>
-                        <ListItemText primary="Lesson 6" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(7)}>
-                        <ListItemText primary="Lesson 7" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(8)}>
-                        <ListItemText primary="Lesson 8" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(9)}>
-                        <ListItemText primary="Lesson 9" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(10)}>
-                        <ListItemText primary="Lesson 10" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(11)}>
-                        <ListItemText primary="Lesson 11" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(12)}>
-                        <ListItemText primary="Lesson 12" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(13)}>
-                        <ListItemText primary="Lesson 13" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(14)}>
-                        <ListItemText primary="Lesson 14" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(15)}>
-                        <ListItemText primary="Lesson 15" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(16)}>
-                        <ListItemText primary="Lesson 16" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(17)}>
-                        <ListItemText primary="Lesson 17" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(18)}>
-                        <ListItemText primary="Lesson 18" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(19)}>
-                        <ListItemText primary="Lesson 19" />
-                    </StyledMenuItem>
-                    <StyledMenuItem onClick={() => setCurrLesson(20)}>
-                        <ListItemText primary="Lesson 20" />
-                    </StyledMenuItem>
+                <div className="lesson-header">
+                    Selected:
+                    <div className="lesson-button" onClick={handleClick}>
+                        Lesson {currentLesson}
+                        <IconButton className="lesson-button-chevron" size="medium">
+                            <i class="material-icons">expand_more</i>
+                        </IconButton>
+                    </div>
+                    <StyledMenu
+                        id="customized-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        style={{height: '50%'}}
+                    >
+                        {lessons.map(lesson => (
+                            <StyledMenuItem selected={currentLesson === lesson} onClick={() => selectItem(lesson)}>
+                                <ListItemText primary={'Lesson ' + lesson} />
+                            </StyledMenuItem>
+                        ))}
 
-                </StyledMenu>
+                    </StyledMenu>
+                </div>
                 <br/>
                 <div>
                     <h3>Radicals</h3>

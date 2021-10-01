@@ -16,14 +16,25 @@
     overflow-y: auto;
 }
 
+.lesson-header {
+    display: flex;
+}
+
 .lesson-button {
-    width: 30%;
-    background-color: #00284d;
-    color: white;
+    color: #00284d;
     text-align: center;
-    padding: 2%;
+    padding: 6px 8px;
+    font-size: 15px;
     cursor: pointer;
-    animation: pulse 2s infinite;
+    border: 1px solid #00284d;
+    border-radius: 4px;
+    width: max-content;
+    font-weight: 600;
+    margin: -10px 0 0 4px;
+}
+
+.lesson-button-chevron {
+    padding: 3px !important;
 }
 
 @keyframes pulse {
