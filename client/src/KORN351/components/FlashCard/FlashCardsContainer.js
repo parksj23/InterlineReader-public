@@ -33,18 +33,22 @@ class FlashCardContainer extends Component {
             openDialog: false
         });
 
-        const storeKey = '351inprogress:' + props.quizTopic + ':' + props.lesson;
-        this.store = new StoreAccessor(storeKey);
+        const inProgressCardsKey = '351inprogress:' + props.quizTopic + ':' + props.lesson;
+        const savedCardsKey = '351saved:' + props.quizTopic + ':' + props.lesson;
+        this.inProgressCardsStore = new StoreAccessor(inProgressCardsKey);
+        this.savedCardsStore = new StoreAccessor(savedCardsKey);
+        this.currentStore = this.props.showInProgressCards ? this.inProgressCardsStore : this.savedCardsStore;
     }
 
     componentDidMount() {
         this.initialize();
     }
 
-    initialize() {
-        let { primaryQuestionList } = this.props;
+    initialize(startOver = false) {
+        let { primaryQuestionList, showInProgressCards } = this.props;
         const questionQueue = [];
         const questionQueueById = {};
+        const savedCards = this.savedCardsStore.get() || { score: 0, questionIds: [], answeredQuestionIds: [] }
 
         // Temp measure to fix infinite loop (Add static options) :
         let numVocabsRequired = 4 - primaryQuestionList.length;
@@ -83,7 +87,8 @@ class FlashCardContainer extends Component {
                 answer: question.answer,
                 question: question.question,
                 options,
-                questionId: questionId
+                questionId: questionId,
+                isSaved: savedCards.questionIds.includes(questionId) || false
             };
             questionQueue.push(quesObj);
             questionQueueById[questionId] = quesObj;
@@ -125,29 +130,90 @@ class FlashCardContainer extends Component {
         // }
 
         // Start from saved place
-        const savedFlashCard = this.store.get();
+        const savedFlashCard = this.currentStore.get();
         this.setState({ questionQueueById, nextQuestionId: questionQueue.length ? questionQueue[0].questionId : null },
             () => {
                 if (savedFlashCard) {
-                    const savedScore = savedFlashCard.score || 0;
+                    const savedScore = startOver ? 0 : savedFlashCard.score || 0;
                     const savedQuestionIds = savedFlashCard.questionIds || [];
+                    let savedQuestionQueueById = null;
+                    if (!showInProgressCards) {
+                        savedQuestionQueueById = Object.keys(questionQueueById)
+                            .filter(key => savedQuestionIds.includes(key))
+                            .reduce((obj, key) => {
+                                obj[key] = questionQueueById[key];
+                                return obj;
+                            }, {});
+                    }
+
 
                     let answeredQuestions = questionQueue.filter(q => savedQuestionIds.includes(q.questionId));
-                    const nextQuestionId = answeredQuestions.length ? this.getNextQuestionId(answeredQuestions) : questionQueue.length ? questionQueue[0].questionId : null;
+                    if (!showInProgressCards && !startOver) {
+                        answeredQuestions = questionQueue.filter(q => (savedFlashCard.answeredQuestionIds || []).includes(q.questionId))
+                    } else if (startOver) {
+                        answeredQuestions = [];
+                    }
+
+                    const nextQuestionId = this.getNextQuestionId(answeredQuestions);
 
                     this.setState({
                         answeredCurrentQuestion: false,
                         answeredCorrectly: null,
                         nextQuestionId,
                         answeredQuestions,
-                        score: savedScore
+                        score: savedScore,
+                        questionQueueById: savedQuestionQueueById || questionQueueById
                     });
                 }});
     }
 
+    onQuestionSave = (questionId) => {
+        const { questionQueueById } = this.state;
+        const savedCards = this.savedCardsStore.get() || { score: 0, questionIds: [], answeredQuestionIds: [] };
+        const savedQuestionIds = savedCards.questionIds;
+        savedQuestionIds.push(questionId);
+        savedCards.questionIds = savedQuestionIds;
+        this.savedCardsStore.set(savedCards);
+        questionQueueById[questionId].isSaved = true;
+        this.setState(prevState => {
+            const clonedQuestionQueueById = _.clone(prevState.questionQueueById);
+            clonedQuestionQueueById[questionId].isSaved = true;
+            return { questionQueueById: clonedQuestionQueueById };
+        });
+    }
+
+    onQuestionUnSave = (questionId) => {
+        const savedCards = this.savedCardsStore.get() || { score: 0, questionIds: [], answeredQuestionIds: [] };
+        const savedQuestionIds = savedCards.questionIds;
+        savedCards.questionIds = savedQuestionIds.filter(id => id !== questionId);
+        this.savedCardsStore.set(savedCards);
+        this.setState(prevState => {
+            const clonedQuestionQueueById = _.clone(prevState.questionQueueById);
+            clonedQuestionQueueById[questionId].isSaved = false;
+            return { questionQueueById: clonedQuestionQueueById };
+        });
+    }
+
     getNextQuestionId(answeredQuestions) {
         const { questionQueueById } = this.state;
-        const remainingQuestions = Object.values(questionQueueById).filter(v => !answeredQuestions.map(a => a.questionId).includes(v.questionId));
+        const { showInProgressCards } = this.props;
+        let newQuestionQueueById = _.clone(questionQueueById);
+        if (!showInProgressCards) {
+            const savedFlashCard = this.currentStore.get();
+            const savedQuestionIds = savedFlashCard.questionIds;
+            newQuestionQueueById = Object.keys(questionQueueById)
+                .filter(key => savedQuestionIds.includes(key))
+                .reduce((obj, key) => {
+                    obj[key] = questionQueueById[key];
+                    return obj;
+                }, {});
+        }
+        
+        if (!answeredQuestions) {
+            return Object.keys(newQuestionQueueById)[0];
+        }
+        const remainingQuestions = Object.values(newQuestionQueueById).filter(v => !answeredQuestions.map(a => a.questionId).includes(v.questionId));
+
         if (remainingQuestions.length) {
             return remainingQuestions[0].questionId;
         }
@@ -170,7 +236,7 @@ class FlashCardContainer extends Component {
     };
 
     handleNextQuestion = (question) => {
-        const { questionQueueById, answeredQuestions} = this.state;
+        const { questionQueueById, answeredQuestions } = this.state;
 
         const questionQueue = Object.values(questionQueueById);
         answeredQuestions.push(question);
@@ -181,39 +247,57 @@ class FlashCardContainer extends Component {
             answeredQuestions
         });
 
-        const currentFlashcardsInfo = this.store.get() || {};
-        if ((currentFlashcardsInfo.questionIds || []).length === questionQueue.length) {
-            this.store.remove()
+        const currentFlashcardsInfo = this.currentStore.get() || {};
+        if ((currentFlashcardsInfo.questionIds || []).length === questionQueue.length && this.props.showInProgressCards) {
+            this.inProgressCardsStore.remove()
         }
     };
 
     handleStartOver = () => {
+        const { showInProgressCards } = this.props;
         this.setState({
-            questionQueueById: {},
             answeredQuestions: [],
             score: 0,
             answeredCurrentQuestion: false,
             answeredCorrectly: null
         });
 
-        let savedFlashCard = this.store.get();
-        if (savedFlashCard !== undefined)
-            this.store.remove()
+        let savedFlashCard = this.currentStore.get();
+        if (savedFlashCard !== undefined && showInProgressCards) {
+            if (showInProgressCards) {
+                this.inProgressCardsStore.remove();
+            } else {
+                savedFlashCard.answeredQuestionIds = [];
+                this.currentStore.set(savedFlashCard);
+            }
+        }
 
-        this.initialize();
+        this.initialize(true);
     };
 
     onCancelSave = () => {
-        this.store.remove()
+        this.inProgressCardsStore.remove()
         this.setState({ openDialog: false });
         this.props.onClose();
     }
 
     onCloseStudy = () => {
-        const { answeredQuestions, questionQueueById } = this.state;
+        const { onClose, showInProgressCards } = this.props;
+        const { answeredQuestions, questionQueueById, score } = this.state;
         const questionQueue = Object.values(questionQueueById);
-        if (answeredQuestions.length && answeredQuestions.length !== questionQueue.length) {
+        if (answeredQuestions.length && answeredQuestions.length !== questionQueue.length && this.props.showInProgressCards) {
             this.setState({ openDialog: true });
+        } else if (!showInProgressCards) {
+            const currentFlashcardsInfo = this.savedCardsStore.get() || {};
+            const updatedFlashcardsInfo = { score, questionIds: currentFlashcardsInfo.questionIds || [] };
+
+            if (answeredQuestions.length) {
+                updatedFlashcardsInfo.answeredQuestionIds = answeredQuestions.map(a => a.questionId);
+            } else {
+                updatedFlashcardsInfo.answeredQuestionIds = [];
+            }
+            this.savedCardsStore.set(updatedFlashcardsInfo);
+            onClose();
         } else {
             this.props.onClose();
         }
@@ -222,13 +306,13 @@ class FlashCardContainer extends Component {
     saveChanges = () => {
         const { onClose } = this.props;
         const { answeredQuestions, score } = this.state;
-        const currentFlashcardsInfo = this.store.get() || {};
+        const currentFlashcardsInfo = this.inProgressCardsStore.get() || {};
         const updatedFlashcardsInfo = { score, questionIds: currentFlashcardsInfo.questionIds || [] };
 
         if (answeredQuestions.length) {
             updatedFlashcardsInfo.questionIds = answeredQuestions.map(a => a.questionId);
         }
-        this.store.set(updatedFlashcardsInfo);
+        this.inProgressCardsStore.set(updatedFlashcardsInfo);
         this.setState({ openDialog: false });
         onClose();
     }
@@ -239,7 +323,8 @@ class FlashCardContainer extends Component {
         const { lesson, quizTopic } = this.props;
         const questionQueue = Object.values(questionQueueById);
         const question = questionQueueById[nextQuestionId];
-        const isSaved = false;
+
+        const savedCardsStore = this.savedCardsStore.get() || { score: 0, questionIds: [], answeredQuestionIds: [] };
 
         const isLastQuestion = questionQueue.length === answeredQuestions.length;
 
@@ -283,14 +368,16 @@ class FlashCardContainer extends Component {
                                         answeredQuestion={this.answeredQuestion}
                                         answeredCurrentQuestion={answeredCurrentQuestion}
                                         style={{width: '100%', height: '80%'}}
-                                        isSaved={isSaved}
+                                        isSaved={!!(question || {}).isSaved}
                                     />
                                     :
                                     <FlashCard question={question}
                                         answeredQuestion={this.answeredQuestion}
                                         answeredCurrentQuestion={answeredCurrentQuestion}
                                         style={{width: '100%', height: '80%'}}
-                                        isSaved={isSaved}
+                                        isSaved={!!(question || {}).isSaved}
+                                        handleSave={this.onQuestionSave}
+                                        handleUnsave={this.onQuestionUnSave}
                                     />
                             }
 
@@ -350,6 +437,11 @@ FlashCardContainer.propTypes = {
     onClose: PropTypes.func.isRequired,
     primaryQuestionList: PropTypes.array.isRequired,
     quizTopic: PropTypes.string.isRequired,
+    showInProgressCards: PropTypes.bool,
+};
+
+FlashCardContainer.defaultProps = {
+    showInProgressCards: true
 };
 
 export default FlashCardContainer;

@@ -7,13 +7,14 @@ import { connect } from 'react-redux';
 import { getCharacters, getPhonetics, getRadicals } from '../../actions/KORN351/Okpyeon';
 import { getNewHanjaCombos, getPracticeSentences } from '../../actions/KORN351/Lessons';
 import { QUIZ_TOPIC_MAP } from '../../config';
-import { stringAvatar, stringToColor } from '../../utils';
+import { stringAvatar } from '../../utils';
 
 import './Profile.css';
 
 
 function Profile(props) {
     const [primaryQuestionList, setPrimaryQuestionList] = useState([]);
+    const [isSaved, setIsSaved] = useState(false);
     const [shouldShowModal, showModal] = useState(false);
     const [quizTopic, setQuizTopic] = useState('');
     const [lesson, setLesson] = useState(null);
@@ -32,7 +33,7 @@ function Profile(props) {
             props.getPracticeSentences();
     }, []);
 
-    const openModal = (topic, _lesson) => {
+    const openModal = (topic, _lesson, _isSaved = false) => {
         let _quizTopic = topic;
         const { characters, phonetics, radicals, newHanjaCombos, pracSentences } = props;
         let _isPractiseQuestion = false;
@@ -125,7 +126,8 @@ function Profile(props) {
                 });
             }
         }
-        
+
+        setIsSaved(_isSaved);
         setPrimaryQuestionList(primQuestionList);
         setQuizTopic(_quizTopic);
         setLesson(_lesson);
@@ -135,29 +137,34 @@ function Profile(props) {
 
     const [value, setValue] = React.useState(0);
 
-    const inProgressCards = Object.keys(localStorage)
-                                .filter(key => key.includes('inprogress:'))
-                                .map(key => {
-                                    const [prefix, topic, lesson] = key.split(':');
+    function getCards(type) {
+        return Object.keys(localStorage)
+        .filter(key => key.includes(`${type}:`))
+        .map(key => {
+            const [prefix, topic, lesson] = key.split(':');
 
-                                    return {
-                                        value: localStorage[key],
-                                        header: QUIZ_TOPIC_MAP[topic],
-                                        topic,
-                                        lesson: parseInt(lesson),
-                                        label: 'Lesson ' + lesson,
-                                        prefix
-                                    };
-                                })
-                                .reduce((result, item) => {
-                                    if (result[item.header]) {
-                                        result[item.header].push(item);
-                                        result[item.header].sort((a, b) => (a.lesson > b.lesson) ? 1 : -1);
-                                    } else {
-                                        result[item.header] = [item];
-                                    }
-                                    return result;
-                                }, {});
+            return {
+                value: localStorage[key],
+                header: QUIZ_TOPIC_MAP[topic],
+                topic,
+                lesson: parseInt(lesson),
+                label: 'Lesson ' + lesson,
+                prefix
+            };
+        })
+        .reduce((result, item) => {
+            if (result[item.header]) {
+                result[item.header].push(item);
+                result[item.header].sort((a, b) => (a.lesson > b.lesson) ? 1 : -1);
+            } else {
+                result[item.header] = [item];
+            }
+            return result;
+        }, {});
+    }
+
+    const inProgressCards = getCards('inprogress');
+    const savedCards = getCards('saved');
   
     const handleChange = (event, newValue) => {
       setValue(newValue);
@@ -189,11 +196,11 @@ function Profile(props) {
                     aria-describedby="simple-modal-description"
                     open={shouldShowModal}
                 >
-                    <FlashCardContainer onClose={handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} lesson={lesson}/>
+                    <FlashCardContainer showInProgressCards={!isSaved} onClose={handleClose} primaryQuestionList={primaryQuestionList} isPracticeSentence={isPracticeSentence} quizTopic={quizTopic} lesson={lesson}/>
                 </Modal>
                 <TabPanel value={value} index={0}>
-                    {Object.entries(inProgressCards || []).map(([header, value]) =>
-                        <div key={header}>
+                    {Object.entries(inProgressCards || []).length ? Object.entries(inProgressCards || []).map(([header, value]) =>
+                        <div className="ir-Profile-cardsRow" key={header}>
                             <h5>{header}</h5><br/>
                             <div className="ir-Profile-cardContainer">
                                 {value.map(card => (
@@ -205,10 +212,23 @@ function Profile(props) {
                                 ))}
                             </div>
                         </div>
-                    )}
+                    ) : <h4 className="ir-Profile-cardsRow">No quizzes in progress</h4>}
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    Coming Soon...
+                    {Object.entries(savedCards || []).length ? Object.entries(savedCards || []).map(([header, value]) =>
+                        <div className="ir-Profile-cardsRow" key={header}>
+                            <h5>{header}</h5><br/>
+                            <div className="ir-Profile-cardContainer">
+                                {value.map(card => (
+                                    <Card key={card.lesson} variant="outlined" className="ir-Profile-card" onClick={() => openModal(card.topic, card.lesson.toString(), true)}>
+                                        <CardContent>
+                                            {card.label}
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        </div>
+                    ) : <h4 className="ir-Profile-cardsRow">No quizzes saved</h4>}
                 </TabPanel>
             </Box>
         </div>
