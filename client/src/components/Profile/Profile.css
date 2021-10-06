@@ -19,11 +19,16 @@
     border-radius: 4px;
 }
 
+.ir-Profile-cardsRow {
+    margin-top: 12px;
+}
+
 .ir-Profile-cardContainer {
     width: 100%;
     overflow-x: scroll;
     display: inline-flex;
-    margin-bottom: 24px;
+    margin-bottom: 12px;
+    margin-top: -12px;
 }
 
 .ir-Profile-card {
