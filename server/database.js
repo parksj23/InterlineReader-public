@@ -1,12 +1,12 @@
 const MongoClient = require('mongodb').MongoClient;
-const URI = require('./config/keys').mongoURI;
+const { mongoURI, databaseName } = require('./config/keys');
 
 let db;
 
 function connect(callback) {
-    MongoClient.connect(URI, { useUnifiedTopology: true }, (err, database) => {
+    MongoClient.connect(mongoURI, { useUnifiedTopology: true }, (err, database) => {
         if (err) return console.error(err);
-        db = database.db('InterlineReaderKorn351DB');
+        db = database.db(databaseName);
         console.log('Connected to KORN 351 Database');
         callback();
     });
