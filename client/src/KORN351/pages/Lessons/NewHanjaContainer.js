@@ -8,12 +8,14 @@ import {connect} from "react-redux";
 import {getNewHanja} from "../../../actions/KORN351/Lessons";
 import {withRouter} from 'react-router-dom';
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
+import Divider from "@material-ui/core/Divider";
 
 class NewHanjaContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            newHanja: []
+            newHanja: [],
+            currentLesson: this.props.match.params.lesson
         };
     }
 
@@ -73,6 +75,13 @@ class NewHanjaContainer extends Component {
             <div style={{display: "flex"}}>
                 <div className="new-hanja">
                     <h3 style={{paddingBottom: 10}}>New Hanja 새 한자</h3>
+                    <div>
+                        <h4 style={{textAlign: 'left', width: "50%"}}>
+                            제 {this.state.currentLesson} 과
+                        </h4>
+                    </div>
+                    <Divider style={{marginBottom: "0.5rem"}}/>
+                    <br/>
                     <Grid container spacing={1} className="new-hanja-con">
                         {newHanja.map((char, idx) => {
                             return (

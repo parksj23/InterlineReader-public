@@ -32,6 +32,8 @@ import Register from './components/auth/Register';
 import ResetPassword from './components/reset-password/ResetPassword';
 import Story from "./components/stories/storiesContainer";
 import Success from './components/common/Success';
+import WordPower from "./KORN351/pages/Lessons/WordPower";
+
 import axios from 'axios'
 import {endGrammarSearchSession} from './actions/KORN410/analytics'
 import jwt_decode from 'jwt-decode';
@@ -144,7 +146,7 @@ class App extends Component {
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/new-busu"
                                    component={NewBusuContainer}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/building-word-power"
-                                   component={MainTextContainer}/>
+                                   component={WordPower}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-busu"
                                    component={AboutNewBusu}/>
                             <Route exact path="/dashboard/KORN351/lesson/:lesson/about-new-phonetics"

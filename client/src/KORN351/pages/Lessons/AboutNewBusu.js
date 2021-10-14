@@ -14,7 +14,8 @@ class AboutNewBusu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            aboutNewBusu: []
+            aboutNewBusu: [],
+            currentLesson: this.props.match.params.lesson
         }
     }
 
@@ -59,6 +60,11 @@ class AboutNewBusu extends Component {
                             <h3 style={{textAlign: 'left', width: "50%"}}>
                                 새 부수에 대하여
                             </h3>
+                        </div>
+                        <div>
+                            <h4 style={{textAlign: 'left', width: "50%"}}>
+                                제 {this.state.currentLesson} 과
+                            </h4>
                         </div>
                         <Divider style={{marginBottom: "0.5rem"}}/>
                         <Grid container>

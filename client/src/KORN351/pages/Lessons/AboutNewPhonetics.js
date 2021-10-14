@@ -14,7 +14,8 @@ class AboutNewPhonetics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            phonetics: []
+            phonetics: [],
+            currentLesson: this.props.match.params.lesson
         }
     }
 
@@ -59,6 +60,11 @@ class AboutNewPhonetics extends Component {
                             <h3 style={{textAlign: 'left', width: "50%"}}>
                                 About the New Phonetics
                             </h3>
+                        </div>
+                        <div>
+                            <h4 style={{textAlign: 'left', width: "50%"}}>
+                                제 {this.state.currentLesson} 과
+                            </h4>
                         </div>
                         <Divider style={{marginBottom: "0.5rem"}}/>
                         <Grid container style={{overflowY: 'auto', height: '100%'}}>

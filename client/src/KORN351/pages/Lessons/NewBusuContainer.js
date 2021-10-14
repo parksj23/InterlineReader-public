@@ -8,12 +8,14 @@ import NavigatingButtons from "../../components/Lessons/NavigatingButtons/Naviga
 import {connect} from "react-redux";
 import {getRadicals} from "../../../actions/KORN351/Okpyeon";
 import { withRouter } from 'react-router-dom';
+import Divider from "@material-ui/core/Divider";
 
 class NewBusuContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          newBusu: []
+            newBusu: [],
+            currentLesson: this.props.match.params.lesson
         };
     }
 
@@ -33,7 +35,7 @@ class NewBusuContainer extends Component {
                   let temp = this.props.newBusu.filter(word => {
                       return word.lesson === parseInt(currLesson)
                   });
-                  
+
                   this.setState({
                       newBusu: temp
                   }, () => {
@@ -73,6 +75,13 @@ class NewBusuContainer extends Component {
             <div style={{ display: "flex" }}>
                 <div className="new-hanja">
                     <h3 style={{ paddingBottom: 10 }}>New Busu 새 부수</h3>
+                    <div>
+                        <h4 style={{textAlign: 'left', width: "50%"}}>
+                            제 {this.state.currentLesson} 과
+                        </h4>
+                    </div>
+                    <Divider style={{marginBottom: "0.5rem"}}/>
+                    <br/>
                     <Grid container spacing={1} className="new-hanja-con">
                         {newBusu.map((char, idx) => {
                             return (
