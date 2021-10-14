@@ -11,7 +11,7 @@ import axios from "axios";
 
 export const getMainText = lesson => dispatch => {
     return new Promise((resolve, reject) => {
-        axios.get("/api/lesson/getMainText", {params: {lesson: lesson}}).then(resp => {
+        axios.get("/api/story/getMainText", {params: {lesson: lesson}}).then(resp => {
             dispatch({
                 type: GET_MAIN_TEXT_AND_EX_SENTENCES,
                 payload: resp.data[0]

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
 import './MainText.css';
@@ -22,10 +22,12 @@ import img18 from './18.png';
 import img19 from './19.png';
 
 import { withRouter } from 'react-router-dom';
+import { Switch } from '@material-ui/core';
 
 const MainText = (props) => {
+    const [currentText, switchText] = useState('mainText');
     const currLesson = props.match.params.lesson;
-    const {mainText, subText, exampleSentences} = props;
+    const {mainText, subText, exampleSentences, koreanText} = props;
     let image = img1;
     if (currLesson === "2")
         image = img2;
@@ -73,7 +75,18 @@ const MainText = (props) => {
                     <Divider style={{marginBottom: "0.5rem"}}/>
                     <div className="main-text">
                         <img className="img" src={image}/>
-                        <span className="text" dangerouslySetInnerHTML={{__html: mainText}}/>
+                        <div>
+                            <div style={{marginLeft: 500}}>
+                                <Switch
+                                    color="success"
+                                    checked={currentText !== 'mainText'}
+                                    onChange={() => currentText === 'mainText' ? switchText('koreanText') : switchText('mainText')}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                            </div>
+                            <br/>
+                            <span className="text" dangerouslySetInnerHTML={{__html: currentText === 'mainText' ? mainText : koreanText}}/>
+                        </div>
                     </div>
                     <br/>
                     <div>
