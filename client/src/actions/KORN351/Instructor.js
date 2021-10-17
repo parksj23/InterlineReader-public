@@ -15,7 +15,7 @@ import axios from "axios";
 
 export const saveMainText = (lesson, mainText) => dispatch => {
     return new Promise((resolve, reject) => {
-        axios.put("/api/instructor351/saveMainText", {params: {lesson: lesson, mainText: mainText}}).then(resp => {
+        axios.put("/api/story/saveMainText", {params: {lesson: lesson, mainText: mainText}}).then(resp => {
             alert("Success");
             getMainText(lesson);
             resolve()
@@ -25,7 +25,7 @@ export const saveMainText = (lesson, mainText) => dispatch => {
 
 export const saveExampleSentence = (lesson, exSentences) => dispatch => {
     return new Promise((resolve, reject) => {
-        axios.put("/api/instructor351/saveExampleSentence", {params: {lesson: lesson, exSentences: exSentences}}).then(resp => {
+        axios.put("/api/story/saveExampleSentence", {params: {lesson: lesson, exSentences: exSentences}}).then(resp => {
             alert("Success");
             getMainText(lesson);
             resolve()
@@ -35,7 +35,7 @@ export const saveExampleSentence = (lesson, exSentences) => dispatch => {
 
 export const saveOthers = (lesson, subHeading, content) => dispatch => {
     return new Promise((resolve, reject) => {
-        axios.put("/api/instructor351/saveOthers", {params: {lesson: lesson, subHeading: subHeading, content: content}}).then(resp => {
+        axios.put("/api/story/saveOthers", {params: {lesson: lesson, subHeading: subHeading, content: content}}).then(resp => {
             alert("Success");
             getMainText(lesson);
             resolve()

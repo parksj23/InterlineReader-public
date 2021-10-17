@@ -14,7 +14,8 @@ class AboutNewPhonetics extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            phonetics: []
+            phonetics: [],
+            currentLesson: this.props.match.params.lesson
         }
     }
 
@@ -60,6 +61,11 @@ class AboutNewPhonetics extends Component {
                                 About the New Phonetics
                             </h3>
                         </div>
+                        <div>
+                            <h4 style={{textAlign: 'left', width: "50%"}}>
+                                제 {this.state.currentLesson} 과
+                            </h4>
+                        </div>
                         <Divider style={{marginBottom: "0.5rem"}}/>
                         <Grid container style={{overflowY: 'auto', height: '100%'}}>
                             {
@@ -80,14 +86,14 @@ class AboutNewPhonetics extends Component {
                                                         {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                                     </Typography>
                                                     {
-                                                        phonetic.sub_pronunciation === undefined? '' :
+                                                        !phonetic.sub_pronunciation ? '' :
                                                             <Typography color="textSecondary" gutterBottom>
                                                                 <br/>
                                                                 Note that this phonetic can also be read as <b>{phonetic.sub_pronunciation}</b>:
                                                             </Typography>
                                                     }
                                                     {
-                                                        phonetic.sub_characters === undefined? '' :
+                                                        !phonetic.sub_characters ? '' :
                                                             <Typography variant="h6">
                                                                 {phonetic.sub_characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                                             </Typography>

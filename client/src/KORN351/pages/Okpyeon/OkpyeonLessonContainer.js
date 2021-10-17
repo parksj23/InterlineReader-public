@@ -119,7 +119,7 @@ class DictionaryLessonContainer extends Component {
                                 </div>
                         }
                         {
-                            phonetic === '' || phonetic.sub_pronunciation === undefined? '' :
+                            (phonetic === '' || !phonetic.sub_pronunciation)? '' :
                                 <div style={{color: 'darkred'}}>
                                     <br/>
                                     <p>Note that this phonetic can also be read as <b>{phonetic.sub_pronunciation}</b>:</p>

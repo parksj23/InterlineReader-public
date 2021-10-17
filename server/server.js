@@ -48,10 +48,10 @@ app.get('/swagger.json', function(req, res) {
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));*/
 
-const db = require('./config/keys').mongoURI;
+const { mongoURI, databaseName } = require('./config/keys');
 mongoose
-	.connect(db)
-	.then(() => console.log('MongoDB connected'))
+	.connect(mongoURI)
+	.then(() => mongoose.connection.useDb(databaseName))
 	.catch(err => console.log(err));
 
 const database = require('./database');
@@ -85,6 +85,7 @@ app.use('/api/okpyeon', require('./routes/api/KORN351/Okpyeon'));
 app.use('/api/lesson', require('./routes/api/KORN351/Lessons'));
 app.use('/api/instructor351', require('./routes/api/KORN351/Instructor'));
 app.use('/api/wordPower', require('./routes/api/KORN351/WordPower'));
+app.use('/api/story', require('./routes/api/KORN351/Story'));
 app.use(handleErrors);
 
 if (process.env.NODE_ENV === 'production') {

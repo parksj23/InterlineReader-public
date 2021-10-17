@@ -3,12 +3,24 @@ const Yemun = require('../models/Yemun');
 
 
 async function createWordPower(req, res) {
+    // for (let obj of req.body) {
+    //     const wordPower = new WordPower(obj);
+    //     const newWordPower = await wordPower.save();
+    // }
+    // return res.status(201).json("done");
+
     const wordPower = new WordPower(req.body);
     const newWordPower = await wordPower.save();
     return res.status(201).json(newWordPower);
 }
 
 async function createYemun(req, res) {
+    // for (let obj of req.body) {
+    //     const yemun = new Yemun(obj);
+    //     const newYemun = await yemun.save();
+    // }
+    // return res.status(201).json("done");
+
     const yemun = new Yemun(req.body);
     const newYemun = await yemun.save();
     return res.status(201).json(newYemun);
@@ -16,8 +28,12 @@ async function createYemun(req, res) {
 
 async function list(req, res) {
     const query = {};
-    if (req.query.chapter) {
-        query['chapter'] = req.query.chapter;
+    if (req.query.lesson) {
+        query['lesson'] = req.query.lesson;
+    }
+
+    if (req.query.clickedHanja) {
+        query['hanqca'] = {"$regex": req.query.clickedHanja, "$options": "i"};
     }
 
     const wordPowers = await WordPower.find(query);

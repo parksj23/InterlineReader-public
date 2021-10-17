@@ -137,7 +137,7 @@ class Navbar extends Component {
                                 </li>
                                 <li className="nav-item">
                                     <Link className={currentPath === "/KORN351/tutorial" ? "selected-navbar" : "nav-link"}
-                                          to="/KORN351/tutorial">
+                                              to="/KORN351/tutorial">
                                         Tutorial
                                     </Link>
                                 </li>

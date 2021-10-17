@@ -2,20 +2,20 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const StorySchema = new Schema({
-    storyContent: {
-        type: String
+	text: { type: String },
+	koreanText: { type: String },
+    lesson: { type: String },
+    others: {
+        subHeading: { type: String },
+        content: { type: String }
     },
-    storyGrammar: [{
-        sentence: String,
-        pattern: String,
-        here: String
-    }],
-    storyVocab: [{
-        english: String,
-        korean: String,
-        hanja: String
+    exampleSentences: [{
+        num: { type: Number },
+        sentences: [{
+            type: String
+        }]
     }]
-});
+}, { toJSON: { virtuals: true, getters: true }});
 
-var Story = mongoose.model('stories', StorySchema);
-module.exports = { Story: Story };
+const Story = mongoose.model('story', StorySchema);
+module.exports = Story;
