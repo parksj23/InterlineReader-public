@@ -73,7 +73,7 @@ class Quizzes extends Component {
             });
         } else if (topic === "phon") {
             phonetics.forEach(phon => {
-                if (phon.lesson.toString() === lesson)
+                if ((phon.lesson || '').toString() === lesson)
                     primQuestionList.push({
                         _id: phon._id,
                         question: phon.pronunciation,

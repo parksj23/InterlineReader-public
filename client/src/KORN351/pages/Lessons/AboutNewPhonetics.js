@@ -86,14 +86,14 @@ class AboutNewPhonetics extends Component {
                                                         {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                                     </Typography>
                                                     {
-                                                        phonetic.sub_pronunciation === undefined? '' :
+                                                        !phonetic.sub_pronunciation ? '' :
                                                             <Typography color="textSecondary" gutterBottom>
                                                                 <br/>
                                                                 Note that this phonetic can also be read as <b>{phonetic.sub_pronunciation}</b>:
                                                             </Typography>
                                                     }
                                                     {
-                                                        phonetic.sub_characters === undefined? '' :
+                                                        !phonetic.sub_characters ? '' :
                                                             <Typography variant="h6">
                                                                 {phonetic.sub_characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                                             </Typography>

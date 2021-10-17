@@ -1,6 +1,6 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import { Input, Button } from '@material-ui/core';
 import './FlashCardsContent.css';
 import { getQuestionFontSize } from '../../../utils';
 
@@ -65,9 +65,8 @@ class PracticeSentencesFlashCard extends React.Component {
 
         return (
             <div className={'Flashcards-question-container'}>
-                <div className={'Flasscards-question'}>
+                <div className={'Flasscards-question-practise'}>
                     <p style={{textAlign: 'left'}}>Translate ONLY the Hanja(s) in the following sentence to Hangul(s) (Separate multiple answers with commas): </p>
-                    <br/>
                     {
                         question ?
                             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
@@ -75,16 +74,18 @@ class PracticeSentencesFlashCard extends React.Component {
                             </div> : null
                     }
                 </div>
-                <br/><br/>
-                <input style={{width: '100%', height: '30%'}} onChange={this.storeAnswer} id="answer-field" value={this.state.answer}/>
                 <br/>
+                <div className="Flashcards-input-container">
+                    <Input style={{width: '100%', marginBottom: 10}} onChange={this.storeAnswer} placeholder="Type your answer here..." id="answer-field" value={this.state.answer}/>
+                    <br/>
 
-                {
-                    this.state.showAnswer?
-                        <button onClick={() => {this.setState({showAnswer: false})}}>{JSON.stringify(actualAnswers) !== JSON.stringify(answerInput)? 'INCORRECT. The answer is: ' + answer.answer : 'CORRECT'}</button>
-                        :
-                        <button onClick={() => {this.setState({showAnswer: true}); answeredQuestion(JSON.stringify(answerInput), {isAnswer: JSON.stringify(actualAnswers)}, JSON.stringify(actualAnswers) === JSON.stringify(answerInput))}}>Check Answer</button>
-                }
+                    {
+                        this.state.showAnswer ?
+                            <span onClick={() => {this.setState({showAnswer: false})}}>{JSON.stringify(actualAnswers) !== JSON.stringify(answerInput)? 'INCORRECT. The answer is: ' + answer.answer : 'CORRECT'}</span>
+                            :
+                            <Button style={{margin: 'auto', color: '#00284d', borderColor: '#00284d'}} variant="outlined" onClick={() => {this.setState({showAnswer: true}); answeredQuestion(JSON.stringify(answerInput), {isAnswer: JSON.stringify(actualAnswers)}, JSON.stringify(actualAnswers) === JSON.stringify(answerInput))}}>Check Answer</Button>
+                    }
+                </div>
             </div>
         )
     }
