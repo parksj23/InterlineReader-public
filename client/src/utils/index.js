@@ -1,5 +1,5 @@
 function getQuestionFontSize(question) {
-    return question.length > 80 ? '20px' : '40px';
+    return question.length > 80 ? '20px' : '30px';
 }
 
 function stringToColor(string) {
