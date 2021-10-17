@@ -28,6 +28,7 @@ const styles = {
 
 const FlashCard = (props) => {
     let {question, classes, answeredQuestion, isSaved, handleSave, handleUnsave} = props;
+
     return (
         <div className={'Flashcards-question-container'}>
             <div className={'Flasscards-question'}>
@@ -43,7 +44,7 @@ const FlashCard = (props) => {
                                 renderStarIcon={() => <span style={{ fontSize: '35px', marginRight: 12}}>&#9733;</span>}
                                 emptyStarColor="gray"
                             />}
-                            <span style={{fontSize: question.question.length > 80? '20px' : '30px'}}>{question.question}</span>
+                            <span style={{fontSize: (question.question || []).length > 80? '20px' : '30px'}}>{question.question}</span>
                         </div> : null
                 }
             </div>
