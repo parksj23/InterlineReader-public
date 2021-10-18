@@ -138,7 +138,7 @@ async function list(req, res) {
         for (const yemun of preMatchedExamples) {
             const yemunHanqcaArr = yemun.hanqcaMatch.join("").replace(/\s/g, '').trim();
             let hanqcaInWord = [];
-            let punc = isPunctuation(wordPower.hanqca);
+            let punc = isPunctuation(hanqca);
             for (let i = 0; i < punc[0].length; i++) {
                 let hangulBool = isHangul(punc[0][i]);
                 if (hangulBool.includes(false)) {
@@ -148,7 +148,7 @@ async function list(req, res) {
             let finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').trim();
             console.log("the final");
             console.log(finalWordPowerHanqcaArr);
-            console.log(hanqca);
+            console.log(yemunHanqcaArr);
             if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                 matchedExamples.push(yemun);
             }
