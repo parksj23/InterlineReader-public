@@ -35,9 +35,28 @@ async function createYemun(req, res) {
     // }
     // return res.status(201).json("done");
 
+    // const yemun = new Yemun(req.body);
+    // const newYemun = await yemun.save();
+    // return res.status(201).json(newYemun);
+
     const yemun = new Yemun(req.body);
-    const newYemun = await yemun.save();
-    return res.status(201).json(newYemun);
+    Yemun.find({ koreanSentence: req.body.koreanSentence })
+        .exec()
+        .then((yemuns) => {
+            if (yemuns.length >= 1) {
+                return res.status(409).json({
+                    message: "Yemun document already exists",
+                });
+            } else {
+                const newYemun = yemun.save();
+                return res.status(201).json(newYemun);
+            }
+        })
+        .catch((err) => {
+            return res.status(409).json({
+                message: err,
+            });
+        });
 }
 
 async function list(req, res) {
