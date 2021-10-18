@@ -59,6 +59,7 @@ async function list(req, res) {
         const hanqca = wordPower.hanqca;
         const matchedExamples = [];
         const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
+        console.log(preMatchedExamples);
 
         for (const yemun of preMatchedExamples) {
             const hanqcaArr = yemun.hanqcaMatch.join("");

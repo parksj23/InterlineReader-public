@@ -100,6 +100,8 @@ class WordPower extends Component {
 
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
+        console.log("clicked hanja");
+        console.log(event.currentTarget);
         this.setState({showLoading: true});
         this.setState({examplesTabValue: 0});
         this.setState({clickedWord: {id: "null"}});
@@ -112,6 +114,13 @@ class WordPower extends Component {
         this.setState({examplesTabValue: 0});
         console.log(event.currentTarget);
     }
+
+    // normalizeUnicode = (s) => {
+    //     let div = $('<div style="display: none"></div>').html(s).appendTo('body');
+    //     let res = div.html();
+    //     div.remove();
+    //     return res;
+    // }
 
     render() {
         const {newHanja} = this.state;
@@ -152,9 +161,10 @@ class WordPower extends Component {
                                         wrapped
                                     >
                                         {newHanja.map((hanjaTab) => {
+                                            let tabId = hanjaTab.hanja.replace(/\s/g, '');
                                             return (
                                                 <Tab
-                                                    id={hanjaTab.hanja}
+                                                    id={tabId}
                                                     label={
                                                         <React.Fragment>
                                                             {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
@@ -196,36 +206,76 @@ class WordPower extends Component {
                                                             <Typography>
                                                                 <b><i>Select a word:</i></b>
                                                             </Typography>
-                                                            <Tabs
-                                                                value={this.state.clickedWordTab}
-                                                                onChange={this.handleOnClickWord}
-                                                                indicatorColor="secondary"
-                                                                textColor="primary"
-                                                                centered
-                                                                style={{padding: '1%'}}
-                                                                orientation="vertical"
-                                                                key={"Tab" + this.state.clickedWordTab}
-                                                                wrapped
-                                                            >
-                                                                {this.state.wordPowerData.filter((item) => {
-                                                                    if (!item.hanqca.includes(char.hanja)) {
-                                                                        return false;
-                                                                    }
-                                                                    return true;
-                                                                }).map((wordTab, idx) => {
-                                                                    return (
-                                                                        <Tab
-                                                                            id={wordTab.hanqca + "---" + wordTab.hankul + "---" + wordTab.englishGloss}
-                                                                            label={
-                                                                                <React.Fragment>
-                                                                                    {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
-                                                                                    {wordTab.englishGloss}
-                                                                                </React.Fragment>
-                                                                            }
-                                                                        />
-                                                                    )
-                                                                })}
-                                                            </Tabs>
+                                                            {this.state.wordPowerData.length === 0 ? (
+                                                                <Grid item xs={12}>
+                                                                    <br/>
+                                                                    <br/>
+                                                                    <Typography>
+                                                                        No data available.
+                                                                    </Typography>
+                                                                </Grid>
+                                                            ) : (
+                                                                <Tabs
+                                                                    value={this.state.clickedWordTab}
+                                                                    onChange={this.handleOnClickWord}
+                                                                    indicatorColor="secondary"
+                                                                    textColor="primary"
+                                                                    centered
+                                                                    style={{padding: '1%'}}
+                                                                    orientation="vertical"
+                                                                    key={"Tab" + this.state.clickedWordTab}
+                                                                    wrapped
+                                                                >
+                                                                    {this.state.wordPowerData.filter((item) => {
+                                                                        if (!item.hanqca.includes(char.hanja)) {
+                                                                            return false;
+                                                                        }
+                                                                        return true;
+                                                                    }).map((wordTab, idx) => {
+                                                                        return (
+                                                                            <Tab
+                                                                                id={wordTab.hanqca + "---" + wordTab.hankul + "---" + wordTab.englishGloss}
+                                                                                label={
+                                                                                    <React.Fragment>
+                                                                                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
+                                                                                        {wordTab.englishGloss}
+                                                                                    </React.Fragment>
+                                                                                }
+                                                                            />
+                                                                        )
+                                                                    })}
+                                                                </Tabs>
+                                                            )}
+                                                            {/*<Tabs*/}
+                                                            {/*    value={this.state.clickedWordTab}*/}
+                                                            {/*    onChange={this.handleOnClickWord}*/}
+                                                            {/*    indicatorColor="secondary"*/}
+                                                            {/*    textColor="primary"*/}
+                                                            {/*    centered*/}
+                                                            {/*    style={{padding: '1%'}}*/}
+                                                            {/*    orientation="vertical"*/}
+                                                            {/*    key={"Tab" + this.state.clickedWordTab}*/}
+                                                            {/*    wrapped*/}
+                                                            {/*>*/}
+                                                            {/*    {this.state.wordPowerData.filter((item) => {*/}
+                                                            {/*        if (!item.hanqca.includes(char.hanja)) {*/}
+                                                            {/*            return false;*/}
+                                                            {/*        }*/}
+                                                            {/*        return true;*/}
+                                                            {/*    }).map((wordTab, idx) => {*/}
+                                                            {/*        return (*/}
+                                                            {/*            <Tab*/}
+                                                            {/*                id={wordTab.hanqca + "---" + wordTab.hankul + "---" + wordTab.englishGloss}*/}
+                                                            {/*                label={*/}
+                                                            {/*                    <React.Fragment>*/}
+                                                            {/*                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;*/}
+                                                            {/*                        {wordTab.englishGloss}*/}
+                                                            {/*                    </React.Fragment>*/}
+                                                            {/*                }*/}
+                                                            {/*            />*/}
+                                                            {/*        )*/}
+                                                            {/*    })}*/}
+                                                            {/*</Tabs>*/}
                                                         </div>
                                                     </CardContent>
                                                 </Card>
@@ -260,6 +310,7 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).map((filteredItem, idx) => {
+                                                                console.log("filtered item");
                                                                 console.log(filteredItem);
                                                                 if (filteredItem.examples.length === 0) {
                                                                     return (
