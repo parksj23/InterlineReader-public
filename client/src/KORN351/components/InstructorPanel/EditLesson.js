@@ -333,7 +333,7 @@ class EditLesson extends Component {
                         <AccordionDetails>
                             <div>
                                 <textarea name="main-text" style={{width: "100%", overflowWrap: 'break-word'}}
-                                          value={this.state.mainText} rows="7" className="edit-input"
+                                          defaultValue={this.state.mainText} rows="7" cols="90" className="edit-input"
                                           onChange={this.handleMainTextChange}/>
                                 <Button style={{
                                     marginRight: '4px',
