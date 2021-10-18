@@ -37,14 +37,6 @@ class EditLesson extends Component {
     }
 
     componentDidMount() {
-        // const reloadCount = sessionStorage.getItem('reloadCount');
-        // if(reloadCount < 2) {
-        //     sessionStorage.setItem('reloadCount', String(reloadCount + 1));
-        //     window.location.reload();
-        // } else {
-        //     sessionStorage.removeItem('reloadCount');
-        // }
-
         let lesson = this.props.match.params.id;
         let mainText = '';
         let subText = '';
