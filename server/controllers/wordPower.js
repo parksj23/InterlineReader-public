@@ -9,7 +9,7 @@ const Yemun = require('../models/Yemun');
     // return res.status(201).json("done");
 
     const wordPower = new WordPower(req.body);
-    WordPower.find({ hankul: req.body.hankul })
+    WordPower.find({ lesson: req.body.lesson, hankul: req.body.hankul })
     .exec()
     .then((words) => {
         if (words.length >= 1) {
@@ -40,7 +40,7 @@ async function createYemun(req, res) {
     // return res.status(201).json(newYemun);
 
     const yemun = new Yemun(req.body);
-    Yemun.find({ koreanSentence: req.body.koreanSentence })
+    Yemun.find({ translation: req.body.translation })
         .exec()
         .then((yemuns) => {
             if (yemuns.length >= 1) {
@@ -78,7 +78,6 @@ async function list(req, res) {
         const hanqca = wordPower.hanqca;
         const matchedExamples = [];
         const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
-        console.log(preMatchedExamples);
 
         for (const yemun of preMatchedExamples) {
             const hanqcaArr = yemun.hanqcaMatch.join("");

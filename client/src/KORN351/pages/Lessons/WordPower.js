@@ -100,11 +100,10 @@ class WordPower extends Component {
 
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
-        console.log("clicked hanja");
-        console.log(event.currentTarget);
         this.setState({showLoading: true});
         this.setState({examplesTabValue: 0});
         this.setState({clickedWord: {id: "null"}});
+        this.setState({clickedWordTab: null});
         console.log("omw to get wordpower data");
         this.getWordPowerYemunData(event.currentTarget.id);
     }
@@ -114,13 +113,6 @@ class WordPower extends Component {
         this.setState({examplesTabValue: 0});
         console.log(event.currentTarget);
     }
-
-    // normalizeUnicode = (s) => {
-    //     let div = $('<div style="display: none"></div>').html(s).appendTo('body');
-    //     let res = div.html();
-    //     div.remove();
-    //     return res;
-    // }
 
     render() {
         const {newHanja} = this.state;
@@ -161,7 +153,7 @@ class WordPower extends Component {
                                         wrapped
                                     >
                                         {newHanja.map((hanjaTab) => {
-                                            let tabId = hanjaTab.hanja.replace(/\s/g, '');
+                                            let tabId = hanjaTab.hanja.replace(/\s/g, '').trim();
                                             return (
                                                 <Tab
                                                     id={tabId}
@@ -185,7 +177,7 @@ class WordPower extends Component {
                                 </Grid>
                             ) : (
                                 newHanja.map((char, idx) => {
-                                    if (this.state.clickedHanja.id === char.hanja) {
+                                    if (this.state.clickedHanja.id === char.hanja.replace(/\s/g, '').trim()) {
                                         return (
                                             <Grid item xs={12} className="word-power-grid-card" key={idx}>
                                                 <Card variant="outlined" className="word-power-card">
@@ -227,7 +219,7 @@ class WordPower extends Component {
                                                                     wrapped
                                                                 >
                                                                     {this.state.wordPowerData.filter((item) => {
-                                                                        if (!item.hanqca.includes(char.hanja)) {
+                                                                        if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                             return false;
                                                                         }
                                                                         return true;
@@ -246,36 +238,6 @@ class WordPower extends Component {
                                                                     })}
                                                                 </Tabs>
                                                             )}
-                                                            {/*<Tabs*/}
-                                                            {/*    value={this.state.clickedWordTab}*/}
-                                                            {/*    onChange={this.handleOnClickWord}*/}
-                                                            {/*    indicatorColor="secondary"*/}
-                                                            {/*    textColor="primary"*/}
-                                                            {/*    centered*/}
-                                                            {/*    style={{padding: '1%'}}*/}
-                                                            {/*    orientation="vertical"*/}
-                                                            {/*    key={"Tab" + this.state.clickedWordTab}*/}
-                                                            {/*    wrapped*/}
-                                                            {/*>*/}
-                                                            {/*    {this.state.wordPowerData.filter((item) => {*/}
-                                                            {/*        if (!item.hanqca.includes(char.hanja)) {*/}
-                                                            {/*            return false;*/}
-                                                            {/*        }*/}
-                                                            {/*        return true;*/}
-                                                            {/*    }).map((wordTab, idx) => {*/}
-                                                            {/*        return (*/}
-                                                            {/*            <Tab*/}
-                                                            {/*                id={wordTab.hanqca + "---" + wordTab.hankul + "---" + wordTab.englishGloss}*/}
-                                                            {/*                label={*/}
-                                                            {/*                    <React.Fragment>*/}
-                                                            {/*                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;*/}
-                                                            {/*                        {wordTab.englishGloss}*/}
-                                                            {/*                    </React.Fragment>*/}
-                                                            {/*                }*/}
-                                                            {/*            />*/}
-                                                            {/*        )*/}
-                                                            {/*    })}*/}
-                                                            {/*</Tabs>*/}
                                                         </div>
                                                     </CardContent>
                                                 </Card>
@@ -299,7 +261,7 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 0 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -310,8 +272,6 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).map((filteredItem, idx) => {
-                                                                console.log("filtered item");
-                                                                console.log(filteredItem);
                                                                 if (filteredItem.examples.length === 0) {
                                                                     return (
                                                                         <div>
@@ -345,7 +305,7 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 1 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -380,7 +340,7 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 2 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -415,7 +375,7 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 3 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
