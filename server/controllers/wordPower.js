@@ -1,8 +1,7 @@
 const WordPower = require('../models/WordPower');
 const Yemun = require('../models/Yemun');
 
-
-async function createWordPower(req, res) {
+ function createWordPower(req, res) {
     // for (let obj of req.body) {
     //     const wordPower = new WordPower(obj);
     //     const newWordPower = await wordPower.save();
@@ -10,8 +9,23 @@ async function createWordPower(req, res) {
     // return res.status(201).json("done");
 
     const wordPower = new WordPower(req.body);
-    const newWordPower = await wordPower.save();
-    return res.status(201).json(newWordPower);
+    WordPower.find({ hankul: req.body.hankul })
+    .exec()
+    .then((words) => {
+        if (words.length >= 1) {
+            return res.status(409).json({
+                message: "Word already exists",
+            });
+        } else {
+            const newWordPower = wordPower.save();
+            return res.status(201).json(newWordPower);
+        }
+    })
+    .catch((err) => {
+        return res.status(409).json({
+            message: err,
+        });
+    });
 }
 
 async function createYemun(req, res) {

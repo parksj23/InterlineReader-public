@@ -109,6 +109,7 @@ class WordPower extends Component {
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
+        this.setState({examplesTabValue: 0});
         console.log(event.currentTarget);
     }
 
@@ -214,7 +215,7 @@ class WordPower extends Component {
                                                                 }).map((wordTab, idx) => {
                                                                     return (
                                                                         <Tab
-                                                                            id={wordTab.hanqca + " " + wordTab.hankul + " " + wordTab.englishGloss}
+                                                                            id={wordTab.hanqca + "---" + wordTab.hankul + "---" + wordTab.englishGloss}
                                                                             label={
                                                                                 <React.Fragment>
                                                                                     {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
@@ -253,12 +254,22 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split(" ");
+                                                                let clickedWordId = this.state.clickedWord.id.split("---");
                                                                 if (!clickedWordId.includes(i.hanqca)) {
                                                                     return false;
                                                                 }
                                                                 return true;
                                                             }).map((filteredItem, idx) => {
+                                                                console.log(filteredItem);
+                                                                if (filteredItem.examples.length === 0) {
+                                                                    return (
+                                                                        <div>
+                                                                            <Typography>
+                                                                                No sample sentences available.
+                                                                            </Typography>
+                                                                        </div>
+                                                                    )
+                                                                }
                                                                 return (
                                                                     <div key={idx}>
                                                                         <ol>
@@ -288,7 +299,7 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split(" ");
+                                                                let clickedWordId = this.state.clickedWord.id.split("---");
                                                                 if (!clickedWordId.includes(i.hanqca)) {
                                                                     return false;
                                                                 }
@@ -323,7 +334,7 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split(" ");
+                                                                let clickedWordId = this.state.clickedWord.id.split("---");
                                                                 if (!clickedWordId.includes(i.hankul)) {
                                                                     return false;
                                                                 }
@@ -358,7 +369,8 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.englishGloss)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split("---");
+                                                                if (!clickedWordId.includes(i.englishGloss)) {
                                                                     return false;
                                                                 }
                                                                 return true;
