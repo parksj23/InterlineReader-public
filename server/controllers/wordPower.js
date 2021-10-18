@@ -42,11 +42,31 @@ async function list(req, res) {
     for (const wordPower of wordPowers) {
         const newWordPower = {...wordPower.toJSON()};
         const hanqcaMatcher = wordPower.hanqcaMatch;
-        const matchedExamples = await Yemun.find({ hanqcaMatch: { $in: hanqcaMatcher } });
+        const hanqca = wordPower.hanqca;
+        const matchedExamples = [];
+        const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
+
+        for (const yemun of preMatchedExamples) {
+            const hanqcaArr = yemun.hanqcaMatch.join("");
+            if (hanqcaArr.includes(hanqca)) {
+                matchedExamples.push(yemun);
+            }
+        }
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
     }
+
+    // for (const wordPower of wordPowers) {
+    //     const newWordPower = {...wordPower.toJSON()};
+    //     const hanqcaMatcher = wordPower.hanqcaMatch;
+    //
+    //     const matchedExamples = await Yemun.find({ hanqcaMatch: { $in: hanqcaMatcher } });
+    //     console.log(matchedExamples);
+    //
+    //     newWordPower.examples = matchedExamples;
+    //     wordPowerList.push(newWordPower);
+    // }
     return res.status(200).json(wordPowerList);
 }
 

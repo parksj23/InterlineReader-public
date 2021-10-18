@@ -185,7 +185,7 @@ class WordPower extends Component {
                                                                 &nbsp;&nbsp; {char.meaning}
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
-                                                                부수: {char.radical} ({char.primaryHoonMeaning}
+                                                                부수: {char.radical} ({char.primaryHoonMeaning} &nbsp;
                                                                 <i>{char.additionalHoonMeaning}</i>)
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
@@ -214,7 +214,7 @@ class WordPower extends Component {
                                                                 }).map((wordTab, idx) => {
                                                                     return (
                                                                         <Tab
-                                                                            id={wordTab.hanqca + wordTab.hankul + wordTab.englishGloss}
+                                                                            id={wordTab.hanqca + " " + wordTab.hankul + " " + wordTab.englishGloss}
                                                                             label={
                                                                                 <React.Fragment>
                                                                                     {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
@@ -253,7 +253,8 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.hanqca)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split(" ");
+                                                                if (!clickedWordId.includes(i.hanqca)) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -287,7 +288,8 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.hanqca)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split(" ");
+                                                                if (!clickedWordId.includes(i.hanqca)) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -321,7 +323,8 @@ class WordPower extends Component {
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.hankul)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split(" ");
+                                                                if (!clickedWordId.includes(i.hankul)) {
                                                                     return false;
                                                                 }
                                                                 return true;
