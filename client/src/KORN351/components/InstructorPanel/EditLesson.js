@@ -93,7 +93,7 @@ class EditLesson extends Component {
             this.props.getPhonetics().then(() => {
 
                     let temp = this.props.phonetics.filter(phonetic => {
-                        return phonetic.lesson.toString() === lesson
+                        return phonetic.lesson || "".toString() === lesson
                     });
                     this.setState({
                         phonetics: temp
@@ -288,14 +288,17 @@ class EditLesson extends Component {
         } = this.state;
 
         let newVocabMainTextStr = '';
-        newVocabMainText.forEach(vocab => {
-            newVocabMainTextStr += vocab.kor + ' : ' + vocab.eng + '\n';
-        });
-
+        if (newVocabMainText) {
+            newVocabMainText.forEach(vocab => {
+                newVocabMainTextStr += vocab.kor + ' : ' + vocab.eng + '\n';
+            });
+        }
         let newVocabExSentencesStr = '';
-        newVocabExampleSentences.forEach(vocab => {
-            newVocabExSentencesStr += vocab.kor + ' : ' + vocab.eng + '\n';
-        });
+        if (newVocabExampleSentences) {
+            newVocabExampleSentences.forEach(vocab => {
+                newVocabExSentencesStr += vocab.kor + ' : ' + vocab.eng + '\n';
+            });
+        }
 
         return (
             <div className="edit-lesson-container">
