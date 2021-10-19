@@ -299,7 +299,6 @@ async function list(req, res) {
                         hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
                         let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
                         let re3 = new RegExp("^" + join + "$");
-                        console.log(hanqcaInBlock);
                         if ((yemunHanqcaArr.includes(option1)) || (yemunHanqcaArr.includes(option2)) || hanqcaInBlock.search(re3) >= 0) {
                             let index = -1;
 
@@ -317,22 +316,6 @@ async function list(req, res) {
                         }
                     }
                 }
-
-                // if (yemunHanqcaArr.includes(option3) || (yemunHanqcaArr.includes(option1)) || yemunHanqcaArr.includes(option2)) {
-                //     let index = -1;
-                //
-                //     for (let i = 0; i < matchedExamples.length; i++) {
-                //         if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
-                //             index = i;
-                //         }
-                //     }
-                //
-                //     if (index > -1) {
-                //         matchedExamples[index] = yemun;
-                //     } else {
-                //         matchedExamples.push(yemun)
-                //     }
-                // }
 
             } else if (isHangul(hanqca).includes(true) && !(hanqca.includes(")"))) {
                 if (hanqca.slice(-2).normalize('NFC') === "하다") {
@@ -374,6 +357,7 @@ async function list(req, res) {
                     }
                 } else {
                     finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
+                    console.log(finalWordPowerHanqcaArr);
                     if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                         let index = -1;
 
