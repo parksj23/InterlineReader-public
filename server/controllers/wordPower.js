@@ -136,7 +136,8 @@ async function list(req, res) {
         const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
 
         for (const yemun of preMatchedExamples) {
-            const yemunHanqcaArr = yemun.hanqcaMatch.join("").replace(/\s/g, '').trim().normalize('NFC');
+            // const yemunHanqcaArr = yemun.hanqcaMatch.join("").replace(/\s/g, '').trim().normalize('NFC');
+            const yemunHanqcaArr = yemun.hanqcaizedSentence.toString().replace(/\s/g, '').trim().normalize('NFC');
             let hanqcaInWord = [];
             let punc = isPunctuation(hanqca);
             for (let i = 0; i < punc[0].length; i++) {
