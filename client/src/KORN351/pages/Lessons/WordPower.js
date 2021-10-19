@@ -267,9 +267,6 @@ class WordPower extends Component {
                                                                 return true;
                                                             }).filter((i) => {
                                                                 let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                console.log(clickedWordId);
-                                                                console.log(i.hanqca);
-                                                                // if (!clickedWordId.includes(i.hanqca)) {
                                                                 if (clickedWordId[0] !== i.hanqca) {
                                                                     return false;
                                                                 }
@@ -314,7 +311,6 @@ class WordPower extends Component {
                                                                 return true;
                                                             }).filter((i) => {
                                                                 let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                // if (!clickedWordId.includes(i.hanqca)) {
                                                                 if (clickedWordId[0] !== i.hanqca) {
                                                                     return false;
                                                                 }
@@ -350,7 +346,6 @@ class WordPower extends Component {
                                                                 return true;
                                                             }).filter((i) => {
                                                                 let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                // if (!clickedWordId.includes(i.hankul)) {
                                                                 if (clickedWordId[1] !== i.hankul) {
                                                                     return false;
                                                                 }
@@ -386,7 +381,6 @@ class WordPower extends Component {
                                                                 return true;
                                                             }).filter((i) => {
                                                                 let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                // if (!clickedWordId.includes(i.englishGloss)) {
                                                                 if (clickedWordId[2] !== i.englishGloss) {
                                                                     return false;
                                                                 }

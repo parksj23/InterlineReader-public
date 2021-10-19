@@ -146,10 +146,6 @@ async function list(req, res) {
                 }
             }
             let finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').trim();
-            // console.log("the final");
-            // console.log(finalWordPowerHanqcaArr.normalize("NFC"));
-            // console.log(yemunHanqcaArr.normalize("NFC"));
-            // console.log(finalWordPowerHanqcaArr.normalize("NFC") === yemunHanqcaArr.normalize("NFC"))
             if (yemunHanqcaArr.normalize("NFC").includes(finalWordPowerHanqcaArr.normalize("NFC"))) {
                 matchedExamples.push(yemun);
             }
