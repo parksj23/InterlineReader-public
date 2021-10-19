@@ -89,7 +89,7 @@ class DictionaryRadicalContainer extends Component {
                         <p>2) Select a character that uses that radical</p>
                         <Grid container>
                             {
-                                filteredResult.map(char => {
+                                (filteredResult || []).map(char => {
                                     return <Grid key={char} item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
                                 })
                             }
@@ -122,7 +122,7 @@ class DictionaryRadicalContainer extends Component {
                                     <p>This character contains the phonetic element “ {phonetic.phonetic} ”. The phonetic element “ {phonetic.phonetic} ” indicates the following pronunciation(s):</p>
                                     <b>&nbsp;&nbsp;&nbsp;&nbsp;{phonetic.pronunciation}</b>
                                     <p>In the following Chinese character(s), the phonetic element “ {phonetic.phonetic} ” indicates the pronunciation  {phonetic.pronunciation} :</p>
-                                    {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
+                                    {((phonetic || {}).characters || []).map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                 </div>
                         }
                     </div>
