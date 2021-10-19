@@ -136,7 +136,7 @@ async function list(req, res) {
         const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
 
         for (const yemun of preMatchedExamples) {
-            const yemunHanqcaArr = yemun.hanqcaMatch.join("").replace(/\s/g, '').trim();
+            const yemunHanqcaArr = yemun.hanqcaMatch.join("").replace(/\s/g, '').trim().normalize('NFC');
             let hanqcaInWord = [];
             let punc = isPunctuation(hanqca);
             for (let i = 0; i < punc[0].length; i++) {
@@ -145,8 +145,8 @@ async function list(req, res) {
                     hanqcaInWord.push(punc[0][i]);
                 }
             }
-            let finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').trim();
-            if (yemunHanqcaArr.normalize("NFC").includes(finalWordPowerHanqcaArr.normalize("NFC"))) {
+            let finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').trim().normalize('NFC');
+            if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                 matchedExamples.push(yemun);
             }
         }
