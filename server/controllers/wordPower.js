@@ -115,6 +115,137 @@ function isPunctuation(str, options) {
     return result;
 }
 
+function getSyllable(str, options) {
+    if (
+        options !== undefined &&
+        options.removeSpace
+    )
+        str = str.replace(/(\s*)/g, "");
+
+    var result = [];
+
+    var CHO_SEONG = [
+        "ㄱ", ["ㄱ", "ㄱ"], "ㄴ", "ㄷ", ["ㄷ", "ㄷ"],
+        "ㄹ", "ㅁ", "ㅂ", ["ㅂ", "ㅂ"], "ㅅ",
+        ["ㅅ", "ㅅ"], "ㅇ", "ㅈ", ["ㅈ", "ㅈ"], "ㅊ",
+        "ㅋ", "ㅌ", "ㅍ", "ㅎ",
+    ];
+
+    var JUNG_SEONG = [
+        "ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ",
+        "ㅔ", "ㅕ", "ㅖ", "ㅗ", ["ㅗ", "ㅏ"],
+        ["ㅗ", "ㅐ"], ["ㅗ", "ㅣ"], "ㅛ", "ㅜ", ["ㅜ", "ㅓ"],
+        ["ㅜ", "ㅔ"], ["ㅜ", "ㅣ"], "ㅠ", "ㅡ", ["ㅡ", "ㅣ"],
+        "ㅣ",
+    ];
+
+    var JONG_SEONG = [
+        "", "ㄱ", ["ㄱ", "ㄱ"], ["ㄱ", "ㅅ"], "ㄴ",
+        ["ㄴ", "ㅈ"], ["ㄴ", "ㅎ"], "ㄷ", "ㄹ", ["ㄹ", "ㄱ"],
+        ["ㄹ", "ㅁ"], ["ㄹ", "ㅂ"], ["ㄹ", "ㅅ"], ["ㄹ", "ㅌ"], ["ㄹ", "ㅍ"],
+        ["ㄹ", "ㅎ"], "ㅁ", "ㅂ", ["ㅂ", "ㅅ"], "ㅅ",
+        ["ㅅ", "ㅅ"], "ㅇ", "ㅈ", "ㅊ", "ㅋ",
+        "ㅌ", "ㅍ", "ㅎ",
+    ];
+
+    for (var i = 0; i < str.length; i++) {
+        var uniChar = str.charCodeAt(i);
+
+        if (
+            uniChar < 0xAC00 ||
+            uniChar > 0xD7A3
+        ) {
+            if (
+                options !== undefined &&
+                options.includeOtherLng
+            )
+                result.push([str[i]]);
+            continue;
+        }
+
+        var choIndex = Math.floor((uniChar - 0xAC00) / (21 * 28));
+
+        if (
+            options !== undefined &&
+            ["초성", "cho", "choseong"].includes(options.syllable)
+        ) {
+            result.push(
+                (Array.isArray(CHO_SEONG[choIndex]))
+                    ? [...CHO_SEONG[choIndex]]
+                    : [CHO_SEONG[choIndex]]
+            );
+            continue;
+        }
+
+        var jungIndex = Math.floor(((uniChar - 0xAC00) % (21 * 28)) / 28);
+
+        if (
+            options !== undefined &&
+            ["중성", "jung", "jungseong"].includes(options.syllable)
+        ) {
+            result.push(
+                (Array.isArray(JUNG_SEONG[jungIndex]))
+                    ? [...JUNG_SEONG[jungIndex]]
+                    : [JUNG_SEONG[jungIndex]]
+            );
+            continue;
+        }
+
+        var jongIndex = (uniChar - 0xAC00) % 28;
+
+        if (
+            options !== undefined &&
+            ["종성", "jong", "jongseong"].includes(options.syllable) &&
+            jongIndex >= 1
+        ) {
+            result.push(
+                (Array.isArray(JONG_SEONG[jongIndex]))
+                    ? [...JONG_SEONG[jongIndex]]
+                    : [JONG_SEONG[jongIndex]]
+            );
+            continue;
+        }
+
+        result.push(
+            (jongIndex < 1)
+                ? [
+                    (Array.isArray(CHO_SEONG[choIndex]))
+                        ? [...CHO_SEONG[choIndex]]
+                        : CHO_SEONG[choIndex],
+                    (Array.isArray(JUNG_SEONG[jungIndex]))
+                        ? [...JUNG_SEONG[jungIndex]]
+                        : JUNG_SEONG[jungIndex],
+                ]
+                    .reduce(function (acc, val) {
+                        return acc.concat(val);
+                    }, [])
+                : [
+                    (Array.isArray(CHO_SEONG[choIndex]))
+                        ? [...CHO_SEONG[choIndex]]
+                        : CHO_SEONG[choIndex],
+                    (Array.isArray(JUNG_SEONG[jungIndex]))
+                        ? [...JUNG_SEONG[jungIndex]]
+                        : JUNG_SEONG[jungIndex],
+                    (Array.isArray(JONG_SEONG[jongIndex]))
+                        ? [...JONG_SEONG[jongIndex]]
+                        : JONG_SEONG[jongIndex],
+                ]
+                    .reduce(function (acc, val) {
+                        return acc.concat(val);
+                    }, [])
+        );
+    }
+
+    if (
+        options !== undefined &&
+        options.toSeparateArray
+    )
+        return result.reduce(function (acc, val) {
+            return acc.concat(val);
+        }, []);
+    return result;
+}
+
 async function list(req, res) {
     const query = {};
     if (req.query.lesson) {
@@ -135,61 +266,156 @@ async function list(req, res) {
         const matchedExamples = [];
         const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
 
+        let hanqcaInWord = [];
+        let hankulInWord = [];
+        let punc = isPunctuation(hanqca);
+        for (let i = 0; i < punc[0].length; i++) {
+            let hangulBool = isHangul(punc[0][i]);
+            if (hangulBool.includes(false)) {
+                hanqcaInWord.push(punc[0][i]);
+            } else {
+                hankulInWord.push(punc[0][i]);
+            }
+        }
+
         for (const yemun of preMatchedExamples) {
             const yemunHanqcaArr = yemun.hanqcaizedSentence.toString().replace(/\s/g, '').trim().normalize('NFC');
             let finalWordPowerHanqcaArr = [];
 
             if (isHangul(hanqca).includes(true) && hanqca.includes(")")) {
                 let verb = hanqca.split(")")[1];
-                verb = verb.replace(/\s/g, '').toString().trim().normalize('NFC');
-
-                let hanqcaInWord = [];
-                let punc = isPunctuation(hanqca);
-                for (let i = 0; i < punc[0].length; i++) {
-                    let hangulBool = isHangul(punc[0][i]);
-                    if (hangulBool.includes(false)) {
-                        hanqcaInWord.push(punc[0][i]);
-                    }
-                }
+                verb = verb.replace(/\s/g, '').trim().normalize('NFC');
 
                 let hanqcaPlusVerbRoot = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC') + Array.from(verb)[0];
-                finalWordPowerHanqcaArr = hanqcaPlusVerbRoot.replace(/\s/g, '').trim().normalize('NFC');
+
+                let hanqcaPlusParticlePlusVerbRoot = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC')
+                    + hankulInWord[0]
+                    + Array.from(verb)[0];
+
+                let option1 = hanqcaPlusVerbRoot.replace(/\s/g, '').trim().normalize('NFC');
+                let option2 = hanqcaPlusParticlePlusVerbRoot.replace(/\s/g, '').trim().normalize('NFC');
+
+                let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                let option3 = null;
+                if (join.length > 1) {
+                    option3 = join;
+                }
+                if (yemunHanqcaArr.includes(option3) || (yemunHanqcaArr.includes(option1)) || yemunHanqcaArr.includes(option2)) {
+                    let index = -1;
+
+                    for (let i = 0; i < matchedExamples.length; i++) {
+                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                            index = i;
+                        }
+                    }
+
+                    if (index > -1) {
+                        matchedExamples[index] = yemun;
+                    } else {
+                        matchedExamples.push(yemun)
+                    }
+                }
 
             } else if (isHangul(hanqca).includes(true) && !(hanqca.includes(")"))) {
                 if (hanqca.slice(-2).normalize('NFC') === "하다") {
-                    hanqca = hanqca.substring(0, hanqca.length - 1);
-                    finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
+                    let yemunHanqcaArrSyl = getSyllable(yemunHanqcaArr, {removeSpace: true, includeOtherLng: true});
+                    // for (let i = 0; i < yemunHanqcaArrSyl.length - 1; i++) {
+                    //     let curr = yemunHanqcaArrSyl[i][0];
+                    //     let next = yemunHanqcaArrSyl[i + 1][0];
+                    //     console.log("here");
+                    //     console.log(curr === hanqcaInWord[0]);
+                    //     if (curr === hanqcaInWord[0]) {
+                    //         // console.log("here");
+                    //         // console.log("curr");
+                    //         // console.log(curr);
+                    //         // console.log("next");
+                    //         // console.log(next);
+                    //         console.log("in here");
+                    //         console.log(hanqcaInWord[0]);
+                    //         console.log(hanqca);
+                    //         console.log(yemunHanqcaArrSyl);
+                    //         console.log(next[0]);
+                    //         if (next[0] === 'ㅎ') {
+                    //             finalWordPowerHanqcaArr = hanqcaInWord;
+                    //         }
+                    //     }
+                    //     console.log(finalWordPowerHanqcaArr);
+                    // }
+                    let opt1 = hanqca.substring(0, hanqca.length - 1).replace(/\s/g, '').trim().normalize('NFC');
+                    let opt2 = hanqca.substring(0, hanqca.length - 2).replace(/\s/g, '').trim().normalize('NFC');
+                    let yemunHanqcaArrWithSpaces = yemun.hanqcaizedSentence.toString().trim().normalize('NFC');
+
+                    for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
+                        let re1 = new RegExp("^" + opt1 + "$");
+                        let re2 = new RegExp("^" + opt2 + "$");
+
+                        let hanqcaInBlock = [];
+                        let punc2 = isPunctuation(block.replace(/\s/g, '').trim());
+                        if (punc2[0] !== undefined) {
+                            for (let i = 0; i < punc2[0].length - 1; i++) {
+                                let hangulBool = isHangul(punc2[0][i]);
+                                if (hangulBool.includes(false)) {
+                                    hanqcaInBlock.push(punc2[0][i]);
+                                }
+                            }
+                            hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                            let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                            let re3 = new RegExp("^" + join + "$");
+                            if (block.search(re1) >= 0 || block.search(re2) >= 0 || hanqcaInBlock.search(re3) >= 0) {
+                                let index = -1;
+
+                                for (let i = 0; i < matchedExamples.length; i++) {
+                                    if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                                        index = i;
+                                    }
+                                }
+
+                                if (index > -1) {
+                                    matchedExamples[index] = yemun;
+                                } else {
+                                    matchedExamples.push(yemun)
+                                }
+                            }
+                        }
+                    }
                 } else {
                     finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
+                    if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
+                        let index = -1;
+
+                        for (let i = 0; i < matchedExamples.length; i++) {
+                            if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                                index = i;
+                            }
+                        }
+
+                        if (index > -1) {
+                            matchedExamples[index] = yemun;
+                        } else {
+                            matchedExamples.push(yemun)
+                        }
+                    }
                 }
 
             } else if (!(isHangul(hanqca).includes(true))) {
-                let hanqcaInWord = [];
-                let punc = isPunctuation(hanqca);
-                for (let i = 0; i < punc[0].length; i++) {
-                    let hangulBool = isHangul(punc[0][i]);
-                    if (hangulBool.includes(false)) {
-                        hanqcaInWord.push(punc[0][i]);
-                    }
-                }
-
                 finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                console.log(finalWordPowerHanqcaArr);
+                console.log(yemunHanqcaArr);
 
-            }
+                if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
+                    let index = -1;
 
-            if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
-                let index = -1;
-
-                for (let i = 0; i < matchedExamples.length; i++) {
-                    if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
-                        index = i;
+                    for (let i = 0; i < matchedExamples.length; i++) {
+                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                            index = i;
+                        }
                     }
-                }
 
-                if (index > -1) {
-                    matchedExamples[index] = yemun;
-                } else {
-                    matchedExamples.push(yemun)
+                    if (index > -1) {
+                        matchedExamples[index] = yemun;
+                    } else {
+                        matchedExamples.push(yemun)
+                    }
                 }
             }
         }
