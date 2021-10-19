@@ -2,12 +2,6 @@ const WordPower = require('../models/WordPower');
 const Yemun = require('../models/Yemun');
 
 function createWordPower(req, res) {
-    // for (let obj of req.body) {
-    //     const wordPower = new WordPower(obj);
-    //     const newWordPower = await wordPower.save();
-    // }
-    // return res.status(201).json("done");
-
     const wordPower = new WordPower(req.body);
     WordPower.find({lesson: req.body.lesson, hankul: req.body.hankul})
         .exec()
@@ -29,16 +23,6 @@ function createWordPower(req, res) {
 }
 
 async function createYemun(req, res) {
-    // for (let obj of req.body) {
-    //     const yemun = new Yemun(obj);
-    //     const newYemun = await yemun.save();
-    // }
-    // return res.status(201).json("done");
-
-    // const yemun = new Yemun(req.body);
-    // const newYemun = await yemun.save();
-    // return res.status(201).json(newYemun);
-
     const yemun = new Yemun(req.body);
     Yemun.find({translation: req.body.translation})
         .exec()
@@ -318,29 +302,6 @@ async function list(req, res) {
 
             } else if (isHangul(hanqca).includes(true) && !(hanqca.includes(")"))) {
                 if (hanqca.slice(-2).normalize('NFC') === "하다") {
-                    let yemunHanqcaArrSyl = getSyllable(yemunHanqcaArr, {removeSpace: true, includeOtherLng: true});
-                    // for (let i = 0; i < yemunHanqcaArrSyl.length - 1; i++) {
-                    //     let curr = yemunHanqcaArrSyl[i][0];
-                    //     let next = yemunHanqcaArrSyl[i + 1][0];
-                    //     console.log("here");
-                    //     console.log(curr === hanqcaInWord[0]);
-                    //     if (curr === hanqcaInWord[0]) {
-                    //         // console.log("here");
-                    //         // console.log("curr");
-                    //         // console.log(curr);
-                    //         // console.log("next");
-                    //         // console.log(next);
-                    //         console.log("in here");
-                    //         console.log(hanqcaInWord[0]);
-                    //         console.log(hanqca);
-                    //         console.log(yemunHanqcaArrSyl);
-                    //         console.log(next[0]);
-                    //         if (next[0] === 'ㅎ') {
-                    //             finalWordPowerHanqcaArr = hanqcaInWord;
-                    //         }
-                    //     }
-                    //     console.log(finalWordPowerHanqcaArr);
-                    // }
                     let opt1 = hanqca.substring(0, hanqca.length - 1).replace(/\s/g, '').trim().normalize('NFC');
                     let opt2 = hanqca.substring(0, hanqca.length - 2).replace(/\s/g, '').trim().normalize('NFC');
                     let yemunHanqcaArrWithSpaces = yemun.hanqcaizedSentence.toString().trim().normalize('NFC');
@@ -399,8 +360,6 @@ async function list(req, res) {
 
             } else if (!(isHangul(hanqca).includes(true))) {
                 finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                console.log(finalWordPowerHanqcaArr);
-                console.log(yemunHanqcaArr);
 
                 if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                     let index = -1;
@@ -424,16 +383,6 @@ async function list(req, res) {
         wordPowerList.push(newWordPower);
     }
 
-    // for (const wordPower of wordPowers) {
-    //     const newWordPower = {...wordPower.toJSON()};
-    //     const hanqcaMatcher = wordPower.hanqcaMatch;
-    //
-    //     const matchedExamples = await Yemun.find({ hanqcaMatch: { $in: hanqcaMatcher } });
-    //     console.log(matchedExamples);
-    //
-    //     newWordPower.examples = matchedExamples;
-    //     wordPowerList.push(newWordPower);
-    // }
     return res.status(200).json(wordPowerList);
 }
 
