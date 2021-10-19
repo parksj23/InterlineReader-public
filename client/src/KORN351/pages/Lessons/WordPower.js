@@ -202,7 +202,7 @@ class WordPower extends Component {
                                                                 <Grid item xs={12}>
                                                                     <br/>
                                                                     <br/>
-                                                                    <Typography>
+                                                                    <Typography className="no-data">
                                                                         No data available.
                                                                     </Typography>
                                                                 </Grid>
@@ -274,9 +274,9 @@ class WordPower extends Component {
                                                             }).map((filteredItem, idx) => {
                                                                 if (filteredItem.examples.length === 0) {
                                                                     return (
-                                                                        <div>
+                                                                        <div className="no-data">
                                                                             <Typography>
-                                                                                No sample sentences available.
+                                                                                예문이 없습니다.
                                                                             </Typography>
                                                                         </div>
                                                                     )
