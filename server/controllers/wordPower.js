@@ -131,7 +131,7 @@ async function list(req, res) {
     for (const wordPower of wordPowers) {
         const newWordPower = {...wordPower.toJSON()};
         const hanqcaMatcher = wordPower.hanqcaMatch;
-        const hanqca = wordPower.hanqca;
+        let hanqca = wordPower.hanqca;
         const matchedExamples = [];
         const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
 
@@ -156,7 +156,12 @@ async function list(req, res) {
                 finalWordPowerHanqcaArr = hanqcaPlusVerbRoot.replace(/\s/g, '').trim().normalize('NFC');
 
             } else if (isHangul(hanqca).includes(true) && !(hanqca.includes(")"))) {
-                finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
+                if (hanqca.slice(-2).normalize('NFC') === "하다") {
+                    hanqca = hanqca.substring(0, hanqca.length - 1);
+                    finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
+                } else {
+                    finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
+                }
 
             } else if (!(isHangul(hanqca).includes(true))) {
                 let hanqcaInWord = [];
@@ -174,7 +179,7 @@ async function list(req, res) {
 
             if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                 let index = -1;
-                
+
                 for (let i = 0; i < matchedExamples.length; i++) {
                     if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
                         index = i;
