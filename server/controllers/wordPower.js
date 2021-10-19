@@ -264,6 +264,8 @@ async function list(req, res) {
 
         for (const yemun of preMatchedExamples) {
             const yemunHanqcaArr = yemun.hanqcaizedSentence.toString().replace(/\s/g, '').trim().normalize('NFC');
+            const yemunHanqcaArrWithSpaces = yemun.hanqcaizedSentence.toString().trim().normalize('NFC');
+
             let finalWordPowerHanqcaArr = [];
 
             if (isHangul(hanqca).includes(true) && hanqca.includes(")")) {
@@ -284,27 +286,58 @@ async function list(req, res) {
                 if (join.length > 1) {
                     option3 = join;
                 }
-                if (yemunHanqcaArr.includes(option3) || (yemunHanqcaArr.includes(option1)) || yemunHanqcaArr.includes(option2)) {
-                    let index = -1;
+                for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
+                    let hanqcaInBlock = [];
+                    let punc2 = isPunctuation(block.replace(/\s/g, '').trim());
+                    if (punc2[0] !== undefined) {
+                        for (let i = 0; i < punc2[0].length - 1; i++) {
+                            let hangulBool = isHangul(punc2[0][i]);
+                            if (hangulBool.includes(false)) {
+                                hanqcaInBlock.push(punc2[0][i]);
+                            }
+                        }
+                        hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                        let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                        let re3 = new RegExp("^" + join + "$");
+                        console.log(hanqcaInBlock);
+                        if ((yemunHanqcaArr.includes(option1)) || (yemunHanqcaArr.includes(option2)) || hanqcaInBlock.search(re3) >= 0) {
+                            let index = -1;
 
-                    for (let i = 0; i < matchedExamples.length; i++) {
-                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
-                            index = i;
+                            for (let i = 0; i < matchedExamples.length; i++) {
+                                if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                                    index = i;
+                                }
+                            }
+
+                            if (index > -1) {
+                                matchedExamples[index] = yemun;
+                            } else {
+                                matchedExamples.push(yemun)
+                            }
                         }
                     }
-
-                    if (index > -1) {
-                        matchedExamples[index] = yemun;
-                    } else {
-                        matchedExamples.push(yemun)
-                    }
                 }
+
+                // if (yemunHanqcaArr.includes(option3) || (yemunHanqcaArr.includes(option1)) || yemunHanqcaArr.includes(option2)) {
+                //     let index = -1;
+                //
+                //     for (let i = 0; i < matchedExamples.length; i++) {
+                //         if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                //             index = i;
+                //         }
+                //     }
+                //
+                //     if (index > -1) {
+                //         matchedExamples[index] = yemun;
+                //     } else {
+                //         matchedExamples.push(yemun)
+                //     }
+                // }
 
             } else if (isHangul(hanqca).includes(true) && !(hanqca.includes(")"))) {
                 if (hanqca.slice(-2).normalize('NFC') === "하다") {
                     let opt1 = hanqca.substring(0, hanqca.length - 1).replace(/\s/g, '').trim().normalize('NFC');
                     let opt2 = hanqca.substring(0, hanqca.length - 2).replace(/\s/g, '').trim().normalize('NFC');
-                    let yemunHanqcaArrWithSpaces = yemun.hanqcaizedSentence.toString().trim().normalize('NFC');
 
                     for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
                         let re1 = new RegExp("^" + opt1 + "$");
