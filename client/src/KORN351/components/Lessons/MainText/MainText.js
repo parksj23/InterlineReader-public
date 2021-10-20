@@ -27,7 +27,7 @@ import { Switch } from '@material-ui/core';
 const MainText = (props) => {
     const [currentText, switchText] = useState('mainText');
     const currLesson = props.match.params.lesson;
-    const {mainText, subText, exampleSentences, koreanText} = props;
+    const {mainText, subText, exampleSentences, koreanText, title} = props;
     let image = img1;
     if (currLesson === "2")
         image = img2;
@@ -98,10 +98,13 @@ const MainText = (props) => {
             <Grid item md={1}/>
             <Grid item xs={12} md={10}>
                 <div className="col-lg-12 context engVer" style={{paddingBottom: "48px"}} id="theHeader">
-                    <div className={'storyHeader'} style={{display: "flex", width: "100%"}}>
-                            <h3 style={{textAlign: 'left', width: "50%"}}>
+                    <div className="main-text-story-header">
+                            <h3 className="main-text-title">
                                 第 {toChineseNumber(currLesson)} 課
                             </h3>
+                        <h3 className="main-text-title">
+                            {title}
+                        </h3>
                     </div>
                     <Divider style={{marginBottom: "0.5rem"}}/>
                     <div className="main-text">
@@ -149,7 +152,8 @@ const mapStateToProps = (state) => {
     return {
         mainText : state.lessons.mainText,
         subText : state.lessons.subText,
-        exampleSentences: state.lessons.exampleSentences
+        exampleSentences: state.lessons.exampleSentences,
+        title: state.lessons.title
     };
 };
 

@@ -12,6 +12,17 @@
     padding: 5%;
 }
 
+.main-text-story-header {
+    width: 100%;
+}
+
+.main-text-title {
+    width: 100%;
+    padding-top: 28px;
+    text-align: center;
+    /*font-family: "'Cute Font', serif";*/
+}
+
 @media (max-width: 1200px) {
     .main-text {
         display: block;
