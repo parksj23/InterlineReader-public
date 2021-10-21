@@ -374,7 +374,7 @@ class EditLesson extends Component {
                                         Num: {num.num}
                                         <br/>
                                         Sentences:
-                                        <textarea style={{overflowWrap: 'break-word'}} rows="5" className="edit-input"
+                                        <textarea style={{overflowWrap: 'break-word'}} rows="5" cols="50" className="edit-input"
                                                   ref={input => this.state[unique] = input}>
                                     {str}
                                 </textarea>
@@ -387,34 +387,42 @@ class EditLesson extends Component {
                                         <br/><br/>
                                     </div>
                                 })}
-                                <form>
-                                    <br/>
-                                    <p>Add new example sentences</p>
-                                    <textarea
-                                        name="new-example-num"
-                                        id="new-example-num"
-                                        onChange={this.handleNewExSentNumChange}
-                                        value={this.state.num}
-                                        type="text"
-                                        placeholder="Enter number for example sentences."
-                                    />
-                                    <br/>
-                                    <br/>
+                                <Divider/>
+                                <div style={{padding: '0 5%'}}>
+                                    <form>
+                                        <br/>
+                                        <p>Add new example sentences</p>
+                                        Example num: {""}
+                                        <input
+                                            name="new-example-num"
+                                            id="new-example-num"
+                                            onChange={this.handleNewExSentNumChange}
+                                            value={this.state.num}
+                                            type="text"
+                                            style={{overflowWrap: 'break-word'}} rows="5" cols="50"
+                                        />
+                                        <br/>
+                                        <br/>
 
-                                    <textarea
-                                        name="new-example-sentences"
-                                        id="new-example-sentences"
-                                        onChange={this.handleNewExSentChange}
-                                        defaultValue={this.state.sentences}
-                                        type="text"
-                                        placeholder="Enter new example sentences."
-                                    />
-                                </form>
-                                <br/>
-                                <br/>
-                                <button onClick={this.addExSentence}>ADD</button>
+                                        Example sentences: {""}
+                                        <textarea
+                                            name="new-example-sentences"
+                                            id="new-example-sentences"
+                                            onChange={this.handleNewExSentChange}
+                                            defaultValue={this.state.sentences}
+                                            type="text"
+                                            placeholder="Enter new example sentences."
+                                            style={{overflowWrap: 'break-word'}} rows="5" cols="60"
+                                        />
+                                    </form>
+                                    <Button style={{
+                                        marginRight: '4px',
+                                        backgroundColor: '#5bba73',
+                                        color: 'white',
+                                        width: '20%'
+                                    }} onClick={this.addExSentence}>ADD</Button>
+                                </div>
                             </div>
-
                         </AccordionDetails>
                     </Accordion>
                     <Accordion>
@@ -425,14 +433,14 @@ class EditLesson extends Component {
                             {
                                 subText !== '' || subText !== null ?
                                     <div>
-                                        <div style={{padding: '0 5%'}}>
+                                        <div>
                                             Sub Heading: <br/>
                                             <textarea rows="3" input type="text"
                                                       defaultValue={this.state.subText.subHeading}
                                                       style={{width: '100%'}}
                                                       ref={input => this.subheading = input}/><br/>
                                             Content:
-                                            <textarea style={{overflowWrap: 'break-word'}} rows="5"
+                                            <textarea style={{overflowWrap: 'break-word'}} rows="5" cols="90"
                                                       className="edit-input" defaultValue={subText.content}
                                                       ref={input => this.subcontent = input}/>
                                             <br/><br/>
@@ -454,15 +462,16 @@ class EditLesson extends Component {
                         <AccordionDetails>
                             <div>
                                 From Main Text:
-                                <textarea style={{overflowWrap: 'break-word'}} rows="7" className="edit-input"
+                                <textarea style={{overflowWrap: 'break-word'}} rows="7" cols="90" className="edit-input"
                                           defaultValue={newVocabMainTextStr}
                                           ref={input => this.state['sidebar-mainText'] = input}/>
                                 <br/>
+                                <br/>
                                 From Example Sentences:
-                                <textarea style={{overflowWrap: 'break-word'}} rows="7" className="edit-input"
+                                <textarea style={{overflowWrap: 'break-word'}} rows="7" cols="90" className="edit-input"
                                           defaultValue={newVocabExSentencesStr}
                                           ref={input => this.state['sidebar-exSent'] = input}/>
-                                <br/>
+                                <br/><br/>
                                 <Button style={{
                                     marginRight: '4px',
                                     backgroundColor: '#00284d',
@@ -494,26 +503,28 @@ class EditLesson extends Component {
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <div>
-                                            Word: <input type="text" defaultValue={busu.word} style={{width: '25%'}}
+                                            Word: <input cols="50" type="text" defaultValue={busu.word} style={{width: '100%'}}
                                                          ref={input => this.state[busu._id + 'word'] = input}/><br/>
                                             <br/>
-                                            Definition: <textarea input type="text" defaultValue={busu.def}
-                                                                  style={{width: '25%'}}
+                                            Definition: <textarea cols="50" type="text" defaultValue={busu.def}
+                                                                  style={{width: '100%'}}
                                                                   ref={input => this.state[busu._id + 'def'] = input}/><br/>
                                             <br/>
-                                            Busu: <textarea input type="text" defaultValue={busu.busu}
-                                                            style={{width: '25%'}}
+                                            Busu: <input cols="50" type="text" defaultValue={busu.busu}
+                                                            style={{width: '100%'}}
                                                             ref={input => this.state[busu._id + 'busu'] = input}/><br/>
                                             <br/>
-                                            Description: <textarea rows="7" input type="text"
+                                            Description: <textarea rows="7" cols="50" input type="text"
                                                                    defaultValue={busu.description}
                                                                    style={{width: '100%'}}
                                                                    ref={input => this.state[busu._id + 'desc'] = input}/><br/>
                                             <br/>
                                             Examples:
                                             <textarea name="main-text" style={{overflowWrap: 'break-word'}}
-                                                      defaultValue={str} rows="7" className="edit-input"
+                                                      defaultValue={str} rows="7" cols="50" className="edit-input"
                                                       ref={input => this.state[busu._id] = input}/>
+                                            <br/>
+                                            <br/>
                                             <Button style={{
                                                 marginRight: '4px',
                                                 backgroundColor: '#00284d',
@@ -576,7 +587,7 @@ class EditLesson extends Component {
                                                                   ref={input => this.state[phonetic._id + 'pronunciation'] = input}/><br/>
                                             Characters:
                                             <textarea name="characters" style={{overflowWrap: 'break-word'}}
-                                                      defaultValue={str} rows="7" className="edit-input"
+                                                      defaultValue={str} rows="7" cols="80" className="edit-input"
                                                       ref={input => this.state[phonetic._id] = input}/>
                                             {
                                                 phonetic.sub_pronunciation ?
@@ -587,10 +598,11 @@ class EditLesson extends Component {
                                                                                   ref={input => this.state[phonetic._id + 'sub-pronunciation'] = input}/><br/>
                                                         Sub-Characters:
                                                         <textarea name="main-text" style={{overflowWrap: 'break-word'}}
-                                                                  defaultValue={str2} rows="7" className="edit-input"
+                                                                  defaultValue={str2} rows="7" cols="90" className="edit-input"
                                                                   ref={input => this.state[phonetic._id + 'sub-characters'] = input}/>
                                                     </div> : ''
                                             }
+                                            <br/><br/>
                                             <Button style={{
                                                 marginRight: '4px',
                                                 backgroundColor: '#00284d',
