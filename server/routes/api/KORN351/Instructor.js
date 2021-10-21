@@ -9,7 +9,7 @@ router.put("/saveMainText", async (req, res) => {
     let myquery = { lesson: lesson };
     let newvalues = { $set: {text: mainText } };
 
-    db.get().collection('STORIES').updateOne(myquery, newvalues).then(() => {
+    db.get().collection('stories').findOneAndUpdate(myquery, newvalues).then(() => {
         res.status(200).send('success');
     });
 });
