@@ -29,6 +29,8 @@ class EditOkpyeon extends Component {
             sessionStorage.removeItem('reloadCount');
         }
 
+        this.setState({tabValue: 0});
+
         let lesson = parseInt(this.props.match.params.id);
         const {characters, phonetics, radicals} = this.props;
 

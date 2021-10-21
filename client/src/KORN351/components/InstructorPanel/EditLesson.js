@@ -37,6 +37,8 @@ class EditLesson extends Component {
     }
 
     componentDidMount() {
+        this.setState({tabValue: 0});
+
         let lesson = this.props.match.params.id;
         let mainText = '';
         let subText = '';
@@ -138,7 +140,7 @@ class EditLesson extends Component {
 
     handleMainTextChange = event => {
         this.setState({
-            subText: event.target.value
+            mainText: event.target.value
         });
     };
 
