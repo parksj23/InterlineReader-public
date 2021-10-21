@@ -14,6 +14,17 @@ router.get("/getCharacters", async (req, res) => {
 router.get("/getRadicals", (req, res) => {
     db.get().collection('RADICALS').find({}).toArray()
         .then((result) => {
+            console.log('getRadicals', result);
+            res.json(result);
+        }).catch(() => {
+        res.status(400).send('An error occurred in the database.');
+    });
+});
+
+router.get("/getNewBusu", (req, res) => {
+    db.get().collection('NEW_BUSU').find({}).toArray()
+        .then((result) => {
+            console.log('getNewBusu', result);
             res.json(result);
         }).catch(() => {
         res.status(400).send('An error occurred in the database.');

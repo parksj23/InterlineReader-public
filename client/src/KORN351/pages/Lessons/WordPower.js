@@ -103,12 +103,14 @@ class WordPower extends Component {
         this.setState({showLoading: true});
         this.setState({examplesTabValue: 0});
         this.setState({clickedWord: {id: "null"}});
+        this.setState({clickedWordTab: null});
         console.log("omw to get wordpower data");
         this.getWordPowerYemunData(event.currentTarget.id);
     }
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
+        this.setState({examplesTabValue: 0});
         console.log(event.currentTarget);
     }
 
@@ -151,9 +153,10 @@ class WordPower extends Component {
                                         wrapped
                                     >
                                         {newHanja.map((hanjaTab) => {
+                                            let tabId = hanjaTab.hanja.replace(/\s/g, '').trim();
                                             return (
                                                 <Tab
-                                                    id={hanjaTab.hanja}
+                                                    id={tabId}
                                                     label={
                                                         <React.Fragment>
                                                             {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
@@ -174,7 +177,7 @@ class WordPower extends Component {
                                 </Grid>
                             ) : (
                                 newHanja.map((char, idx) => {
-                                    if (this.state.clickedHanja.id === char.hanja) {
+                                    if (this.state.clickedHanja.id === char.hanja.replace(/\s/g, '').trim()) {
                                         return (
                                             <Grid item xs={12} className="word-power-grid-card" key={idx}>
                                                 <Card variant="outlined" className="word-power-card">
@@ -185,7 +188,7 @@ class WordPower extends Component {
                                                                 &nbsp;&nbsp; {char.meaning}
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
-                                                                부수: {char.radical} ({char.primaryHoonMeaning}
+                                                                부수: {char.radical} ({char.primaryHoonMeaning} &nbsp;
                                                                 <i>{char.additionalHoonMeaning}</i>)
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
@@ -195,36 +198,46 @@ class WordPower extends Component {
                                                             <Typography>
                                                                 <b><i>Select a word:</i></b>
                                                             </Typography>
-                                                            <Tabs
-                                                                value={this.state.clickedWordTab}
-                                                                onChange={this.handleOnClickWord}
-                                                                indicatorColor="secondary"
-                                                                textColor="primary"
-                                                                centered
-                                                                style={{padding: '1%'}}
-                                                                orientation="vertical"
-                                                                key={"Tab" + this.state.clickedWordTab}
-                                                                wrapped
-                                                            >
-                                                                {this.state.wordPowerData.filter((item) => {
-                                                                    if (!item.hanqca.includes(char.hanja)) {
-                                                                        return false;
-                                                                    }
-                                                                    return true;
-                                                                }).map((wordTab, idx) => {
-                                                                    return (
-                                                                        <Tab
-                                                                            id={wordTab.hanqca + wordTab.hankul + wordTab.englishGloss}
-                                                                            label={
-                                                                                <React.Fragment>
-                                                                                    {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
-                                                                                    {wordTab.englishGloss}
-                                                                                </React.Fragment>
-                                                                            }
-                                                                        />
-                                                                    )
-                                                                })}
-                                                            </Tabs>
+                                                            {this.state.wordPowerData.length === 0 ? (
+                                                                <Grid item xs={12}>
+                                                                    <br/>
+                                                                    <br/>
+                                                                    <Typography className="no-data">
+                                                                        No data available.
+                                                                    </Typography>
+                                                                </Grid>
+                                                            ) : (
+                                                                <Tabs
+                                                                    value={this.state.clickedWordTab}
+                                                                    onChange={this.handleOnClickWord}
+                                                                    indicatorColor="secondary"
+                                                                    textColor="primary"
+                                                                    centered
+                                                                    style={{padding: '1%'}}
+                                                                    orientation="vertical"
+                                                                    key={"Tab" + this.state.clickedWordTab}
+                                                                    wrapped
+                                                                >
+                                                                    {this.state.wordPowerData.filter((item) => {
+                                                                        if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
+                                                                            return false;
+                                                                        }
+                                                                        return true;
+                                                                    }).map((wordTab, idx) => {
+                                                                        return (
+                                                                            <Tab
+                                                                                id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                label={
+                                                                                    <React.Fragment>
+                                                                                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
+                                                                                        {wordTab.englishGloss}
+                                                                                    </React.Fragment>
+                                                                                }
+                                                                            />
+                                                                        )
+                                                                    })}
+                                                                </Tabs>
+                                                            )}
                                                         </div>
                                                     </CardContent>
                                                 </Card>
@@ -248,16 +261,26 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 0 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.hanqca)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
+                                                                if (clickedWordId[0] !== i.hanqca) {
                                                                     return false;
                                                                 }
                                                                 return true;
                                                             }).map((filteredItem, idx) => {
+                                                                if (filteredItem.examples.length === 0) {
+                                                                    return (
+                                                                        <div className="no-data">
+                                                                            <Typography>
+                                                                                예문이 없습니다.
+                                                                            </Typography>
+                                                                        </div>
+                                                                    )
+                                                                }
                                                                 return (
                                                                     <div key={idx}>
                                                                         <ol>
@@ -282,12 +305,13 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 1 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.hanqca)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
+                                                                if (clickedWordId[0] !== i.hanqca) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -316,12 +340,13 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 2 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.hankul)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
+                                                                if (clickedWordId[1] !== i.hankul) {
                                                                     return false;
                                                                 }
                                                                 return true;
@@ -350,12 +375,13 @@ class WordPower extends Component {
                                                         {this.state.examplesTabValue === 3 &&
                                                         <div>
                                                             {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja)) {
+                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
                                                                 }
                                                                 return true;
                                                             }).filter((i) => {
-                                                                if (!this.state.clickedWord.id.includes(i.englishGloss)) {
+                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
+                                                                if (clickedWordId[2] !== i.englishGloss) {
                                                                     return false;
                                                                 }
                                                                 return true;

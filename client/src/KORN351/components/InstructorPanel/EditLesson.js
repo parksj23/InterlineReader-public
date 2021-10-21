@@ -37,13 +37,7 @@ class EditLesson extends Component {
     }
 
     componentDidMount() {
-        // const reloadCount = sessionStorage.getItem('reloadCount');
-        // if(reloadCount < 2) {
-        //     sessionStorage.setItem('reloadCount', String(reloadCount + 1));
-        //     window.location.reload();
-        // } else {
-        //     sessionStorage.removeItem('reloadCount');
-        // }
+        this.setState({tabValue: 0});
 
         let lesson = this.props.match.params.id;
         let mainText = '';
@@ -93,7 +87,7 @@ class EditLesson extends Component {
             this.props.getPhonetics().then(() => {
 
                     let temp = this.props.phonetics.filter(phonetic => {
-                        return phonetic.lesson.toString() === lesson
+                        return phonetic.lesson || "".toString() === lesson
                     });
                     this.setState({
                         phonetics: temp
@@ -146,7 +140,7 @@ class EditLesson extends Component {
 
     handleMainTextChange = event => {
         this.setState({
-            subText: event.target.value
+            mainText: event.target.value
         });
     };
 
@@ -288,14 +282,17 @@ class EditLesson extends Component {
         } = this.state;
 
         let newVocabMainTextStr = '';
-        newVocabMainText.forEach(vocab => {
-            newVocabMainTextStr += vocab.kor + ' : ' + vocab.eng + '\n';
-        });
-
+        if (newVocabMainText) {
+            newVocabMainText.forEach(vocab => {
+                newVocabMainTextStr += vocab.kor + ' : ' + vocab.eng + '\n';
+            });
+        }
         let newVocabExSentencesStr = '';
-        newVocabExampleSentences.forEach(vocab => {
-            newVocabExSentencesStr += vocab.kor + ' : ' + vocab.eng + '\n';
-        });
+        if (newVocabExampleSentences) {
+            newVocabExampleSentences.forEach(vocab => {
+                newVocabExSentencesStr += vocab.kor + ' : ' + vocab.eng + '\n';
+            });
+        }
 
         return (
             <div className="edit-lesson-container">
@@ -330,7 +327,7 @@ class EditLesson extends Component {
                         <AccordionDetails>
                             <div>
                                 <textarea name="main-text" style={{width: "100%", overflowWrap: 'break-word'}}
-                                          value={this.state.mainText} rows="7" className="edit-input"
+                                          defaultValue={this.state.mainText} rows="7" cols="90" className="edit-input"
                                           onChange={this.handleMainTextChange}/>
                                 <Button style={{
                                     marginRight: '4px',

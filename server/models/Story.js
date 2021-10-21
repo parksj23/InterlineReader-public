@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const StorySchema = new Schema({
 	text: { type: String },
+    title: { type: String },
 	koreanText: { type: String },
     lesson: { type: String },
     others: {

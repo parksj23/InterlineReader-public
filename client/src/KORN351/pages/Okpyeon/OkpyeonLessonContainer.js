@@ -4,7 +4,8 @@ import HanziWriter from 'hanzi-writer';
 import LessonFilterTable from "../../components/Okpyeon/LessonFilterTable/LessonFilterTable";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../../actions/KORN351/Okpyeon';
+import {getPhonetics} from '../../../actions/KORN351/Okpyeon';
+import {getNewHanja} from "../../../actions/KORN351/Lessons";
 
 class DictionaryLessonContainer extends Component {
     constructor() {
@@ -24,8 +25,8 @@ class DictionaryLessonContainer extends Component {
     }
 
     componentDidMount() {
-        if (this.props.characters.length === 0)
-            this.props.getCharacters();
+        if (this.props.newHanja.length === 0)
+            this.props.getNewHanja();
         if (this.props.phonetics.length === 0)
             this.props.getPhonetics();
     }
@@ -41,7 +42,7 @@ class DictionaryLessonContainer extends Component {
 
     selectPhonetic = phonetic => {
         this.setState({ phonetic: phonetic});
-        let temp = this.props.characters.filter(char => {
+        let temp = this.props.newHanja.filter(char => {
             return phonetic.phonetic === char.hanja
         });
         this.showCharacterAnimation(phonetic.phonetic, temp);
@@ -56,7 +57,7 @@ class DictionaryLessonContainer extends Component {
             showOutline: true
         }).loopCharacterAnimation();
 
-        if (char !== undefined)
+        if (char)
             this.setState({
                 radical: char.radical,
                 radicalStrokeCount: char.radicalStrokeCount,
@@ -83,27 +84,14 @@ class DictionaryLessonContainer extends Component {
                     </span>
                     <br/>
                     <span id='result-info'>
-                        {
-                            radical === '' || radical === undefined? '' :
-                            <div>
-                                <div>
-                                    <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>
-                                        Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}
-                                    </p>
-                                    <p style={{padding: '0 0 5% 10%'}}><b>
-                                        Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === ''? '' : '('+radicalHangul+')'}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
-                                </div>
-                            </div>
-                        }
+                        <p><b>Radical:</b>&nbsp;&nbsp; {radical} {!radicalHangul? '' : '('+radicalHangul+')'}</p>
+                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
+                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
                         {
                             phonetic === '' || phonetic === undefined? '' :
                                 <div>
@@ -135,9 +123,9 @@ class DictionaryLessonContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        characters : state.okpyeon.characters,
+        newHanja : state.lessons.newHanja,
         phonetics : state.okpyeon.phonetics
     };
 };
 
-export default connect(mapStateToProps, {getCharacters, getPhonetics})(DictionaryLessonContainer);
+export default connect(mapStateToProps, {getNewHanja, getPhonetics})(DictionaryLessonContainer);

@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './OkpyeonRadicalContainer.css';
 import RadicalFilterTable from '../../components/Okpyeon/RadicalFilterTable/RadicalFilterTable';
 import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../../actions/KORN351/Okpyeon';
+import {getPhonetics} from '../../../actions/KORN351/Okpyeon';
+import {getNewHanja} from "../../../actions/KORN351/Lessons";
 
 class DictionaryRadicalContainer extends Component {
     constructor() {
@@ -26,15 +27,15 @@ class DictionaryRadicalContainer extends Component {
     }
 
     componentDidMount() {
-        if (this.props.characters.length === 0)
-            this.props.getCharacters();
+        if (this.props.newHanja.length === 0)
+            this.props.getNewHanja();
         if (this.props.phonetics.length === 0)
             this.props.getPhonetics();
     }
 
     filterResult = radical => {
         let temp = [];
-        this.props.characters.forEach(char => {
+        this.props.newHanja.forEach(char => {
             if (char.radical === radical) temp.push(char)
         });
         this.setState({
@@ -46,8 +47,8 @@ class DictionaryRadicalContainer extends Component {
         let temp = this.props.phonetics.filter(ph => {
             return ph.phonetic === char.phonetic
         });
-        let temp2 = temp.length === 1 ? temp[0] : '';
-        this.setState({phonetic: temp2});
+        let temp2 = temp.length === 1? temp[0] : '';
+        this.setState({ phonetic: temp2});
         this.showCharacterAnimation(hanja, char);
     };
 
@@ -75,20 +76,8 @@ class DictionaryRadicalContainer extends Component {
     };
 
     render() {
-        const {
-            filteredResult,
-            radical,
-            radicalStrokeCount,
-            totalStrokeCount,
-            characterStrokeCount,
-            meaning,
-            hoonEum,
-            primaryHoonMeaning,
-            additionalHoonMeaning,
-            radicalHangul,
-            phonetic
-        } = this.state;
-        return (
+        const {filteredResult, radical, radicalStrokeCount, totalStrokeCount, characterStrokeCount, meaning, hoonEum, primaryHoonMeaning, additionalHoonMeaning, radicalHangul, phonetic} = this.state;
+        return(
 
             <div className="okpyeon-radical-container">
                 <div className="radical-filter-container">
@@ -100,11 +89,8 @@ class DictionaryRadicalContainer extends Component {
                         <p>2) Select a character that uses that radical</p>
                         <Grid container>
                             {
-                                filteredResult.map(char => {
-                                    return <Grid item xs={3} className="character-box"
-                                                 onClick={() => this.selectCharacter(char.hanja, char)}> <span
-                                        className="hanja">{char.hanja}</span><span
-                                        className="hangul">{char.hoonEum}</span> </Grid>
+                                (filteredResult || []).map(char => {
+                                    return <Grid key={char} item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
                                 })
                             }
                         </Grid>
@@ -116,46 +102,30 @@ class DictionaryRadicalContainer extends Component {
                         <div id="character-target-div"/>
                     </span>
                     <br/>
-                    <span id='result-info'>
-                        <div>
-                                <div>
-                                    <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>
-                                        Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}
-                                    </p>
-                                    <p style={{padding: '0 0 5% 10%'}}><b>
-                                        Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' ? '' : '(' + radicalHangul + ')'}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
-                                </div>
-                            </div>
+                    <div id='result-info'>
+                        <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' || radicalHangul === undefined? '' : '('+radicalHangul+')'}</p>
+                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
+                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
                         {
-                            phonetic === '' || phonetic === undefined ? '' :
+                            phonetic === '' || phonetic === undefined? '' :
                                 <div>
                                     <br/>
-                                    <Divider/>
+                                    <Divider />
                                     <br/>
                                     <h3>Phonetic:</h3>
                                     <br/>
-                                    <p>This character contains the phonetic element “ {phonetic.phonetic} ”. The
-                                        phonetic element “ {phonetic.phonetic} ” indicates the following
-                                        pronunciation(s):</p>
+                                    <p>This character contains the phonetic element “ {phonetic.phonetic} ”. The phonetic element “ {phonetic.phonetic} ” indicates the following pronunciation(s):</p>
                                     <b>&nbsp;&nbsp;&nbsp;&nbsp;{phonetic.pronunciation}</b>
-                                    <p>In the following Chinese character(s), the phonetic element
-                                        “ {phonetic.phonetic} ” indicates the
-                                        pronunciation {phonetic.pronunciation} :</p>
-                                    {phonetic.characters.map(charac => {
-                                        return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>
-                                    })}
+                                    <p>In the following Chinese character(s), the phonetic element “ {phonetic.phonetic} ” indicates the pronunciation  {phonetic.pronunciation} :</p>
+                                    {((phonetic || {}).characters || []).map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                 </div>
                         }
-                    </span>
+                    </div>
                 </div>
             </div>
         )
@@ -164,9 +134,9 @@ class DictionaryRadicalContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        characters: state.okpyeon.characters,
-        phonetics: state.okpyeon.phonetics
+        newHanja : state.lessons.newHanja,
+        phonetics : state.okpyeon.phonetics
     };
 };
 
-export default connect(mapStateToProps, {getCharacters, getPhonetics})(DictionaryRadicalContainer);
+export default connect(mapStateToProps, {getNewHanja, getPhonetics})(DictionaryRadicalContainer);

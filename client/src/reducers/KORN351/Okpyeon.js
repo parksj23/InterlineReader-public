@@ -2,13 +2,15 @@ import {
     GET_CHARACTERS,
     GET_RADICALS,
     GET_PHONETICS,
-    GET_EUM_FILTERS
+    GET_EUM_FILTERS,
+    GET_NEW_BUSU
 } from '../../constants/351-action-types';
 
 const initialState = {
     characters: [],
     radicals: [],
     phonetics: [],
+    newBusu: [],
     eumFilters: []
 };
 
@@ -23,6 +25,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 radicals: action.payload
+            };
+        case GET_NEW_BUSU:
+            return {
+                ...state,
+                newBusu: action.payload
             };
         case GET_PHONETICS:
             return {
