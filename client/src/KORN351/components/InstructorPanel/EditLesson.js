@@ -32,12 +32,14 @@ class EditLesson extends Component {
             phonetics: [],
             newHanjaCombos: [],
             newVocabMainText: [],
-            newVocabExampleSentences: []
+            newVocabExampleSentences: [],
+            newExampleSent: {num: [], sentences: []}
         };
     }
 
     componentDidMount() {
         this.setState({tabValue: 0});
+        this.setState({newExampleSent: {num: [], sentences: []}});
 
         let lesson = this.props.match.params.id;
         let mainText = '';
@@ -171,6 +173,23 @@ class EditLesson extends Component {
 
         this.props.saveExampleSentence(this.state.lesson, exampleSentences);
     };
+
+    handleNewExSentNumChange = (e) => {
+        const {value, name} = e.target;
+        this.setState({num: value});
+    }
+
+    handleNewExSentChange = (e) => {
+        const {value, name} = e.target;
+        this.setState({sentences: value});
+    }
+
+    addExSentence = (e) => {
+        e.preventDefault();
+        let newExampleSent = {num: this.state.num, sentences: this.state.sentences};
+        console.log(newExampleSent);
+        // this.props.addExampleSentence(this.state.lesson, exampleSentences);
+    }
 
     saveNewBusu = (id) => {
         let characters = this.state[id].value.split("\n");
@@ -368,6 +387,32 @@ class EditLesson extends Component {
                                         <br/><br/>
                                     </div>
                                 })}
+                                <form>
+                                    <br/>
+                                    <p>Add new example sentences</p>
+                                    <textarea
+                                        name="new-example-num"
+                                        id="new-example-num"
+                                        onChange={this.handleNewExSentNumChange}
+                                        value={this.state.num}
+                                        type="text"
+                                        placeholder="Enter number for example sentences."
+                                    />
+                                    <br/>
+                                    <br/>
+
+                                    <textarea
+                                        name="new-example-sentences"
+                                        id="new-example-sentences"
+                                        onChange={this.handleNewExSentChange}
+                                        defaultValue={this.state.sentences}
+                                        type="text"
+                                        placeholder="Enter new example sentences."
+                                    />
+                                </form>
+                                <br/>
+                                <br/>
+                                <button onClick={this.addExSentence}>ADD</button>
                             </div>
 
                         </AccordionDetails>
