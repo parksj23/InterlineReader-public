@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
     GET_CHARACTERS,
+    GET_NEW_BUSU,
     GET_RADICALS,
     GET_PHONETICS,
     GET_EUM_FILTERS
@@ -23,6 +24,18 @@ export const getRadicals = () => dispatch => {
         axios.get("/api/okpyeon/getRadicals").then(resp => {
             dispatch({
                 type: GET_RADICALS,
+                payload: resp.data
+            });
+            resolve();
+        })
+    })
+};
+
+export const getNewBusu = () => dispatch => {
+    return new Promise((resolve, reject) => {
+        axios.get("/api/okpyeon/getNewBusu").then(resp => {
+            dispatch({
+                type: GET_NEW_BUSU,
                 payload: resp.data
             });
             resolve();

@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import HanziWriter from "hanzi-writer";
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 import {connect} from "react-redux";
-import {getRadicals} from "../../../actions/KORN351/Okpyeon";
+import {getNewBusu} from "../../../actions/KORN351/Okpyeon";
 import { withRouter } from 'react-router-dom';
 import Divider from "@material-ui/core/Divider";
 
@@ -29,7 +29,7 @@ class NewBusuContainer extends Component {
         }
 
       if (this.props.newBusu.length === 0 || this.props.newBusu === undefined) {
-          this.props.getRadicals().then(() => {
+          this.props.getNewBusu().then(() => {
                   const currLesson = this.props.match.params.lesson;
 
                   let temp = this.props.newBusu.filter(word => {
@@ -70,7 +70,6 @@ class NewBusuContainer extends Component {
 
     render() {
       const {newBusu} = this.state;
-        console.log(this.state.newBusu);
         return (
             <div style={{ display: "flex" }}>
                 <div className="new-hanja">
@@ -132,8 +131,8 @@ class NewBusuContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      newBusu : state.okpyeon.radicals
+      newBusu : state.okpyeon.newBusu
   };
 };
 
-export default withRouter(connect(mapStateToProps, {getRadicals})(NewBusuContainer));
+export default withRouter(connect(mapStateToProps, {getNewBusu})(NewBusuContainer));

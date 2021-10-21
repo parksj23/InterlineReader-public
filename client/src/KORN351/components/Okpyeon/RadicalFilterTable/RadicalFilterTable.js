@@ -99,7 +99,7 @@ function RadicalFilterTable(props) {
             <TabPanel value={value} index={0} className="tab-panel">
                 <Grid container>
                     {props.radicals.map(char => {
-                        return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                        return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                             <span className="hanja">{char.radical}</span>
                             <span className="hangul">{char.radicalHangul}</span>
                         </Grid>
@@ -111,7 +111,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 1)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -122,7 +122,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 2)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -133,7 +133,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 3)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -144,7 +144,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 4)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -155,7 +155,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 5)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -166,7 +166,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 6)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -177,7 +177,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 7)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -188,7 +188,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 8)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -199,7 +199,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 9)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -210,7 +210,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 10)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -221,7 +221,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 11)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -232,7 +232,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 12)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -243,7 +243,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 13)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -254,7 +254,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 14)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -265,7 +265,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 15)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -276,7 +276,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 16)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>
@@ -287,7 +287,7 @@ function RadicalFilterTable(props) {
                 <Grid container>
                     {props.radicals.map(char => {
                         if (char.radicalStrokeCount === 17)
-                            return <Grid item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
+                            return <Grid key={char} item xs={4} className="character-box" onClick={() => props.filter(char.radical)}>
                                 <span className="hanja">{char.radical}</span>
                                 <span className="hangul">{char.radicalHangul}</span>
                             </Grid>

@@ -5,7 +5,8 @@ import HanziWriter from 'hanzi-writer';
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
 import {connect} from "react-redux";
-import {getCharacters, getPhonetics} from '../../../actions/KORN351/Okpyeon';
+import {getPhonetics} from '../../../actions/KORN351/Okpyeon';
+import {getNewHanja} from "../../../actions/KORN351/Lessons";
 
 class DictionaryRadicalContainer extends Component {
     constructor() {
@@ -26,15 +27,15 @@ class DictionaryRadicalContainer extends Component {
     }
 
     componentDidMount() {
-        if (this.props.characters.length === 0)
-            this.props.getCharacters();
+        if (this.props.newHanja.length === 0)
+            this.props.getNewHanja();
         if (this.props.phonetics.length === 0)
             this.props.getPhonetics();
     }
 
     filterResult = radical => {
         let temp = [];
-        this.props.characters.forEach(char => {
+        this.props.newHanja.forEach(char => {
             if (char.radical === radical) temp.push(char)
         });
         this.setState({
@@ -88,8 +89,8 @@ class DictionaryRadicalContainer extends Component {
                         <p>2) Select a character that uses that radical</p>
                         <Grid container>
                             {
-                                filteredResult.map(char => {
-                                    return <Grid item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
+                                (filteredResult || []).map(char => {
+                                    return <Grid key={char} item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
                                 })
                             }
                         </Grid>
@@ -101,7 +102,7 @@ class DictionaryRadicalContainer extends Component {
                         <div id="character-target-div"/>
                     </span>
                     <br/>
-                    <span id='result-info'>
+                    <div id='result-info'>
                         <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' || radicalHangul === undefined? '' : '('+radicalHangul+')'}</p>
                         <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
                         <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
@@ -121,10 +122,10 @@ class DictionaryRadicalContainer extends Component {
                                     <p>This character contains the phonetic element “ {phonetic.phonetic} ”. The phonetic element “ {phonetic.phonetic} ” indicates the following pronunciation(s):</p>
                                     <b>&nbsp;&nbsp;&nbsp;&nbsp;{phonetic.pronunciation}</b>
                                     <p>In the following Chinese character(s), the phonetic element “ {phonetic.phonetic} ” indicates the pronunciation  {phonetic.pronunciation} :</p>
-                                    {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
+                                    {((phonetic || {}).characters || []).map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                 </div>
                         }
-                    </span>
+                    </div>
                 </div>
             </div>
         )
@@ -133,9 +134,9 @@ class DictionaryRadicalContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        characters : state.okpyeon.characters,
+        newHanja : state.lessons.newHanja,
         phonetics : state.okpyeon.phonetics
     };
 };
 
-export default connect(mapStateToProps, {getCharacters, getPhonetics})(DictionaryRadicalContainer);
+export default connect(mapStateToProps, {getNewHanja, getPhonetics})(DictionaryRadicalContainer);
