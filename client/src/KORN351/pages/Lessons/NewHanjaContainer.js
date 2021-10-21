@@ -74,7 +74,7 @@ class NewHanjaContainer extends Component {
         return (
             <div style={{display: "flex"}}>
                 <div className="new-hanja">
-                    <h3 style={{paddingBottom: 10}}>New Hanja 새 한자</h3>
+                    <h3 style={{paddingBottom: 10}}>새 한자</h3>
                     <div>
                         <h4 style={{textAlign: 'left', width: "50%"}}>
                             제 {this.state.currentLesson} 과
