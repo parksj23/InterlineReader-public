@@ -22,3 +22,8 @@
 .new-hanja-con {
   display: grid;
 }
+
+.hanja-char svg {
+  width: 150px;
+  height: 150px;
+}
