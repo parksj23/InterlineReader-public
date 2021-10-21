@@ -12,6 +12,7 @@ const initialState = {
     subText: '',
     currentLesson: 1,
     exampleSentences: [],
+    title: '',
     newVocabulary: '',
     newHanjaCombos: [],
     aboutNewBusu: [],
@@ -28,7 +29,8 @@ export default (state = initialState, action) => {
                     mainText: action.payload.text,
                     currentLesson: action.payload.lesson,
                     subText: action.payload.others,
-                    exampleSentences: action.payload.exampleSentences
+                    exampleSentences: action.payload.exampleSentences,
+                    title: action.payload.title
                 });
         case GET_NEW_VOCABULARY:
             if (action.payload !== undefined)
