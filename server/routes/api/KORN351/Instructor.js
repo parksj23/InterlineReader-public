@@ -25,6 +25,28 @@ router.put("/saveExampleSentence", async (req, res) => {
     });
 });
 
+router.put("/addNewExampleSentence", async (req, res) => {
+    const {lesson, exSentences} = req.body.params;
+
+    let myquery = { lesson: lesson };
+    let newvalues = { $push: {exampleSentences:  exSentences } };
+
+    db.get().collection('STORIES').updateOne(myquery, newvalues).then(() => {
+        res.status(200).send('success');
+    });
+});
+
+router.put("/deleteExampleSentence", async (req, res) => {
+    const {lesson, id} = req.body.params;
+
+    let myquery = { lesson: lesson };
+    let pull = { $pull: { exampleSentences: { _id:  id } } };
+
+    db.get().collection('STORIES').updateOne(myquery, pull).then(() => {
+        res.status(200).send('success');
+    });
+});
+
 router.put("/saveOthers", (req, res, next) => {
     const {lesson, subHeading, content} = req.body.params;
 

@@ -5,6 +5,8 @@ import {getAboutNewBusu, getMainText, getNewHanjaCombos, getNewVocabulary} from 
 import {
     saveMainText,
     saveExampleSentence,
+    addNewExampleSentence,
+    deleteExampleSentence,
     saveOthers,
     saveAboutNewBusu,
     saveNewPhonetic,
@@ -184,11 +186,20 @@ class EditLesson extends Component {
         this.setState({sentences: value});
     }
 
-    addExSentence = (e) => {
-        e.preventDefault();
+    addNewExampleSentence = () => {
         let newExampleSent = {num: this.state.num, sentences: this.state.sentences};
-        console.log(newExampleSent);
-        // this.props.addExampleSentence(this.state.lesson, exampleSentences);
+        this.props.addNewExampleSentence(this.state.lesson, newExampleSent);
+        window.location.reload();
+    }
+
+    deleteExampleSentence = (id, num) => {
+        if (window.confirm("Are you sure you want to delete example sentence # " + num + " ?")) {
+            this.props.deleteExampleSentence(this.state.lesson, id);
+            alert("Example sentence #" + num + " has been deleted!");
+            window.location.reload();
+        } else {
+            alert("Example sentence #" + num + " has NOT been deleted.");
+        }
     }
 
     saveNewBusu = (id) => {
@@ -384,6 +395,12 @@ class EditLesson extends Component {
                                             color: 'white',
                                             width: '20%'
                                         }} onClick={() => this.saveExSentence(num.num)}>SAVE</Button>
+                                        <Button style={{
+                                            marginRight: '4px',
+                                            backgroundColor: '#f12433',
+                                            color: 'white',
+                                            width: '20%'
+                                        }} onClick={() => this.deleteExampleSentence(num._id, num.num)}>DELETE</Button>
                                         <br/><br/>
                                     </div>
                                 })}
@@ -391,7 +408,7 @@ class EditLesson extends Component {
                                 <div style={{padding: '0 5%'}}>
                                     <form>
                                         <br/>
-                                        <p>Add new example sentences</p>
+                                        <p><b>Add new example sentences</b></p>
                                         Example num: {""}
                                         <input
                                             name="new-example-num"
@@ -420,7 +437,7 @@ class EditLesson extends Component {
                                         backgroundColor: '#5bba73',
                                         color: 'white',
                                         width: '20%'
-                                    }} onClick={this.addExSentence}>ADD</Button>
+                                    }} onClick={this.addNewExampleSentence}>ADD</Button>
                                 </div>
                             </div>
                         </AccordionDetails>
@@ -702,6 +719,8 @@ const mapDispatchToProps =
         getAboutNewBusu,
         saveMainText,
         saveExampleSentence,
+        addNewExampleSentence,
+        deleteExampleSentence,
         saveOthers,
         saveAboutNewBusu,
         getPhonetics,

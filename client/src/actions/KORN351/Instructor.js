@@ -33,6 +33,26 @@ export const saveExampleSentence = (lesson, exSentences) => dispatch => {
     })
 };
 
+export const addNewExampleSentence = (lesson, exSentences) => dispatch => {
+    return new Promise((resolve, reject) => {
+        axios.put("/api/story/addNewExampleSentence", {params: {lesson: lesson, exSentences: exSentences}}).then(resp => {
+            alert("Success");
+            getMainText(lesson);
+            resolve();
+        })
+    })
+};
+
+export const deleteExampleSentence = (lesson, id) => dispatch => {
+    return new Promise((resolve, reject) => {
+        axios.put("/api/story/deleteExampleSentence", {params: {lesson: lesson, id: id}}).then(resp => {
+            // alert("Success");
+            getMainText(lesson);
+            resolve();
+        })
+    })
+};
+
 export const saveOthers = (lesson, subHeading, content) => dispatch => {
     return new Promise((resolve, reject) => {
         axios.put("/api/story/saveOthers", {params: {lesson: lesson, subHeading: subHeading, content: content}}).then(resp => {
