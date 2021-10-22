@@ -27,8 +27,7 @@ async function saveExampleSentence(req, res) {
 
 async function addNewExampleSentence(req, res) {
     const { lesson, exSentences } = req.body.params;
-    // const updatedStory = await Story.findOneAndUpdate({ lesson }, { exampleSentences: exSentences });
-    const updatedStory = await Story.updateOne({ lesson }, { $push: { exampleSentences:  exSentences } });
+    const updatedStory = await Story.updateOne({ lesson }, { $push: {exampleSentences:  exSentences } });
     return res.status(200).json(updatedStory);
 }
 

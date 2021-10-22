@@ -187,7 +187,13 @@ class EditLesson extends Component {
     }
 
     addNewExampleSentence = () => {
-        let newExampleSent = {num: this.state.num, sentences: this.state.sentences};
+        let exSentencesSplit = this.state.sentences.split(/\n/);
+        let exSentencesArray = [];
+        for (let row of exSentencesSplit) {
+            exSentencesArray.push(row);
+        }
+
+        let newExampleSent = {num: this.state.num, sentences: exSentencesArray};
         this.props.addNewExampleSentence(this.state.lesson, newExampleSent);
         window.location.reload();
     }
@@ -428,7 +434,7 @@ class EditLesson extends Component {
                                             onChange={this.handleNewExSentChange}
                                             defaultValue={this.state.sentences}
                                             type="text"
-                                            placeholder="Enter new example sentences."
+                                            placeholder="Press 'enter' after each line."
                                             style={{overflowWrap: 'break-word'}} rows="5" cols="60"
                                         />
                                     </form>
