@@ -13,7 +13,7 @@
     overflow-y: auto;
     height: 330px;
     width: 350px;
-    justify-content: center;
+    /*justify-content: center;*/
 }
 
 .no-data {
@@ -45,6 +45,14 @@
     width: 100%;
     overflow-x: auto;
     overflow-y: auto;
+}
+
+MuiTabs-flexContainer MuiTabs-flexContainerVertical {
+    align-items: flex-start;
+}
+
+MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary {
+    text-align: left;
 }
 
 @media screen and (max-width: 1100px) {

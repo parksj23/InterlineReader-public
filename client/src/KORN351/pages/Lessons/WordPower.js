@@ -11,6 +11,7 @@ import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
 import {CircularProgress, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
+import makeStyles from "@material-ui/core/styles/makeStyles";
 
 class WordPower extends Component {
     constructor(props) {
@@ -184,12 +185,10 @@ class WordPower extends Component {
                                                     <CardContent className="word-power-card-content">
                                                         <div className="word-power-card-div-1">
                                                             <Typography variant="h5" component="h2">
-                                                                {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]}) &nbsp;&nbsp; |
-                                                                &nbsp;&nbsp; {char.meaning}
+                                                                {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]})
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
-                                                                부수: {char.radical} ({char.primaryHoonMeaning} &nbsp;
-                                                                <i>{char.additionalHoonMeaning}</i>)
+                                                                부수: {char.radical} ({char.primaryHoonMeaning}
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
                                                         </div>
@@ -212,7 +211,7 @@ class WordPower extends Component {
                                                                     onChange={this.handleOnClickWord}
                                                                     indicatorColor="secondary"
                                                                     textColor="primary"
-                                                                    centered
+                                                                    // centered
                                                                     style={{padding: '1%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
@@ -228,10 +227,14 @@ class WordPower extends Component {
                                                                             <Tab
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    <React.Fragment>
-                                                                                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
+                                                                                    <div style={{textAlign: 'left'}}>
+                                                                                        {wordTab.hanqca}({wordTab.hankul}) <br/>
                                                                                         {wordTab.englishGloss}
-                                                                                    </React.Fragment>
+                                                                                    </div>
+                                                                                    // <React.Fragment>
+                                                                                    //     {wordTab.hanqca}({wordTab.hankul}) <br/>
+                                                                                    //     {wordTab.englishGloss}
+                                                                                    // </React.Fragment>
                                                                                 }
                                                                             />
                                                                         )
