@@ -21,7 +21,8 @@ class WordPower extends Component {
             newHanja: [],
             currentLesson: this.props.match.params.lesson,
             wordPowerData: [],
-            showLoading: false
+            showLoading: false,
+            yemunCount: 1,
         }
     }
 
@@ -97,13 +98,13 @@ class WordPower extends Component {
     }
 
     handleOnChangeExamplesTab = (event, value) => {
-        this.setState({examplesTabValue: value});
+        this.setState({examplesTabValue: value, yemunCount: 1});
     }
 
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
         this.setState({showLoading: true});
-        this.setState({examplesTabValue: 0});
+        this.setState({examplesTabValue: 0, yemunCount: 1});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
         console.log("omw to get wordpower data");
@@ -112,8 +113,13 @@ class WordPower extends Component {
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
-        this.setState({examplesTabValue: 0});
+        this.setState({examplesTabValue: 0, yemunCount: 1});
         console.log(event.currentTarget);
+    }
+
+    handleClickMoreYemun = (event, value) => {
+        this.setState({yemunCount: this.state.yemunCount + 1});
+        console.log(this.state.yemunCount);
     }
 
     render() {
@@ -254,15 +260,21 @@ class WordPower extends Component {
                                                                 // style={{padding: '2%'}}
                                                                 // variant="contained"
                                                             >
-                                                                {/*<Tab label="간단한 한자 예문"/>*/}
-                                                                {/*<Tab label="완벽한 한자 예문"/>*/}
-                                                                {/*<Tab label="한글 예문"/>*/}
-                                                                {/*<Tab label="영어 번역"/>*/}
-                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 0)}>간단한 한자 예문</Button>
-                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 1)}>완벽한 한자 예문</Button>
-                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 2)}>한글 예문</Button>
-                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 3)}>영어 번역</Button>
+                                                                <Button value={this.state.examplesTabValue}
+                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 0)}>간단한
+                                                                    한자 예문</Button>
+                                                                <Button value={this.state.examplesTabValue}
+                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 1)}>완벽한
+                                                                    한자 예문</Button>
+                                                                <Button value={this.state.examplesTabValue}
+                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 2)}>한글
+                                                                    예문</Button>
+                                                                <Button value={this.state.examplesTabValue}
+                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 3)}>영어
+                                                                    번역</Button>
                                                             </ButtonGroup>
+                                                            <Button style={{alignSelf: "center"}}
+                                                                    onClick={this.handleClickMoreYemun}>More 예문</Button>
                                                         </div>
                                                         {this.state.examplesTabValue === 0 &&
                                                         <div className="wordTab-results-div">
@@ -292,12 +304,18 @@ class WordPower extends Component {
                                                                         <ol>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
+                                                                                        idx < this.state.yemunCount &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.simpleHanqca}
                                                                                             </li>
-                                                                                            <br/>
                                                                                         </div>
+                                                                                        // <div key={idx}>
+                                                                                        //     <li>
+                                                                                        //         {sentence.simpleHanqca}
+                                                                                        //     </li>
+                                                                                        //     <br/>
+                                                                                        // </div>
                                                                                     )
                                                                                 }
                                                                             )}
@@ -327,12 +345,18 @@ class WordPower extends Component {
                                                                         <ol>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
+                                                                                        idx < this.state.yemunCount &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.hanqcaizedSentence}
                                                                                             </li>
-                                                                                            <br/>
                                                                                         </div>
+                                                                                        // <div key={idx}>
+                                                                                        //     <li>
+                                                                                        //         {sentence.hanqcaizedSentence}
+                                                                                        //     </li>
+                                                                                        //     <br/>
+                                                                                        // </div>
                                                                                     )
                                                                                 }
                                                                             )}
@@ -362,12 +386,18 @@ class WordPower extends Component {
                                                                         <ol>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
+                                                                                        idx < this.state.yemunCount &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.koreanSentence}
                                                                                             </li>
-                                                                                            <br/>
                                                                                         </div>
+                                                                                        // <div key={idx}>
+                                                                                        //     <li>
+                                                                                        //         {sentence.koreanSentence}
+                                                                                        //     </li>
+                                                                                        //     <br/>
+                                                                                        // </div>
                                                                                     )
                                                                                 }
                                                                             )}
