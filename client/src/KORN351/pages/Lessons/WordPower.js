@@ -195,7 +195,7 @@ class WordPower extends Component {
                                                                 {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]})
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
-                                                                부수: {char.radical} ({char.primaryHoonMeaning}
+                                                                부수: {char.radical} ({char.radicalHangul})
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
                                                         </div>
