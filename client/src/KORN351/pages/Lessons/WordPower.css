@@ -39,6 +39,7 @@
     padding-left: 35%;
     color: tomato;
     font-style: italic;
+    /*font-weight: bold;*/
 }
 
 .word-power-card-content {
@@ -50,7 +51,7 @@
 
 .word-power-card-left {
     /*height: 200px;*/
-    padding: 1%;
+    /*padding: 1%;*/
     width: 100%;
 }
 
@@ -73,7 +74,7 @@
 
 .wordTab-results-div {
     /*align-self: center;*/
-    width: 60%;
+    width: 70%;
 }
 
 /*MuiTabs-flexContainer MuiTabs-flexContainerVertical {*/

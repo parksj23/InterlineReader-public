@@ -119,7 +119,6 @@ class WordPower extends Component {
 
     handleClickMoreYemun = (event, value) => {
         this.setState({yemunCount: this.state.yemunCount + 1});
-        console.log(this.state.yemunCount);
     }
 
     render() {
@@ -234,10 +233,15 @@ class WordPower extends Component {
                                                                             <Tab
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    <React.Fragment>
-                                                                                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
-                                                                                        {wordTab.englishGloss}
-                                                                                    </React.Fragment>
+                                                                                    <div>
+                                                                                        <React.Fragment>
+                                                                                            {wordTab.hanqca}({wordTab.hankul})
+                                                                                        </React.Fragment>
+                                                                                        <br/>
+                                                                                        <React.Fragment>
+                                                                                            {wordTab.englishGloss}
+                                                                                        </React.Fragment>
+                                                                                    </div>
                                                                                 }
                                                                             />
                                                                         )
@@ -272,9 +276,9 @@ class WordPower extends Component {
                                                                 <Button value={this.state.examplesTabValue}
                                                                         onClick={(e) => this.handleOnChangeExamplesTab(e, 3)}>영어
                                                                     번역</Button>
+                                                                <Button variant="contained"
+                                                                        onClick={this.handleClickMoreYemun}>다음 예문</Button>
                                                             </ButtonGroup>
-                                                            <Button style={{alignSelf: "center"}}
-                                                                    onClick={this.handleClickMoreYemun}>More 예문</Button>
                                                         </div>
                                                         {this.state.examplesTabValue === 0 &&
                                                         <div className="wordTab-results-div">
@@ -302,20 +306,14 @@ class WordPower extends Component {
                                                                 return (
                                                                     <div key={idx}>
                                                                         <ul>
-                                                                            {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                            {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
-                                                                                        idx === this.state.yemunCount &&
+                                                                                        (idx === this.state.yemunCount - 1) &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.simpleHanqca}
                                                                                             </li>
                                                                                         </div>
-                                                                                        // <div key={idx}>
-                                                                                        //     <li>
-                                                                                        //         {sentence.simpleHanqca}
-                                                                                        //     </li>
-                                                                                        //     <br/>
-                                                                                        // </div>
                                                                                     )
                                                                                 }
                                                                             )}
@@ -345,18 +343,12 @@ class WordPower extends Component {
                                                                         <ul>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
-                                                                                        idx === this.state.yemunCount &&
+                                                                                        (idx === this.state.yemunCount - 1) &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.hanqcaizedSentence}
                                                                                             </li>
                                                                                         </div>
-                                                                                        // <div key={idx}>
-                                                                                        //     <li>
-                                                                                        //         {sentence.hanqcaizedSentence}
-                                                                                        //     </li>
-                                                                                        //     <br/>
-                                                                                        // </div>
                                                                                     )
                                                                                 }
                                                                             )}
@@ -386,18 +378,12 @@ class WordPower extends Component {
                                                                         <ul>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
-                                                                                        idx === this.state.yemunCount &&
+                                                                                        (idx === this.state.yemunCount - 1) &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.koreanSentence}
                                                                                             </li>
                                                                                         </div>
-                                                                                        // <div key={idx}>
-                                                                                        //     <li>
-                                                                                        //         {sentence.koreanSentence}
-                                                                                        //     </li>
-                                                                                        //     <br/>
-                                                                                        // </div>
                                                                                     )
                                                                                 }
                                                                             )}
