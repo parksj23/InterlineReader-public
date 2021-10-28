@@ -11,7 +11,6 @@ import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
 import {ButtonGroup, CircularProgress, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
-import makeStyles from "@material-ui/core/styles/makeStyles";
 import Button from "@material-ui/core/Button";
 
 class WordPower extends Component {
@@ -23,6 +22,7 @@ class WordPower extends Component {
             wordPowerData: [],
             showLoading: false,
             yemunCount: 1,
+            examplesTabValue: 0
         }
     }
 
@@ -264,20 +264,35 @@ class WordPower extends Component {
                                                                 // style={{padding: '2%'}}
                                                                 // variant="contained"
                                                             >
-                                                                <Button value={this.state.examplesTabValue}
-                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 0)}>간단한
-                                                                    한자 예문</Button>
-                                                                <Button value={this.state.examplesTabValue}
-                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 1)}>완벽한
-                                                                    한자 예문</Button>
-                                                                <Button value={this.state.examplesTabValue}
-                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 2)}>한글
-                                                                    예문</Button>
-                                                                <Button value={this.state.examplesTabValue}
-                                                                        onClick={(e) => this.handleOnChangeExamplesTab(e, 3)}>영어
-                                                                    번역</Button>
-                                                                <Button variant="contained"
-                                                                        onClick={this.handleClickMoreYemun}>다음 예문</Button>
+                                                                <button
+                                                                    className={(this.state.examplesTabValue === 0) ? 'examples-button-selected' : 'examples-button-default'}
+                                                                    value={this.state.examplesTabValue}
+                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 0)}>간단한
+                                                                    한자 예문
+                                                                </button>
+                                                                <button
+                                                                    className={(this.state.examplesTabValue === 1) ? 'examples-button-selected' : 'examples-button-default'}
+                                                                    value={this.state.examplesTabValue}
+                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 1)}>완벽한
+                                                                    한자 예문
+                                                                </button>
+                                                                <button
+                                                                    className={(this.state.examplesTabValue === 2) ? 'examples-button-selected' : 'examples-button-default'}
+                                                                    value={this.state.examplesTabValue}
+                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 2)}>한글
+                                                                    예문
+                                                                </button>
+                                                                <button
+                                                                    className={(this.state.examplesTabValue === 3) ? 'examples-button-selected' : 'examples-button-default'}
+                                                                    value={this.state.examplesTabValue}
+                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 3)}>영어
+                                                                    번역
+                                                                </button>
+                                                                <button
+                                                                    className="more-yemun-button"
+                                                                    variant="contained"
+                                                                    onClick={this.handleClickMoreYemun}>다음 예문
+                                                                </button>
                                                             </ButtonGroup>
                                                         </div>
                                                         {this.state.examplesTabValue === 0 &&

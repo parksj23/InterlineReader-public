@@ -32,6 +32,34 @@
     justify-content: center;
 }
 
+.examples-button-selected {
+    background-color: mediumseagreen;
+    border: 2px solid darkseagreen;
+    color: whitesmoke;
+}
+
+.examples-button-default:hover {
+    cursor: pointer;
+}
+
+.examples-button-default {
+    background-color: whitesmoke;
+    border: 2px solid darkgrey;
+}
+
+.more-yemun-button {
+    background-color: steelblue;
+    border: 2px solid darkgrey;
+}
+
+.more-yemun-button:hover {
+    cursor: pointer;
+}
+
+.more-yemun-button:active {
+    color: white
+}
+
 .no-data {
     /*align-self: center;*/
     /*margin: auto;*/
