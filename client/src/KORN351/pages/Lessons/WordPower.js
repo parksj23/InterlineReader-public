@@ -9,9 +9,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
-import {CircularProgress, Tab, Tabs} from "@material-ui/core";
+import {ButtonGroup, CircularProgress, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
 import makeStyles from "@material-ui/core/styles/makeStyles";
+import Button from "@material-ui/core/Button";
 
 class WordPower extends Component {
     constructor(props) {
@@ -243,20 +244,25 @@ class WordPower extends Component {
                                                 <Card variant="outlined" className="word-power-card-left">
                                                     <CardContent className="word-power-card-content-left">
                                                         <div className="word-power-wordTabs">
-                                                            <Tabs
-                                                                value={this.state.examplesTabValue}
-                                                                onChange={this.handleOnChangeExamplesTab}
-                                                                indicatorColor="primary"
-                                                                textColor="primary"
+                                                            <ButtonGroup
+                                                                // value={this.state.examplesTabValue}
+                                                                // onChange={this.handleOnChangeExamplesTab}
+                                                                // indicatorColor="primary"
+                                                                // textColor="primary"
                                                                 centered
                                                                 orientation="vertical"
-                                                                style={{padding: '2%'}}
+                                                                // style={{padding: '2%'}}
+                                                                // variant="contained"
                                                             >
-                                                                <Tab label="간단한 한자 예문"/>
-                                                                <Tab label="완벽한 한자 예문"/>
-                                                                <Tab label="한글 예문"/>
-                                                                <Tab label="영어 번역"/>
-                                                            </Tabs>
+                                                                {/*<Tab label="간단한 한자 예문"/>*/}
+                                                                {/*<Tab label="완벽한 한자 예문"/>*/}
+                                                                {/*<Tab label="한글 예문"/>*/}
+                                                                {/*<Tab label="영어 번역"/>*/}
+                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 0)}>간단한 한자 예문</Button>
+                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 1)}>완벽한 한자 예문</Button>
+                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 2)}>한글 예문</Button>
+                                                                <Button value={this.state.examplesTabValue} onClick={(e) => this.handleOnChangeExamplesTab( e, 3)}>영어 번역</Button>
+                                                            </ButtonGroup>
                                                         </div>
                                                         {this.state.examplesTabValue === 0 &&
                                                         <div className="wordTab-results-div">

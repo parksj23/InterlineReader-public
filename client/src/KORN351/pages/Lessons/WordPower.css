@@ -64,7 +64,8 @@
 }
 
 .word-power-wordTabs {
-    width: 40%;
+    width: 25%;
+    /*padding-top: 20%;*/
     overflow-x: auto;
     overflow-y: auto;
     /*align-self: center;*/
