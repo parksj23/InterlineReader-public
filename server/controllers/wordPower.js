@@ -24,7 +24,7 @@ function createWordPower(req, res) {
 
 async function createYemun(req, res) {
     const yemun = new Yemun(req.body);
-    Yemun.find({translation: req.body.translation})
+    Yemun.find({lesson: req.body.lesson, translation: req.body.translation})
         .exec()
         .then((yemuns) => {
             if (yemuns.length >= 1) {
@@ -233,7 +233,7 @@ function getSyllable(str, options) {
 async function list(req, res) {
     const query = {};
     if (req.query.lesson) {
-        query['lesson'] = req.query.lesson;
+        query['lesson'] = Number(req.query.lesson);
     }
 
     if (req.query.clickedHanja) {
@@ -248,7 +248,10 @@ async function list(req, res) {
         const hanqcaMatcher = wordPower.hanqcaMatch;
         let hanqca = wordPower.hanqca;
         const matchedExamples = [];
-        const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
+        const yemunQuery = {};
+        yemunQuery['lesson'] = Number(req.query.lesson);
+        yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
+        const preMatchedExamples = await Yemun.find(yemunQuery);
 
         let hanqcaInWord = [];
         let hankulInWord = [];
@@ -357,7 +360,6 @@ async function list(req, res) {
                     }
                 } else {
                     finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
-                    console.log(finalWordPowerHanqcaArr);
                     if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                         let index = -1;
 
