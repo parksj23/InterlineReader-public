@@ -1,30 +1,3 @@
-.word-power-card {
-    /*height: 200px;*/
-    padding: 1%;
-}
-
-.word-power-card-div-1 {
-    color: #19609d;
-    /*min-width: 250px;*/
-}
-
-.word-power-card-div-2 {
-    overflow-x: auto;
-    overflow-y: auto;
-    height: 330px;
-    width: 350px;
-    /*justify-content: center;*/
-}
-
-.no-data {
-    align-self: center;
-    /*margin: auto;*/
-    padding-top: 30px;
-    padding-left: 10px;
-    color: tomato;
-    font-style: italic;
-}
-
 .word-power-grid-card {
     margin: 1% !important;
     /*max-width: 48% !important;*/
@@ -40,6 +13,34 @@
     overflow-y: auto;
 }
 
+.word-power-card {
+    /*height: 200px;*/
+    padding: 1%;
+    width: 40%;
+}
+
+.word-power-card-div-1 {
+    color: #19609d;
+    /*min-width: 250px;*/
+}
+
+.word-power-card-div-2 {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 330px;
+    width: 350px;
+    justify-content: center;
+}
+
+.no-data {
+    /*align-self: center;*/
+    /*margin: auto;*/
+    padding-top: 20%;
+    padding-left: 35%;
+    color: tomato;
+    font-style: italic;
+}
+
 .word-power-card-content {
     height: 100%;
     width: 100%;
@@ -47,13 +48,40 @@
     overflow-y: auto;
 }
 
-MuiTabs-flexContainer MuiTabs-flexContainerVertical {
-    align-items: flex-start;
+.word-power-card-left {
+    /*height: 200px;*/
+    padding: 1%;
+    width: 100%;
 }
 
-MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary {
-    text-align: left;
+.word-power-card-content-left {
+    height: 100%;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: auto;
+    display: flex;
+    justify-content: flex-start;
 }
+
+.word-power-wordTabs {
+    width: 40%;
+    overflow-x: auto;
+    overflow-y: auto;
+    /*align-self: center;*/
+}
+
+.wordTab-results-div {
+    /*align-self: center;*/
+    width: 60%;
+}
+
+/*MuiTabs-flexContainer MuiTabs-flexContainerVertical {*/
+/*    align-items: flex-start;*/
+/*}*/
+
+/*MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary {*/
+/*    text-align: left;*/
+/*}*/
 
 @media screen and (max-width: 1100px) {
     .word-power-card {

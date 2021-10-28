@@ -211,7 +211,7 @@ class WordPower extends Component {
                                                                     onChange={this.handleOnClickWord}
                                                                     indicatorColor="secondary"
                                                                     textColor="primary"
-                                                                    // centered
+                                                                    centered
                                                                     style={{padding: '1%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
@@ -227,14 +227,10 @@ class WordPower extends Component {
                                                                             <Tab
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    <div style={{textAlign: 'left'}}>
-                                                                                        {wordTab.hanqca}({wordTab.hankul}) <br/>
+                                                                                    <React.Fragment>
+                                                                                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
                                                                                         {wordTab.englishGloss}
-                                                                                    </div>
-                                                                                    // <React.Fragment>
-                                                                                    //     {wordTab.hanqca}({wordTab.hankul}) <br/>
-                                                                                    //     {wordTab.englishGloss}
-                                                                                    // </React.Fragment>
+                                                                                    </React.Fragment>
                                                                                 }
                                                                             />
                                                                         )
@@ -244,15 +240,16 @@ class WordPower extends Component {
                                                         </div>
                                                     </CardContent>
                                                 </Card>
-                                                <Card variant="outlined" className="word-power-card">
-                                                    <CardContent className="word-power-card-content">
-                                                        <div>
+                                                <Card variant="outlined" className="word-power-card-left">
+                                                    <CardContent className="word-power-card-content-left">
+                                                        <div className="word-power-wordTabs">
                                                             <Tabs
                                                                 value={this.state.examplesTabValue}
                                                                 onChange={this.handleOnChangeExamplesTab}
                                                                 indicatorColor="primary"
                                                                 textColor="primary"
                                                                 centered
+                                                                orientation="vertical"
                                                                 style={{padding: '2%'}}
                                                             >
                                                                 <Tab label="간단한 한자 예문"/>
@@ -262,7 +259,7 @@ class WordPower extends Component {
                                                             </Tabs>
                                                         </div>
                                                         {this.state.examplesTabValue === 0 &&
-                                                        <div>
+                                                        <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
@@ -306,7 +303,7 @@ class WordPower extends Component {
                                                         }
 
                                                         {this.state.examplesTabValue === 1 &&
-                                                        <div>
+                                                        <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
@@ -341,7 +338,7 @@ class WordPower extends Component {
                                                         }
 
                                                         {this.state.examplesTabValue === 2 &&
-                                                        <div>
+                                                        <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
@@ -376,7 +373,7 @@ class WordPower extends Component {
                                                         }
 
                                                         {this.state.examplesTabValue === 3 &&
-                                                        <div>
+                                                        <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                     return false;
