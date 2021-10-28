@@ -8,6 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import { IconButton } from '@material-ui/core';
 import {getRadicals, getPhonetics, getCharacters} from "../../../../actions/KORN351/Okpyeon";
+import {getNewHanja} from "../../../../actions/KORN351/Lessons";
 import {connect} from "react-redux";
 import _ from 'lodash';
 
@@ -59,12 +60,12 @@ function LessonFilterTable(props) {
         setAnchorEl(null);
     };
 
-    const {characters, phonetics, radicals} = props;
+    const {newHanja, phonetics, radicals} = props;
 
     if (radicals.length === 0)
         props.getRadicals();
-    if (characters.length === 0)
-        props.getCharacters();
+    if (newHanja.length === 0)
+        props.getNewHanja();
     if (phonetics.length === 0)
         props.getPhonetics();
 
@@ -115,7 +116,7 @@ function LessonFilterTable(props) {
                     <br/>
                     <Grid container>
                         {
-                            characters.map(char => {
+                            newHanja.map(char => {
                                 if (char.lesson === currentLesson)
                                     return <Grid item xs={1} className="character-box2" onClick={() => props.showResult(char.hanja, char)}><h3>{char.hanja}</h3></Grid>
                             })
@@ -146,8 +147,8 @@ const mapStateToProps = (state) => {
     return {
         radicals : state.okpyeon.radicals,
         phonetics: state.okpyeon.phonetics,
-        characters: state.okpyeon.characters
+        newHanja: state.lessons.newHanja
     };
 };
 
-export default connect(mapStateToProps, {getRadicals, getPhonetics, getCharacters})(LessonFilterTable);
+export default connect(mapStateToProps, {getRadicals, getPhonetics, getNewHanja})(LessonFilterTable);
