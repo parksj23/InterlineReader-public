@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const YemunSchema = new Schema({
+	lesson: { type: Number },
 	koreanSentence: { type: String },
 	simpleHanqca: { type: String },
 	hanqcaizedSentence: { type: String },

@@ -24,7 +24,7 @@ function createWordPower(req, res) {
 
 async function createYemun(req, res) {
     const yemun = new Yemun(req.body);
-    Yemun.find({translation: req.body.translation})
+    Yemun.find({lesson: req.body.lesson, translation: req.body.translation})
         .exec()
         .then((yemuns) => {
             if (yemuns.length >= 1) {
