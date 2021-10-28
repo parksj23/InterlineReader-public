@@ -98,7 +98,7 @@ class WordPower extends Component {
     }
 
     handleOnChangeExamplesTab = (event, value) => {
-        this.setState({examplesTabValue: value, yemunCount: 1});
+        this.setState({examplesTabValue: value});
     }
 
     handleOnChangeHanjaTab = (event, value) => {
@@ -301,10 +301,10 @@ class WordPower extends Component {
                                                                 }
                                                                 return (
                                                                     <div key={idx}>
-                                                                        <ol>
-                                                                            {filteredItem.examples.map((sentence, idx) => {
+                                                                        <ul>
+                                                                            {filteredItem.examples.map((sentence, idx, arr) => {
                                                                                     return (
-                                                                                        idx < this.state.yemunCount &&
+                                                                                        idx === this.state.yemunCount &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.simpleHanqca}
@@ -319,7 +319,7 @@ class WordPower extends Component {
                                                                                     )
                                                                                 }
                                                                             )}
-                                                                        </ol>
+                                                                        </ul>
                                                                     </div>
                                                                 )
                                                             })}
@@ -342,10 +342,10 @@ class WordPower extends Component {
                                                             }).map((filteredItem, idx) => {
                                                                 return (
                                                                     <div key={idx}>
-                                                                        <ol>
+                                                                        <ul>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
-                                                                                        idx < this.state.yemunCount &&
+                                                                                        idx === this.state.yemunCount &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.hanqcaizedSentence}
@@ -360,7 +360,7 @@ class WordPower extends Component {
                                                                                     )
                                                                                 }
                                                                             )}
-                                                                        </ol>
+                                                                        </ul>
                                                                     </div>
                                                                 )
                                                             })}
@@ -383,10 +383,10 @@ class WordPower extends Component {
                                                             }).map((filteredItem, idx) => {
                                                                 return (
                                                                     <div key={idx}>
-                                                                        <ol>
+                                                                        <ul>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
-                                                                                        idx < this.state.yemunCount &&
+                                                                                        idx === this.state.yemunCount &&
                                                                                         <div key={idx}>
                                                                                             <li>
                                                                                                 {sentence.koreanSentence}
@@ -401,7 +401,7 @@ class WordPower extends Component {
                                                                                     )
                                                                                 }
                                                                             )}
-                                                                        </ol>
+                                                                        </ul>
                                                                     </div>
                                                                 )
                                                             })}
@@ -424,7 +424,7 @@ class WordPower extends Component {
                                                             }).map((filteredItem, idx) => {
                                                                 return (
                                                                     <div key={idx}>
-                                                                        <ol>
+                                                                        <ul>
                                                                             {filteredItem.examples.map((sentence, idx) => {
                                                                                     return (
                                                                                         <div key={idx}>
@@ -436,7 +436,7 @@ class WordPower extends Component {
                                                                                     )
                                                                                 }
                                                                             )}
-                                                                        </ol>
+                                                                        </ul>
                                                                     </div>
                                                                 )
                                                             })}

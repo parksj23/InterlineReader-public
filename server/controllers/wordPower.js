@@ -233,7 +233,7 @@ function getSyllable(str, options) {
 async function list(req, res) {
     const query = {};
     if (req.query.lesson) {
-        query['lesson'] = Number(req.query.lesson);
+        query['lesson'] = req.query.lesson;
     }
 
     if (req.query.clickedHanja) {
