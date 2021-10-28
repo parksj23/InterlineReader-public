@@ -33,12 +33,13 @@
 }
 
 .examples-button-selected {
-    background-color: mediumseagreen;
+    background-color: orange;
     border: 2px solid darkseagreen;
     color: whitesmoke;
 }
 
 .examples-button-default:hover {
+    background-color: #b35808;
     cursor: pointer;
 }
 
@@ -48,16 +49,20 @@
 }
 
 .more-yemun-button {
-    background-color: steelblue;
+    background-color: mediumpurple;
     border: 2px solid darkgrey;
+    color: black;
 }
 
 .more-yemun-button:hover {
+    background-color: #cf79cf;
+    color: white;
     cursor: pointer;
 }
 
 .more-yemun-button:active {
-    color: white
+    background-color: rebeccapurple;
+    color: white;
 }
 
 .no-data {
