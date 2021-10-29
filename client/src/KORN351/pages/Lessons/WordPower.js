@@ -89,8 +89,8 @@ class WordPower extends Component {
         })
             .then((response) => {
                 const data = response.data;
-                console.log("The wordpower data from the backend");
-                console.log(data);
+                // console.log("The wordpower data from the backend");
+                // console.log(data);
                 this.setState({wordPowerData: data});
                 this.setState({showLoading: false});
             })
@@ -115,7 +115,7 @@ class WordPower extends Component {
         this.setState({showTranslation: false, engChecked: false});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
-        console.log("omw to get wordpower data");
+        // console.log("omw to get wordpower data");
         this.getWordPowerYemunData(event.currentTarget.id);
     }
 
@@ -123,7 +123,7 @@ class WordPower extends Component {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
         this.setState({examplesTabValue: "simple", yemunCount: 1});
         this.setState({showTranslation: false, engChecked: false});
-        console.log(event.currentTarget);
+        // console.log(event.currentTarget);
     }
 
     handleClickMoreYemun = () => {
@@ -233,7 +233,7 @@ class WordPower extends Component {
                                                                 {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]})
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
-                                                                부수: {char.radical} ({char.radicalHangul})
+                                                                부수: {char.radical} &nbsp; ({char.radicalHangul})
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
                                                         </div>
@@ -253,7 +253,7 @@ class WordPower extends Component {
                                                                     onChange={this.handleOnClickWord}
                                                                     indicatorColor="secondary"
                                                                     textColor="primary"
-                                                                    centered
+                                                                    // centered
                                                                     style={{padding: '1%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
@@ -269,14 +269,29 @@ class WordPower extends Component {
                                                                             <Tab
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    <div>
-                                                                                        <React.Fragment>
-                                                                                            {wordTab.hanqca}({wordTab.hankul})
-                                                                                        </React.Fragment>
-                                                                                        <br/>
-                                                                                        <React.Fragment>
-                                                                                            {wordTab.englishGloss}
-                                                                                        </React.Fragment>
+                                                                                    // <div className="wordTab-label-flexbox">
+                                                                                    //     <React.Fragment>
+                                                                                    //         {wordTab.hanqca}({wordTab.hankul})
+                                                                                    //     </React.Fragment>
+                                                                                    //     <br/>
+                                                                                    //     <React.Fragment>
+                                                                                    //         {wordTab.englishGloss}
+                                                                                    //     </React.Fragment>
+                                                                                    // </div>
+                                                                                    <div
+                                                                                        className="wordTab-label-flexbox">
+                                                                                        <div
+                                                                                            className="wordTab-label-flexbox-1">
+                                                                                            <React.Fragment>
+                                                                                                {wordTab.hanqca}({wordTab.hankul})
+                                                                                            </React.Fragment>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            className="wordTab-label-flexbox-2">
+                                                                                            <React.Fragment>
+                                                                                                {wordTab.englishGloss}
+                                                                                            </React.Fragment>
+                                                                                        </div>
                                                                                     </div>
                                                                                 }
                                                                             />
@@ -307,6 +322,7 @@ class WordPower extends Component {
                                                                 value="english"
                                                                 control={<Switch/>}
                                                                 label="영어"/>
+                                                            <br/>
                                                             <Button
                                                                 variant="contained"
                                                                 onClick={this.handleClickMoreYemun}>다음 예문
@@ -334,18 +350,13 @@ class WordPower extends Component {
                                                                     }
                                                                     return (
                                                                         <div key={idx}>
-                                                                            <ul>
+                                                                            <ul style={{"list-style-type": "none"}}>
                                                                                 {filteredItem.examples.map((sentence, idx, arr) => {
-                                                                                        // console.log(idx + 1);
-                                                                                        // console.log(arr.length);
                                                                                         if (idx + 1 < arr.length) {
-                                                                                            console.log("<")
-                                                                                            console.log(idx + 1);
-                                                                                            console.log(arr.length);
                                                                                             return (
                                                                                                 (idx === this.state.yemunCount - 1) &&
                                                                                                 <div key={idx}>
-                                                                                                    <li>
+                                                                                                    <li className="wordTab-results-yemun">
                                                                                                         {sentence.simpleHanqca}
                                                                                                     </li>
                                                                                                     {this.state.showTranslation === true &&
@@ -358,13 +369,10 @@ class WordPower extends Component {
                                                                                         }
 
                                                                                         if (idx + 1 === arr.length) {
-                                                                                            console.log("===")
-                                                                                            console.log(idx + 1);
-                                                                                            console.log(arr.length);
                                                                                             return (
                                                                                                 (idx === this.state.yemunCount - 1) &&
                                                                                                 <div key={idx}>
-                                                                                                    <li>
+                                                                                                    <li className="wordTab-results-yemun">
                                                                                                         {sentence.simpleHanqca}
                                                                                                     </li>
                                                                                                     {this.state.showTranslation === true &&
@@ -373,7 +381,7 @@ class WordPower extends Component {
                                                                                                     </li>
                                                                                                     }
                                                                                                     <li className="no-more-yemun-msg">
-                                                                                                        마지막 예문입니다.
+                                                                                                        ***마지막 예문입니다.***
                                                                                                     </li>
                                                                                                 </div>
                                                                                             )
@@ -422,21 +430,55 @@ class WordPower extends Component {
                                                                     }
                                                                     return (
                                                                         <div key={idx}>
-                                                                            <ul>
-                                                                                {filteredItem.examples.map((sentence, idx) => {
-                                                                                        return (
-                                                                                            (idx === this.state.yemunCount - 1) &&
-                                                                                            <div key={idx}>
-                                                                                                <li>
-                                                                                                    {sentence.hanqcaizedSentence}
-                                                                                                </li>
-                                                                                                {this.state.showTranslation === true &&
-                                                                                                <li>
-                                                                                                    {sentence.translation}
-                                                                                                </li>
-                                                                                                }
-                                                                                            </div>
-                                                                                        )
+                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                                {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                                        if (idx + 1 < arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.hanqcaizedSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+
+                                                                                        if (idx + 1 === arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.hanqcaizedSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                    <li className="no-more-yemun-msg">
+                                                                                                        ***마지막 예문입니다.***
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+                                                                                        // return (
+                                                                                        //     (idx === this.state.yemunCount - 1) &&
+                                                                                        //     <div key={idx}>
+                                                                                        //         <li>
+                                                                                        //             {sentence.hanqcaizedSentence}
+                                                                                        //         </li>
+                                                                                        //         {this.state.showTranslation === true &&
+                                                                                        //         <li>
+                                                                                        //             {sentence.translation}
+                                                                                        //         </li>
+                                                                                        //         }
+                                                                                        //     </div>
+                                                                                        // )
                                                                                     }
                                                                                 )}
                                                                             </ul>
@@ -468,21 +510,55 @@ class WordPower extends Component {
                                                                     }
                                                                     return (
                                                                         <div key={idx}>
-                                                                            <ul>
-                                                                                {filteredItem.examples.map((sentence, idx) => {
-                                                                                        return (
-                                                                                            (idx === this.state.yemunCount - 1) &&
-                                                                                            <div key={idx}>
-                                                                                                <li>
-                                                                                                    {sentence.koreanSentence}
-                                                                                                </li>
-                                                                                                {this.state.showTranslation === true &&
-                                                                                                <li>
-                                                                                                    {sentence.translation}
-                                                                                                </li>
-                                                                                                }
-                                                                                            </div>
-                                                                                        )
+                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                                {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                                        if (idx + 1 < arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.koreanSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+
+                                                                                        if (idx + 1 === arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.koreanSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                    <li className="no-more-yemun-msg">
+                                                                                                        ***마지막 예문입니다.***
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+                                                                                        // return (
+                                                                                        //     (idx === this.state.yemunCount - 1) &&
+                                                                                        //     <div key={idx}>
+                                                                                        //         <li>
+                                                                                        //             {sentence.koreanSentence}
+                                                                                        //         </li>
+                                                                                        //         {this.state.showTranslation === true &&
+                                                                                        //         <li>
+                                                                                        //             {sentence.translation}
+                                                                                        //         </li>
+                                                                                        //         }
+                                                                                        //     </div>
+                                                                                        // )
                                                                                     }
                                                                                 )}
                                                                             </ul>
@@ -497,21 +573,35 @@ class WordPower extends Component {
                                         )
                                     }
                                 })
-                            )}
-                        </Grid>
-                    </div>
-                </Grid>
-                <NavigatingButtons/>
-            </Grid>
-        )
-    }
-}
+                                )}
+                                </Grid>
+                                </div>
+                                </Grid>
+                                <NavigatingButtons/>
+                                </Grid>
+                                )
+                            }
+                            }
 
-const
+    const
     mapStateToProps = (state) => {
         return {
             newHanja: state.lessons.newHanja
         };
     };
 
-export default withRouter(connect(mapStateToProps, {getNewHanja})(WordPower));
+    export
+    default
+
+    withRouter(connect
+
+(
+    mapStateToProps
+, {
+    getNewHanja
+}
+
+)
+(WordPower)
+)
+;
