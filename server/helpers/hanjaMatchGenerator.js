@@ -1,11 +1,3 @@
-let yemunStr = "그는 숱하게 많은 동아리 가운데 그 어느 하나에도 加入하지 않았다.\n" +
-    "그의 그 피나는 努力들이 한 瞬間에 虛無하게 무너졌다.\n" +
-    "언덕 아래 江가에는 運轉 敎習所가 있고, 몇 臺의 車가 運轉 練習에 熱中해 있다\n" // this is an example for YEMUN
-
-let wordPowerStr = "第一(제일)\t\t\tfirst; number one; primary\n" +
-    "第一課(제일과)\tlesson one\n" +
-    "제삼자(第三者)\t\tthe third party; outsider\n" // this is an example for WORDPOWER
-
 function isHangul(str, options) {
     if (
         options !== undefined &&
