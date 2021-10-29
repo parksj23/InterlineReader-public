@@ -23,7 +23,8 @@ class WordPower extends Component {
             newWordPower: {},
             newYemun: {},
             tabIndex: 0,
-            yemunTabIdx: 0
+            yemunTabIdx: 0,
+            isSaving: false
         }
         this.currentLesson = parseInt(this.props.lesson);
 
@@ -38,7 +39,6 @@ class WordPower extends Component {
     }
 
     componentDidMount() {
-        console.log('-------', this.currentLesson);
         axios({
             method: "get",
             url: '/api/wordPower/list',
@@ -49,7 +49,7 @@ class WordPower extends Component {
                 const yemunToEdit = {};
                 data.forEach(d => {
                     wordPowerToEdit[d._id] = {};
-                    yemunToEdit[d._id] = d.examples.map(e => ({ [e._id]: {} }))
+                    yemunToEdit[d._id] = this._getEmptyObjWithKeys(d.examples.map(e => e._id));
                 });
                 this.setState({wordPowerData: data, showLoading: false, wordPowerToEdit, yemunToEdit});
             })
@@ -58,21 +58,30 @@ class WordPower extends Component {
             });
     }
 
+    _getEmptyObjWithKeys(keys) {
+        const obj = {};
+        keys.forEach(key => obj[key] = {});
+        return obj;
+    }
+
     saveWordPower(id) {
         const { wordPowerToEdit } = this.state;
-        axios({
-            method: 'put',
-            url: `/api/wordPower/${id}`,
-            data: wordPowerToEdit[id]
-        }).then(_ => {
-            this.setState(prevState => ({
-                wordPowerData: prevState.wordPowerData.map(w => {
-                    if (w._id === id) {
-                        return Object.assign(w, wordPowerToEdit[id]);
-                    }
-                    return w;
-                })
-            }));
+        this.setState({ isSaving: true }, () => {
+            axios({
+                method: 'put',
+                url: `/api/wordPower/${id}`,
+                data: wordPowerToEdit[id]
+            }).then(_ => {
+                this.setState(prevState => ({
+                    wordPowerData: prevState.wordPowerData.map(w => {
+                        if (w._id === id) {
+                            return Object.assign(w, wordPowerToEdit[id]);
+                        }
+                        return w;
+                    }),
+                    isSaving: false
+                }));
+            });
         });
     }
 
@@ -107,6 +116,7 @@ class WordPower extends Component {
     createYemun(wordpowerId) {
         const { newYemun } = this.state;
         if (_.isEmpty(newYemun)) { return; }
+        newYemun.lesson = this.currentLesson;
         axios({
             method: 'post',
             url: '/api/wordPower/createYemun',
@@ -131,24 +141,27 @@ class WordPower extends Component {
 
     saveYemun(wordpowerId, yemunId) {
         const { yemunToEdit } = this.state;
-        axios({
-            method: 'put',
-            url: `/api/wordPower/yemun/${yemunId}`,
-            data: yemunToEdit[wordpowerId][yemunId]
-        }).then(_ => {
-            this.setState(prevState => ({
-                wordPowerData: prevState.wordPowerData.map(w => {
-                    if (w._id === wordpowerId) {
-                        w.examples = w.examples.map(example => {
-                            if (example._id === yemunId) {
-                                return Object.assign(example, yemunToEdit[wordpowerId][yemunId]);
-                            }
-                            return example;
-                        });
-                    } 
-                    return w;
-                })
-            }));
+        this.setState({ isSaving: true }, () => {
+            axios({
+                method: 'put',
+                url: `/api/wordPower/yemun/${yemunId}`,
+                data: yemunToEdit[wordpowerId][yemunId]
+            }).then(_ => {
+                this.setState(prevState => ({
+                    wordPowerData: prevState.wordPowerData.map(w => {
+                        if (w._id === wordpowerId) {
+                            w.examples = w.examples.map(example => {
+                                if (example._id === yemunId) {
+                                    return Object.assign(example, yemunToEdit[wordpowerId][yemunId]);
+                                }
+                                return example;
+                            });
+                        } 
+                        return w;
+                    }),
+                    isSaving: false
+                }));
+            });
         });
     }
 
@@ -177,7 +190,7 @@ class WordPower extends Component {
     }
 
     render() {
-        const {showLoading, wordPowerData, wordPowerToEdit, isWordPowerModalOpen, newWordPower, tabIndex, yemunTabIdx, yemunToEdit, newYemun, isYemunModalOpen} = this.state;
+        const {isSaving, showLoading, wordPowerData, wordPowerToEdit, isWordPowerModalOpen, newWordPower, tabIndex, yemunTabIdx, yemunToEdit, newYemun, isYemunModalOpen} = this.state;
 
         return showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> : (
             <div className="ir-WordPower edit-lesson-background">
@@ -216,7 +229,7 @@ class WordPower extends Component {
                                 backgroundColor: '#00284d',
                                 color: 'white',
                                 width: '20%'
-                            }} onClick={() => this.createWordPower()}>Save</Button>
+                            }} onClick={() => this.createWordPower()}>Create</Button>
                             <Button variant="contained" onClick={() => this.onWordPowerModalOpen()}>Cancel</Button>
                         </Box>
                     </Modal>
@@ -242,12 +255,13 @@ class WordPower extends Component {
                                                                 style={{width: 300}}
                                                                 onChange={event => wordPowerToEdit[wordpower._id].englishGloss = event.target.value}/><br/>
                                         <br />
+                                        {isSaving && <CircularProgress className="ir-WordPower-saving" size="small" />}
                                         <Button style={{
                                             marginRight: '4px',
                                             backgroundColor: '#00284d',
                                             color: 'white',
                                             width: '20%'
-                                        }} onClick={() => this.saveWordPower(wordpower._id)}>Save</Button>
+                                        }} onClick={() => this.saveWordPower(wordpower._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
                                         <Button style={{
                                             marginRight: '4px',
                                             backgroundColor: '#f6152f',
@@ -317,7 +331,7 @@ class WordPower extends Component {
                                             backgroundColor: '#00284d',
                                             color: 'white',
                                             width: '20%'
-                                        }} onClick={() => this.createYemun(wordpower._id)}>Save</Button>
+                                        }} onClick={() => this.createYemun(wordpower._id)}>Create</Button>
                                         <Button variant="contained" onClick={() => this.onYemunModalOpen()}>Cancel</Button>
                                     </Box>
                                 </Modal>
@@ -332,36 +346,37 @@ class WordPower extends Component {
                                                     <textarea 
                                                         defaultValue={example.simpleHanqca}
                                                         style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[example._id].simpleHanqca = event.target.value}
+                                                        onChange={event => yemunToEdit[wordpower._id][example._id].simpleHanqca = event.target.value}
                                                     ></textarea><br/>
                                                 <br />
                                                 Hanjaized Sentence:<br/>
                                                     <textarea
                                                         defaultValue={example.hanqcaizedSentence}
                                                         style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[example._id].hanqcaizedSentence = event.target.value}
+                                                        onChange={event => yemunToEdit[wordpower._id][example._id].hanqcaizedSentence = event.target.value}
                                                     ></textarea><br/>
                                                 <br />
                                                 Korean Sentence:<br/>
                                                     <textarea
                                                         defaultValue={example.koreanSentence}
                                                         style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[example._id].koreanSentence = event.target.value}>
+                                                        onChange={event => yemunToEdit[wordpower._id][example._id].koreanSentence = event.target.value}>
                                                     </textarea><br/>
                                                 <br />
                                                 Translation:<br/>
                                                     <textarea
                                                         defaultValue={example.translation}
                                                         style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[example._id].translation = event.target.value}>
+                                                        onChange={event => yemunToEdit[wordpower._id][example._id].translation = event.target.value}>
                                                     </textarea><br/>
                                                 <br />
+                                                {isSaving && <CircularProgress className="ir-WordPower-saving" size="small" />}
                                                 <Button style={{
                                                     marginRight: '4px',
                                                     backgroundColor: '#00284d',
                                                     color: 'white',
                                                     width: '20%'
-                                                }} onClick={() => this.saveYemun(wordpower._id, example._id)}>Save</Button>
+                                                }} onClick={() => this.saveYemun(wordpower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
                                                 <Button style={{
                                                     marginRight: '4px',
                                                     backgroundColor: '#f6152f',

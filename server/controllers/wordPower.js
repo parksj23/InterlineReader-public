@@ -77,7 +77,12 @@ async function deleteYemun(req, res) {
 }
 
 async function createYemun(req, res) {
-    const yemun = new Yemun(req.body);
+    const { hanqcaizedSentence, hanqcaMatch } = req.body;
+    if (!hanqcaMatch || hanqcaMatch.length === 0) {
+        req.body.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+    }
+
+    const newYemun = new Yemun(req.body);
     Yemun.find({lesson: req.body.lesson, translation: req.body.translation})
         .exec()
         .then((yemuns) => {
@@ -86,7 +91,7 @@ async function createYemun(req, res) {
                     message: "Yemun document already exists",
                 });
             } else {
-                const newYemun = yemun.save();
+                await newYemun.save();
                 return res.status(201).json(newYemun);
             }
         })
