@@ -23,7 +23,8 @@ class WordPower extends Component {
             showLoading: false,
             yemunCount: 1,
             examplesTabValue: "simple",
-            clickedWordTab: null
+            clickedWordTab: null,
+            showTranslation: false
         }
     }
 
@@ -98,13 +99,21 @@ class WordPower extends Component {
     }
 
     handleOnChangeExamplesTab = (event, value) => {
-        this.setState({examplesTabValue: value});
+        if (value === "english") {
+            this.handleOnClickShowTranslation();
+        } else {
+            this.setState({examplesTabValue: value});
+        }
+    }
+
+    handleOnClickShowTranslation = () => {
+        this.setState({showTranslation: !this.state.showTranslation});
     }
 
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
         this.setState({showLoading: true});
-        this.setState({examplesTabValue: "simple", yemunCount: 1});
+        this.setState({examplesTabValue: "simple", yemunCount: 1, showTranslation: false});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
         console.log("omw to get wordpower data");
@@ -113,13 +122,13 @@ class WordPower extends Component {
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
-        this.setState({examplesTabValue: "simple", yemunCount: 1});
+        this.setState({examplesTabValue: "simple", yemunCount: 1, showTranslation: false});
         console.log(event.currentTarget);
-        console.log(value);
     }
 
-    handleClickMoreYemun = (event, value) => {
+    handleClickMoreYemun = () => {
         this.setState({yemunCount: this.state.yemunCount + 1});
+        this.setState({showTranslation: false});
     }
 
     filterWordPowerData = (clickedWordIdPosition, char) => {
@@ -230,9 +239,6 @@ class WordPower extends Component {
                                                         </div>
                                                         <br/>
                                                         <div className="word-power-card-div-2">
-                                                            {/*<Typography>*/}
-                                                            {/*    <b><i>Select a word:</i></b>*/}
-                                                            {/*</Typography>*/}
                                                             {this.state.wordPowerData.length === 0 ? (
                                                                 <Grid item xs={12}>
                                                                     <br/>
@@ -332,6 +338,11 @@ class WordPower extends Component {
                                                                                                 <li>
                                                                                                     {sentence.simpleHanqca}
                                                                                                 </li>
+                                                                                                {this.state.showTranslation === true &&
+                                                                                                <li>
+                                                                                                    {sentence.translation}
+                                                                                                </li>
+                                                                                                }
                                                                                             </div>
                                                                                         )
                                                                                     }
@@ -373,6 +384,11 @@ class WordPower extends Component {
                                                                                                 <li>
                                                                                                     {sentence.hanqcaizedSentence}
                                                                                                 </li>
+                                                                                                {this.state.showTranslation === true &&
+                                                                                                <li>
+                                                                                                    {sentence.translation}
+                                                                                                </li>
+                                                                                                }
                                                                                             </div>
                                                                                         )
                                                                                     }
@@ -414,6 +430,11 @@ class WordPower extends Component {
                                                                                                 <li>
                                                                                                     {sentence.koreanSentence}
                                                                                                 </li>
+                                                                                                {this.state.showTranslation === true &&
+                                                                                                <li>
+                                                                                                    {sentence.translation}
+                                                                                                </li>
+                                                                                                }
                                                                                             </div>
                                                                                         )
                                                                                     }
@@ -425,46 +446,46 @@ class WordPower extends Component {
                                                         </div>
                                                         }
 
-                                                        {this.state.examplesTabValue === "english" &&
-                                                        <div className="wordTab-results-div">
-                                                            {this.state.clickedWordTab === null &&
-                                                            <div className="no-data">
-                                                                <Typography>
-                                                                    Please select a word from the list.
-                                                                </Typography>
-                                                            </div>
-                                                            }
-                                                            {this.filterWordPowerData(2, char)
-                                                                .map((filteredItem, idx) => {
-                                                                    if (filteredItem.examples.length === 0) {
-                                                                        return (
-                                                                            <div className="no-data">
-                                                                                <Typography>
-                                                                                    예문이 없습니다.
-                                                                                </Typography>
-                                                                            </div>
-                                                                        )
-                                                                    }
-                                                                    return (
-                                                                        <div key={idx}>
-                                                                            <ul>
-                                                                                {filteredItem.examples.map((sentence, idx) => {
-                                                                                        return (
-                                                                                            <div key={idx}>
-                                                                                                <li>
-                                                                                                    {sentence.translation}
-                                                                                                </li>
-                                                                                                <br/>
-                                                                                            </div>
-                                                                                        )
-                                                                                    }
-                                                                                )}
-                                                                            </ul>
-                                                                        </div>
-                                                                    )
-                                                                })}
-                                                        </div>
-                                                        }
+                                                        {/*{this.state.examplesTabValue === "english" &&*/}
+                                                        {/*<div className="wordTab-results-div">*/}
+                                                        {/*    {this.state.clickedWordTab === null &&*/}
+                                                        {/*    <div className="no-data">*/}
+                                                        {/*        <Typography>*/}
+                                                        {/*            Please select a word from the list.*/}
+                                                        {/*        </Typography>*/}
+                                                        {/*    </div>*/}
+                                                        {/*    }*/}
+                                                        {/*    {this.filterWordPowerData(2, char)*/}
+                                                        {/*        .map((filteredItem, idx) => {*/}
+                                                        {/*            if (filteredItem.examples.length === 0) {*/}
+                                                        {/*                return (*/}
+                                                        {/*                    <div className="no-data">*/}
+                                                        {/*                        <Typography>*/}
+                                                        {/*                            예문이 없습니다.*/}
+                                                        {/*                        </Typography>*/}
+                                                        {/*                    </div>*/}
+                                                        {/*                )*/}
+                                                        {/*            }*/}
+                                                        {/*            return (*/}
+                                                        {/*                <div key={idx}>*/}
+                                                        {/*                    <ul>*/}
+                                                        {/*                        {filteredItem.examples.map((sentence, idx) => {*/}
+                                                        {/*                                return (*/}
+                                                        {/*                                    <div key={idx}>*/}
+                                                        {/*                                        <li>*/}
+                                                        {/*                                            {sentence.translation}*/}
+                                                        {/*                                        </li>*/}
+                                                        {/*                                        <br/>*/}
+                                                        {/*                                    </div>*/}
+                                                        {/*                                )*/}
+                                                        {/*                            }*/}
+                                                        {/*                        )}*/}
+                                                        {/*                    </ul>*/}
+                                                        {/*                </div>*/}
+                                                        {/*            )*/}
+                                                        {/*        })}*/}
+                                                        {/*</div>*/}
+                                                        {/*}*/}
                                                     </CardContent>
                                                 </Card>
                                             </Grid>
@@ -488,14 +509,4 @@ const
         };
     };
 
-export default withRouter(connect
-
-    (
-        mapStateToProps
-        , {
-            getNewHanja
-        }
-    )
-    (WordPower)
-)
-;
+export default withRouter(connect(mapStateToProps, {getNewHanja})(WordPower));
