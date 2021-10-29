@@ -99,6 +99,7 @@
 
 .word-power-wordTabs {
     width: 25%;
+    padding-left: 2%;
     /*padding-top: 20%;*/
     overflow-x: auto;
     overflow-y: auto;

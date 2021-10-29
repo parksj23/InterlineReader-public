@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
-import {ButtonGroup, CircularProgress, FormControlLabel, Radio, RadioGroup, Tab, Tabs} from "@material-ui/core";
+import {ButtonGroup, CircularProgress, FormControlLabel, Radio, RadioGroup, Switch, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 
@@ -24,7 +24,8 @@ class WordPower extends Component {
             yemunCount: 1,
             examplesTabValue: "simple",
             clickedWordTab: null,
-            showTranslation: false
+            showTranslation: false,
+            engChecked: false
         }
     }
 
@@ -99,21 +100,19 @@ class WordPower extends Component {
     }
 
     handleOnChangeExamplesTab = (event, value) => {
-        if (value === "english") {
-            this.handleOnClickShowTranslation();
-        } else {
-            this.setState({examplesTabValue: value});
-        }
+        this.setState({examplesTabValue: value});
     }
 
     handleOnClickShowTranslation = () => {
         this.setState({showTranslation: !this.state.showTranslation});
+        this.setState({engChecked: !this.state.engChecked});
     }
 
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
         this.setState({showLoading: true});
-        this.setState({examplesTabValue: "simple", yemunCount: 1, showTranslation: false});
+        this.setState({examplesTabValue: "simple", yemunCount: 1});
+        this.setState({showTranslation: false, engChecked: false});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
         console.log("omw to get wordpower data");
@@ -122,13 +121,14 @@ class WordPower extends Component {
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
-        this.setState({examplesTabValue: "simple", yemunCount: 1, showTranslation: false});
+        this.setState({examplesTabValue: "simple", yemunCount: 1});
+        this.setState({showTranslation: false, engChecked: false});
         console.log(event.currentTarget);
     }
 
     handleClickMoreYemun = () => {
         this.setState({yemunCount: this.state.yemunCount + 1});
-        this.setState({showTranslation: false});
+        this.setState({showTranslation: false, engChecked: false});
     }
 
     filterWordPowerData = (clickedWordIdPosition, char) => {
@@ -300,9 +300,13 @@ class WordPower extends Component {
                                                                                   label="완벽한 한자 예문"/>
                                                                 <FormControlLabel value="hangul" control={<Radio/>}
                                                                                   label="한글"/>
-                                                                <FormControlLabel value="english" control={<Radio/>}
-                                                                                  label="영어"/>
                                                             </RadioGroup>
+                                                            <FormControlLabel
+                                                                onChange={this.handleOnClickShowTranslation}
+                                                                checked={this.state.engChecked}
+                                                                value="english"
+                                                                control={<Switch/>}
+                                                                label="영어"/>
                                                             <Button
                                                                 variant="contained"
                                                                 onClick={this.handleClickMoreYemun}>다음 예문
@@ -445,47 +449,6 @@ class WordPower extends Component {
                                                                 })}
                                                         </div>
                                                         }
-
-                                                        {/*{this.state.examplesTabValue === "english" &&*/}
-                                                        {/*<div className="wordTab-results-div">*/}
-                                                        {/*    {this.state.clickedWordTab === null &&*/}
-                                                        {/*    <div className="no-data">*/}
-                                                        {/*        <Typography>*/}
-                                                        {/*            Please select a word from the list.*/}
-                                                        {/*        </Typography>*/}
-                                                        {/*    </div>*/}
-                                                        {/*    }*/}
-                                                        {/*    {this.filterWordPowerData(2, char)*/}
-                                                        {/*        .map((filteredItem, idx) => {*/}
-                                                        {/*            if (filteredItem.examples.length === 0) {*/}
-                                                        {/*                return (*/}
-                                                        {/*                    <div className="no-data">*/}
-                                                        {/*                        <Typography>*/}
-                                                        {/*                            예문이 없습니다.*/}
-                                                        {/*                        </Typography>*/}
-                                                        {/*                    </div>*/}
-                                                        {/*                )*/}
-                                                        {/*            }*/}
-                                                        {/*            return (*/}
-                                                        {/*                <div key={idx}>*/}
-                                                        {/*                    <ul>*/}
-                                                        {/*                        {filteredItem.examples.map((sentence, idx) => {*/}
-                                                        {/*                                return (*/}
-                                                        {/*                                    <div key={idx}>*/}
-                                                        {/*                                        <li>*/}
-                                                        {/*                                            {sentence.translation}*/}
-                                                        {/*                                        </li>*/}
-                                                        {/*                                        <br/>*/}
-                                                        {/*                                    </div>*/}
-                                                        {/*                                )*/}
-                                                        {/*                            }*/}
-                                                        {/*                        )}*/}
-                                                        {/*                    </ul>*/}
-                                                        {/*                </div>*/}
-                                                        {/*            )*/}
-                                                        {/*        })}*/}
-                                                        {/*</div>*/}
-                                                        {/*}*/}
                                                     </CardContent>
                                                 </Card>
                                             </Grid>
