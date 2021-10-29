@@ -32,38 +32,38 @@
     justify-content: center;
 }
 
-.examples-button-selected {
-    background-color: orange;
-    border: 2px solid darkseagreen;
-    color: whitesmoke;
-}
+/*.examples-button-selected {*/
+/*    background-color: orange;*/
+/*    border: 2px solid darkseagreen;*/
+/*    color: whitesmoke;*/
+/*}*/
 
-.examples-button-default:hover {
-    background-color: #b35808;
-    cursor: pointer;
-}
+/*.examples-button-default:hover {*/
+/*    background-color: #b35808;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.examples-button-default {
-    background-color: whitesmoke;
-    border: 2px solid darkgrey;
-}
+/*.examples-button-default {*/
+/*    background-color: whitesmoke;*/
+/*    border: 2px solid darkgrey;*/
+/*}*/
 
-.more-yemun-button {
-    background-color: mediumpurple;
-    border: 2px solid darkgrey;
-    color: black;
-}
+/*.more-yemun-button {*/
+/*    background-color: mediumpurple;*/
+/*    border: 2px solid darkgrey;*/
+/*    color: black;*/
+/*}*/
 
-.more-yemun-button:hover {
-    background-color: #cf79cf;
-    color: white;
-    cursor: pointer;
-}
+/*.more-yemun-button:hover {*/
+/*    background-color: #cf79cf;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.more-yemun-button:active {
-    background-color: rebeccapurple;
-    color: white;
-}
+/*.more-yemun-button:active {*/
+/*    background-color: rebeccapurple;*/
+/*    color: white;*/
+/*}*/
 
 .no-data {
     /*align-self: center;*/

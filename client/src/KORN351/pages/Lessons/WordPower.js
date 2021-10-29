@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
-import {ButtonGroup, CircularProgress, Tab, Tabs} from "@material-ui/core";
+import {ButtonGroup, CircularProgress, FormControlLabel, Radio, RadioGroup, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 
@@ -22,14 +22,14 @@ class WordPower extends Component {
             wordPowerData: [],
             showLoading: false,
             yemunCount: 1,
-            examplesTabValue: 0
+            examplesTabValue: "simple"
         }
     }
 
     componentDidMount() {
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedHanja: {id: "null"}});
-        this.setState({examplesTabValue: 0});
+        // this.setState({examplesTabValue: 0});
 
         if (this.props.newHanja.length === 0 || this.props.newHanja === undefined) {
             this.props.getNewHanja().then(() => {
@@ -104,7 +104,7 @@ class WordPower extends Component {
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
         this.setState({showLoading: true});
-        this.setState({examplesTabValue: 0, yemunCount: 1});
+        this.setState({examplesTabValue: "simple", yemunCount: 1});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
         console.log("omw to get wordpower data");
@@ -113,7 +113,7 @@ class WordPower extends Component {
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
-        this.setState({examplesTabValue: 0, yemunCount: 1});
+        this.setState({examplesTabValue: "simple", yemunCount: 1});
         console.log(event.currentTarget);
     }
 
@@ -254,48 +254,62 @@ class WordPower extends Component {
                                                 <Card variant="outlined" className="word-power-card-left">
                                                     <CardContent className="word-power-card-content-left">
                                                         <div className="word-power-wordTabs">
-                                                            <ButtonGroup
-                                                                // value={this.state.examplesTabValue}
-                                                                // onChange={this.handleOnChangeExamplesTab}
-                                                                // indicatorColor="primary"
-                                                                // textColor="primary"
-                                                                centered
-                                                                orientation="vertical"
-                                                                // style={{padding: '2%'}}
-                                                                // variant="contained"
+                                                            {/*<ButtonGroup*/}
+                                                            {/*    // value={this.state.examplesTabValue}*/}
+                                                            {/*    // onChange={this.handleOnChangeExamplesTab}*/}
+                                                            {/*    // indicatorColor="primary"*/}
+                                                            {/*    // textColor="primary"*/}
+                                                            {/*    centered*/}
+                                                            {/*    orientation="vertical"*/}
+                                                            {/*    // style={{padding: '2%'}}*/}
+                                                            {/*    // variant="contained"*/}
+                                                            {/*>*/}
+                                                            {/*    <button*/}
+                                                            {/*        className={(this.state.examplesTabValue === 0) ? 'examples-button-selected' : 'examples-button-default'}*/}
+                                                            {/*        value={this.state.examplesTabValue}*/}
+                                                            {/*        onClick={(e) => this.handleOnChangeExamplesTab(e, 0)}>간단한*/}
+                                                            {/*        한자 예문*/}
+                                                            {/*    </button>*/}
+                                                            {/*    <button*/}
+                                                            {/*        className={(this.state.examplesTabValue === 1) ? 'examples-button-selected' : 'examples-button-default'}*/}
+                                                            {/*        value={this.state.examplesTabValue}*/}
+                                                            {/*        onClick={(e) => this.handleOnChangeExamplesTab(e, 1)}>완벽한*/}
+                                                            {/*        한자 예문*/}
+                                                            {/*    </button>*/}
+                                                            {/*    <button*/}
+                                                            {/*        className={(this.state.examplesTabValue === 2) ? 'examples-button-selected' : 'examples-button-default'}*/}
+                                                            {/*        value={this.state.examplesTabValue}*/}
+                                                            {/*        onClick={(e) => this.handleOnChangeExamplesTab(e, 2)}>한글*/}
+                                                            {/*        예문*/}
+                                                            {/*    </button>*/}
+                                                            {/*    <button*/}
+                                                            {/*        className={(this.state.examplesTabValue === 3) ? 'examples-button-selected' : 'examples-button-default'}*/}
+                                                            {/*        value={this.state.examplesTabValue}*/}
+                                                            {/*        onClick={(e) => this.handleOnChangeExamplesTab(e, 3)}>영어*/}
+                                                            {/*        번역*/}
+                                                            {/*    </button>*/}
+                                                            {/*    <button*/}
+                                                            {/*        className="more-yemun-button"*/}
+                                                            {/*        variant="contained"*/}
+                                                            {/*        onClick={this.handleClickMoreYemun}>다음 예문*/}
+                                                            {/*    </button>*/}
+                                                            {/*</ButtonGroup>*/}
+                                                            <RadioGroup
+                                                                value={this.state.examplesTabValue}
+                                                                onChange={this.handleOnChangeExamplesTab}
                                                             >
-                                                                <button
-                                                                    className={(this.state.examplesTabValue === 0) ? 'examples-button-selected' : 'examples-button-default'}
-                                                                    value={this.state.examplesTabValue}
-                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 0)}>간단한
-                                                                    한자 예문
-                                                                </button>
-                                                                <button
-                                                                    className={(this.state.examplesTabValue === 1) ? 'examples-button-selected' : 'examples-button-default'}
-                                                                    value={this.state.examplesTabValue}
-                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 1)}>완벽한
-                                                                    한자 예문
-                                                                </button>
-                                                                <button
-                                                                    className={(this.state.examplesTabValue === 2) ? 'examples-button-selected' : 'examples-button-default'}
-                                                                    value={this.state.examplesTabValue}
-                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 2)}>한글
-                                                                    예문
-                                                                </button>
-                                                                <button
-                                                                    className={(this.state.examplesTabValue === 3) ? 'examples-button-selected' : 'examples-button-default'}
-                                                                    value={this.state.examplesTabValue}
-                                                                    onClick={(e) => this.handleOnChangeExamplesTab(e, 3)}>영어
-                                                                    번역
-                                                                </button>
-                                                                <button
-                                                                    className="more-yemun-button"
+                                                                <FormControlLabel value="simple" control={<Radio />} label="간단한 한자 예문" />
+                                                                <FormControlLabel value="complete" control={<Radio />} label="완벽한 한자 예문" />
+                                                                <FormControlLabel value="hangul" control={<Radio />} label="한글" />
+                                                                <FormControlLabel value="english" control={<Radio />} label="영어" />
+                                                            </RadioGroup>
+                                                                <Button
+                                                                    // className="more-yemun-button"
                                                                     variant="contained"
                                                                     onClick={this.handleClickMoreYemun}>다음 예문
-                                                                </button>
-                                                            </ButtonGroup>
+                                                                </Button>
                                                         </div>
-                                                        {this.state.examplesTabValue === 0 &&
+                                                        {this.state.examplesTabValue === "simple" &&
                                                         <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
@@ -339,7 +353,7 @@ class WordPower extends Component {
                                                         </div>
                                                         }
 
-                                                        {this.state.examplesTabValue === 1 &&
+                                                        {this.state.examplesTabValue === "complete" &&
                                                         <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
@@ -374,7 +388,7 @@ class WordPower extends Component {
                                                         </div>
                                                         }
 
-                                                        {this.state.examplesTabValue === 2 &&
+                                                        {this.state.examplesTabValue === "hangul" &&
                                                         <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
@@ -409,7 +423,7 @@ class WordPower extends Component {
                                                         </div>
                                                         }
 
-                                                        {this.state.examplesTabValue === 3 &&
+                                                        {this.state.examplesTabValue === "english" &&
                                                         <div className="wordTab-results-div">
                                                             {this.state.wordPowerData.filter((item) => {
                                                                 if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
