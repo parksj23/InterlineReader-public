@@ -26,6 +26,7 @@ class WordPower extends Component {
             clickedWordTab: null,
             showTranslation: false,
             engChecked: false,
+            // noMoreYemun: false
         }
     }
 
@@ -130,6 +131,10 @@ class WordPower extends Component {
         this.setState({yemunCount: this.state.yemunCount + 1});
         this.setState({showTranslation: false, engChecked: false});
     }
+
+    // setNoMoreYemun = (idx, arr) => {
+    //     this.setState(({noMoreYemun: !this.state.noMoreYemun}));
+    // }
 
     filterWordPowerData = (clickedWordIdPosition, char) => {
         return this.state.wordPowerData.filter((item) => {
@@ -369,6 +374,7 @@ class WordPower extends Component {
                                                                                         }
 
                                                                                         if (idx + 1 === arr.length) {
+                                                                                            // this.setNoMoreYemun(idx, arr);
                                                                                             return (
                                                                                                 (idx === this.state.yemunCount - 1) &&
                                                                                                 <div key={idx}>
@@ -386,17 +392,14 @@ class WordPower extends Component {
                                                                                                 </div>
                                                                                             )
                                                                                         }
+
                                                                                         // return (
-                                                                                        //     (idx === this.state.yemunCount - 1) &&
-                                                                                        //     <div key={idx}>
-                                                                                        //         <li>
-                                                                                        //             {sentence.simpleHanqca}
-                                                                                        //         </li>
-                                                                                        //         {this.state.showTranslation === true &&
-                                                                                        //         <li>
-                                                                                        //             {sentence.translation}
-                                                                                        //         </li>
-                                                                                        //         }
+                                                                                        //     (this.state.noMoreYemun === true) &&
+                                                                                        //     <div
+                                                                                        //         className="no-more-yemun-msg">
+                                                                                        //         <Typography>
+                                                                                        //             예문이 없습니다.
+                                                                                        //         </Typography>
                                                                                         //     </div>
                                                                                         // )
                                                                                     }
@@ -466,19 +469,6 @@ class WordPower extends Component {
                                                                                                 </div>
                                                                                             )
                                                                                         }
-                                                                                        // return (
-                                                                                        //     (idx === this.state.yemunCount - 1) &&
-                                                                                        //     <div key={idx}>
-                                                                                        //         <li>
-                                                                                        //             {sentence.hanqcaizedSentence}
-                                                                                        //         </li>
-                                                                                        //         {this.state.showTranslation === true &&
-                                                                                        //         <li>
-                                                                                        //             {sentence.translation}
-                                                                                        //         </li>
-                                                                                        //         }
-                                                                                        //     </div>
-                                                                                        // )
                                                                                     }
                                                                                 )}
                                                                             </ul>
@@ -546,19 +536,6 @@ class WordPower extends Component {
                                                                                                 </div>
                                                                                             )
                                                                                         }
-                                                                                        // return (
-                                                                                        //     (idx === this.state.yemunCount - 1) &&
-                                                                                        //     <div key={idx}>
-                                                                                        //         <li>
-                                                                                        //             {sentence.koreanSentence}
-                                                                                        //         </li>
-                                                                                        //         {this.state.showTranslation === true &&
-                                                                                        //         <li>
-                                                                                        //             {sentence.translation}
-                                                                                        //         </li>
-                                                                                        //         }
-                                                                                        //     </div>
-                                                                                        // )
                                                                                     }
                                                                                 )}
                                                                             </ul>
@@ -573,35 +550,31 @@ class WordPower extends Component {
                                         )
                                     }
                                 })
-                                )}
-                                </Grid>
-                                </div>
-                                </Grid>
-                                <NavigatingButtons/>
-                                </Grid>
-                                )
-                            }
-                            }
+                            )}
+                        </Grid>
+                    </div>
+                </Grid>
+                <NavigatingButtons/>
+            </Grid>
+        )
+    }
+}
 
-    const
+const
     mapStateToProps = (state) => {
         return {
             newHanja: state.lessons.newHanja
         };
     };
 
-    export
-    default
+export default withRouter(connect
 
-    withRouter(connect
-
-(
-    mapStateToProps
-, {
-    getNewHanja
-}
-
-)
-(WordPower)
+    (
+        mapStateToProps
+        , {
+            getNewHanja
+        }
+    )
+    (WordPower)
 )
 ;
