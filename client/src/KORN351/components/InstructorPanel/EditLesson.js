@@ -16,6 +16,7 @@ import {
     deleteNewHanjaCombo,
     deleteNewPhonetic
 } from "../../../actions/KORN351/Instructor";
+import WordPower from '../InstructorPanel/WordPower/WordPower';
 import "./EditLesson.css";
 import Divider from "@material-ui/core/Divider/Divider";
 import {getPhonetics} from "../../../actions/KORN351/Okpyeon";
@@ -349,6 +350,7 @@ class EditLesson extends Component {
                         <Tab label="새 부수에 대하여"/>
                         <Tab label="About the New Phonetics"/>
                         <Tab label="New 한자 Combos"/>
+                        <Tab label="Word Power"/>
                     </Tabs>
                 </div>
 
@@ -582,9 +584,9 @@ class EditLesson extends Component {
                     <h2>About the New Phonetics</h2>
                     <Divider/><br/>
                     {
-                        phonetics.map(phonetic => {
+                        (phonetics || []).map(phonetic => {
                             let str = '';
-                            phonetic.characters.forEach(charac => {
+                            (phonetic || {}).characters.forEach(charac => {
                                 str += charac + '\n';
                             });
 
@@ -595,7 +597,7 @@ class EditLesson extends Component {
                                 })
                             }
 
-                            return <div>
+                            return phonetic && (<div>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{phonetic.phonetic}</Typography>
@@ -644,6 +646,7 @@ class EditLesson extends Component {
                                 </Accordion>
                                 <br/>
                             </div>
+                        )
                         })
                     }
                 </div>
@@ -694,6 +697,10 @@ class EditLesson extends Component {
                         })
                     }
                 </div>
+                }
+
+                {this.state.tabValue === 4 &&
+                    <WordPower lesson={this.props.match.params.id} />
                 }
             </div>
         );

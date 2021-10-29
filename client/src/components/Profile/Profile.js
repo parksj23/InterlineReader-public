@@ -8,6 +8,7 @@ import { getCharacters, getPhonetics, getRadicals } from '../../actions/KORN351/
 import { getNewHanjaCombos, getPracticeSentences } from '../../actions/KORN351/Lessons';
 import { QUIZ_TOPIC_MAP } from '../../config';
 import { stringAvatar } from '../../utils';
+import TabPanel, { a11yProps } from '../common/TabPanel';
 
 import './Profile.css';
 
@@ -233,39 +234,6 @@ function Profile(props) {
             </Box>
         </div>
     );
-}
-
-function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 2 }}>
-            <h3>{children}</h3>
-          </Box>
-        )}
-      </div>
-    );
-}
-  
-TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
 }
 
 Profile.propTypes = {
