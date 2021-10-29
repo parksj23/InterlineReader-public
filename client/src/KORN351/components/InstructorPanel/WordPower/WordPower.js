@@ -200,15 +200,15 @@ class WordPower extends Component {
                             <Typography variant="h6" component="h6">Add Yemun</Typography>
                             <br />
                             Hanja: <input type="text" placeholder="Type Hanja.."
-                                                style={{width: 200}}
+                                                style={{width: 300}}
                                                 onChange={event => newWordPower.hanqca = event.target.value}/><br/>
                             <br />
                             Hankul: <input type="text" placeholder="Type Hankul.."
-                                                    style={{width: 200}}
+                                                    style={{width: 300}}
                                                     onChange={event => newWordPower.hankul = event.target.value}/><br/>
                             <br />
                             English Gloss: <input type="text" placeholder="Type English Gloss.."
-                                                    style={{width: 200}}
+                                                    style={{width: 300}}
                                                     onChange={event => newWordPower.englishGloss = event.target.value}/><br/>
                             <br />
                             <Button style={{
@@ -231,15 +231,15 @@ class WordPower extends Component {
                                 <AccordionDetails>
                                     <div>
                                         Hanja: <input type="text" defaultValue={wordpower.hanqca}
-                                                            style={{width: 200}}
+                                                            style={{width: 300}}
                                                             onChange={event => wordPowerToEdit[wordpower._id].hanqca = event.target.value}/><br/>
                                         <br />
                                         Hankul: <input type="text" defaultValue={wordpower.hankul}
-                                                                style={{width: 200}}
+                                                                style={{width: 300}}
                                                                 onChange={event => wordPowerToEdit[wordpower._id].hankul = event.target.value}/><br/>
                                         <br />
                                         English Gloss: <input type="text" defaultValue={wordpower.englishGloss}
-                                                                style={{width: 200}}
+                                                                style={{width: 300}}
                                                                 onChange={event => wordPowerToEdit[wordpower._id].englishGloss = event.target.value}/><br/>
                                         <br />
                                         <Button style={{
@@ -331,28 +331,28 @@ class WordPower extends Component {
                                                 Simple Hanja:<br/>
                                                     <textarea 
                                                         defaultValue={example.simpleHanqca}
-                                                        style={{overflowWrap: 'break-word', width: 300}} rows="3"
+                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
                                                         onChange={event => yemunToEdit[example._id].simpleHanqca = event.target.value}
                                                     ></textarea><br/>
                                                 <br />
                                                 Hanjaized Sentence:<br/>
                                                     <textarea
                                                         defaultValue={example.hanqcaizedSentence}
-                                                        style={{overflowWrap: 'break-word', width: 300}} rows="3"
+                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
                                                         onChange={event => yemunToEdit[example._id].hanqcaizedSentence = event.target.value}
                                                     ></textarea><br/>
                                                 <br />
                                                 Korean Sentence:<br/>
                                                     <textarea
                                                         defaultValue={example.koreanSentence}
-                                                        style={{overflowWrap: 'break-word', width: 300}} rows="3"
+                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
                                                         onChange={event => yemunToEdit[example._id].koreanSentence = event.target.value}>
                                                     </textarea><br/>
                                                 <br />
                                                 Translation:<br/>
                                                     <textarea
                                                         defaultValue={example.translation}
-                                                        style={{overflowWrap: 'break-word', width: 300}} rows="3"
+                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
                                                         onChange={event => yemunToEdit[example._id].translation = event.target.value}>
                                                     </textarea><br/>
                                                 <br />
