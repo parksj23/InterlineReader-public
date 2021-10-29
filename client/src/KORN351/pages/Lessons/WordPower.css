@@ -75,6 +75,10 @@
     /*font-weight: bold;*/
 }
 
+.no-more-yemun-msg {
+    color: tomato;
+}
+
 .word-power-card-content {
     height: 100%;
     width: 100%;

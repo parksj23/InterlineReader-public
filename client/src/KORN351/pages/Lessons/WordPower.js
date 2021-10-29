@@ -25,7 +25,7 @@ class WordPower extends Component {
             examplesTabValue: "simple",
             clickedWordTab: null,
             showTranslation: false,
-            engChecked: false
+            engChecked: false,
         }
     }
 
@@ -335,20 +335,62 @@ class WordPower extends Component {
                                                                     return (
                                                                         <div key={idx}>
                                                                             <ul>
-                                                                                {filteredItem.examples.map((sentence, idx) => {
-                                                                                        return (
-                                                                                            (idx === this.state.yemunCount - 1) &&
-                                                                                            <div key={idx}>
-                                                                                                <li>
-                                                                                                    {sentence.simpleHanqca}
-                                                                                                </li>
-                                                                                                {this.state.showTranslation === true &&
-                                                                                                <li>
-                                                                                                    {sentence.translation}
-                                                                                                </li>
-                                                                                                }
-                                                                                            </div>
-                                                                                        )
+                                                                                {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                                        // console.log(idx + 1);
+                                                                                        // console.log(arr.length);
+                                                                                        if (idx + 1 < arr.length) {
+                                                                                            console.log("<")
+                                                                                            console.log(idx + 1);
+                                                                                            console.log(arr.length);
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li>
+                                                                                                        {sentence.simpleHanqca}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+
+                                                                                        if (idx + 1 === arr.length) {
+                                                                                            console.log("===")
+                                                                                            console.log(idx + 1);
+                                                                                            console.log(arr.length);
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li>
+                                                                                                        {sentence.simpleHanqca}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                    <li className="no-more-yemun-msg">
+                                                                                                        마지막 예문입니다.
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+                                                                                        // return (
+                                                                                        //     (idx === this.state.yemunCount - 1) &&
+                                                                                        //     <div key={idx}>
+                                                                                        //         <li>
+                                                                                        //             {sentence.simpleHanqca}
+                                                                                        //         </li>
+                                                                                        //         {this.state.showTranslation === true &&
+                                                                                        //         <li>
+                                                                                        //             {sentence.translation}
+                                                                                        //         </li>
+                                                                                        //         }
+                                                                                        //     </div>
+                                                                                        // )
                                                                                     }
                                                                                 )}
                                                                             </ul>
