@@ -6,6 +6,8 @@ router.post('/create', Story.createStory);
 router.put('/saveMainText', Story.saveMainText);
 router.put('/saveKoreanText', Story.saveKoreanText);
 router.put('/saveExampleSentence', Story.saveExampleSentence);
+router.put('/addNewExampleSentence', Story.addNewExampleSentence);
+router.put('/deleteExampleSentence', Story.deleteExampleSentence);
 router.put('/saveOthers', Story.saveOthers);
 router.get('/getMainText', Story.getMainText);
 

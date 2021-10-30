@@ -15,7 +15,7 @@ class LessonList extends Component {
   renderClassStories = (lesson, classIndex) => {
     const {classes, match} = this.props;
     return (
-        <div>
+        <div style={{padding: '0.5% 3%'}}>
           <ul>
             <li>
               {match.url.includes("editLesson")? <Link to={`/instructor351/editLesson/${lesson}`} className={'card-link'}>

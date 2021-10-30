@@ -25,6 +25,18 @@ async function saveExampleSentence(req, res) {
     return res.status(200).json(updatedStory);
 }
 
+async function addNewExampleSentence(req, res) {
+    const { lesson, exSentences } = req.body.params;
+    const updatedStory = await Story.updateOne({ lesson }, { $push: {exampleSentences:  exSentences } });
+    return res.status(200).json(updatedStory);
+}
+
+async function deleteExampleSentence(req, res) {
+    const { lesson, id } = req.body.params;
+    const updatedStory = await Story.updateOne({ lesson }, { $pull: { exampleSentences: { _id:  id } } });
+    return res.status(200).json(updatedStory);
+}
+
 async function saveOthers(req, res) {
     const { lesson, subHeading, content } = req.body.params;
     const updatedStory = await Story.findOneAndUpdate({ lesson }, { others: { subHeading, content } });
@@ -45,6 +57,8 @@ module.exports = {
     createStory,
     getMainText,
     saveExampleSentence,
+    addNewExampleSentence,
+    deleteExampleSentence,
     saveKoreanText,
     saveMainText,
     saveOthers,

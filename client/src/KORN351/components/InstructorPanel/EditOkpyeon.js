@@ -300,7 +300,7 @@ class EditOkpyeon extends Component {
                                     </AccordionDetails>
                                     <AccordionDetails>
                                         Characters:
-                                        <textarea style={{overflowWrap: 'break-word'}} rows="5" className="edit-input"
+                                        <textarea style={{overflowWrap: 'break-word', width: '50%'}} rows="5" className="edit-input"
                                                   ref={input => this.state[phon._id + 'characters'] = input}>
                                     {str}
                                 </textarea>
