@@ -91,7 +91,7 @@ class EditLesson extends Component {
             this.props.getPhonetics().then(() => {
 
                     let temp = this.props.phonetics.filter(phonetic => {
-                        return phonetic.lesson || "".toString() === lesson
+                        return phonetic.lesson === parseInt(lesson)
                     });
                     this.setState({
                         phonetics: temp
