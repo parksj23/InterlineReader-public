@@ -1,3 +1,27 @@
+import HanziWriter from "hanzi-writer";
+
+const CHAR_TO_IMPORT_MAP = {
+  '車': require('hanzi-writer-data/車'),
+  '通': require('hanzi-writer-data/通'),
+  '金': require('hanzi-writer-data/金'),
+};
+
+function showHanjiAnimation (hanja, target) {
+  hanja = hanja.trim();
+  let writer;
+
+  if (Object.keys(CHAR_TO_IMPORT_MAP).includes(hanja)) {
+    writer = HanziWriter.create(target, 'hanja', {
+        charDataLoader: () => CHAR_TO_IMPORT_MAP[hanja] 
+    });  
+  } else {
+    writer = HanziWriter.create(target, hanja, {
+      showOutline: true,
+    });
+  }
+  writer.loopCharacterAnimation();
+};
+
 function getQuestionFontSize(question) {
     return question.length > 80 ? '20px' : '30px';
 }
@@ -34,4 +58,5 @@ export {
     getQuestionFontSize,
     stringAvatar,
     stringToColor,
+    showHanjiAnimation,
 };
