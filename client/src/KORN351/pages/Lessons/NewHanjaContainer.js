@@ -3,14 +3,12 @@ import "./NewHanjaContainer.css";
 import React, {Component} from "react";
 
 import Grid from "@material-ui/core/Grid";
+import HanziWriter from "hanzi-writer";
 import {connect} from "react-redux";
 import {getNewHanja} from "../../../actions/KORN351/Lessons";
 import {withRouter} from 'react-router-dom';
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 import Divider from "@material-ui/core/Divider";
-import { showHanjiAnimation } from '../../../utils';
-
-
 
 class NewHanjaContainer extends Component {
     constructor(props) {
@@ -43,7 +41,7 @@ class NewHanjaContainer extends Component {
                     }, () => {
                         //moved contents inside componentDidMount to here
                         this.state.newHanja.forEach((pair, idx) => {
-                            showHanjiAnimation(pair.hanja, `character-target-div-${idx}`);
+                            this.showHanjiAnimation(pair.hanja, idx)
                         });
                         if (this.state.newHanja.length === 0) {
                             const currLesson = this.props.match.params.lesson;
@@ -61,9 +59,18 @@ class NewHanjaContainer extends Component {
         }
     }
 
+    showHanjiAnimation = (hanja, idx) => {
+        HanziWriter.create("character-target-div-" + idx, hanja, {
+            width: 100,
+            height: 100,
+            padding: 5,
+            showOutline: true,
+        }).loopCharacterAnimation()
+    };
+
     render() {
         const {newHanja} = this.state;
-
+        console.log(this.state.newHanja);
         return (
             <div style={{display: "flex"}}>
                 <div className="new-hanja">
@@ -86,7 +93,7 @@ class NewHanjaContainer extends Component {
                                 >
                                     <div className="new-hanja-char" style={{textAlign: "center"}}>
                                         <br/>
-                                        <div className="hanja-char" id={"character-target-div-" + idx}/>
+                                        <div id={"character-target-div-" + idx}/>
                                         <br/>
                                     </div>
                                     <div className="new-hanja-card">

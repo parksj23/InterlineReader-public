@@ -3,12 +3,12 @@ import "./NewHanjaContainer.css";
 import React, { Component } from "react";
 
 import Grid from "@material-ui/core/Grid";
+import HanziWriter from "hanzi-writer";
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 import {connect} from "react-redux";
 import {getNewBusu} from "../../../actions/KORN351/Okpyeon";
 import { withRouter } from 'react-router-dom';
 import Divider from "@material-ui/core/Divider";
-import { showHanjiAnimation } from '../../../utils';
 
 class NewBusuContainer extends Component {
     constructor(props) {
@@ -41,7 +41,7 @@ class NewBusuContainer extends Component {
                   }, () => {
                       //moved contents inside componentDidMount to here
                       this.state.newBusu.forEach((pair, idx) => {
-                        showHanjiAnimation(pair.radical, `character-target-div-${idx}`);
+                          this.showHanjiAnimation(pair.radical, idx)
                       });
                       if (this.state.newBusu.length === 0) {
                           const currLesson = this.props.match.params.lesson;
@@ -58,6 +58,15 @@ class NewBusuContainer extends Component {
           );
       }
     }
+
+    showHanjiAnimation = (hanja, idx) => {
+        HanziWriter.create("character-target-div-"+idx, hanja, {
+            width: 100,
+            height: 100,
+            padding: 5,
+            showOutline: true,
+        }).loopCharacterAnimation()
+    };
 
     render() {
       const {newBusu} = this.state;
@@ -82,7 +91,7 @@ class NewBusuContainer extends Component {
                                 >
                                     <div className="new-hanja-char" style={{ textAlign: "center" }}>
                                         <br />
-                                        <div className="hanja-char" id={"character-target-div-"+idx}/>
+                                        <div id={"character-target-div-"+idx}/>
                                         <br />
                                     </div>
                                     <div className="new-hanja-card">
