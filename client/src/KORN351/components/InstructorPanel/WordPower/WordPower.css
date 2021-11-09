@@ -28,12 +28,6 @@
     height: calc(100vh - 150px);
 }
 
-.ir-WordPower-saving {
-    width: 25px;
-    margin-bottom: -7px;
-    margin-right: 8px;
-}
-
 .ir-WordPower-tabs {
     width: 250px;
     background: white;
