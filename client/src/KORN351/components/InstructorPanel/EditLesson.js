@@ -16,6 +16,7 @@ import {
     deleteNewHanjaCombo,
     deleteNewPhonetic
 } from "../../../actions/KORN351/Instructor";
+import WordPower from '../InstructorPanel/WordPower/WordPower';
 import "./EditLesson.css";
 import Divider from "@material-ui/core/Divider/Divider";
 import {getPhonetics} from "../../../actions/KORN351/Okpyeon";
@@ -91,7 +92,7 @@ class EditLesson extends Component {
             this.props.getPhonetics().then(() => {
 
                     let temp = this.props.phonetics.filter(phonetic => {
-                        return phonetic.lesson === parseInt(lesson)
+                        return phonetic.lesson || "".toString() === lesson
                     });
                     this.setState({
                         phonetics: temp
@@ -332,9 +333,8 @@ class EditLesson extends Component {
 
         return (
             <div className="edit-lesson-container">
-                <h1>Lesson {this.props.match.params.id}</h1>
+                <h2>Lesson {this.props.match.params.id}</h2>
                 <h5><i>Editing Lesson: Click on a category to edit</i></h5>
-                <br/><br/>
 
                 <div>
                     <Tabs
@@ -349,6 +349,7 @@ class EditLesson extends Component {
                         <Tab label="새 부수에 대하여"/>
                         <Tab label="About the New Phonetics"/>
                         <Tab label="New 한자 Combos"/>
+                        <Tab label="Word Power"/>
                     </Tabs>
                 </div>
 
@@ -456,7 +457,7 @@ class EditLesson extends Component {
                             {
                                 subText !== '' || subText !== null ?
                                     <div>
-                                        <div style={{padding: '0 5%'}}>
+                                        <div>
                                             Sub Heading: <br/>
                                             <textarea rows="3" input type="text"
                                                       defaultValue={this.state.subText.subHeading}
@@ -534,7 +535,7 @@ class EditLesson extends Component {
                                                                   ref={input => this.state[busu._id + 'def'] = input}/><br/>
                                             <br/>
                                             Busu: <input cols="50" type="text" defaultValue={busu.busu}
-                                                         style={{width: '100%'}}
+                                                            style={{width: '100%'}}
                                                             ref={input => this.state[busu._id + 'busu'] = input}/><br/>
                                             <br/>
                                             Description: <textarea rows="7" cols="50" input type="text"
@@ -582,11 +583,13 @@ class EditLesson extends Component {
                     <h2>About the New Phonetics</h2>
                     <Divider/><br/>
                     {
-                        phonetics.map(phonetic => {
+                        (phonetics || []).map(phonetic => {
                             let str = '';
-                            phonetic.characters.forEach(charac => {
-                                str += charac + '\n';
-                            });
+                            if (phonetic.characters) {
+                                phonetic.characters.forEach(charac => {
+                                    str += charac + '\n';
+                                });
+                            }
 
                             let str2 = '';
                             if (phonetic.sub_pronunciation !== undefined) {
@@ -595,7 +598,7 @@ class EditLesson extends Component {
                                 })
                             }
 
-                            return <div>
+                            return phonetic && (<div>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{phonetic.phonetic}</Typography>
@@ -644,6 +647,7 @@ class EditLesson extends Component {
                                 </Accordion>
                                 <br/>
                             </div>
+                        )
                         })
                     }
                 </div>
@@ -694,6 +698,10 @@ class EditLesson extends Component {
                         })
                     }
                 </div>
+                }
+
+                {this.state.tabValue === 4 &&
+                    <WordPower lesson={this.props.match.params.id} />
                 }
             </div>
         );

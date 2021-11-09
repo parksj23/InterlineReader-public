@@ -1,9 +1,13 @@
 const WordPower = require('../models/WordPower');
 const Yemun = require('../models/Yemun');
+const { getHanqcaMatchArray } = require('../helpers/hanjaMatchGenerator');
 
-function createWordPower(req, res) {
+async function createWordPower(req, res) {
+    if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
+        req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqca);
+    }
     const wordPower = new WordPower(req.body);
-    WordPower.find({lesson: req.body.lesson, hankul: req.body.hankul})
+    const words = await WordPower.find({lesson: req.body.lesson, hankul: req.body.hankul})
         .exec()
         .then((words) => {
             if (words.length >= 1) {
@@ -12,7 +16,7 @@ function createWordPower(req, res) {
                 });
             } else {
                 const newWordPower = wordPower.save();
-                return res.status(201).json(newWordPower);
+                return res.status(201).json(wordPower);
             }
         })
         .catch((err) => {
@@ -22,8 +26,63 @@ function createWordPower(req, res) {
         });
 }
 
+async function updateWordPower(req, res) {
+    const docToUpdate = {...req.body};
+    const { hanqca } = req.body;
+    if (hanqca) {
+        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqca);
+    }
+
+    const doc = await WordPower.findOne({ _id: req.params.id }).exec();
+
+    for (const [key, value] of Object.entries(docToUpdate)) {
+        doc[key] = value;
+    }
+    try {
+        await doc.save();
+        return res.status(200).json({ success: true });
+    } catch(err) {
+        return res.status(500).json({ message: err });
+    }
+}
+
+async function deleteWordPower(req, res) {
+    await WordPower.findOneAndDelete({ _id: req.params.id }).exec();
+    return res.status(200).json({ deleted: true });
+}
+
+async function updateYemun(req, res) {
+    const docToUpdate = {...req.body};
+    const { hanqcaizedSentence } = req.body;
+    if (hanqcaizedSentence) {
+        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+    }
+
+    const doc = await Yemun.findOne({ _id: req.params.id }).exec();
+
+    for (const [key, value] of Object.entries(docToUpdate)) {
+        doc[key] = value;
+    }
+    try {
+        await doc.save();
+        return res.status(200).json({ success: true });
+    } catch(err) {
+        return res.status(500).json({ message: err });
+    }
+}
+
+async function deleteYemun(req, res) {
+    await Yemun.findOneAndDelete({ _id: req.params.id }).exec();
+    return res.status(200).json({ deleted: true });
+}
+
 async function createYemun(req, res) {
-    const yemun = new Yemun(req.body);
+    const { hanqcaizedSentence, hanqcaMatch } = req.body;
+    if (!hanqcaMatch || hanqcaMatch.length === 0) {
+        req.body.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+    }
+
+    const newYemun = new Yemun(req.body);
     Yemun.find({lesson: req.body.lesson, translation: req.body.translation})
         .exec()
         .then((yemuns) => {
@@ -32,8 +91,9 @@ async function createYemun(req, res) {
                     message: "Yemun document already exists",
                 });
             } else {
-                const newYemun = yemun.save();
-                return res.status(201).json(newYemun);
+                newYemun.save().then(() => {
+                    return res.status(201).json(newYemun);
+                });
             }
         })
         .catch((err) => {
@@ -256,12 +316,14 @@ async function list(req, res) {
         let hanqcaInWord = [];
         let hankulInWord = [];
         let punc = isPunctuation(hanqca);
-        for (let i = 0; i < punc[0].length; i++) {
-            let hangulBool = isHangul(punc[0][i]);
-            if (hangulBool.includes(false)) {
-                hanqcaInWord.push(punc[0][i]);
-            } else {
-                hankulInWord.push(punc[0][i]);
+        if (punc.length) {
+            for (let i = 0; i < punc[0].length; i++) {
+                let hangulBool = isHangul(punc[0][i]);
+                if (hangulBool.includes(false)) {
+                    hanqcaInWord.push(punc[0][i]);
+                } else {
+                    hankulInWord.push(punc[0][i]);
+                }
             }
         }
 
@@ -408,5 +470,9 @@ async function list(req, res) {
 module.exports = {
     createWordPower,
     createYemun,
-    list
+    deleteWordPower,
+    deleteYemun,
+    list,
+    updateWordPower,
+    updateYemun
 };

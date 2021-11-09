@@ -70,7 +70,7 @@ class AboutNewPhonetics extends Component {
                         <Grid container style={{overflowY: 'auto', height: '100%'}}>
                             {
                                 phonetics.map( phonetic => {
-                                    return (
+                                    return phonetic ? (
                                         <Grid item xs={6} className="grid-card">
                                             <Card variant="outlined" className="phonetics-card">
                                                 <CardContent  className="phonetics-card-content">
@@ -83,7 +83,7 @@ class AboutNewPhonetics extends Component {
                                                         following commonly used Chinese characters, all pronounced <b>{phonetic.pronunciation}</b>:
                                                     </Typography>
                                                     <Typography variant="h6">
-                                                        {phonetic.characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
+                                                        {(phonetic.characters || []).map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                                     </Typography>
                                                     {
                                                         !phonetic.sub_pronunciation ? '' :
@@ -95,13 +95,13 @@ class AboutNewPhonetics extends Component {
                                                     {
                                                         !phonetic.sub_characters ? '' :
                                                             <Typography variant="h6">
-                                                                {phonetic.sub_characters.map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
+                                                                {(phonetic.sub_characters || []).map(charac => {return <span><b>&nbsp;&nbsp;&nbsp;&nbsp;{charac}</b></span>})}
                                                             </Typography>
                                                     }
                                                 </CardContent>
                                             </Card>
                                         </Grid>
-                                    )
+                                    ) : ''
                                 })
                             }
                         </Grid>

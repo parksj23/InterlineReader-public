@@ -153,9 +153,8 @@ class EditOkpyeon extends Component {
         const {characters, phonetics, radicals} = this.state;
         return (
             <div className="edit-lesson-container">
-                <h1>Lesson {this.props.match.params.id}</h1>
+                <h2>Lesson {this.props.match.params.id}</h2>
                 <h5><i>Editing Okpyeon: Click on a category to edit</i></h5>
-                <br/><br/>
 
                 <div>
                     <Tabs

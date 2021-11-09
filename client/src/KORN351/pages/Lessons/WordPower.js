@@ -38,24 +38,11 @@ class WordPower extends Component {
             this.props.getNewHanja().then(() => {
                     const currLesson = this.props.match.params.lesson;
 
-                    let temp = this.props.newHanja.filter(word => {
-                        return word.lesson === parseInt(currLesson)
-                    });
-
                     this.setState({
-                        newHanja: temp
-                    }, () => {
-                        if (this.state.newHanja.length === 0) {
-                            const currLesson = this.props.match.params.lesson;
-
-                            let temp = this.props.newHanja.filter(word => {
-                                return word.lesson === parseInt(currLesson)
-                            });
-                            this.setState({
-                                newHanja: temp
-                            });
-                        }
-                    })
+                        newHanja: this.props.newHanja.filter(word => {
+                            return word.lesson === parseInt(currLesson)
+                        })
+                    });
                 }
             );
         }
