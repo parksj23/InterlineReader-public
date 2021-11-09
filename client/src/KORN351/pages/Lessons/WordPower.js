@@ -9,8 +9,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
-import {CircularProgress, Tab, Tabs} from "@material-ui/core";
+import {ButtonGroup, CircularProgress, FormControlLabel, Radio, RadioGroup, Switch, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
+import Button from "@material-ui/core/Button";
 
 class WordPower extends Component {
     constructor(props) {
@@ -19,14 +20,19 @@ class WordPower extends Component {
             newHanja: [],
             currentLesson: this.props.match.params.lesson,
             wordPowerData: [],
-            showLoading: false
+            showLoading: false,
+            yemunCount: 1,
+            examplesTabValue: "simple",
+            clickedWordTab: null,
+            showTranslation: false,
+            engChecked: false,
+            // noMoreYemun: false
         }
     }
 
     componentDidMount() {
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedHanja: {id: "null"}});
-        this.setState({examplesTabValue: 0});
 
         if (this.props.newHanja.length === 0 || this.props.newHanja === undefined) {
             this.props.getNewHanja().then(() => {
@@ -84,8 +90,8 @@ class WordPower extends Component {
         })
             .then((response) => {
                 const data = response.data;
-                console.log("The wordpower data from the backend");
-                console.log(data);
+                // console.log("The wordpower data from the backend");
+                // console.log(data);
                 this.setState({wordPowerData: data});
                 this.setState({showLoading: false});
             })
@@ -98,20 +104,65 @@ class WordPower extends Component {
         this.setState({examplesTabValue: value});
     }
 
+    handleOnClickShowTranslation = () => {
+        this.setState({showTranslation: !this.state.showTranslation});
+        this.setState({engChecked: !this.state.engChecked});
+    }
+
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
         this.setState({showLoading: true});
-        this.setState({examplesTabValue: 0});
+        this.setState({examplesTabValue: "simple", yemunCount: 1});
+        this.setState({showTranslation: false, engChecked: false});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
-        console.log("omw to get wordpower data");
+        // console.log("omw to get wordpower data");
         this.getWordPowerYemunData(event.currentTarget.id);
     }
 
     handleOnClickWord = (event, value) => {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
-        this.setState({examplesTabValue: 0});
-        console.log(event.currentTarget);
+        this.setState({examplesTabValue: "simple", yemunCount: 1});
+        this.setState({showTranslation: false, engChecked: false});
+        // console.log(event.currentTarget);
+    }
+
+    handleClickMoreYemun = () => {
+        this.setState({yemunCount: this.state.yemunCount + 1});
+        this.setState({showTranslation: false, engChecked: false});
+    }
+
+    // setNoMoreYemun = (idx, arr) => {
+    //     this.setState(({noMoreYemun: !this.state.noMoreYemun}));
+    // }
+
+    filterWordPowerData = (clickedWordIdPosition, char) => {
+        return this.state.wordPowerData.filter((item) => {
+            if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
+                return false;
+            }
+            return true;
+        }).filter((i) => {
+            let clickedWordId = this.state.clickedWord.id.split("!!!");
+            if (clickedWordIdPosition === 0) {
+                if (clickedWordId[clickedWordIdPosition] !== i.hanqca) {
+                    return false;
+                }
+                return true;
+            } else if (clickedWordIdPosition === 1) {
+                if (clickedWordId[clickedWordIdPosition] !== i.hankul) {
+                    return false;
+                }
+                return true;
+            } else if (clickedWordIdPosition === 2) {
+                if (clickedWordId[clickedWordIdPosition] !== i.englishGloss) {
+                    return false;
+                }
+                return true;
+            } else {
+                return
+            }
+        })
     }
 
     render() {
@@ -184,20 +235,15 @@ class WordPower extends Component {
                                                     <CardContent className="word-power-card-content">
                                                         <div className="word-power-card-div-1">
                                                             <Typography variant="h5" component="h2">
-                                                                {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]}) &nbsp;&nbsp; |
-                                                                &nbsp;&nbsp; {char.meaning}
+                                                                {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]})
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
-                                                                부수: {char.radical} ({char.primaryHoonMeaning} &nbsp;
-                                                                <i>{char.additionalHoonMeaning}</i>)
+                                                                부수: {char.radical} &nbsp; ({char.radicalHangul})
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
                                                         </div>
                                                         <br/>
                                                         <div className="word-power-card-div-2">
-                                                            <Typography>
-                                                                <b><i>Select a word:</i></b>
-                                                            </Typography>
                                                             {this.state.wordPowerData.length === 0 ? (
                                                                 <Grid item xs={12}>
                                                                     <br/>
@@ -212,7 +258,7 @@ class WordPower extends Component {
                                                                     onChange={this.handleOnClickWord}
                                                                     indicatorColor="secondary"
                                                                     textColor="primary"
-                                                                    centered
+                                                                    // centered
                                                                     style={{padding: '1%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
@@ -228,10 +274,30 @@ class WordPower extends Component {
                                                                             <Tab
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    <React.Fragment>
-                                                                                        {wordTab.hanqca}({wordTab.hankul}) &nbsp;&nbsp;
-                                                                                        {wordTab.englishGloss}
-                                                                                    </React.Fragment>
+                                                                                    // <div className="wordTab-label-flexbox">
+                                                                                    //     <React.Fragment>
+                                                                                    //         {wordTab.hanqca}({wordTab.hankul})
+                                                                                    //     </React.Fragment>
+                                                                                    //     <br/>
+                                                                                    //     <React.Fragment>
+                                                                                    //         {wordTab.englishGloss}
+                                                                                    //     </React.Fragment>
+                                                                                    // </div>
+                                                                                    <div
+                                                                                        className="wordTab-label-flexbox">
+                                                                                        <div
+                                                                                            className="wordTab-label-flexbox-1">
+                                                                                            <React.Fragment>
+                                                                                                {wordTab.hanqca}({wordTab.hankul})
+                                                                                            </React.Fragment>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            className="wordTab-label-flexbox-2">
+                                                                                            <React.Fragment>
+                                                                                                {wordTab.englishGloss}
+                                                                                            </React.Fragment>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 }
                                                                             />
                                                                         )
@@ -241,169 +307,241 @@ class WordPower extends Component {
                                                         </div>
                                                     </CardContent>
                                                 </Card>
-                                                <Card variant="outlined" className="word-power-card">
-                                                    <CardContent className="word-power-card-content">
-                                                        <div>
-                                                            <Tabs
+                                                <Card variant="outlined" className="word-power-card-left">
+                                                    <CardContent className="word-power-card-content-left">
+                                                        <div className="word-power-wordTabs">
+                                                            <RadioGroup
                                                                 value={this.state.examplesTabValue}
                                                                 onChange={this.handleOnChangeExamplesTab}
-                                                                indicatorColor="primary"
-                                                                textColor="primary"
-                                                                centered
-                                                                style={{padding: '2%'}}
                                                             >
-                                                                <Tab label="간단한 한자 예문"/>
-                                                                <Tab label="완벽한 한자 예문"/>
-                                                                <Tab label="한글 예문"/>
-                                                                <Tab label="영어 번역"/>
-                                                            </Tabs>
+                                                                <FormControlLabel value="simple" control={<Radio/>}
+                                                                                  label="간단한 한자 예문"/>
+                                                                <FormControlLabel value="complete" control={<Radio/>}
+                                                                                  label="완벽한 한자 예문"/>
+                                                                <FormControlLabel value="hangul" control={<Radio/>}
+                                                                                  label="한글"/>
+                                                            </RadioGroup>
+                                                            <FormControlLabel
+                                                                onChange={this.handleOnClickShowTranslation}
+                                                                checked={this.state.engChecked}
+                                                                value="english"
+                                                                control={<Switch/>}
+                                                                label="영어"/>
+                                                            <br/>
+                                                            <Button
+                                                                variant="contained"
+                                                                onClick={this.handleClickMoreYemun}>다음 예문
+                                                            </Button>
                                                         </div>
-                                                        {this.state.examplesTabValue === 0 &&
-                                                        <div>
-                                                            {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                if (clickedWordId[0] !== i.hanqca) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).map((filteredItem, idx) => {
-                                                                if (filteredItem.examples.length === 0) {
+                                                        {this.state.examplesTabValue === "simple" &&
+                                                        <div className="wordTab-results-div">
+                                                            {this.state.clickedWordTab === null &&
+                                                            <div className="no-data">
+                                                                <Typography>
+                                                                    Please select a word from the list.
+                                                                </Typography>
+                                                            </div>
+                                                            }
+                                                            {this.filterWordPowerData(0, char)
+                                                                .map((filteredItem, idx) => {
+                                                                    if (filteredItem.examples.length === 0) {
+                                                                        return (
+                                                                            <div className="no-data">
+                                                                                <Typography>
+                                                                                    예문이 없습니다.
+                                                                                </Typography>
+                                                                            </div>
+                                                                        )
+                                                                    }
                                                                     return (
-                                                                        <div className="no-data">
-                                                                            <Typography>
-                                                                                예문이 없습니다.
-                                                                            </Typography>
+                                                                        <div key={idx}>
+                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                                {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                                        if (idx + 1 < arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.simpleHanqca}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+
+                                                                                        if (idx + 1 === arr.length) {
+                                                                                            // this.setNoMoreYemun(idx, arr);
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.simpleHanqca}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                    <li className="no-more-yemun-msg">
+                                                                                                        ***마지막 예문입니다.***
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+
+                                                                                        // return (
+                                                                                        //     (this.state.noMoreYemun === true) &&
+                                                                                        //     <div
+                                                                                        //         className="no-more-yemun-msg">
+                                                                                        //         <Typography>
+                                                                                        //             예문이 없습니다.
+                                                                                        //         </Typography>
+                                                                                        //     </div>
+                                                                                        // )
+                                                                                    }
+                                                                                )}
+                                                                            </ul>
                                                                         </div>
                                                                     )
-                                                                }
-                                                                return (
-                                                                    <div key={idx}>
-                                                                        <ol>
-                                                                            {filteredItem.examples.map((sentence, idx) => {
-                                                                                    return (
-                                                                                        <div key={idx}>
-                                                                                            <li>
-                                                                                                {sentence.simpleHanqca}
-                                                                                            </li>
-                                                                                            <br/>
-                                                                                        </div>
-                                                                                    )
-                                                                                }
-                                                                            )}
-                                                                        </ol>
-                                                                    </div>
-                                                                )
-                                                            })}
+                                                                })}
                                                         </div>
                                                         }
 
-                                                        {this.state.examplesTabValue === 1 &&
-                                                        <div>
-                                                            {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                if (clickedWordId[0] !== i.hanqca) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).map((filteredItem, idx) => {
-                                                                return (
-                                                                    <div key={idx}>
-                                                                        <ol>
-                                                                            {filteredItem.examples.map((sentence, idx) => {
-                                                                                    return (
-                                                                                        <div key={idx}>
-                                                                                            <li>
-                                                                                                {sentence.hanqcaizedSentence}
-                                                                                            </li>
-                                                                                            <br/>
-                                                                                        </div>
-                                                                                    )
-                                                                                }
-                                                                            )}
-                                                                        </ol>
-                                                                    </div>
-                                                                )
-                                                            })}
+                                                        {this.state.examplesTabValue === "complete" &&
+                                                        <div className="wordTab-results-div">
+                                                            {this.state.clickedWordTab === null &&
+                                                            <div className="no-data">
+                                                                <Typography>
+                                                                    Please select a word from the list.
+                                                                </Typography>
+                                                            </div>
+                                                            }
+                                                            {this.filterWordPowerData(0, char)
+                                                                .map((filteredItem, idx) => {
+                                                                    if (filteredItem.examples.length === 0) {
+                                                                        return (
+                                                                            <div className="no-data">
+                                                                                <Typography>
+                                                                                    예문이 없습니다.
+                                                                                </Typography>
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                    return (
+                                                                        <div key={idx}>
+                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                                {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                                        if (idx + 1 < arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.hanqcaizedSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+
+                                                                                        if (idx + 1 === arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.hanqcaizedSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                    <li className="no-more-yemun-msg">
+                                                                                                        ***마지막 예문입니다.***
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+                                                                                    }
+                                                                                )}
+                                                                            </ul>
+                                                                        </div>
+                                                                    )
+                                                                })}
                                                         </div>
                                                         }
 
-                                                        {this.state.examplesTabValue === 2 &&
-                                                        <div>
-                                                            {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                if (clickedWordId[1] !== i.hankul) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).map((filteredItem, idx) => {
-                                                                return (
-                                                                    <div key={idx}>
-                                                                        <ol>
-                                                                            {filteredItem.examples.map((sentence, idx) => {
-                                                                                    return (
-                                                                                        <div key={idx}>
-                                                                                            <li>
-                                                                                                {sentence.koreanSentence}
-                                                                                            </li>
-                                                                                            <br/>
-                                                                                        </div>
-                                                                                    )
-                                                                                }
-                                                                            )}
-                                                                        </ol>
-                                                                    </div>
-                                                                )
-                                                            })}
-                                                        </div>
-                                                        }
+                                                        {this.state.examplesTabValue === "hangul" &&
+                                                        <div className="wordTab-results-div">
+                                                            {this.state.clickedWordTab === null &&
+                                                            <div className="no-data">
+                                                                <Typography>
+                                                                    Please select a word from the list.
+                                                                </Typography>
+                                                            </div>
+                                                            }
+                                                            {this.filterWordPowerData(1, char)
+                                                                .map((filteredItem, idx) => {
+                                                                    if (filteredItem.examples.length === 0) {
+                                                                        return (
+                                                                            <div className="no-data">
+                                                                                <Typography>
+                                                                                    예문이 없습니다.
+                                                                                </Typography>
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                    return (
+                                                                        <div key={idx}>
+                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                                {filteredItem.examples.map((sentence, idx, arr) => {
+                                                                                        if (idx + 1 < arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.koreanSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
 
-                                                        {this.state.examplesTabValue === 3 &&
-                                                        <div>
-                                                            {this.state.wordPowerData.filter((item) => {
-                                                                if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).filter((i) => {
-                                                                let clickedWordId = this.state.clickedWord.id.split("!!!");
-                                                                if (clickedWordId[2] !== i.englishGloss) {
-                                                                    return false;
-                                                                }
-                                                                return true;
-                                                            }).map((filteredItem, idx) => {
-                                                                return (
-                                                                    <div key={idx}>
-                                                                        <ol>
-                                                                            {filteredItem.examples.map((sentence, idx) => {
-                                                                                    return (
-                                                                                        <div key={idx}>
-                                                                                            <li>
-                                                                                                {sentence.translation}
-                                                                                            </li>
-                                                                                            <br/>
-                                                                                        </div>
-                                                                                    )
-                                                                                }
-                                                                            )}
-                                                                        </ol>
-                                                                    </div>
-                                                                )
-                                                            })}
+                                                                                        if (idx + 1 === arr.length) {
+                                                                                            return (
+                                                                                                (idx === this.state.yemunCount - 1) &&
+                                                                                                <div key={idx}>
+                                                                                                    <li className="wordTab-results-yemun">
+                                                                                                        {sentence.koreanSentence}
+                                                                                                    </li>
+                                                                                                    {this.state.showTranslation === true &&
+                                                                                                    <li>
+                                                                                                        {sentence.translation}
+                                                                                                    </li>
+                                                                                                    }
+                                                                                                    <li className="no-more-yemun-msg">
+                                                                                                        ***마지막 예문입니다.***
+                                                                                                    </li>
+                                                                                                </div>
+                                                                                            )
+                                                                                        }
+                                                                                    }
+                                                                                )}
+                                                                            </ul>
+                                                                        </div>
+                                                                    )
+                                                                })}
                                                         </div>
                                                         }
                                                     </CardContent>

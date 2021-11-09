@@ -248,7 +248,10 @@ async function list(req, res) {
         const hanqcaMatcher = wordPower.hanqcaMatch;
         let hanqca = wordPower.hanqca;
         const matchedExamples = [];
-        const preMatchedExamples = await Yemun.find({hanqcaMatch: {$in: hanqcaMatcher}});
+        const yemunQuery = {};
+        yemunQuery['lesson'] = Number(req.query.lesson);
+        yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
+        const preMatchedExamples = await Yemun.find(yemunQuery);
 
         let hanqcaInWord = [];
         let hankulInWord = [];
@@ -357,7 +360,6 @@ async function list(req, res) {
                     }
                 } else {
                     finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
-                    console.log(finalWordPowerHanqcaArr);
                     if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
                         let index = -1;
 
