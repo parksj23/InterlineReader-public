@@ -22,3 +22,13 @@
 .new-hanja-con {
   display: grid;
 }
+
+.hanja-char svg {
+  width: 150px;
+  height: 150px;
+}
+
+.missing-hanja {
+  font-size: 80px;
+  padding: 2px 10px;
+}

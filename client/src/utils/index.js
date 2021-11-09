@@ -1,3 +1,21 @@
+import HanziWriter from "hanzi-writer";
+
+const MISSING_CHARS = ['車', '通', '金', '窓', '旅', '復', '飮', '來'];
+
+function showHanjiAnimation (hanja, target) {
+  hanja = hanja.trim();
+  let writer;
+
+  if (MISSING_CHARS.includes(hanja)) {
+    return document.getElementById(target).innerHTML = `<span class="missing-hanja">${hanja}</span>`;
+  } else {
+    writer = HanziWriter.create(target, hanja, {
+      showOutline: true,
+    });
+  }
+  writer.loopCharacterAnimation();
+};
+
 function getQuestionFontSize(question) {
     return question.length > 80 ? '20px' : '30px';
 }
@@ -34,4 +52,5 @@ export {
     getQuestionFontSize,
     stringAvatar,
     stringToColor,
+    showHanjiAnimation,
 };
