@@ -91,8 +91,9 @@ async function createYemun(req, res) {
                     message: "Yemun document already exists",
                 });
             } else {
-                await newYemun.save();
-                return res.status(201).json(newYemun);
+                newYemun.save().then(() => {
+                    return res.status(201).json(newYemun);
+                });
             }
         })
         .catch((err) => {
