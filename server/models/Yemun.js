@@ -9,6 +9,7 @@ const YemunSchema = new Schema({
 	translation: { type: String },
 	hanqcaMatch: { type: Array, default: [] },
 }, { toJSON: { virtuals: true, getters: true }});
+// }, { toJSON: { virtuals: true, getters: true }, collection: "yemunTEST"});
 
 const Yemun = mongoose.model('yemun', YemunSchema);
 module.exports = Yemun;

@@ -8,6 +8,7 @@ const WordPowerSchema = new Schema({
 	englishGloss: { type: String },
 	hanqcaMatch: { type: Array, default: [] }
 }, { toJSON: { virtuals: true, getters: true }});
+// }, { toJSON: { virtuals: true, getters: true }, collection: "wordpowerTEST"});
 
 const WordPower = mongoose.model('wordpower', WordPowerSchema);
 module.exports = WordPower;
