@@ -4,6 +4,7 @@ import {withRouter} from 'react-router-dom';
 import './WordPower.css';
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 import {getNewHanja} from "../../../actions/KORN351/Lessons";
+import {getNewHanjaCombos} from "../../../actions/KORN351/Lessons";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +19,7 @@ class WordPower extends Component {
         super(props);
         this.state = {
             newHanja: [],
+            newHanjaCombos: [],
             currentLesson: this.props.match.params.lesson,
             wordPowerData: [],
             showLoading: false,
@@ -46,6 +48,20 @@ class WordPower extends Component {
                 }
             );
         }
+
+        if (this.props.newHanjaCombos.length === 0 || this.props.newHanjaCombos === undefined) {
+            this.props.getNewHanjaCombos().then(() => {
+                    const currLesson = this.props.match.params.lesson;
+
+                    let temp = this.props.newHanjaCombos.filter(combo => {
+                        return combo.lesson === currLesson
+                    });
+                    this.setState({
+                        newHanjaCombos: temp
+                    })
+                }
+            );
+        }
     }
 
     componentWillMount() {
@@ -67,9 +83,23 @@ class WordPower extends Component {
                 newHanja: temp
             });
         }
+
+        if (this.state.newHanjaCombos.length === 0) {
+            const currLesson = this.props.match.params.lesson;
+
+            let temp = this.props.newHanjaCombos.filter(combo => {
+                return combo.lesson === currLesson
+            });
+            this.setState({
+                newHanjaCombos: temp
+            });
+        }
     }
 
     getWordPowerYemunData = (id) => {
+        console.log("we got it");
+        console.log(this.state.newHanja);
+        console.log(this.state.newHanjaCombos);
         axios({
             method: "get",
             url: '/api/wordPower/list',
@@ -154,6 +184,7 @@ class WordPower extends Component {
 
     render() {
         const {newHanja} = this.state;
+        const {newHanjaCombos} = this.state;
 
         return (
             <Grid container>
@@ -550,18 +581,9 @@ class WordPower extends Component {
 const
     mapStateToProps = (state) => {
         return {
-            newHanja: state.lessons.newHanja
+            newHanja: state.lessons.newHanja,
+            newHanjaCombos : state.lessons.newHanjaCombos
         };
     };
 
-export default withRouter(connect
-
-    (
-        mapStateToProps
-        , {
-            getNewHanja
-        }
-    )
-    (WordPower)
-)
-;
+export default withRouter(connect(mapStateToProps, {getNewHanja, getNewHanjaCombos})(WordPower));
