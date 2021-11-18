@@ -305,7 +305,7 @@ class WordPower extends Component {
                                                                     wrapped
                                                                 >
 
-                                                                    {this.state.showNewHanjaComboWords === false &&
+                                                                    {this.state.showAllWords === true &&
                                                                     this.state.wordPowerData.filter((item) => {
                                                                         if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
                                                                             return false;
@@ -314,7 +314,6 @@ class WordPower extends Component {
                                                                     }).map((wordTab, idx) => {
                                                                         return (
                                                                             <Tab
-                                                                                key={idx}
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
                                                                                     <div
@@ -338,16 +337,16 @@ class WordPower extends Component {
                                                                     })}
 
                                                                     {this.state.showNewHanjaComboWords === true &&
-                                                                    (newHanjaCombos.map((combo, idx) => {
+                                                                    (newHanjaCombos.forEach((combo) => {
                                                                         this.state.wordPowerData.filter((item) => {
                                                                             if (!item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
                                                                                 return false;
                                                                             }
                                                                             return true;
                                                                         }).map((wordTab) => {
+                                                                            console.log(wordTab);
                                                                             return (
                                                                                 <Tab
-                                                                                    key={idx}
                                                                                     id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                     label={
                                                                                         <div
@@ -443,7 +442,6 @@ class WordPower extends Component {
                                                                                         }
 
                                                                                         if (idx + 1 === arr.length) {
-                                                                                            // this.setNoMoreYemun(idx, arr);
                                                                                             return (
                                                                                                 (idx === this.state.yemunCount - 1) &&
                                                                                                 <div key={idx}>
