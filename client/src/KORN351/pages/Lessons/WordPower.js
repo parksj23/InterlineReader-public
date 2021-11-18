@@ -276,8 +276,7 @@ class WordPower extends Component {
                                                                     onChange={this.handleOnClickWord}
                                                                     indicatorColor="secondary"
                                                                     textColor="primary"
-                                                                    // centered
-                                                                    style={{padding: '1%'}}
+                                                                    style={{padding: '1%', width: '100%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
                                                                     wrapped
@@ -292,19 +291,8 @@ class WordPower extends Component {
                                                                             <Tab
                                                                                 id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    // <div className="wordTab-label-flexbox">
-                                                                                    //     <React.Fragment>
-                                                                                    //         {wordTab.hanqca}({wordTab.hankul})
-                                                                                    //     </React.Fragment>
-                                                                                    //     <br/>
-                                                                                    //     <React.Fragment>
-                                                                                    //         {wordTab.englishGloss}
-                                                                                    //     </React.Fragment>
-                                                                                    // </div>
-                                                                                    <div
-                                                                                        className="wordTab-label-flexbox">
-                                                                                        <div
-                                                                                            className="wordTab-label-flexbox-1">
+                                                                                    <div className="wordTab-label-flexbox">
+                                                                                        <div className="wordTab-label-flexbox-1">
                                                                                             <React.Fragment>
                                                                                                 {wordTab.hanqca}({wordTab.hankul})
                                                                                             </React.Fragment>
