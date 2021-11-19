@@ -28,8 +28,8 @@ class WordPower extends Component {
             clickedWordTab: null,
             showTranslation: false,
             engChecked: false,
-            showNewHanjaComboWords: false,
-            newHanjaComboWordsChecked: false,
+            showNewHanjaComboWords: true,
+            newHanjaComboWordsChecked: true,
             showAllWords: false,
             showAllWordsChecked: false
         }
@@ -100,8 +100,6 @@ class WordPower extends Component {
     }
 
     getWordPowerYemunData = (id) => {
-        console.log(this.state.newHanja);
-        console.log(this.state.newHanjaCombos);
         axios({
             method: "get",
             url: '/api/wordPower/list',
@@ -177,17 +175,23 @@ class WordPower extends Component {
     }
 
     handleToggleNewHanjaCombos = () => {
-        this.setState({showNewHanjaComboWords: !this.state.showNewHanjaComboWords});
-        this.setState({newHanjaComboWordsChecked: !this.state.newHanjaComboWordsChecked});
-        this.setState({showAllWords: false});
-        this.setState({showAllWordsChecked: false});
+        this.setState({
+            showNewHanjaComboWords: !this.state.showNewHanjaComboWords,
+            newHanjaComboWordsChecked: !this.state.newHanjaComboWordsChecked
+        });
+        this.setState({showAllWords: false, showAllWordsChecked: false});
+        this.setState({clickedWord: {id: "null"}});
+        this.setState({clickedWordTab: null});
     }
 
     handleToggleShowAllWords = () => {
-        this.setState({showAllWords: !this.state.showAllWords});
-        this.setState({showAllWordsChecked: !this.state.showAllWordsChecked});
-        this.setState({showNewHanjaComboWords: false});
-        this.setState({newHanjaComboWordsChecked: false});
+        this.setState({
+            showAllWords: !this.state.showAllWords,
+            showAllWordsChecked: !this.state.showAllWordsChecked
+        });
+        this.setState({showNewHanjaComboWords: false, newHanjaComboWordsChecked: false});
+        this.setState({clickedWord: {id: "null"}});
+        this.setState({clickedWordTab: null});
     }
 
     render() {
@@ -337,14 +341,6 @@ class WordPower extends Component {
                                                                     })}
 
                                                                     {this.state.showNewHanjaComboWords === true &&
-                                                                    // this.state.wordPowerData.filter((item) => {
-                                                                    //     newHanjaCombos.forEach((combo) => {
-                                                                    //         if (!item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
-                                                                    //             return false;
-                                                                    //         }
-                                                                    //         return true;
-                                                                    //     })
-                                                                    // })
                                                                     this.state.wordPowerData.reduce((filteredResult, item) => {
                                                                         newHanjaCombos.forEach(combo => {
                                                                             if (item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
@@ -356,30 +352,29 @@ class WordPower extends Component {
                                                                         return filteredResult;
                                                                     }, [])
                                                                         .map(wordTab => {
-                                                                        console.log(wordTab);
-                                                                        return (
-                                                                            <Tab
-                                                                                id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
-                                                                                label={
-                                                                                    <div
-                                                                                        className="wordTab-label-flexbox">
+                                                                            return (
+                                                                                <Tab
+                                                                                    id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                    label={
                                                                                         <div
-                                                                                            className="wordTab-label-flexbox-1">
-                                                                                            <React.Fragment>
-                                                                                                {wordTab.hanqca}({wordTab.hankul})
-                                                                                            </React.Fragment>
+                                                                                            className="wordTab-label-flexbox">
+                                                                                            <div
+                                                                                                className="wordTab-label-flexbox-1">
+                                                                                                <React.Fragment>
+                                                                                                    {wordTab.hanqca}({wordTab.hankul})
+                                                                                                </React.Fragment>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                className="wordTab-label-flexbox-2">
+                                                                                                <React.Fragment>
+                                                                                                    {wordTab.englishGloss}
+                                                                                                </React.Fragment>
+                                                                                            </div>
                                                                                         </div>
-                                                                                        <div
-                                                                                            className="wordTab-label-flexbox-2">
-                                                                                            <React.Fragment>
-                                                                                                {wordTab.englishGloss}
-                                                                                            </React.Fragment>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                }
-                                                                            />
-                                                                        )
-                                                                    })
+                                                                                    }
+                                                                                />
+                                                                            )
+                                                                        })
                                                                     }
                                                                 </Tabs>
                                                             )}
