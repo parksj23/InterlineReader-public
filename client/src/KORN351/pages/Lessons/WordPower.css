@@ -34,7 +34,7 @@
     flex-direction: column;
     flex-basis: 0;
     flex-grow: 1;
-    width: 100%;
+    width: 110%;
 }
 
 .wordTab-label-flexbox-1 {
@@ -43,6 +43,7 @@
     flex-basis: 0;
     flex-grow: 1;
     font-size: 20px;
+    /*white-space: nowrap;*/
 }
 
 .wordTab-label-flexbox-2 {
