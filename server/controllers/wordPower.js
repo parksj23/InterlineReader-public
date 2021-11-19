@@ -13,12 +13,9 @@ async function createWordPower(req, res) {
 
     const wordPower = new WordPower(req.body);
 
-    const query = {};
-    query['lesson'] = Number(req.body.lesson);
-    query['hankul'] = req.body.hankul;
-    console.log(query);
+    let query = {lesson: Number(req.body.lesson), hankul: req.body.hankul};
 
-    const words = await WordPower.find({lesson: Number(req.body.lesson), hankul: req.body.hankul})
+    WordPower.find({lesson: Number(req.body.lesson), hankul: req.body.hankul})
         .exec()
         .then((words) => {
             if (words.length >= 1) {
@@ -318,7 +315,6 @@ async function list(req, res) {
     }
 
     const wordPowers = await WordPower.find(query);
-    console.log(query);
 
     const wordPowerList = [];
     for (const wordPower of wordPowers) {
@@ -329,7 +325,6 @@ async function list(req, res) {
         const yemunQuery = {};
         yemunQuery['lesson'] = Number(req.query.lesson);
         yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
-        console.log(yemunQuery);
         const preMatchedExamples = await Yemun.find(yemunQuery);
 
         let hanqcaInWord = [];
@@ -482,7 +477,6 @@ async function list(req, res) {
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
     }
-    console.log(wordPowerList.length);
 
     return res.status(200).json(wordPowerList);
 }
