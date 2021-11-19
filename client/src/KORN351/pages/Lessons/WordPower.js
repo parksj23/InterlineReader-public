@@ -107,6 +107,8 @@ class WordPower extends Component {
         })
             .then((response) => {
                 const data = response.data;
+                console.log("the data");
+                console.log(data);
                 this.setState({wordPowerData: data});
                 this.setState({showLoading: false});
             })
@@ -147,14 +149,14 @@ class WordPower extends Component {
 
     filterWordPowerData = (clickedWordIdPosition, char) => {
         return this.state.wordPowerData.filter((item) => {
-            if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
+            if (!item.hanqca.trim().normalize('NFC').includes(char.hanja.replace(/\s/g, '').trim().normalize('NFC'))) {
                 return false;
             }
             return true;
         }).filter((i) => {
             let clickedWordId = this.state.clickedWord.id.split("!!!");
             if (clickedWordIdPosition === 0) {
-                if (clickedWordId[clickedWordIdPosition] !== i.hanqca) {
+                if (clickedWordId[clickedWordIdPosition].trim().normalize('NFC') !== i.hanqca.trim().normalize('NFC')) {
                     return false;
                 }
                 return true;
@@ -234,13 +236,13 @@ class WordPower extends Component {
                                         wrapped
                                     >
                                         {newHanja.map((hanjaTab) => {
-                                            let tabId = hanjaTab.hanja.replace(/\s/g, '').trim();
+                                            let tabId = hanjaTab.hanja.replace(/\s/g, '').trim().normalize('NFC');
                                             return (
                                                 <Tab
                                                     id={tabId}
                                                     label={
                                                         <React.Fragment>
-                                                            {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
+                                                            {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja.trim().normalize('NFC')}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
                                                         </React.Fragment>
                                                     }
                                                 />
@@ -258,14 +260,15 @@ class WordPower extends Component {
                                 </Grid>
                             ) : (
                                 newHanja.map((char, idx) => {
-                                    if (this.state.clickedHanja.id === char.hanja.replace(/\s/g, '').trim()) {
+                                    if (this.state.clickedHanja.id.trim().normalize('NFC') === char.hanja.replace(/\s/g, '').trim().normalize('NFC')) {
+                                        console.log("true");
                                         return (
                                             <Grid item xs={12} className="word-power-grid-card" key={idx}>
                                                 <Card variant="outlined" className="word-power-card">
                                                     <CardContent className="word-power-card-content">
                                                         <div className="word-power-card-div-1">
                                                             <Typography variant="h5" component="h2">
-                                                                {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]})
+                                                                {char.hoonEum.split(" ")[0]} {char.hanja.trim().normalize('NFC')}({char.hoonEum.split(" ")[1]})
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
                                                                 부수: {char.radical} &nbsp; ({char.radicalHangul})
@@ -312,21 +315,21 @@ class WordPower extends Component {
 
                                                                     {this.state.showAllWords === true &&
                                                                     this.state.wordPowerData.filter((item) => {
-                                                                        if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
+                                                                        if (!item.hanqca.trim().normalize('NFC').includes(char.hanja.replace(/\s/g, '').trim().normalize('NFC'))) {
                                                                             return false;
                                                                         }
                                                                         return true;
                                                                     }).map((wordTab, idx) => {
                                                                         return (
                                                                             <Tab
-                                                                                id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                id={wordTab.hanqca.trim().normalize('NFC') + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
                                                                                     <div
                                                                                         className="wordTab-label-flexbox">
                                                                                         <div
                                                                                             className="wordTab-label-flexbox-1">
                                                                                             <React.Fragment>
-                                                                                                {wordTab.hanqca}({wordTab.hankul})
+                                                                                                {wordTab.hanqca.trim().normalize('NFC')}({wordTab.hankul})
                                                                                             </React.Fragment>
                                                                                         </div>
                                                                                         <div
@@ -344,7 +347,7 @@ class WordPower extends Component {
                                                                     {this.state.showNewHanjaComboWords === true &&
                                                                     this.state.wordPowerData.reduce((filteredResult, item) => {
                                                                         newHanjaCombos.forEach(combo => {
-                                                                            if (item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
+                                                                            if (item.hanqca.trim().normalize('NFC').includes(combo.hanja.replace(/\s/g, '').trim().normalize('NFC'))) {
                                                                                 if (filteredResult.indexOf(item) === -1) {
                                                                                     filteredResult.push(item);
                                                                                 }
@@ -354,14 +357,14 @@ class WordPower extends Component {
                                                                     }, []).map(wordTab => {
                                                                             return (
                                                                                 <Tab
-                                                                                    id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                    id={wordTab.hanqca.trim().normalize('NFC') + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                     label={
                                                                                         <div
                                                                                             className="wordTab-label-flexbox">
                                                                                             <div
                                                                                                 className="wordTab-label-flexbox-1">
                                                                                                 <React.Fragment>
-                                                                                                    {wordTab.hanqca}({wordTab.hankul})
+                                                                                                    {wordTab.hanqca.trim().normalize('NFC')}({wordTab.hankul})
                                                                                                 </React.Fragment>
                                                                                             </div>
                                                                                             <div
