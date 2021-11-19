@@ -279,7 +279,8 @@ class WordPower extends Component {
                                                                 checked={this.state.newHanjaComboWordsChecked}
                                                                 value="combos"
                                                                 control={<Switch/>}
-                                                                label="New Hanja Combos Only"/>
+                                                                label="漢字 combos only"/>
+                                                            <br/>
                                                             <FormControlLabel
                                                                 onChange={this.handleToggleShowAllWords}
                                                                 checked={this.state.showAllWordsChecked}
@@ -344,14 +345,13 @@ class WordPower extends Component {
                                                                     this.state.wordPowerData.reduce((filteredResult, item) => {
                                                                         newHanjaCombos.forEach(combo => {
                                                                             if (item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
-                                                                                if (filteredResult.indexOf(item) < 0) {
+                                                                                if (filteredResult.indexOf(item) === -1) {
                                                                                     filteredResult.push(item);
                                                                                 }
                                                                             }
                                                                         });
                                                                         return filteredResult;
-                                                                    }, [])
-                                                                        .map(wordTab => {
+                                                                    }, []).map(wordTab => {
                                                                             return (
                                                                                 <Tab
                                                                                     id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
