@@ -337,38 +337,49 @@ class WordPower extends Component {
                                                                     })}
 
                                                                     {this.state.showNewHanjaComboWords === true &&
-                                                                    (newHanjaCombos.forEach((combo) => {
-                                                                        this.state.wordPowerData.filter((item) => {
-                                                                            if (!item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
-                                                                                return false;
+                                                                    // this.state.wordPowerData.filter((item) => {
+                                                                    //     newHanjaCombos.forEach((combo) => {
+                                                                    //         if (!item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
+                                                                    //             return false;
+                                                                    //         }
+                                                                    //         return true;
+                                                                    //     })
+                                                                    // })
+                                                                    this.state.wordPowerData.reduce((filteredResult, item) => {
+                                                                        newHanjaCombos.forEach(combo => {
+                                                                            if (item.hanqca.includes(combo.hanja.replace(/\s/g, '').trim())) {
+                                                                                if (filteredResult.indexOf(item) < 0) {
+                                                                                    filteredResult.push(item);
+                                                                                }
                                                                             }
-                                                                            return true;
-                                                                        }).map((wordTab) => {
-                                                                            console.log(wordTab);
-                                                                            return (
-                                                                                <Tab
-                                                                                    id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
-                                                                                    label={
+                                                                        });
+                                                                        return filteredResult;
+                                                                    }, [])
+                                                                        .map(wordTab => {
+                                                                        console.log(wordTab);
+                                                                        return (
+                                                                            <Tab
+                                                                                id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                label={
+                                                                                    <div
+                                                                                        className="wordTab-label-flexbox">
                                                                                         <div
-                                                                                            className="wordTab-label-flexbox">
-                                                                                            <div
-                                                                                                className="wordTab-label-flexbox-1">
-                                                                                                <React.Fragment>
-                                                                                                    {wordTab.hanqca}({wordTab.hankul})
-                                                                                                </React.Fragment>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                className="wordTab-label-flexbox-2">
-                                                                                                <React.Fragment>
-                                                                                                    {wordTab.englishGloss}
-                                                                                                </React.Fragment>
-                                                                                            </div>
+                                                                                            className="wordTab-label-flexbox-1">
+                                                                                            <React.Fragment>
+                                                                                                {wordTab.hanqca}({wordTab.hankul})
+                                                                                            </React.Fragment>
                                                                                         </div>
-                                                                                    }
-                                                                                />
-                                                                            )
-                                                                        })
-                                                                    }))
+                                                                                        <div
+                                                                                            className="wordTab-label-flexbox-2">
+                                                                                            <React.Fragment>
+                                                                                                {wordTab.englishGloss}
+                                                                                            </React.Fragment>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                }
+                                                                            />
+                                                                        )
+                                                                    })
                                                                     }
                                                                 </Tabs>
                                                             )}
