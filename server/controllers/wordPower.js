@@ -96,9 +96,6 @@ async function createYemun(req, res) {
 
     req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
-    let test = {lesson: Number(req.body.lesson), translation: req.body.translation};
-    console.log(test);
-
     const newYemun = new Yemun(req.body);
     Yemun.find({lesson: Number(req.body.lesson), translation: req.body.translation})
         .exec()
@@ -318,7 +315,6 @@ async function list(req, res) {
     }
 
     const wordPowers = await WordPower.find(query);
-    console.log(query);
 
     const wordPowerList = [];
     for (const wordPower of wordPowers) {
@@ -329,7 +325,6 @@ async function list(req, res) {
         const yemunQuery = {};
         yemunQuery['lesson'] = Number(req.query.lesson);
         yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
-        console.log(yemunQuery);
         const preMatchedExamples = await Yemun.find(yemunQuery);
 
         let hanqcaInWord = [];
@@ -390,8 +385,6 @@ async function list(req, res) {
                 }
             } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히")) && hanqca.includes(" ")) {
                 finalWordPowerHanqcaArr = hanqca;
-                console.log(yemunHanqcaArr);
-                console.log(hanqca);
                 if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
                     let index = -1;
 
