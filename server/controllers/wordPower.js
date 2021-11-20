@@ -216,7 +216,7 @@ async function list(req, res) {
 
             let finalWordPowerHanqcaArr = [];
 
-            if (isHangul(hanqca).includes(true) && (hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) { // ...(을) 하다, ...하다
+            if (isHangul(hanqca).includes(true) && (hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("되다") || hanqca.includes("히"))) { // ...(을) 하다, ...하다, 발행되다
                 let beforeBracket = hanqca.split("(")[0];
                 let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
                 let beforeHankul = null;
@@ -252,7 +252,7 @@ async function list(req, res) {
                         }
                     }
                 }
-            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히")) && hanqca.includes(" ")) {
+            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("되다") ||  hanqca.includes("히")) && hanqca.includes(" ")) {
                 let split = hanqca.split(" ");
                 if (split[split.length - 1].includes("다")) { // 악명 높다
                     finalWordPowerHanqcaArr = split[0];
@@ -275,7 +275,7 @@ async function list(req, res) {
                         matchedExamples.push(yemun)
                     }
                 }
-            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) { //江물 (강물)
+            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("되다") || hanqca.includes("히"))) { //江물 (강물)
                 finalWordPowerHanqcaArr = hanqca;
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
                     if (block.search(finalWordPowerHanqcaArr) >= 0) {
