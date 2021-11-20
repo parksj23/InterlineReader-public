@@ -383,8 +383,14 @@ async function list(req, res) {
                         }
                     }
                 }
-            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히")) && hanqca.includes(" ")) {
-                finalWordPowerHanqcaArr = hanqca;
+            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히")) && hanqca.includes(" ")) { //인생 처음
+                let split = hanqca.split(" ");
+                if (split[split.length - 1].includes("다")) {
+                    finalWordPowerHanqcaArr = split[0];
+                } else {
+                    finalWordPowerHanqcaArr = hanqca;
+                }
+
                 if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
                     let index = -1;
 
@@ -400,7 +406,7 @@ async function list(req, res) {
                         matchedExamples.push(yemun)
                     }
                 }
-            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) {
+            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) { //江물 (강물)
                 finalWordPowerHanqcaArr = hanqca;
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
                     if (block.search(finalWordPowerHanqcaArr) >= 0) {
