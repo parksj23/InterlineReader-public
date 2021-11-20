@@ -315,6 +315,7 @@ async function list(req, res) {
     }
 
     const wordPowers = await WordPower.find(query);
+    console.log(query);
 
     const wordPowerList = [];
     for (const wordPower of wordPowers) {
@@ -347,8 +348,6 @@ async function list(req, res) {
 
             let finalWordPowerHanqcaArr = [];
 
-            console.log(hanqca);
-
             if (isHangul(hanqca).includes(true) && (hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) { // ...(을) 하다, ...하다
                 let focus = hanqca.split("(")[0];
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
@@ -362,9 +361,9 @@ async function list(req, res) {
                             }
                         }
                         hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                        let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                        let re3 = new RegExp("^" + join + "$");
-                        console.log(re3);
+                        // let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                        // let re3 = new RegExp("^" + join + "$");
+                        let re3 = new RegExp("^" + focus + "$");
                         if (hanqcaInBlock.search(re3) >= 0) {
                             let index = -1;
 
@@ -379,6 +378,28 @@ async function list(req, res) {
                             } else {
                                 matchedExamples.push(yemun)
                             }
+                        }
+                    }
+                }
+            }
+
+            else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) {
+                finalWordPowerHanqcaArr = hanqca;
+                for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
+                    // let re3 = new RegExp("^" + hanqca + "$");
+                    if (block.search(hanqca) >= 0) {
+                        let index = -1;
+
+                        for (let i = 0; i < matchedExamples.length; i++) {
+                            if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                                index = i;
+                            }
+                        }
+
+                        if (index > -1) {
+                            matchedExamples[index] = yemun;
+                        } else {
+                            matchedExamples.push(yemun)
                         }
                     }
                 }
