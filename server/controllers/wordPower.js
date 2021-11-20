@@ -326,6 +326,7 @@ async function list(req, res) {
         const yemunQuery = {};
         yemunQuery['lesson'] = Number(req.query.lesson);
         yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
+        console.log(yemunQuery);
         const preMatchedExamples = await Yemun.find(yemunQuery);
 
         let hanqcaInWord = [];
@@ -349,7 +350,12 @@ async function list(req, res) {
             let finalWordPowerHanqcaArr = [];
 
             if (isHangul(hanqca).includes(true) && (hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) { // ...(을) 하다, ...하다
-                let focus = hanqca.split("(")[0];
+                let beforeBracket = hanqca.split("(")[0];
+                let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                let beforeHankul = null;
+                if (join.length > 1) {
+                    beforeHankul = join;
+                }
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
                     let hanqcaInBlock = [];
                     let punc2 = isPunctuation(block.replace(/\s/g, '').trim());
@@ -361,10 +367,8 @@ async function list(req, res) {
                             }
                         }
                         hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                        // let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                        // let re3 = new RegExp("^" + join + "$");
-                        let re3 = new RegExp("^" + focus + "$");
-                        if (hanqcaInBlock.search(re3) >= 0) {
+                        let re3 = new RegExp("^" + beforeBracket + "$");
+                        if ( yemunHanqcaArr.includes(beforeHankul) || hanqcaInBlock.search(re3) >= 0 ) {
                             let index = -1;
 
                             for (let i = 0; i < matchedExamples.length; i++) {
@@ -386,7 +390,6 @@ async function list(req, res) {
             else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) {
                 finalWordPowerHanqcaArr = hanqca;
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
-                    // let re3 = new RegExp("^" + hanqca + "$");
                     if (block.search(hanqca) >= 0) {
                         let index = -1;
 
