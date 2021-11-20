@@ -96,6 +96,9 @@ async function createYemun(req, res) {
 
     req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
+    let test = {lesson: Number(req.body.lesson), translation: req.body.translation};
+    console.log(test);
+
     const newYemun = new Yemun(req.body);
     Yemun.find({lesson: Number(req.body.lesson), translation: req.body.translation})
         .exec()
@@ -387,10 +390,31 @@ async function list(req, res) {
                 }
             }
 
+            else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히")) && hanqca.includes(" ")) {
+                finalWordPowerHanqcaArr = hanqca;
+                console.log(yemunHanqcaArr);
+                console.log(hanqca);
+                if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
+                    let index = -1;
+
+                    for (let i = 0; i < matchedExamples.length; i++) {
+                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                            index = i;
+                        }
+                    }
+
+                    if (index > -1) {
+                        matchedExamples[index] = yemun;
+                    } else {
+                        matchedExamples.push(yemun)
+                    }
+                }
+            }
+
             else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("히"))) {
                 finalWordPowerHanqcaArr = hanqca;
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
-                    if (block.search(hanqca) >= 0) {
+                    if (block.search(finalWordPowerHanqcaArr) >= 0) {
                         let index = -1;
 
                         for (let i = 0; i < matchedExamples.length; i++) {
