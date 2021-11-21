@@ -252,7 +252,7 @@ async function list(req, res) {
                         }
                     }
                 }
-            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("되다") ||  hanqca.includes("히")) && hanqca.includes(" ")) {
+            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes("(") || hanqca.includes("하다") || hanqca.includes("되다") || hanqca.includes("히")) && hanqca.includes(" ")) {
                 let split = hanqca.split(" ");
                 if (split[split.length - 1].includes("다")) { // 악명 높다
                     finalWordPowerHanqcaArr = split[0];
@@ -297,21 +297,39 @@ async function list(req, res) {
             } else if (!(isHangul(hanqca).includes(true))) {
                 finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
 
-                if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
-                    let index = -1;
+                for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
+                    if (block.search(finalWordPowerHanqcaArr) >= 0) {
+                        let index = -1;
 
-                    for (let i = 0; i < matchedExamples.length; i++) {
-                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
-                            index = i;
+                        for (let i = 0; i < matchedExamples.length; i++) {
+                            if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                                index = i;
+                            }
+                        }
+
+                        if (index > -1) {
+                            matchedExamples[index] = yemun;
+                        } else {
+                            matchedExamples.push(yemun)
                         }
                     }
-
-                    if (index > -1) {
-                        matchedExamples[index] = yemun;
-                    } else {
-                        matchedExamples.push(yemun)
-                    }
                 }
+
+                // if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
+                //     let index = -1;
+                //
+                //     for (let i = 0; i < matchedExamples.length; i++) {
+                //         if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                //             index = i;
+                //         }
+                //     }
+                //
+                //     if (index > -1) {
+                //         matchedExamples[index] = yemun;
+                //     } else {
+                //         matchedExamples.push(yemun)
+                //     }
+                // }
             }
         }
 
