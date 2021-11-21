@@ -89,18 +89,18 @@ async function deleteYemun(req, res) {
 }
 
 async function createYemun(req, res) {
-    const {hanqcaizedSentence, hanqcaMatch} = req.body;
+    // const {hanqcaizedSentence, hanqcaMatch} = req.body;
 
     req.body.hanqcaizedSentence = req.body.hanqcaizedSentence.normalize('NFC');
 
-    if (!hanqcaMatch || hanqcaMatch.length === 0) {
-        req.body.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+    if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
+        req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqcaizedSentence);
     }
 
     req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
     const newYemun = new Yemun(req.body);
-    Yemun.find({lesson: Number(req.body.lesson), translation: req.body.translation})
+    Yemun.find({lesson: Number(req.body.lesson), hanqcaizedSentence: req.body.hanqcaizedSentence})
         .exec()
         .then((yemuns) => {
             if (yemuns.length >= 1) {
