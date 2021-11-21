@@ -48,6 +48,9 @@ async function updateWordPower(req, res) {
     for (const [key, value] of Object.entries(docToUpdate)) {
         doc[key] = value;
     }
+
+    doc["lastUpdated"] = Date.now();
+
     try {
         await doc.save();
         return res.status(200).json({success: true});
@@ -65,7 +68,7 @@ async function updateYemun(req, res) {
     const docToUpdate = {...req.body};
     const {hanqcaizedSentence} = req.body;
     if (hanqcaizedSentence) {
-        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence.normalize('NFC'));
     }
 
     docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
@@ -75,6 +78,9 @@ async function updateYemun(req, res) {
     for (const [key, value] of Object.entries(docToUpdate)) {
         doc[key] = value;
     }
+
+    doc["lastUpdated"] = Date.now();
+
     try {
         await doc.save();
         return res.status(200).json({success: true});
@@ -89,8 +95,6 @@ async function deleteYemun(req, res) {
 }
 
 async function createYemun(req, res) {
-    // const {hanqcaizedSentence, hanqcaMatch} = req.body;
-
     req.body.hanqcaizedSentence = req.body.hanqcaizedSentence.normalize('NFC');
 
     if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
