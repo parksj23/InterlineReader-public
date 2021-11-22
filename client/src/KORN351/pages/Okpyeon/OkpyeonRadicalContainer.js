@@ -12,7 +12,7 @@ class DictionaryRadicalContainer extends Component {
     constructor() {
         super();
         this.state = {
-            filteredResult: [],
+            filteredResult: null,
             radical: '',
             radicalStrokeCount: '',
             totalStrokeCount: '',
@@ -36,11 +36,20 @@ class DictionaryRadicalContainer extends Component {
     filterResult = radical => {
         let temp = [];
         this.props.newHanja.forEach(char => {
-            if (char.radical === radical) temp.push(char)
+            if (char.radical === radical) {
+                temp.push(char)
+            }
         });
-        this.setState({
-            filteredResult: temp
-        })
+        if (temp.length > 0) {
+            this.setState({
+                filteredResult: temp
+            })
+        } else {
+            this.setState({
+                filteredResult: null
+            })
+        }
+
     };
 
     selectCharacter = (hanja, char) => {
@@ -88,10 +97,14 @@ class DictionaryRadicalContainer extends Component {
                     <div className="radical-second-filter">
                         <p>2) Select a character that uses that radical</p>
                         <Grid container>
-                            {
-                                (filteredResult || []).map(char => {
+                            {filteredResult === null ?
+                                <span style={{color: "tomato"}}>
+                                    No results
+                                </span>
+                                 :
+                                ((filteredResult || []).map(char => {
                                     return <Grid key={char} item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
-                                })
+                                }))
                             }
                         </Grid>
                     </div>
