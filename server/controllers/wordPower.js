@@ -228,7 +228,7 @@ async function list(req, res) {
                 let beforeBracket = hanqca.split("(")[0];
                 let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
                 let beforeHankul = null;
-                if (join.length > 1) {
+                if (join.length > 0) {
                     beforeHankul = join;
                 }
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
