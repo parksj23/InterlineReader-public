@@ -288,6 +288,11 @@ class WordPower extends Component {
         return (
         // showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> :
             <div className="ir-WordPower edit-lesson-background">
+                <Divider/>
+                <br/>
+                <Typography color="textSecondary">
+                    Select a 漢字 tab to show words that contain that 漢字.
+                </Typography>
                 <Box>
                     <Tabs
                         value={this.state.clickedHanjaTab}
@@ -314,6 +319,7 @@ class WordPower extends Component {
                         })}
                     </Tabs>
                 </Box>
+                <Divider/>
 
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <Tabs value={tabIndex} onChange={(e, tabIndex) => this.setState({ tabIndex })} aria-label="basic tabs example">
