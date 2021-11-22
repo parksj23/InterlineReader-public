@@ -126,7 +126,7 @@ class WordPower extends Component {
         axios({
             method: "get",
             url: '/api/wordPower/list',
-            params: {lesson: this.currentLesson}
+            params: {lesson: this.currentLesson, clickedHanja: id}
         })
             .then(({ data }) => {
                 const wordPowerToEdit = {};
