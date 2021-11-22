@@ -35,7 +35,9 @@ class DictionaryHangulContainer extends Component {
     filterResult = eum => {
         let temp = [];
         this.props.characters.forEach(char => {
-            if (char.eum === eum) temp.push(char)
+            if (char.eum === eum) {
+                temp.push(char)
+            }
         });
         this.setState({
             filteredResult: temp
