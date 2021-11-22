@@ -50,7 +50,6 @@ class WordPower extends Component {
 
         if (this.props.newHanja.length === 0 || this.props.newHanja === undefined) {
             this.props.getNewHanja().then(() => {
-                    // const currLesson = this.props.match.params.lesson;
                     const currLesson = this.currentLesson;
 
                     this.setState({
@@ -64,7 +63,6 @@ class WordPower extends Component {
 
         if (this.props.newHanjaCombos.length === 0 || this.props.newHanjaCombos === undefined) {
             this.props.getNewHanjaCombos().then(() => {
-                    // const currLesson = this.props.match.params.lesson;
                     const currLesson = this.currentLesson;
 
                     let temp = this.props.newHanjaCombos.filter(combo => {
@@ -76,29 +74,10 @@ class WordPower extends Component {
                 }
             );
         }
-
-        // axios({
-        //     method: "get",
-        //     url: '/api/wordPower/list',
-        //     params: {lesson: this.currentLesson}
-        // })
-        //     .then(({ data }) => {
-        //         const wordPowerToEdit = {};
-        //         const yemunToEdit = {};
-        //         data.forEach(d => {
-        //             wordPowerToEdit[d._id] = {};
-        //             yemunToEdit[d._id] = this._getEmptyObjWithKeys(d.examples.map(e => e._id));
-        //         });
-        //         this.setState({wordPowerData: data, showLoading: false, wordPowerToEdit, yemunToEdit});
-        //     })
-        //     .catch(() => {
-        //         console.log("Error receiving wordPower data");
-        //     });
     }
 
     componentWillMount() {
         if (this.state.newHanja.length === 0) {
-            // const currLesson = this.props.match.params.lesson;
             const currLesson = this.currentLesson;
 
             let temp = this.props.newHanja.filter(char => {
@@ -110,7 +89,6 @@ class WordPower extends Component {
         }
 
         if (this.state.newHanjaCombos.length === 0) {
-            // const currLesson = this.props.match.params.lesson;
             const currLesson = this.currentLesson;
 
             let temp = this.props.newHanjaCombos.filter(combo => {
@@ -145,7 +123,6 @@ class WordPower extends Component {
     handleOnChangeHanjaTab = (event, value) => {
         this.setState({clickedHanja: event.currentTarget, clickedHanjaTab: value});
         this.setState({showLoading: true});
-        // console.log(event.currentTarget.id);
         this.getWordPowerYemunData(event.currentTarget.id);
     }
 
@@ -286,7 +263,6 @@ class WordPower extends Component {
         const {newHanjaCombos} = this.state;
 
         return (
-        // showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> :
             <div className="ir-WordPower edit-lesson-background">
                 <Divider/>
                 <br/>
@@ -407,7 +383,6 @@ class WordPower extends Component {
                                 </div>
                             )))
                         }
-
                     </TabPanel>
 
 
@@ -416,116 +391,118 @@ class WordPower extends Component {
                             <h4>Examples</h4>
                         </div>
                         <Divider/><br/>
-                        <div className="ir-WordPower-examples">
-                            <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
-                                {wordPowerData.map((wordpower, idx) => <Tab key={wordpower._id} label={wordpower.hanqca + '(' + wordpower.hankul + ')' + '   ' + wordpower.englishGloss} {...a11yProps(idx)} />)}
-                            </Tabs>
-                            <div className="ir-WordPower-tabpanels">
-                                {wordPowerData.map((wordpower, idx) => <TabPanel index={idx} value={yemunTabIdx} key={wordpower._id}>
-                                    <div className="ir-WordPower-header">
-                                        <h5>Examples of {wordpower.hanqca + '(' + wordpower.hankul + ')' + '   ' + wordpower.englishGloss}</h5>
-                                        <IconButton size="small" onClick={this.onYemunModalOpen} className="primary-button" variant="contained"><PlusIcon /></IconButton>
-                                    </div>
-                                    <Modal
-                                        open={isYemunModalOpen}
-                                        onClose={this.onYemunModalOpen}
-                                    >
-                                        <Box className="ir-WordPower-modal">
-                                            <Typography variant="h6" component="h6">Add Example</Typography>
-                                            <br />
-                                            Simple Hanja:<br/>
-                                            <textarea
-                                                defaultValue={newYemun.simpleHanqca}
-                                                style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                onChange={event => newYemun.simpleHanqca = event.target.value}
-                                            ></textarea><br/>
-                                            <br />
-                                            Hanjaized Sentence:<br/>
-                                            <textarea
-                                                defaultValue={newYemun.hanqcaizedSentence}
-                                                style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                onChange={event => newYemun.hanqcaizedSentence = event.target.value}
-                                            ></textarea><br/>
-                                            <br />
-                                            Korean Sentence:<br/>
-                                            <textarea
-                                                defaultValue={newYemun.koreanSentence}
-                                                style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                onChange={event => newYemun.koreanSentence = event.target.value}>
+                        {showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> : (
+                            <div className="ir-WordPower-examples">
+                                <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
+                                    {wordPowerData.map((wordpower, idx) => <Tab key={wordpower._id} label={wordpower.hanqca + '(' + wordpower.hankul + ')' + '   ' + wordpower.englishGloss} {...a11yProps(idx)} />)}
+                                </Tabs>
+                                <div className="ir-WordPower-tabpanels">
+                                    {wordPowerData.map((wordpower, idx) => <TabPanel index={idx} value={yemunTabIdx} key={wordpower._id}>
+                                        <div className="ir-WordPower-header">
+                                            <h5>Examples of {wordpower.hanqca + '(' + wordpower.hankul + ')' + '   ' + wordpower.englishGloss}</h5>
+                                            <IconButton size="small" onClick={this.onYemunModalOpen} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                                        </div>
+                                        <Modal
+                                            open={isYemunModalOpen}
+                                            onClose={this.onYemunModalOpen}
+                                        >
+                                            <Box className="ir-WordPower-modal">
+                                                <Typography variant="h6" component="h6">Add Example</Typography>
+                                                <br />
+                                                Simple Hanja:<br/>
+                                                <textarea
+                                                    defaultValue={newYemun.simpleHanqca}
+                                                    style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                    onChange={event => newYemun.simpleHanqca = event.target.value}
+                                                ></textarea><br/>
+                                                <br />
+                                                Hanjaized Sentence:<br/>
+                                                <textarea
+                                                    defaultValue={newYemun.hanqcaizedSentence}
+                                                    style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                    onChange={event => newYemun.hanqcaizedSentence = event.target.value}
+                                                ></textarea><br/>
+                                                <br />
+                                                Korean Sentence:<br/>
+                                                <textarea
+                                                    defaultValue={newYemun.koreanSentence}
+                                                    style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                    onChange={event => newYemun.koreanSentence = event.target.value}>
                                             </textarea><br/>
-                                            <br />
-                                            Translation:<br/>
-                                            <textarea
-                                                defaultValue={newYemun.translation}
-                                                style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                onChange={event => newYemun.translation = event.target.value}>
+                                                <br />
+                                                Translation:<br/>
+                                                <textarea
+                                                    defaultValue={newYemun.translation}
+                                                    style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                    onChange={event => newYemun.translation = event.target.value}>
                                             </textarea><br/>
-                                            <br />
-                                            <Button style={{
-                                                marginRight: '4px',
-                                                backgroundColor: '#00284d',
-                                                color: 'white',
-                                                width: '20%'
-                                            }} onClick={() => this.createYemun(wordpower._id)}>Create</Button>
-                                            <Button variant="contained" onClick={() => this.onYemunModalOpen()}>Cancel</Button>
-                                        </Box>
-                                    </Modal>
-                                    {wordpower.examples.length ? wordpower.examples.map(example => (
-                                        <Accordion>
-                                            <AccordionSummary style={{display: 'flex', justifyContent: 'spaceBetween'}} expandIcon={<ExpandMoreIcon/>}>
-                                                <Typography>{example.translation}</Typography>
-                                            </AccordionSummary>
-                                            <AccordionDetails>
-                                                <div>
-                                                    Simple Hanja:<br/>
-                                                    <textarea
-                                                        defaultValue={example.simpleHanqca}
-                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[wordpower._id][example._id].simpleHanqca = event.target.value}
-                                                    ></textarea><br/>
-                                                    <br />
-                                                    Hanjaized Sentence:<br/>
-                                                    <textarea
-                                                        defaultValue={example.hanqcaizedSentence}
-                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[wordpower._id][example._id].hanqcaizedSentence = event.target.value}
-                                                    ></textarea><br/>
-                                                    <br />
-                                                    Korean Sentence:<br/>
-                                                    <textarea
-                                                        defaultValue={example.koreanSentence}
-                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[wordpower._id][example._id].koreanSentence = event.target.value}>
+                                                <br />
+                                                <Button style={{
+                                                    marginRight: '4px',
+                                                    backgroundColor: '#00284d',
+                                                    color: 'white',
+                                                    width: '20%'
+                                                }} onClick={() => this.createYemun(wordpower._id)}>Create</Button>
+                                                <Button variant="contained" onClick={() => this.onYemunModalOpen()}>Cancel</Button>
+                                            </Box>
+                                        </Modal>
+                                        {wordpower.examples.length ? wordpower.examples.map(example => (
+                                            <Accordion>
+                                                <AccordionSummary style={{display: 'flex', justifyContent: 'spaceBetween'}} expandIcon={<ExpandMoreIcon/>}>
+                                                    <Typography>{example.translation}</Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <div>
+                                                        Simple Hanja:<br/>
+                                                        <textarea
+                                                            defaultValue={example.simpleHanqca}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[wordpower._id][example._id].simpleHanqca = event.target.value}
+                                                        ></textarea><br/>
+                                                        <br />
+                                                        Hanjaized Sentence:<br/>
+                                                        <textarea
+                                                            defaultValue={example.hanqcaizedSentence}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[wordpower._id][example._id].hanqcaizedSentence = event.target.value}
+                                                        ></textarea><br/>
+                                                        <br />
+                                                        Korean Sentence:<br/>
+                                                        <textarea
+                                                            defaultValue={example.koreanSentence}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[wordpower._id][example._id].koreanSentence = event.target.value}>
                                                     </textarea><br/>
-                                                    <br />
-                                                    Translation:<br/>
-                                                    <textarea
-                                                        defaultValue={example.translation}
-                                                        style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                        onChange={event => yemunToEdit[wordpower._id][example._id].translation = event.target.value}>
+                                                        <br />
+                                                        Translation:<br/>
+                                                        <textarea
+                                                            defaultValue={example.translation}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[wordpower._id][example._id].translation = event.target.value}>
                                                     </textarea><br/>
-                                                    <br />
-                                                    {isSaving && <CircularProgress className="ir-WordPower-saving" size="small" />}
-                                                    <Button style={{
-                                                        marginRight: '4px',
-                                                        backgroundColor: '#00284d',
-                                                        color: 'white',
-                                                        width: '20%'
-                                                    }} onClick={() => this.saveYemun(wordpower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
-                                                    <Button style={{
-                                                        marginRight: '4px',
-                                                        backgroundColor: '#f6152f',
-                                                        color: 'white',
-                                                        width: '20%'
-                                                    }}
-                                                            onClick={() => this.deleteYemun(wordpower._id, example._id)}>Delete</Button>
-                                                </div>
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    )) : <h6>No examples found</h6>}
-                                </TabPanel>)}
+                                                        <br />
+                                                        {isSaving && <CircularProgress className="ir-WordPower-saving" size="small" />}
+                                                        <Button style={{
+                                                            marginRight: '4px',
+                                                            backgroundColor: '#00284d',
+                                                            color: 'white',
+                                                            width: '20%'
+                                                        }} onClick={() => this.saveYemun(wordpower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
+                                                        <Button style={{
+                                                            marginRight: '4px',
+                                                            backgroundColor: '#f6152f',
+                                                            color: 'white',
+                                                            width: '20%'
+                                                        }}
+                                                                onClick={() => this.deleteYemun(wordpower._id, example._id)}>Delete</Button>
+                                                    </div>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        )) : <h6>No examples found</h6>}
+                                    </TabPanel>)}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </TabPanel>
                 </div>
                 }
