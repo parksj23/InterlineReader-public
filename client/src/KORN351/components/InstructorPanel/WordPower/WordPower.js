@@ -27,12 +27,19 @@ class WordPower extends Component {
             newYemun: {},
             tabIndex: 0,
             yemunTabIdx: 0,
+<<<<<<< HEAD
             isSaving: false,
             newHanja: [],
             newHanjaCombos: [],
             clickedHanja: null,
             clickedHanjaTab: null,
             selectedWordPower: null
+||||||| parent of cfbce1665 (Add yemun accordions within wordpower)
+            isSaving: false
+=======
+            isSaving: false,
+            selectedWordPower: null
+>>>>>>> cfbce1665 (Add yemun accordions within wordpower)
         }
         this.currentLesson = parseInt(this.props.lesson);
 
