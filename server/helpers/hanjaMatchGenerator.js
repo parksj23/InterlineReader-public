@@ -139,7 +139,7 @@ function getHanqcaMatchArray(str) {
     if (!result.length) { return null; }
 
     if (result[0].length > 1) {
-        return result;
+        return result[0];
     }
     return result[0];
 }
