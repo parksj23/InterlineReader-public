@@ -230,7 +230,13 @@ async function list(req, res) {
                 || hanqca.includes("하다")
                 || hanqca.includes("되다")
                 || (hankulInWord.length === 1 && hanqca.includes("히"))
-                || hanqca.includes("스럽다")
+                || (hanqca.includes("스럽다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+            );
+
+            let changingHangul = (
+                (hanqca.includes("겹다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+                || (hanqca.includes("답다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+                || (hanqca.includes("들다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
             );
 
             if (isThereHangulInTheHanqca.includes(true) && ignoredHangul) { // ...(을) 하다, ...하다, 발행되다, 자세히/편히 -- only 1 hankul and that hankul is 히
@@ -270,13 +276,30 @@ async function list(req, res) {
                         }
                     }
                 }
-            } else if (isThereHangulInTheHanqca.includes(true) && !ignoredHangul && hanqca.includes(" ")) {
+            } else if (isThereHangulInTheHanqca.includes(true) && changingHangul && !ignoredHangul && !hanqca.includes(" ")) {
+                finalWordPowerHanqcaArr = hanqca.slice(0, -1);
+                if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
+                    let index = -1;
+
+                    for (let i = 0; i < matchedExamples.length; i++) {
+                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                            index = i;
+                        }
+                    }
+
+                    if (index > -1) {
+                        matchedExamples[index] = yemun;
+                    } else {
+                        matchedExamples.push(yemun)
+                    }
+                }
+            } else if (isThereHangulInTheHanqca.includes(true) && !changingHangul && !ignoredHangul && hanqca.includes(" ")) {
                 let split = hanqca.split(" ");
                 if (split[split.length - 1].includes("다")) { // 악명 높다
                     finalWordPowerHanqcaArr = split[0];
                 } else if (hanqca.includes("...")) {
                     finalWordPowerHanqcaArr = hanqca.split("...")[1]; // ...에도 不구하고
-                    console.log(finalWordPowerHanqcaArr);
+                    // console.log(finalWordPowerHanqcaArr);
                 } else { // 인생 처음
                     finalWordPowerHanqcaArr = hanqca;
                     // console.log(finalWordPowerHanqcaArr);
@@ -298,7 +321,7 @@ async function list(req, res) {
                         matchedExamples.push(yemun)
                     }
                 }
-            } else if (isThereHangulInTheHanqca.includes(true) && !ignoredHangul && !hanqca.includes(" ")) { //江물 (강물)
+            } else if (isThereHangulInTheHanqca.includes(true) && !changingHangul && !ignoredHangul && !hanqca.includes(" ")) { //江물 (강물)
                 finalWordPowerHanqcaArr = hanqca;
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
                     if (block.search(finalWordPowerHanqcaArr) >= 0) {
