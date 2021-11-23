@@ -9,8 +9,6 @@ async function createWordPower(req, res) {
         req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqca);
     }
 
-    req.body.hanqcaMatch = req.body.hanqcaMatch[0];
-
     const wordPower = new WordPower(req.body);
 
     let query = {lesson: Number(req.body.lesson), hankul: req.body.hankul};
@@ -41,8 +39,6 @@ async function updateWordPower(req, res) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqca);
     }
 
-    docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
-
     const doc = await WordPower.findOne({_id: req.params.id}).exec();
 
     for (const [key, value] of Object.entries(docToUpdate)) {
@@ -69,7 +65,6 @@ async function updateYemun(req, res) {
     const {hanqcaizedSentence} = req.body;
     if (hanqcaizedSentence) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence.normalize('NFC'));
-        docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
     }
 
     const doc = await Yemun.findOne({_id: req.params.id}).exec();
@@ -99,8 +94,6 @@ async function createYemun(req, res) {
     if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
         req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqcaizedSentence);
     }
-
-    req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
     const newYemun = new Yemun(req.body);
     Yemun.find({lesson: Number(req.body.lesson), hanqcaizedSentence: req.body.hanqcaizedSentence})
