@@ -234,14 +234,13 @@ async function list(req, res) {
                 || hanqca.includes("하다")
                 || hanqca.includes("되다")
                 || (hankulInWord.length === 1 && hanqca.includes("히"))
+                || (hanqca.includes("스럽다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
             );
 
             let changingHangul = (
                 (hanqca.includes("겹다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
                 || (hanqca.includes("답다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
                 || (hanqca.includes("들다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
-                || (hanqca.includes("스럽다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
-
             );
 
             if (isThereHangulInTheHanqca.includes(true) && ignoredHangul) { // ...(을) 하다, ...하다, 발행되다, 자세히/편히 -- only 1 hankul and that hankul is 히
