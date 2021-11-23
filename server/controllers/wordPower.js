@@ -203,7 +203,6 @@ async function list(req, res) {
         yemunQuery['lesson'] = Number(req.query.lesson);
         yemunQuery['hanqcaMatch'] = {$all: hanqcaMatcher};
         const preMatchedExamples = await Yemun.find(yemunQuery);
-        console.log(yemunQuery);
 
         let hanqcaInWord = [];
         let hankulInWord = [];
@@ -263,7 +262,7 @@ async function list(req, res) {
                         }
                         hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
                         let re3 = new RegExp("^" + beforeBracket + "$");
-                        if (yemunHanqcaArr.includes(beforeHankul) || hanqcaInBlock.search(re3) >= 0) {
+                        if (yemunHanqcaArr.includes(beforeHankul) || hanqcaInBlock.search(re3) === 0) {
                             let index = -1;
 
                             for (let i = 0; i < matchedExamples.length; i++) {
@@ -372,7 +371,7 @@ async function list(req, res) {
             }
         }
 
-        console.log(leftOverYemun.length);
+        // console.log(leftOverYemun.length);
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
