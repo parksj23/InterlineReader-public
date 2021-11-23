@@ -193,6 +193,7 @@ async function list(req, res) {
     const wordPowers = await WordPower.find(query);
 
     const wordPowerList = [];
+
     for (const wordPower of wordPowers) {
         const newWordPower = {...wordPower.toJSON()};
         const hanqcaMatcher = wordPower.hanqcaMatch;
@@ -200,8 +201,9 @@ async function list(req, res) {
         const matchedExamples = [];
         const yemunQuery = {};
         yemunQuery['lesson'] = Number(req.query.lesson);
-        yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
+        yemunQuery['hanqcaMatch'] = {$all: hanqcaMatcher};
         const preMatchedExamples = await Yemun.find(yemunQuery);
+        console.log(yemunQuery);
 
         let hanqcaInWord = [];
         let hankulInWord = [];
@@ -217,6 +219,8 @@ async function list(req, res) {
             }
         }
 
+        let leftOverYemun = [];
+
         for (const yemun of preMatchedExamples) {
             const yemunHanqcaArr = yemun.hanqcaizedSentence.toString().replace(/\s/g, '').trim().normalize('NFC');
             const yemunHanqcaArrWithSpaces = yemun.hanqcaizedSentence.toString().trim().normalize('NFC');
@@ -230,13 +234,14 @@ async function list(req, res) {
                 || hanqca.includes("하다")
                 || hanqca.includes("되다")
                 || (hankulInWord.length === 1 && hanqca.includes("히"))
-                || (hanqca.includes("스럽다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
             );
 
             let changingHangul = (
                 (hanqca.includes("겹다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
                 || (hanqca.includes("답다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
                 || (hanqca.includes("들다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+                || (hanqca.includes("스럽다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+
             );
 
             if (isThereHangulInTheHanqca.includes(true) && ignoredHangul) { // ...(을) 하다, ...하다, 발행되다, 자세히/편히 -- only 1 hankul and that hankul is 히
@@ -299,11 +304,8 @@ async function list(req, res) {
                     finalWordPowerHanqcaArr = split[0];
                 } else if (hanqca.includes("...")) {
                     finalWordPowerHanqcaArr = hanqca.split("...")[1]; // ...에도 不구하고
-                    // console.log(finalWordPowerHanqcaArr);
                 } else { // 인생 처음
                     finalWordPowerHanqcaArr = hanqca;
-                    // console.log(finalWordPowerHanqcaArr);
-                    // console.log(yemunHanqcaArrWithSpaces);
                 }
 
                 if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
@@ -343,10 +345,8 @@ async function list(req, res) {
             } else if (!(isThereHangulInTheHanqca.includes(true))) {
                 if (hanqca.includes(" ")) { // 박사 과정
                     finalWordPowerHanqcaArr = hanqca;
-                    // console.log(finalWordPowerHanqcaArr);
                 } else { // only hanqca
                     finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                    // console.log(finalWordPowerHanqcaArr);
                 }
 
                 if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
@@ -366,6 +366,14 @@ async function list(req, res) {
                 }
             }
         }
+
+        for (let sent of preMatchedExamples) {
+            if (!matchedExamples.includes(sent)) {
+                leftOverYemun.push(sent);
+            }
+        }
+
+        console.log(leftOverYemun.length);
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
