@@ -274,6 +274,9 @@ async function list(req, res) {
                 let split = hanqca.split(" ");
                 if (split[split.length - 1].includes("다")) { // 악명 높다
                     finalWordPowerHanqcaArr = split[0];
+                } else if (hanqca.includes("...")) {
+                    finalWordPowerHanqcaArr = hanqca.split("...")[1]; // ...에도 不구하고
+                    console.log(finalWordPowerHanqcaArr);
                 } else { // 인생 처음
                     finalWordPowerHanqcaArr = hanqca;
                     // console.log(finalWordPowerHanqcaArr);
