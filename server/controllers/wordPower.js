@@ -325,7 +325,7 @@ async function list(req, res) {
             } else if (isThereHangulInTheHanqca.includes(true) && !changingHangul && !ignoredHangul && !hanqca.includes(" ")) { //江물 (강물)
                 finalWordPowerHanqcaArr = hanqca;
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
-                    if (block.search(finalWordPowerHanqcaArr) >= 0) {
+                    if (block.search(finalWordPowerHanqcaArr) === 0) {
                         let index = -1;
 
                         for (let i = 0; i < matchedExamples.length; i++) {
