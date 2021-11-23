@@ -370,8 +370,8 @@ async function list(req, res) {
                 leftOverYemun.push(sent);
             }
         }
-
-        // console.log(leftOverYemun.length);
+        console.log(wordPower);
+        console.log(leftOverYemun.length);
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
