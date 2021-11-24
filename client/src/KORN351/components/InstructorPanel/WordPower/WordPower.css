@@ -11,6 +11,15 @@
     align-items: center;
 }
 
+.ir-WordPower-headerActions {
+    display: flex;
+    justify-content: space-around;
+}
+
+.ir-WordPower-headerActions button {
+    margin-left: 10px;
+}
+
 .ir-WordPower-modal {
     position: absolute;
     top: 50%;
