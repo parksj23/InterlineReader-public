@@ -7,6 +7,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PlusIcon from '@material-ui/icons/Add';
 import axios from 'axios';
 import _ from 'lodash';
+import Papa from "papaparse";
+import sampleCsv from '../../../../assets/sample-wordpower-upload.csv';
 
 
 class WordPower extends Component {
@@ -64,6 +66,29 @@ class WordPower extends Component {
         return obj;
     }
 
+    onFileUpload = (event) => {
+        const file = event.target.files[0];
+
+        Papa.parse(file, {
+            header: true,
+            skipEmptyLines: 'greedy',
+            complete: ({ data }) => {
+                console.log("Finished:", data);
+                axios({
+                    method: 'post',
+                    url: '/api/wordPower/bulk-create',
+                    data: {
+                        data,
+                        lesson: this.currentLesson
+                    }
+                }).then(resp => {
+                    alert('Upload complete. Press OK to refresh page');
+                    window.location.reload();
+                });
+            }
+        });
+    }
+
     saveWordPower(id) {
         const { wordPowerToEdit } = this.state;
         this.setState({ isSaving: true }, () => {
@@ -112,6 +137,8 @@ class WordPower extends Component {
             }));
         });
     }
+
+
 
     createYemun(wordpowerId) {
         const { newYemun } = this.state;
@@ -198,7 +225,23 @@ class WordPower extends Component {
             <div className="ir-WordPower edit-lesson-background">
                 <div className="ir-WordPower-header">
                     <h4>Words</h4>
-                    <IconButton size="medium" onClick={this.onWordPowerModalOpen} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    <div className="ir-WordPower-headerActions">
+                        <Button size="small" style={{textDecoration: 'underline', marginRight: 10}} onClick={() => window.open(sampleCsv)}>View Sample CSV</Button>
+                        <Button
+                            size="small"
+                            variant="outlined"
+                            component="label"
+                        >
+                            Upload CSV
+                            <input
+                                onChange={this.onFileUpload}
+                                type="file"
+                                accept=".csv"
+                                hidden
+                            />
+                        </Button>
+                        <IconButton size="medium" onClick={this.onWordPowerModalOpen} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    </div>
                 </div>
                 <Modal
                     open={isWordPowerModalOpen}

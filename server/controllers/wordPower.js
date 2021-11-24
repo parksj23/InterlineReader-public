@@ -103,6 +103,40 @@ async function createYemun(req, res) {
         });
 }
 
+async function bulkCreate(req, res) {
+    const { data, lesson } = req.body;
+
+    const wordPowerSet = new Set();
+    const wordPowerData = [];
+    const yemunData = [];
+
+    data.forEach(row => {
+        const wordpower = `${row['Hanqca']}#${row['Hankul']}#${row['English Gloss']}`;
+        const hanqcaMatch = getHanqcaMatchArray(row['Hanqcaized Sentences']);
+        
+        yemunData.push({
+            koreanSentence: row['Korean Sentences'],
+            simpleHanqca: row['Simple Hanqca'],
+            hanqcaizedSentence: row['Hanqcaized Sentences'],
+            translation: row['Translation'],
+            hanqcaMatch,
+            lesson
+        });
+        wordPowerSet.add(wordpower);
+    });
+
+    Array.from(wordPowerSet).forEach(wordpower => {
+        const [hanqca, hankul, englishGloss] = wordpower.split('#');
+        const hanqcaMatch = getHanqcaMatchArray(hanqca);
+        wordPowerData.push({ hanqca, hankul, englishGloss, hanqcaMatch, lesson });
+    });
+    
+    const wordpowerDocs = await WordPower.insertMany(wordPowerData);
+    const yemunDocs = await Yemun.insertMany(yemunData);
+
+    return res.status(201).json({ success: true });
+}
+
 function isHangul(str, options) {
     if (
         options !== undefined &&
@@ -468,6 +502,7 @@ async function list(req, res) {
 }
 
 module.exports = {
+    bulkCreate,
     createWordPower,
     createYemun,
     deleteWordPower,
