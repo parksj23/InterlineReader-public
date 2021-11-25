@@ -1,8 +1,10 @@
 const WordPower = require('../models/WordPower');
 const Yemun = require('../models/Yemun');
-const { getHanqcaMatchArray } = require('../helpers/hanjaMatchGenerator');
+const {getHanqcaMatchArray} = require('../helpers/hanjaMatchGenerator');
 
 async function createWordPower(req, res) {
+    req.body.hanqca = req.body.hanqca.normalize('NFC');
+
     if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
         req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqca);
     }
@@ -10,7 +12,10 @@ async function createWordPower(req, res) {
     req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
     const wordPower = new WordPower(req.body);
-    const words = await WordPower.find({lesson: req.body.lesson, hankul: req.body.hankul})
+
+    let query = {lesson: Number(req.body.lesson), hankul: req.body.hankul};
+
+    WordPower.find({lesson: Number(req.body.lesson), hankul: req.body.hankul})
         .exec()
         .then((words) => {
             if (words.length >= 1) {
@@ -31,60 +36,60 @@ async function createWordPower(req, res) {
 
 async function updateWordPower(req, res) {
     const docToUpdate = {...req.body};
-    const { hanqca } = req.body;
+    const {hanqca} = req.body;
     if (hanqca) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqca);
     }
 
     docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
 
-    const doc = await WordPower.findOne({ _id: req.params.id }).exec();
+    const doc = await WordPower.findOne({_id: req.params.id}).exec();
 
     for (const [key, value] of Object.entries(docToUpdate)) {
         doc[key] = value;
     }
     try {
         await doc.save();
-        return res.status(200).json({ success: true });
-    } catch(err) {
-        return res.status(500).json({ message: err });
+        return res.status(200).json({success: true});
+    } catch (err) {
+        return res.status(500).json({message: err});
     }
 }
 
 async function deleteWordPower(req, res) {
-    await WordPower.findOneAndDelete({ _id: req.params.id }).exec();
-    return res.status(200).json({ deleted: true });
+    await WordPower.findOneAndDelete({_id: req.params.id}).exec();
+    return res.status(200).json({deleted: true});
 }
 
 async function updateYemun(req, res) {
     const docToUpdate = {...req.body};
-    const { hanqcaizedSentence } = req.body;
+    const {hanqcaizedSentence} = req.body;
     if (hanqcaizedSentence) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
     }
 
     docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
 
-    const doc = await Yemun.findOne({ _id: req.params.id }).exec();
+    const doc = await Yemun.findOne({_id: req.params.id}).exec();
 
     for (const [key, value] of Object.entries(docToUpdate)) {
         doc[key] = value;
     }
     try {
         await doc.save();
-        return res.status(200).json({ success: true });
-    } catch(err) {
-        return res.status(500).json({ message: err });
+        return res.status(200).json({success: true});
+    } catch (err) {
+        return res.status(500).json({message: err});
     }
 }
 
 async function deleteYemun(req, res) {
-    await Yemun.findOneAndDelete({ _id: req.params.id }).exec();
-    return res.status(200).json({ deleted: true });
+    await Yemun.findOneAndDelete({_id: req.params.id}).exec();
+    return res.status(200).json({deleted: true});
 }
 
 async function createYemun(req, res) {
-    const { hanqcaizedSentence, hanqcaMatch } = req.body;
+    const {hanqcaizedSentence, hanqcaMatch} = req.body;
     if (!hanqcaMatch || hanqcaMatch.length === 0) {
         req.body.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
     }
@@ -92,7 +97,7 @@ async function createYemun(req, res) {
     req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
     const newYemun = new Yemun(req.body);
-    Yemun.find({lesson: req.body.lesson, translation: req.body.translation})
+    Yemun.find({lesson: Number(req.body.lesson), translation: req.body.translation})
         .exec()
         .then((yemuns) => {
             if (yemuns.length >= 1) {
@@ -302,11 +307,11 @@ function getSyllable(str, options) {
 async function list(req, res) {
     const query = {};
     if (req.query.lesson) {
-        query['lesson'] = req.query.lesson;
+        query['lesson'] = Number(req.query.lesson);
     }
 
     if (req.query.clickedHanja) {
-        query['hanqca'] = {"$regex": req.query.clickedHanja, "$options": "i"};
+        query['hanqca'] = {"$regex": req.query.clickedHanja.normalize('NFC'), "$options": "i"};
     }
 
     const wordPowers = await WordPower.find(query);
