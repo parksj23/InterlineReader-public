@@ -8,6 +8,8 @@ const YemunSchema = new Schema({
 	hanqcaizedSentence: { type: String },
 	translation: { type: String },
 	hanqcaMatch: { type: Array, default: [] },
+	createdDate: { type: Date, required: true, default: Date.now },
+	lastUpdated: { type: Date, required: true, default: Date.now },
 }, { toJSON: { virtuals: true, getters: true }});
 // }, { toJSON: { virtuals: true, getters: true }, collection: "yemunTEST"});
 

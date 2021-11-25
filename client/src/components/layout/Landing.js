@@ -23,7 +23,7 @@ class Landing extends Component {
                   Get assistance reading challenging literary texts from foreign languages.
                 </p>
                 <hr />
-                <Link to="/register" className="btn btn-lg btn-info mr-2">
+                <Link to="/register" className="btn btn-lg btn-info mr-2" style={{backgroundColor: '#3eb17f'}}>
                   Sign Up
                 </Link>
                 <Link to="/login" className="btn btn-lg btn-light">

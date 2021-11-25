@@ -46,7 +46,9 @@ class Instructor351Container extends Component {
                     <Grid container>
                         <Grid item xs={12}>
                             <div className="instructor-heading">
-                                <h2 style={{fontWeight: 'bold'}}>{this.props.headerName}</h2>
+                                <div className="instructor-heading-bg">
+                                    <h2 style={{fontWeight: 'bold'}}>{this.props.headerName}</h2>
+                                </div>
                             </div>
                         </Grid>
                         <Grid container style={{height: "100vh", overflowY: 'scroll'}}>

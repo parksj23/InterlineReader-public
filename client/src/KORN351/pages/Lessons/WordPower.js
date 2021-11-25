@@ -261,7 +261,6 @@ class WordPower extends Component {
                             ) : (
                                 newHanja.map((char, idx) => {
                                     if (this.state.clickedHanja.id.trim().normalize('NFC') === char.hanja.replace(/\s/g, '').trim().normalize('NFC')) {
-                                        console.log("true");
                                         return (
                                             <Grid item xs={12} className="word-power-grid-card" key={idx}>
                                                 <Card variant="outlined" className="word-power-card">

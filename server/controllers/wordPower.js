@@ -15,7 +15,7 @@ async function createWordPower(req, res) {
 
     let query = {lesson: Number(req.body.lesson), hankul: req.body.hankul};
 
-    WordPower.find({lesson: Number(req.body.lesson), hankul: req.body.hankul})
+    WordPower.find({lesson: Number(req.body.lesson), hanqca: req.body.hanqca})
         .exec()
         .then((words) => {
             if (words.length >= 1) {
@@ -48,6 +48,9 @@ async function updateWordPower(req, res) {
     for (const [key, value] of Object.entries(docToUpdate)) {
         doc[key] = value;
     }
+
+    doc["lastUpdated"] = Date.now();
+
     try {
         await doc.save();
         return res.status(200).json({success: true});
@@ -65,7 +68,7 @@ async function updateYemun(req, res) {
     const docToUpdate = {...req.body};
     const {hanqcaizedSentence} = req.body;
     if (hanqcaizedSentence) {
-        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence.normalize('NFC'));
     }
 
     docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
@@ -75,6 +78,9 @@ async function updateYemun(req, res) {
     for (const [key, value] of Object.entries(docToUpdate)) {
         doc[key] = value;
     }
+
+    doc["lastUpdated"] = Date.now();
+
     try {
         await doc.save();
         return res.status(200).json({success: true});
@@ -89,15 +95,16 @@ async function deleteYemun(req, res) {
 }
 
 async function createYemun(req, res) {
-    const {hanqcaizedSentence, hanqcaMatch} = req.body;
-    if (!hanqcaMatch || hanqcaMatch.length === 0) {
-        req.body.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence);
+    req.body.hanqcaizedSentence = req.body.hanqcaizedSentence.normalize('NFC');
+
+    if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
+        req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqcaizedSentence);
     }
 
     req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
     const newYemun = new Yemun(req.body);
-    Yemun.find({lesson: Number(req.body.lesson), translation: req.body.translation})
+    Yemun.find({lesson: Number(req.body.lesson), hanqcaizedSentence: req.body.hanqcaizedSentence})
         .exec()
         .then((yemuns) => {
             if (yemuns.length >= 1) {
@@ -173,137 +180,6 @@ function isPunctuation(str, options) {
     return result;
 }
 
-function getSyllable(str, options) {
-    if (
-        options !== undefined &&
-        options.removeSpace
-    )
-        str = str.replace(/(\s*)/g, "");
-
-    var result = [];
-
-    var CHO_SEONG = [
-        "ㄱ", ["ㄱ", "ㄱ"], "ㄴ", "ㄷ", ["ㄷ", "ㄷ"],
-        "ㄹ", "ㅁ", "ㅂ", ["ㅂ", "ㅂ"], "ㅅ",
-        ["ㅅ", "ㅅ"], "ㅇ", "ㅈ", ["ㅈ", "ㅈ"], "ㅊ",
-        "ㅋ", "ㅌ", "ㅍ", "ㅎ",
-    ];
-
-    var JUNG_SEONG = [
-        "ㅏ", "ㅐ", "ㅑ", "ㅒ", "ㅓ",
-        "ㅔ", "ㅕ", "ㅖ", "ㅗ", ["ㅗ", "ㅏ"],
-        ["ㅗ", "ㅐ"], ["ㅗ", "ㅣ"], "ㅛ", "ㅜ", ["ㅜ", "ㅓ"],
-        ["ㅜ", "ㅔ"], ["ㅜ", "ㅣ"], "ㅠ", "ㅡ", ["ㅡ", "ㅣ"],
-        "ㅣ",
-    ];
-
-    var JONG_SEONG = [
-        "", "ㄱ", ["ㄱ", "ㄱ"], ["ㄱ", "ㅅ"], "ㄴ",
-        ["ㄴ", "ㅈ"], ["ㄴ", "ㅎ"], "ㄷ", "ㄹ", ["ㄹ", "ㄱ"],
-        ["ㄹ", "ㅁ"], ["ㄹ", "ㅂ"], ["ㄹ", "ㅅ"], ["ㄹ", "ㅌ"], ["ㄹ", "ㅍ"],
-        ["ㄹ", "ㅎ"], "ㅁ", "ㅂ", ["ㅂ", "ㅅ"], "ㅅ",
-        ["ㅅ", "ㅅ"], "ㅇ", "ㅈ", "ㅊ", "ㅋ",
-        "ㅌ", "ㅍ", "ㅎ",
-    ];
-
-    for (var i = 0; i < str.length; i++) {
-        var uniChar = str.charCodeAt(i);
-
-        if (
-            uniChar < 0xAC00 ||
-            uniChar > 0xD7A3
-        ) {
-            if (
-                options !== undefined &&
-                options.includeOtherLng
-            )
-                result.push([str[i]]);
-            continue;
-        }
-
-        var choIndex = Math.floor((uniChar - 0xAC00) / (21 * 28));
-
-        if (
-            options !== undefined &&
-            ["초성", "cho", "choseong"].includes(options.syllable)
-        ) {
-            result.push(
-                (Array.isArray(CHO_SEONG[choIndex]))
-                    ? [...CHO_SEONG[choIndex]]
-                    : [CHO_SEONG[choIndex]]
-            );
-            continue;
-        }
-
-        var jungIndex = Math.floor(((uniChar - 0xAC00) % (21 * 28)) / 28);
-
-        if (
-            options !== undefined &&
-            ["중성", "jung", "jungseong"].includes(options.syllable)
-        ) {
-            result.push(
-                (Array.isArray(JUNG_SEONG[jungIndex]))
-                    ? [...JUNG_SEONG[jungIndex]]
-                    : [JUNG_SEONG[jungIndex]]
-            );
-            continue;
-        }
-
-        var jongIndex = (uniChar - 0xAC00) % 28;
-
-        if (
-            options !== undefined &&
-            ["종성", "jong", "jongseong"].includes(options.syllable) &&
-            jongIndex >= 1
-        ) {
-            result.push(
-                (Array.isArray(JONG_SEONG[jongIndex]))
-                    ? [...JONG_SEONG[jongIndex]]
-                    : [JONG_SEONG[jongIndex]]
-            );
-            continue;
-        }
-
-        result.push(
-            (jongIndex < 1)
-                ? [
-                    (Array.isArray(CHO_SEONG[choIndex]))
-                        ? [...CHO_SEONG[choIndex]]
-                        : CHO_SEONG[choIndex],
-                    (Array.isArray(JUNG_SEONG[jungIndex]))
-                        ? [...JUNG_SEONG[jungIndex]]
-                        : JUNG_SEONG[jungIndex],
-                ]
-                    .reduce(function (acc, val) {
-                        return acc.concat(val);
-                    }, [])
-                : [
-                    (Array.isArray(CHO_SEONG[choIndex]))
-                        ? [...CHO_SEONG[choIndex]]
-                        : CHO_SEONG[choIndex],
-                    (Array.isArray(JUNG_SEONG[jungIndex]))
-                        ? [...JUNG_SEONG[jungIndex]]
-                        : JUNG_SEONG[jungIndex],
-                    (Array.isArray(JONG_SEONG[jongIndex]))
-                        ? [...JONG_SEONG[jongIndex]]
-                        : JONG_SEONG[jongIndex],
-                ]
-                    .reduce(function (acc, val) {
-                        return acc.concat(val);
-                    }, [])
-        );
-    }
-
-    if (
-        options !== undefined &&
-        options.toSeparateArray
-    )
-        return result.reduce(function (acc, val) {
-            return acc.concat(val);
-        }, []);
-    return result;
-}
-
 async function list(req, res) {
     const query = {};
     if (req.query.lesson) {
@@ -317,14 +193,15 @@ async function list(req, res) {
     const wordPowers = await WordPower.find(query);
 
     const wordPowerList = [];
+
     for (const wordPower of wordPowers) {
         const newWordPower = {...wordPower.toJSON()};
         const hanqcaMatcher = wordPower.hanqcaMatch;
-        let hanqca = wordPower.hanqca;
+        let hanqca = wordPower.hanqca.normalize('NFC');
         const matchedExamples = [];
         const yemunQuery = {};
         yemunQuery['lesson'] = Number(req.query.lesson);
-        yemunQuery['hanqcaMatch'] = {$in: hanqcaMatcher};
+        yemunQuery['hanqcaMatch'] = {$all: hanqcaMatcher};
         const preMatchedExamples = await Yemun.find(yemunQuery);
 
         let hanqcaInWord = [];
@@ -341,30 +218,38 @@ async function list(req, res) {
             }
         }
 
+        let leftOverYemun = [];
+
         for (const yemun of preMatchedExamples) {
             const yemunHanqcaArr = yemun.hanqcaizedSentence.toString().replace(/\s/g, '').trim().normalize('NFC');
             const yemunHanqcaArrWithSpaces = yemun.hanqcaizedSentence.toString().trim().normalize('NFC');
 
             let finalWordPowerHanqcaArr = [];
 
-            if (isHangul(hanqca).includes(true) && hanqca.includes(")")) {
-                let verb = hanqca.split(")")[1];
-                verb = verb.replace(/\s/g, '').trim().normalize('NFC');
+            let isThereHangulInTheHanqca = isHangul(hanqca);
 
-                let hanqcaPlusVerbRoot = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC') + Array.from(verb)[0];
+            let ignoredHangul = (
+                hanqca.includes("(")
+                || hanqca.includes("하다")
+                || hanqca.includes("되다")
+                || (hankulInWord.length === 1 && hanqca.includes("히"))
+                || (hanqca.includes("스럽다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+            );
 
-                let hanqcaPlusParticlePlusVerbRoot = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC')
-                    + hankulInWord[0]
-                    + Array.from(verb)[0];
+            let changingHangul = (
+                (hanqca.includes("겹다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+                || (hanqca.includes("답다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+                || (hanqca.includes("들다") && hanqca.lastIndexOf("다") === hanqca.length - 1)
+            );
 
-                let option1 = hanqcaPlusVerbRoot.replace(/\s/g, '').trim().normalize('NFC');
-                let option2 = hanqcaPlusParticlePlusVerbRoot.replace(/\s/g, '').trim().normalize('NFC');
-
+            if (isThereHangulInTheHanqca.includes(true) && ignoredHangul) { // ...(을) 하다, ...하다, 발행되다, 자세히/편히 -- only 1 hankul and that hankul is 히
+                let beforeBracket = hanqca.split("(")[0];
                 let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                let option3 = null;
-                if (join.length > 1) {
-                    option3 = join;
+                let beforeHankul = null;
+                if (join.length > 0) {
+                    beforeHankul = join;
                 }
+
                 for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
                     let hanqcaInBlock = [];
                     let punc2 = isPunctuation(block.replace(/\s/g, '').trim());
@@ -376,9 +261,8 @@ async function list(req, res) {
                             }
                         }
                         hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                        let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                        let re3 = new RegExp("^" + join + "$");
-                        if ((yemunHanqcaArr.includes(option1)) || (yemunHanqcaArr.includes(option2)) || hanqcaInBlock.search(re3) >= 0) {
+                        let re3 = new RegExp("^" + beforeBracket + "$");
+                        if (yemunHanqcaArr.includes(beforeHankul) || hanqcaInBlock.search(re3) === 0) {
                             let index = -1;
 
                             for (let i = 0; i < matchedExamples.length; i++) {
@@ -395,48 +279,52 @@ async function list(req, res) {
                         }
                     }
                 }
+            } else if (isThereHangulInTheHanqca.includes(true) && changingHangul && !ignoredHangul && !hanqca.includes(" ")) {
+                finalWordPowerHanqcaArr = hanqca.slice(0, -1);
+                if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
+                    let index = -1;
 
-            } else if (isHangul(hanqca).includes(true) && !(hanqca.includes(")"))) {
-                if (hanqca.slice(-2).normalize('NFC') === "하다") {
-                    let opt1 = hanqca.substring(0, hanqca.length - 1).replace(/\s/g, '').trim().normalize('NFC');
-                    let opt2 = hanqca.substring(0, hanqca.length - 2).replace(/\s/g, '').trim().normalize('NFC');
-
-                    for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
-                        let re1 = new RegExp("^" + opt1 + "$");
-                        let re2 = new RegExp("^" + opt2 + "$");
-
-                        let hanqcaInBlock = [];
-                        let punc2 = isPunctuation(block.replace(/\s/g, '').trim());
-                        if (punc2[0] !== undefined) {
-                            for (let i = 0; i < punc2[0].length - 1; i++) {
-                                let hangulBool = isHangul(punc2[0][i]);
-                                if (hangulBool.includes(false)) {
-                                    hanqcaInBlock.push(punc2[0][i]);
-                                }
-                            }
-                            hanqcaInBlock = hanqcaInBlock.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                            let join = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-                            let re3 = new RegExp("^" + join + "$");
-                            if (block.search(re1) >= 0 || block.search(re2) >= 0 || hanqcaInBlock.search(re3) >= 0) {
-                                let index = -1;
-
-                                for (let i = 0; i < matchedExamples.length; i++) {
-                                    if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
-                                        index = i;
-                                    }
-                                }
-
-                                if (index > -1) {
-                                    matchedExamples[index] = yemun;
-                                } else {
-                                    matchedExamples.push(yemun)
-                                }
-                            }
+                    for (let i = 0; i < matchedExamples.length; i++) {
+                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                            index = i;
                         }
                     }
-                } else {
-                    finalWordPowerHanqcaArr = hanqca.replace(/\s/g, '').trim().normalize('NFC');
-                    if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
+
+                    if (index > -1) {
+                        matchedExamples[index] = yemun;
+                    } else {
+                        matchedExamples.push(yemun)
+                    }
+                }
+            } else if (isThereHangulInTheHanqca.includes(true) && !changingHangul && !ignoredHangul && hanqca.includes(" ")) {
+                let split = hanqca.split(" ");
+                if (split[split.length - 1].includes("다")) { // 악명 높다
+                    finalWordPowerHanqcaArr = split[0];
+                } else if (hanqca.includes("...")) {
+                    finalWordPowerHanqcaArr = hanqca.split("...")[1]; // ...에도 不구하고
+                } else { // 인생 처음
+                    finalWordPowerHanqcaArr = hanqca;
+                }
+
+                if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
+                    let index = -1;
+
+                    for (let i = 0; i < matchedExamples.length; i++) {
+                        if (matchedExamples[i].hanqcaizedSentence === yemun.hanqcaizedSentence) {
+                            index = i;
+                        }
+                    }
+
+                    if (index > -1) {
+                        matchedExamples[index] = yemun;
+                    } else {
+                        matchedExamples.push(yemun)
+                    }
+                }
+            } else if (isThereHangulInTheHanqca.includes(true) && !changingHangul && !ignoredHangul && !hanqca.includes(" ")) { //江물 (강물)
+                finalWordPowerHanqcaArr = hanqca;
+                for (let block of yemunHanqcaArrWithSpaces.split(" ")) {
+                    if (block.search(finalWordPowerHanqcaArr) === 0) {
                         let index = -1;
 
                         for (let i = 0; i < matchedExamples.length; i++) {
@@ -452,11 +340,14 @@ async function list(req, res) {
                         }
                     }
                 }
+            } else if (!(isThereHangulInTheHanqca.includes(true))) {
+                if (hanqca.includes(" ")) { // 박사 과정
+                    finalWordPowerHanqcaArr = hanqca;
+                } else { // only hanqca
+                    finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+                }
 
-            } else if (!(isHangul(hanqca).includes(true))) {
-                finalWordPowerHanqcaArr = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
-
-                if (yemunHanqcaArr.includes(finalWordPowerHanqcaArr)) {
+                if (yemunHanqcaArrWithSpaces.includes(finalWordPowerHanqcaArr)) {
                     let index = -1;
 
                     for (let i = 0; i < matchedExamples.length; i++) {
@@ -473,6 +364,14 @@ async function list(req, res) {
                 }
             }
         }
+
+        for (let sent of preMatchedExamples) {
+            if (!matchedExamples.includes(sent)) {
+                leftOverYemun.push(sent);
+            }
+        }
+        console.log(wordPower);
+        console.log(leftOverYemun.length);
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);

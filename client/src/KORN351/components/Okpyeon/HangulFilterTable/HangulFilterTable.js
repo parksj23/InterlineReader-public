@@ -57,8 +57,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function HangulFilterTable(props) {
-    if (props.eumFilters.length === 0)
+    if (props.eumFilters.length === 0) {
         props.getEumFilters();
+    }
+
+    console.log(props.eumFilters);
 
     const classes = useStyles();
     const [value, setValue] = React.useState(0);

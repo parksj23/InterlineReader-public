@@ -26,9 +26,11 @@ function Dashboard() {
 
     return (
         <div className="dashboard">
-            <div className="instructor-heading" style={{marginBottom: '1%'}}>
-                <h2 style={{fontWeight: 'bold'}}>KORN 351 : Dashboard</h2>
-                <p>Click on any of the boxes below to navigate to the corresponding material.</p>
+            <div className="dashboard-heading" style={{marginBottom: '1%'}}>
+                <div className="dashboard-heading-bg">
+                    <h2 style={{fontWeight: 'bold'}}>KORN 351 : Dashboard</h2>
+                    <p>Click on any of the boxes below to navigate to the corresponding material.</p>
+                </div>
             </div>
             <div className="card-container">
 
