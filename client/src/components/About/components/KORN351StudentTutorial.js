@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {withStyles} from "@material-ui/core/styles"
+import './styles/studentTutorial.css'
 
 function StudentTutorial() {
 
@@ -24,10 +25,12 @@ function StudentTutorial() {
     })(Typography);
 
     return (
-        <div className="dashboard-tutorial">
-            <div className="instructor-heading">
-                <h2 style={{fontWeight: 'bold'}}>KORN 351 Student User Guide</h2>
-                <p>Learn how to use Interline Reader</p>
+        <div className="student-tutorial">
+            <div className="tutorial-heading" style={{marginBottom: '1%'}}>
+                <div className="tutorial-heading-bg">
+                    <h2 style={{fontWeight: 'bold'}}>KORN 351 Student User Guide</h2>
+                    <p>Learn how to use Interline Reader</p>
+                </div>
             </div>
 
             <Paper style={{padding: '10% 10% 10% 10%', height: '100%', boxShadow: 'none'}}>

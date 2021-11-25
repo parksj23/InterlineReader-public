@@ -12,7 +12,7 @@ class DictionaryRadicalContainer extends Component {
     constructor() {
         super();
         this.state = {
-            filteredResult: [],
+            filteredResult: null,
             radical: '',
             radicalStrokeCount: '',
             totalStrokeCount: '',
@@ -36,11 +36,20 @@ class DictionaryRadicalContainer extends Component {
     filterResult = radical => {
         let temp = [];
         this.props.newHanja.forEach(char => {
-            if (char.radical === radical) temp.push(char)
+            if (char.radical === radical) {
+                temp.push(char)
+            }
         });
-        this.setState({
-            filteredResult: temp
-        })
+        if (temp.length > 0) {
+            this.setState({
+                filteredResult: temp
+            })
+        } else {
+            this.setState({
+                filteredResult: null
+            })
+        }
+
     };
 
     selectCharacter = (hanja, char) => {
@@ -88,10 +97,14 @@ class DictionaryRadicalContainer extends Component {
                     <div className="radical-second-filter">
                         <p>2) Select a character that uses that radical</p>
                         <Grid container>
-                            {
-                                (filteredResult || []).map(char => {
+                            {filteredResult === null ?
+                                <span style={{color: "tomato"}}>
+                                    No results
+                                </span>
+                                 :
+                                ((filteredResult || []).map(char => {
                                     return <Grid key={char} item xs={3} className="character-box" onClick={() => this.selectCharacter(char.hanja, char)}> <span className="hanja">{char.hanja}</span><span className="hangul">{char.hoonEum}</span> </Grid>
-                                })
+                                }))
                             }
                         </Grid>
                     </div>
@@ -103,14 +116,24 @@ class DictionaryRadicalContainer extends Component {
                     </span>
                     <br/>
                     <div id='result-info'>
-                        <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' || radicalHangul === undefined? '' : '('+radicalHangul+')'}</p>
-                        <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                        <p><b>Character Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                        <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
-                        <p><b>Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                        <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
-                        <p><b>Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}</p>
-                        <p><b>Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}</p>
+                        <div>
+                            <div>
+                                <p><b>訓 (훈) + 音 (음):</b>&nbsp;&nbsp; {hoonEum}</p>
+                                <p style={{padding: '0 0 0 10%'}}><b>
+                                    Primary 訓 meaning(s):</b>&nbsp;&nbsp; {primaryHoonMeaning}
+                                </p>
+                                <p style={{padding: '0 0 5% 10%'}}><b>
+                                    Additional 訓:</b>&nbsp;&nbsp; {additionalHoonMeaning}
+                                </p>
+                            </div>
+                            <div>
+                                <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' ? '' : '(' + radicalHangul + ')'}</p>
+                                <p style={{padding: '0 0 0 10%'}}><b>Radical Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
+                                <p style={{padding: '0 0 0 10%'}}><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                                <p style={{padding: '0 0 0 10%'}}><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                                <p style={{padding: '0 0 0 10%'}}><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                            </div>
+                        </div>
                         {
                             phonetic === '' || phonetic === undefined? '' :
                                 <div>

@@ -7,8 +7,12 @@ const NewAbout = () => {
     return(
         <div>
             <div className='logo-container'>
-                <img className='about-logo' src={logo} alt='Interline Reader' />
-                <img className='about-ubc-logo' src={ubcLogo} alt='UBC Reader' />
+                {/*<img className='about-logo' src={logo} alt='Interline Reader' />*/}
+                {/*<img className='about-ubc-logo' src={ubcLogo} alt='UBC Reader' />*/}
+                <div className='logos-bg'>
+                    <img className='about-logo' src={logo} alt='Interline Reader' />
+                    <img className='about-ubc-logo' src={ubcLogo} alt='UBC Reader' />
+                </div>
             </div>
             <p style={{ margin: '10%' }}>The Interline Reader is an interlingual reading tool being developed at the Asian Studies Department,
                 University of British Columbia. Based on an interlinear approach to reading source texts, the platform
