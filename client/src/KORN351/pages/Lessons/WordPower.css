@@ -1,38 +1,30 @@
 .word-power-grid-card {
     margin: 1% !important;
-    /*max-width: 48% !important;*/
     width: 100%;
     display: flex;
     flex-direction: row;
-    /*justify-content: center;*/
-    /*width: "100%"*/
     flex-basis: 0;
     flex-grow: 1;
-    /*min-width: 0;*/
     overflow-x: auto;
     overflow-y: auto;
 }
 
 .word-power-card {
-    /*height: 200px;*/
     padding: 0.5%;
-    width: 40%;
+    width: 60%;
 }
 
 .word-power-card-div-1 {
     color: #19609d;
     width: 100%;
-    /*min-width: 250px;*/
 }
 
 .word-power-card-div-2 {
     overflow-x: auto;
     overflow-y: auto;
     height: 330px;
-    /*width: 350px;*/
-    /*height: 100%;*/
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .wordTab-label-flexbox {
@@ -46,7 +38,6 @@
 }
 
 .wordTab-label-flexbox-1 {
-    /*flex-direction: column;*/
     display: flex;
     justify-content: flex-start;
     flex-basis: 0;
@@ -59,29 +50,16 @@
     justify-content: flex-end;
     flex-basis: 0;
     flex-grow: 1;
-    font-size: 12px;
+    font-size: 10px;
     font-style: italic;
+    white-space: nowrap;
 }
 
-/*.MuiTab-wrapper {*/
-/*    justify-content: flex-start;*/
-/*    align-items: flex-start;*/
-/*}*/
-
-/*.MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary {*/
-/*    justify-content: flex-start;*/
-/*    align-items: flex-start;*/
-/*    width: 100%;*/
-/*}*/
-
 .no-data {
-    /*align-self: center;*/
-    /*margin: auto;*/
     padding-top: 20%;
-    padding-left: 30%;
+    padding-left: 20%;
     color: tomato;
     font-style: italic;
-    /*font-weight: bold;*/
 }
 
 .no-more-yemun-msg {
@@ -96,8 +74,6 @@
 }
 
 .word-power-card-left {
-    /*height: 200px;*/
-    /*padding: 1%;*/
     width: 100%;
 }
 
@@ -111,16 +87,14 @@
 }
 
 .word-power-wordTabs {
-    width: 30%;
+    width: 40%;
     padding-left: 2%;
     padding-top: 2%;
     overflow-x: auto;
     overflow-y: auto;
-    /*align-self: center;*/
 }
 
 .wordTab-results-div {
-    /*align-self: center;*/
     width: 70%;
     padding-top: 5%;
 }
@@ -128,14 +102,6 @@
 .wordTab-results-yemun {
     font-size: 25px;
 }
-
-/*MuiTabs-flexContainer MuiTabs-flexContainerVertical {*/
-/*    align-items: flex-start;*/
-/*}*/
-
-/*MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary {*/
-/*    text-align: left;*/
-/*}*/
 
 @media screen and (max-width: 1100px) {
     .word-power-card {
