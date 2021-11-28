@@ -22,7 +22,7 @@ class EditOkpyeon extends Component {
 
     componentDidMount() {
         const reloadCount = sessionStorage.getItem('reloadCount');
-        if(reloadCount < 2) {
+        if(reloadCount < 1) {
             sessionStorage.setItem('reloadCount', String(reloadCount + 1));
             window.location.reload();
         } else {
