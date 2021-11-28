@@ -53,6 +53,9 @@
     color: white;
     background-color: #333333;
     text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
 
 .ir-Navbar-accountBtn span {
