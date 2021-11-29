@@ -66,12 +66,12 @@ async function deleteWordPower(req, res) {
 
 async function updateYemun(req, res) {
     const docToUpdate = {...req.body};
+    console.log(docToUpdate);
     const {hanqcaizedSentence} = req.body;
     if (hanqcaizedSentence) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence.normalize('NFC'));
+        docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
     }
-
-    docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
 
     const doc = await Yemun.findOne({_id: req.params.id}).exec();
 
