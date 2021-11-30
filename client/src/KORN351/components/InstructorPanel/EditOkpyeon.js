@@ -6,9 +6,10 @@ import {getCharacters, getPhonetics, getRadicals} from "../../../actions/KORN351
 import {
     saveCharacter, savePhonetic, saveRadical, deleteCharacter, deleteRadical, deletePhonetic
 } from "../../../actions/KORN351/Instructor";
-import Button from '@material-ui/core/Button';
-import {Accordion, AccordionDetails, AccordionSummary, Tab, Tabs, Typography} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, IconButton, Modal, Box, Button, Tab, Tabs, Typography} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import PlusIcon from '@material-ui/icons/Add';
+import axios from "axios";
 
 class EditOkpyeon extends Component {
     constructor(props) {
@@ -16,8 +17,16 @@ class EditOkpyeon extends Component {
         this.state = {
             radicals: [],
             characters: [],
-            phonetics: []
+            phonetics: [],
+            isPhoneticModalOpen: false,
+            newPhonetic: {},
+            isRadicalModalOpen: false,
+            newRadical: {},
+            isHanjaAddModalOpen: false,
+            newHanjaChar: {}
         };
+
+        this.lesson = parseInt(this.props.match.params.id);
     }
 
     componentDidMount() {
@@ -31,13 +40,12 @@ class EditOkpyeon extends Component {
 
         this.setState({tabValue: 0});
 
-        let lesson = parseInt(this.props.match.params.id);
         const {characters, phonetics, radicals} = this.props;
 
         if (radicals.length === 0) {
             this.props.getRadicals().then(() => {
                 let temp = this.props.radicals.filter(char => {
-                    return char.lesson === lesson
+                    return char.lesson === this.lesson
                 });
                 this.setState({
                     radicals: temp
@@ -48,8 +56,9 @@ class EditOkpyeon extends Component {
         if (characters.length === 0)
             this.props.getCharacters().then(() => {
                 let temp = this.props.characters.filter(char => {
-                    return char.lesson === lesson
+                    return char.lesson === this.lesson
                 });
+
                 this.setState({
                     characters: temp
                 });
@@ -58,12 +67,26 @@ class EditOkpyeon extends Component {
         if (phonetics.length === 0)
             this.props.getPhonetics().then(() => {
                 let temp = this.props.phonetics.filter(phonetic => {
-                    return phonetic.lesson === lesson
+                    return phonetic.lesson === this.lesson
                 });
                 this.setState({
                     phonetics: temp
                 });
             });
+    }
+
+    createHanjaChar = () => {
+        const { newHanjaChar } = this.state;
+        newHanjaChar.lesson = this.lesson;
+        axios({
+            method: 'POST',
+            data: newHanjaChar,
+            url: '/api/instructor351/addHanjaChar'
+        }).then(res => {
+            newHanjaChar._id = res.data;
+            this.setState(prevState => ({ characters: [newHanjaChar, ...prevState.characters] }));
+            this.onHanjaAddModalToggle();
+        });
     }
 
     saveHanjaCharacter = (id) => {
@@ -90,6 +113,41 @@ class EditOkpyeon extends Component {
             alert(hanja + " has NOT been deleted.");
         }
     };
+
+    createPhonetic = () => {
+        const { newPhonetic } = this.state;
+        if (newPhonetic.characters) {
+            newPhonetic.characters = newPhonetic.characters.split(',').map(c => c.trim()).filter(c => !!c);
+        }
+        if (newPhonetic.sub_characters) {
+            newPhonetic.sub_characters = newPhonetic.sub_characters.split(',').map(c => c.trim()).filter(c => !!c);
+        }
+        newPhonetic.lesson = this.lesson;
+
+        axios({
+            method: 'POST',
+            data: newPhonetic,
+            url: '/api/instructor351/addPhonetic'
+        }).then(res => {
+            newPhonetic._id = res.data;
+            this.setState(prevState => ({ phonetics: [newPhonetic, ...prevState.phonetics] }));
+            this.onPhoneticAddModalToggle();
+        });
+    }
+
+    createRadical = () => {
+        const { newRadical } = this.state;
+        newRadical.lesson = this.lesson;
+        axios({
+            method: 'POST',
+            data: newRadical,
+            url: '/api/instructor351/addRadical'
+        }).then(res => {
+            newRadical._id = res.data;
+            this.setState(prevState => ({ radicals: [newRadical, ...prevState.radicals] }));
+            this.onRadicalAddModalToggle();
+        });
+    }
 
     savePhonetic = (id) => {
         let characters = this.state[id + 'characters'].value.split("\n");
@@ -123,6 +181,18 @@ class EditOkpyeon extends Component {
         }
     };
 
+    onHanjaAddModalToggle = () => {
+        this.setState(prevState => ({ isHanjaAddModalOpen: !prevState.isHanjaAddModalOpen, newHanjaChar: {} }));
+    }
+
+    onPhoneticAddModalToggle = () => {
+        this.setState(prevState => ({ isPhoneticModalOpen: !prevState.isPhoneticModalOpen, newPhonetic: {} }));
+    }
+
+    onRadicalAddModalToggle = () => {
+        this.setState(prevState => ({ isRadicalModalOpen: !prevState.isRadicalModalOpen, newRadical: {} }));
+    }
+
     saveRadical = (id) => {
         let additionalHoonMeaning = this.state[id + 'additionalHoonMeaning'] ? this.state[id + 'additionalHoonMeaning'].value.trim() : '';
         let characterStrokeCount = parseInt(this.state[id + 'characterStrokeCount'].value.trim());
@@ -150,7 +220,7 @@ class EditOkpyeon extends Component {
     }
 
     render() {
-        const {characters, phonetics, radicals} = this.state;
+        const {characters, phonetics, radicals, newPhonetic, newRadical, isPhoneticModalOpen, isRadicalModalOpen, isHanjaAddModalOpen, newHanjaChar} = this.state;
         return (
             <div className="edit-lesson-container">
                 <h2>Lesson {this.props.match.params.id}</h2>
@@ -173,11 +243,66 @@ class EditOkpyeon extends Component {
 
                 {this.state.tabValue === 0 &&
                 <div className="edit-lesson-background">
-                    <h2>Hanja Characters (For Lesson's '새 한자' section & Okpyeon)</h2>
+                    <div className="ir-EditOkpyeon-header">
+                        <h2>Hanja Characters (For Lesson's '새 한자' section & Okpyeon)</h2>
+                        <IconButton size="medium" onClick={this.onHanjaAddModalToggle} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    </div>
                     <Divider/><br/>
+                    <Modal
+                        open={isHanjaAddModalOpen}
+                        onClose={this.onHanjaAddModalToggle}
+                    >
+                        <Box className="ir-EditOkpyeon-modal">
+                            <Typography variant="h6" component="h6">Add Hanja Character</Typography>
+                            <label>Hanja:</label>
+                            <input type="text" placeholder="Type Hanja.." style={{width: 400}} onChange={event => newHanjaChar.hanja = event.target.value}/>
+                            <br />
+                            <label>音 (음/Eum):</label>
+                            <input type="text" placeholder="Type 音 (음/Eum).." style={{width: 400}} onChange={event => newHanjaChar.eum = event.target.value}/>
+                            <br />
+                            <label>Meaning:</label>
+                            <textarea placeholder="Type Meaning.." style={{width: 400}} rows="3"
+                                onChange={event => newHanjaChar.meaning = event.target.value}></textarea>
+                            <br />
+                            <label>訓 (훈) + 音 (음):</label>
+                            <input placeholder="Type 訓 (훈) + 音 (음).."  type="text" style={{width: 400}} onChange={event => newHanjaChar.hoonEum = event.target.value} />
+                            <br />
+                            <label>Primary 訓 (훈/Hoon) Meaning:</label>
+                            <textarea placeholder="Type Primary 訓 (훈/Hoon) Meaning.." style={{width: 400}} onChange={event => newHanjaChar.primaryHoonMeaning = event.target.value}></textarea>
+                            <br />
+                            <label>Additional 訓 (훈/Hoon) Meaning:</label>
+                            <textarea placeholder="Type Additional 訓 (훈/Hoon) Meaning.." style={{width: 400}} onChange={event => newHanjaChar.additionalHoonMeaning = event.target.value}></textarea>
+                            <br />
+                            <label>Phonetic:</label>
+                            <input placeholder="Add Phonetic.." type="text" style={{width: 400}} onChange={event => newHanjaChar.phonetic = event.target.value}/>
+                            <br />
+                            <label>Radical:</label>
+                            <input placeholder="Add Radical.." type="text" style={{width: 400}} onChange={event => newHanjaChar.radical = event.target.value} />
+                            <br />
+                            <label>Radical Hangul:</label>
+                            <input placeholder="Add Radical Hangul.." type="text" style={{width: 400}} onChange={event => newHanjaChar.radicalHangul = event.target.value} />
+                            <br />
+                            <label>Radical Stroke Count:</label>        
+                            <input placeholder="Add Radical Stroke Count.." type="text" style={{width: 400}} onChange={event => newHanjaChar.radicalStrokeCount = event.target.value} />
+                            <br />
+                            <label>Character Stroke Count:</label>
+                            <input placeholder="Add Character Stroke Count.." type="text" style={{width: 400}} onChange={event => newHanjaChar.characterStrokeCount = event.target.value} />
+                            <br/>
+                            <label>Total Stroke Count (Character + Radical):</label>
+                            <input placeholder="Add Total Stroke Count.." type="text" style={{width: 400}} onChange={event => newHanjaChar.totalStrokeCount = event.target.value} />      
+                            <br /><br />
+                            <Button style={{
+                                marginRight: '4px',
+                                backgroundColor: '#00284d',
+                                color: 'white',
+                                width: '20%'
+                            }} onClick={this.createHanjaChar}>Create</Button>
+                            <Button variant="contained" onClick={this.onHanjaAddModalToggle}>Cancel</Button>
+                        </Box>
+                    </Modal>
                     <div style={{textAlign: 'center'}}>
                         {characters.map((char) => {
-                            return <div style={{padding: '0 5%'}}>
+                            return <div key={char._id} style={{padding: '0 5%'}}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{char.hanja} {char.eum}</Typography>
@@ -271,8 +396,43 @@ class EditOkpyeon extends Component {
 
                 {this.state.tabValue === 1 &&
                 <div className="edit-lesson-background">
-                    <h2>Phonetics (For Lesson's '새 부수' section & Okpyeon)</h2>
+                    <div className="ir-EditOkpyeon-header">
+                        <h2>Phonetics (For Lesson's '새 부수' section & Okpyeon)</h2>
+                        <IconButton size="medium" onClick={this.onPhoneticAddModalToggle} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    </div>
                     <Divider/><br/>
+                    <Modal
+                        open={isPhoneticModalOpen}
+                        onClose={this.onPhoneticAddModalToggle}
+                    >
+                        <Box className="ir-EditOkpyeon-modal">
+                            <Typography variant="h6" component="h6">Add Phonetic</Typography>
+                            <label>Phonetic:</label>
+                            <input type="text" placeholder="Type Phonetic.." style={{width: 400}} onChange={event => newPhonetic.phonetic = event.target.value}/>
+                            <br />
+                            <label>Characters:</label>
+                            <textarea placeholder="Type Characters separated by commas" style={{width: 400}} rows="3" className="edit-input"
+                                onChange={event => newPhonetic.characters = event.target.value}></textarea>
+                            <br />
+                            <label>Pronounciation:</label>
+                            <input type="text" placeholder="Type Pronounciation.." style={{width: 400}} onChange={event => newPhonetic.pronunciation = event.target.value}/>
+                            <br />
+                            <label>Sub-Pronounciation:</label>
+                            <input type="text" placeholder="Type Sub-Pronounciation.." style={{width: 400}} onChange={event => newPhonetic.sub_pronunciation = event.target.value}/>
+                            <br />
+                            <label>Sub-Characters:</label>
+                            <textarea placeholder="Type Sub-Characters separated by commas" style={{width: 400}} rows="3" className="edit-input"
+                                onChange={event => newPhonetic.sub_characters = event.target.value}></textarea>
+                            <br /><br />
+                            <Button style={{
+                                marginRight: '4px',
+                                backgroundColor: '#00284d',
+                                color: 'white',
+                                width: '20%'
+                            }} onClick={this.createPhonetic}>Create</Button>
+                            <Button variant="contained" onClick={this.onPhoneticAddModalToggle}>Cancel</Button>
+                        </Box>
+                    </Modal>
                     <div>
                         {phonetics.map((phon) => {
                             let str = '';
@@ -287,7 +447,7 @@ class EditOkpyeon extends Component {
                                 })
                             }
 
-                            return <div style={{padding: '0 5%'}}>
+                            return <div key={phon._id} style={{padding: '0 5%'}}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{phon.phonetic}</Typography>
@@ -350,11 +510,57 @@ class EditOkpyeon extends Component {
 
                 {this.state.tabValue === 2 &&
                 <div className="edit-lesson-background">
-                    <h2>Radicals (For Okpyeon)</h2>
+                    <div className="ir-EditOkpyeon-header">
+                        <h2>Radicals (For Okpyeon)</h2>
+                        <IconButton size="medium" onClick={this.onRadicalAddModalToggle} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    </div>
                     <Divider/><br/>
+                    <Modal
+                        open={isRadicalModalOpen}
+                        onClose={this.onRadicalAddModalToggle}
+                    >
+                        <Box className="ir-EditOkpyeon-modal">
+                            <Typography variant="h6" component="h6">Add Radical</Typography>
+                            <label>Radical:</label>
+                            <input type="text" placeholder="Type Radical.." style={{width: 400}} onChange={event => newRadical.radical = event.target.value}/>
+                            <br />
+                            <label>Radical Hangul:</label>
+                            <input type="text" placeholder="Type Radical.." style={{width: 400}} onChange={event => newRadical.radicalHangul = event.target.value}/>
+                            <br />
+                            <label>Meaning:</label>
+                            <textarea placeholder="Type Meaning.." style={{width: 400}} className="edit-input"
+                                onChange={event => newRadical.meaning = event.target.value}></textarea>
+                            <br />
+                            <label>訓 (훈) + 音 (음):</label>
+                            <input placeholder="Type 訓 (훈) + 音 (음).." type="text" style={{width: 400}} onChange={event => newRadical.hoonEum = event.target.value} />
+                            <br />
+                            <label>Primary 訓 (훈/Hoon) Meaning:</label>
+                            <textarea placeholder="Type Primary 訓 (훈/Hoon) Meaning.." style={{width: 400}} onChange={event => newRadical.primaryHoonMeaning = event.target.value}></textarea>
+                            <br />
+                            <label>Additional 訓 (훈/Hoon) Meaning:</label>
+                            <textarea placeholder="Type Additional 訓 (훈/Hoon) Meaning.." style={{width: 400}} onChange={event => newRadical.additionalHoonMeaning = event.target.value}></textarea>
+                            <br/>
+                            <label>Radical Stroke Count:</label>
+                            <input placeholder="Type Radical Stroke Count.." type="text" style={{width: 400}} onChange={event => newRadical.radicalStrokeCount = event.target.value} />
+                            <br/>
+                            <label>Character Stroke Count:</label>
+                            <input placeholder="Type Character Stroke Count.." type="text" style={{width: 400}} onChange={event => newRadical.characterStrokeCount = event.target.value} />
+                            <br/>
+                            <label>Total Stroke Count (Character + Radical):</label>
+                            <input placeholder="Type Total Stroke Count.." type="text" style={{width: 400}} onChange={event => newRadical.totalStrokeCount = event.target.value} />   
+                            <br /><br />
+                            <Button style={{
+                                marginRight: '4px',
+                                backgroundColor: '#00284d',
+                                color: 'white',
+                                width: '20%'
+                            }} onClick={this.createRadical}>Create</Button>
+                            <Button variant="contained" onClick={this.onPhoneticAddModalToggle}>Cancel</Button>
+                        </Box>
+                    </Modal>
                     <div style={{textAlign: 'center'}}>
                         {radicals.map((rad) => {
-                            return <div style={{padding: '0 5%'}}>
+                            return <div key={rad._id} style={{padding: '0 5%'}}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{rad.radical} {rad.radicalHangul}</Typography>

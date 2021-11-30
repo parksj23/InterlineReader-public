@@ -58,6 +58,12 @@ router.put("/saveOthers", (req, res, next) => {
     });
 });
 
+router.post("/addAboutNewBusu", (req, res, next) => {
+    db.get().collection('ABOUT_NEW_BUSU').insertOne(req.body).then((data) => {
+        res.status(200).send(data.insertedId);
+    });
+});
+
 router.put("/saveAboutNewBusu", (req, res, next) => {
     const {lesson, id, word, def, busu, descr, examples} = req.body.params;
 
@@ -154,6 +160,12 @@ router.put("/deleteCharacter", (req, res, next) => {
     });
 });
 
+router.post("/addPhonetic", (req, res, next) => {
+    db.get().collection('PHONETICS').insertOne(req.body).then((data) => {
+        res.status(200).send(data.insertedId);
+    });
+});
+
 router.put("/savePhonetic", (req, res, next) => {
     const {lesson, id, characters, phonetic, pronunciation, sub_pronunciation, sub_characters} = req.body.params;
 
@@ -173,6 +185,12 @@ router.put("/deletePhonetic", (req, res, next) => {
 
     db.get().collection('PHONETICS').deleteOne(myquery).then(() => {
         res.status(200).send('success');
+    });
+});
+
+router.post("/addRadical", (req, res, next) => {
+    db.get().collection('RADICALS').insertOne(req.body).then((data) => {
+        res.status(200).send(data.insertedId);
     });
 });
 
