@@ -192,6 +192,7 @@ async function list(req, res) {
     const wordPowers = await WordPower.find(query);
 
     const wordPowerList = [];
+    const unmatchedYemunWithWords = [];
 
     for (const wordPower of wordPowers) {
         const newWordPower = {...wordPower.toJSON()};
@@ -369,14 +370,20 @@ async function list(req, res) {
                 leftOverYemun.push(sent);
             }
         }
-        console.log(wordPower);
-        console.log(leftOverYemun.length);
+
+        if (leftOverYemun.length > 0) {
+            unmatchedYemunWithWords.push({wordPower: wordPower, unmatchedYemun: leftOverYemun});
+        }
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
     }
 
-    return res.status(200).json(wordPowerList);
+    return res.status(200).json(
+        {
+            wordPowerList: wordPowerList,
+            unmatchedYemunWithWords: unmatchedYemunWithWords
+        });
 }
 
 module.exports = {
