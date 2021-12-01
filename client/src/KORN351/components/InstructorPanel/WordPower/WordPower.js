@@ -533,7 +533,7 @@ class WordPower extends Component {
                                         {obj.unmatchedYemun.map(example => (
                                             <Accordion>
                                                 <AccordionSummary style={{display: 'flex', justifyContent: 'spaceBetween'}} expandIcon={<ExpandMoreIcon/>}>
-                                                    <Typography>{example.translation}</Typography>
+                                                    <Typography>{example.hanqcaizedSentence}</Typography>
                                                 </AccordionSummary>
                                                 <AccordionDetails>
                                                     <div>
