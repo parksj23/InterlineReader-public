@@ -529,6 +529,7 @@ class WordPower extends Component {
                                     {unmatchedYemun.map((obj, idx) => <TabPanel index={idx} value={yemunTabIdx} key={obj.wordPower._id}>
                                         <div className="ir-WordPower-header">
                                             <h5>Unmatched yemun of {obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')'}</h5>
+                                            <h6><i>Please edit if necessary. If not, leave as is.</i></h6>
                                         </div>
                                         {obj.unmatchedYemun.map(example => (
                                             <Accordion>
@@ -572,13 +573,6 @@ class WordPower extends Component {
                                                             color: 'white',
                                                             width: '20%'
                                                         }} onClick={() => this.saveYemun(obj.wordpower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
-                                                        <Button style={{
-                                                            marginRight: '4px',
-                                                            backgroundColor: '#f6152f',
-                                                            color: 'white',
-                                                            width: '20%'
-                                                        }}
-                                                                onClick={() => this.deleteYemun(obj.wordpower._id, example._id)}>Delete</Button>
                                                     </div>
                                                 </AccordionDetails>
                                             </Accordion>
