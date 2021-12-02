@@ -110,6 +110,8 @@ class WordPower extends Component {
             .then(({ data }) => {
                 const wordPowerToEdit = {};
                 const yemunToEdit = {};
+                // console.log(data.unmatchedYemunWithWords);
+                // console.log(data.unmatchedYemunWithWords.length)
                 data.wordPowerList.forEach(d => {
                     wordPowerToEdit[d._id] = {};
                     yemunToEdit[d._id] = this._getEmptyObjWithKeys(d.examples.map(e => e._id));
@@ -519,12 +521,15 @@ class WordPower extends Component {
                         <Divider/><br/>
                         {showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> : (
                             <div className="ir-WordPower-examples">
-                                <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
+                                {unmatchedYemun.length ? <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
                                     {unmatchedYemun.map((obj, idx) =>
                                         <Tab key={idx} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')'} {...a11yProps(idx)}
-                                        // <Tab key={obj.wordPower._id} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordpower.englishGloss} {...a11yProps(idx)}
+                                            // <Tab key={obj.wordPower._id} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordpower.englishGloss} {...a11yProps(idx)}
                                         />)}
-                                </Tabs>
+                                </Tabs> :
+                                    <h6 style={{color: "green"}}><i>All yemun matched.</i></h6>
+                                }
+
                                 <div className="ir-WordPower-tabpanels">
                                     {unmatchedYemun.map((obj, idx) => <TabPanel index={idx} value={yemunTabIdx} key={obj.wordPower._id}>
                                         <div className="ir-WordPower-header">
