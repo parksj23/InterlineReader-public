@@ -529,7 +529,9 @@ class WordPower extends Component {
                                     {unmatchedYemun.map((obj, idx) => <TabPanel index={idx} value={yemunTabIdx} key={obj.wordPower._id}>
                                         <div className="ir-WordPower-header">
                                             <h5>Unmatched yemun of {obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')'}</h5>
-                                            <h6><i>Please edit if necessary. If not, leave as is.</i></h6>
+                                        </div>
+                                        <div className="ir-WordPower-header">
+                                            <span><i>Please edit if necessary. If not, leave as is.</i></span>
                                         </div>
                                         {obj.unmatchedYemun.map(example => (
                                             <Accordion>
