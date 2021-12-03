@@ -116,6 +116,10 @@ class WordPower extends Component {
                     wordPowerToEdit[d._id] = {};
                     yemunToEdit[d._id] = this._getEmptyObjWithKeys(d.examples.map(e => e._id));
                 });
+                data.unmatchedYemunWithWords.forEach(d => {
+                    wordPowerToEdit[d.wordPower._id] = {};
+                    yemunToEdit[d.wordPower._id] = this._getEmptyObjWithKeys(d.unmatchedYemun.map(e => e._id));
+                });
                 this.setState({
                     wordPowerData: data.wordPowerList,
                     unmatchedYemun: data.unmatchedYemunWithWords,
@@ -523,7 +527,7 @@ class WordPower extends Component {
                             <div className="ir-WordPower-examples">
                                 {unmatchedYemun.length ? <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
                                     {unmatchedYemun.map((obj, idx) =>
-                                        <Tab key={idx} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')'} {...a11yProps(idx)}
+                                        <Tab key={idx} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordPower.englishGloss} {...a11yProps(idx)}
                                             // <Tab key={obj.wordPower._id} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordpower.englishGloss} {...a11yProps(idx)}
                                         />)}
                                 </Tabs> :
@@ -549,28 +553,28 @@ class WordPower extends Component {
                                                         <textarea
                                                             defaultValue={example.simpleHanqca}
                                                             style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                            onChange={event => yemunToEdit[obj.wordpower._id][example._id].simpleHanqca = event.target.value}
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].simpleHanqca = event.target.value}
                                                         ></textarea><br/>
                                                         <br />
                                                         Hanjaized Sentence:<br/>
                                                         <textarea
                                                             defaultValue={example.hanqcaizedSentence}
                                                             style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                            onChange={event => yemunToEdit[obj.wordpower._id][example._id].hanqcaizedSentence = event.target.value}
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].hanqcaizedSentence = event.target.value}
                                                         ></textarea><br/>
                                                         <br />
                                                         Korean Sentence:<br/>
                                                         <textarea
                                                             defaultValue={example.koreanSentence}
                                                             style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                            onChange={event => yemunToEdit[obj.wordpower._id][example._id].koreanSentence = event.target.value}>
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].koreanSentence = event.target.value}>
                                                     </textarea><br/>
                                                         <br />
                                                         Translation:<br/>
                                                         <textarea
                                                             defaultValue={example.translation}
                                                             style={{overflowWrap: 'break-word', width: 450}} rows="2"
-                                                            onChange={event => yemunToEdit[obj.wordpower._id][example._id].translation = event.target.value}>
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].translation = event.target.value}>
                                                     </textarea><br/>
                                                         <br />
                                                         {isSaving && <CircularProgress className="ir-WordPower-saving" size="small" />}
@@ -579,7 +583,7 @@ class WordPower extends Component {
                                                             backgroundColor: '#00284d',
                                                             color: 'white',
                                                             width: '20%'
-                                                        }} onClick={() => this.saveYemun(obj.wordpower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
+                                                        }} onClick={() => this.saveYemun(obj.wordPower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
                                                     </div>
                                                 </AccordionDetails>
                                             </Accordion>
