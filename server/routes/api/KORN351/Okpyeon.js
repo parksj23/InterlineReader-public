@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../../database');
 
 router.get("/getCharacters", async (req, res) => {
-    db.get().collection('CHARACTERS').find({}).toArray()
+    db.get().collection('NEW_HANJA').find({}).toArray()
         .then((result) => {
             res.json(result);
         }).catch(() => {

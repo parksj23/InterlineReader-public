@@ -144,9 +144,9 @@ class DictionaryHangulContainer extends Component {
                                 <div>
                                     <p><b>Radical:</b>&nbsp;&nbsp; {radical} {radicalHangul === '' ? '' : '(' + radicalHangul + ')'}</p>
                                     <p style={{padding: '0 0 0 10%'}}><b>Radical Meaning(s):</b> &nbsp;&nbsp;{meaning}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
-                                    <p style={{padding: '0 0 0 10%'}}><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
+                                    <p><b>Radical Stroke Count:</b> &nbsp;&nbsp; {radicalStrokeCount}</p>
+                                    <p><b>Remainder Stroke Count:</b> &nbsp;&nbsp;{characterStrokeCount}</p>
+                                    <p><b>Total Stroke Count:</b> &nbsp;&nbsp;{totalStrokeCount}</p>
                                 </div>
                             </div>
                         {

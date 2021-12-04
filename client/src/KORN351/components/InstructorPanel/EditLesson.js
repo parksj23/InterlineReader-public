@@ -92,7 +92,7 @@ class EditLesson extends Component {
             this.props.getPhonetics().then(() => {
 
                     let temp = this.props.phonetics.filter(phonetic => {
-                        return phonetic.lesson || "".toString() === lesson
+                        return phonetic.lesson === parseInt(lesson);
                     });
                     this.setState({
                         phonetics: temp
@@ -342,8 +342,8 @@ class EditLesson extends Component {
                         onChange={this.handleOnChangeTab}
                         indicatorColor="primary"
                         textColor="primary"
-                        centered
                         style={{padding: '2%'}}
+                        variant="scrollable"
                     >
                         <Tab label="Main Lesson"/>
                         <Tab label="새 부수에 대하여"/>
