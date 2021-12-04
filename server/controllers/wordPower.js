@@ -1,6 +1,6 @@
 const WordPower = require('../models/WordPower');
 const Yemun = require('../models/Yemun');
-const {getHanqcaMatchArray} = require('../helpers/hanjaMatchGenerator');
+const {getHanqcaMatchArray, isHangul, isPunctuation} = require('../helpers/hanjaMatchGenerator');
 
 async function createWordPower(req, res) {
     req.body.hanqca = req.body.hanqca.normalize('NFC');
@@ -123,62 +123,6 @@ async function createYemun(req, res) {
         });
 }
 
-function isHangul(str, options) {
-    if (
-        options !== undefined &&
-        options.removeSpace
-    )
-        str = str.replace(/(\s*)/g, "");
-
-    var result = [];
-
-    for (var i = 0; i < str.length; i++) {
-        var uniChar = str.charCodeAt(i);
-
-        if (
-            options !== undefined &&
-            options.onlyCombined
-        )
-            result.push(
-                uniChar >= 0xAC00 &&
-                uniChar <= 0xD7A3
-            );
-        else
-            result.push(
-                (
-                    uniChar >= 0x1100 &&
-                    uniChar <= 0x11FF
-                ) ||
-                (
-                    uniChar >= 0x3130 &&
-                    uniChar <= 0x318F
-                ) ||
-                (
-                    uniChar >= 0xAC00 &&
-                    uniChar <= 0xD7A3
-                )
-            );
-    }
-    return result;
-}
-
-function isPunctuation(str, options) {
-    if (
-        options !== undefined &&
-        options.removeSpace
-    )
-        str = str.replace(/(\s*)/g, "");
-
-    var result = [];
-
-    for (var i = 0; i < str.length; i++) {
-        let punctuationless = str.replace(/(~|`|!|@|#|$|%|^|&|\*|\(|\)|{|}|\[|\]|;|:|\"|'|<|,|\.|>|\?|\/|\\|\||-|_|\+|=)/g, "")
-        let finalString = punctuationless.replace(/\s{2,}/g, " ");
-        result.push(finalString);
-    }
-    return result;
-}
-
 async function list(req, res) {
     const query = {};
     if (req.query.lesson) {
@@ -192,6 +136,7 @@ async function list(req, res) {
     const wordPowers = await WordPower.find(query);
 
     const wordPowerList = [];
+    const unmatchedYemunWithWords = [];
 
     for (const wordPower of wordPowers) {
         const newWordPower = {...wordPower.toJSON()};
@@ -217,6 +162,7 @@ async function list(req, res) {
             }
         }
 
+        let preLeftOverYemun = [];
         let leftOverYemun = [];
 
         for (const yemun of preMatchedExamples) {
@@ -366,17 +312,43 @@ async function list(req, res) {
 
         for (let sent of preMatchedExamples) {
             if (!matchedExamples.includes(sent)) {
+                preLeftOverYemun.push(sent);
+            }
+        }
+
+        let hanqcaInWordPower = [];
+        let isPunc = isPunctuation(wordPower.hanqca);
+        if (isPunc.length) {
+            for (let i = 0; i < isPunc[0].length; i++) {
+                let hangul = isHangul(isPunc[0][i]);
+                if (hangul.includes(false)) {
+                    hanqcaInWordPower.push(isPunc[0][i]);
+                }
+            }
+        }
+
+        let wordPowerHanqcaOnlyString = hanqcaInWord.join("").replace(/\s/g, '').toString().trim().normalize('NFC');
+
+        for (let sent of preLeftOverYemun) {
+            const yemunHanqcaArrWithSpaces = sent.hanqcaizedSentence.toString().trim().normalize('NFC');
+            if (yemunHanqcaArrWithSpaces.includes(wordPowerHanqcaOnlyString)) {
                 leftOverYemun.push(sent);
             }
         }
-        console.log(wordPower);
-        console.log(leftOverYemun.length);
+
+        if (leftOverYemun.length > 0) {
+            unmatchedYemunWithWords.push({wordPower: wordPower, unmatchedYemun: leftOverYemun});
+        }
 
         newWordPower.examples = matchedExamples;
         wordPowerList.push(newWordPower);
     }
 
-    return res.status(200).json(wordPowerList);
+    return res.status(200).json(
+        {
+            wordPowerList: wordPowerList,
+            unmatchedYemunWithWords: unmatchedYemunWithWords
+        });
 }
 
 module.exports = {

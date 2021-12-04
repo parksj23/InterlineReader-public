@@ -109,7 +109,7 @@ class WordPower extends Component {
                 const data = response.data;
                 // console.log("the data");
                 // console.log(data);
-                this.setState({wordPowerData: data});
+                this.setState({wordPowerData: data.wordPowerList});
                 this.setState({showLoading: false});
             })
             .catch(() => {
