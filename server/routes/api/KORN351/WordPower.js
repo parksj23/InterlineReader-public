@@ -9,5 +9,6 @@ router.delete('/:id', WordPower.deleteWordPower);
 router.put('/yemun/:id', WordPower.updateYemun);
 router.delete('/yemun/:id', WordPower.deleteYemun);
 router.get('/list', WordPower.list);
+router.post('/bulk-create', WordPower.bulkCreate);
 
 module.exports = router;

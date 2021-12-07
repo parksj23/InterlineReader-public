@@ -9,8 +9,6 @@ async function createWordPower(req, res) {
         req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqca);
     }
 
-    req.body.hanqcaMatch = req.body.hanqcaMatch[0];
-
     const wordPower = new WordPower(req.body);
 
     let query = {lesson: Number(req.body.lesson), hankul: req.body.hankul};
@@ -41,8 +39,6 @@ async function updateWordPower(req, res) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqca);
     }
 
-    docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
-
     const doc = await WordPower.findOne({_id: req.params.id}).exec();
 
     for (const [key, value] of Object.entries(docToUpdate)) {
@@ -69,7 +65,6 @@ async function updateYemun(req, res) {
     const {hanqcaizedSentence} = req.body;
     if (hanqcaizedSentence) {
         docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqcaizedSentence.normalize('NFC'));
-        docToUpdate.hanqcaMatch = docToUpdate.hanqcaMatch[0];
     }
 
     const doc = await Yemun.findOne({_id: req.params.id}).exec();
@@ -99,8 +94,6 @@ async function createYemun(req, res) {
     if (!req.body.hanqcaMatch || req.body.hanqcaMatch.length === 0) {
         req.body.hanqcaMatch = getHanqcaMatchArray(req.body.hanqcaizedSentence);
     }
-
-    req.body.hanqcaMatch = req.body.hanqcaMatch[0];
 
     const newYemun = new Yemun(req.body);
     Yemun.find({lesson: Number(req.body.lesson), hanqcaizedSentence: req.body.hanqcaizedSentence})
@@ -351,7 +344,42 @@ async function list(req, res) {
         });
 }
 
+async function bulkCreate(req, res) {
+    const { data, lesson } = req.body;
+
+    const wordPowerSet = new Set();
+    const wordPowerData = [];
+    const yemunData = [];
+
+    data.forEach(row => {
+        const wordpower = `${row['Hanqca']}#${row['Hankul']}#${row['English Gloss']}`;
+        const hanqcaMatch = getHanqcaMatchArray(row['Hanqcaized Sentences']);
+
+        yemunData.push({
+            koreanSentence: row['Korean Sentences'],
+            simpleHanqca: row['Simple Hanqca'],
+            hanqcaizedSentence: row['Hanqcaized Sentences'],
+            translation: row['Translation'],
+            hanqcaMatch,
+            lesson
+        });
+        wordPowerSet.add(wordpower);
+    });
+
+    Array.from(wordPowerSet).forEach(wordpower => {
+        const [hanqca, hankul, englishGloss] = wordpower.split('#');
+        const hanqcaMatch = getHanqcaMatchArray(hanqca);
+        wordPowerData.push({ hanqca, hankul, englishGloss, hanqcaMatch, lesson });
+    });
+
+    const wordpowerDocs = await WordPower.insertMany(wordPowerData);
+    const yemunDocs = await Yemun.insertMany(yemunData);
+
+    return res.status(201).json({ success: true });
+}
+
 module.exports = {
+    bulkCreate,
     createWordPower,
     createYemun,
     deleteWordPower,
