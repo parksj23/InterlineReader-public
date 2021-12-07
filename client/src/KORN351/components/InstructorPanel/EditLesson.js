@@ -374,8 +374,8 @@ class EditLesson extends Component {
                         onChange={this.handleOnChangeTab}
                         indicatorColor="primary"
                         textColor="primary"
-                        centered
                         style={{padding: '2%'}}
+                        variant="scrollable"
                     >
                         <Tab label="Main Lesson"/>
                         <Tab label="새 부수에 대하여"/>

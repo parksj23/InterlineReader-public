@@ -69,7 +69,7 @@ class WordPower extends Component {
 
     componentWillMount() {
         const reloadCount = sessionStorage.getItem('reloadCount');
-        if (reloadCount < 2) {
+        if (reloadCount < 1) {
             sessionStorage.setItem('reloadCount', String(reloadCount + 1));
             window.location.reload();
         } else {
@@ -107,9 +107,9 @@ class WordPower extends Component {
         })
             .then((response) => {
                 const data = response.data;
-                console.log("the data");
-                console.log(data);
-                this.setState({wordPowerData: data});
+                // console.log("the data");
+                // console.log(data);
+                this.setState({wordPowerData: data.wordPowerList});
                 this.setState({showLoading: false});
             })
             .catch(() => {

@@ -49,7 +49,7 @@
     overflow-y: auto;
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1000px) {
     .okpyeon-hangul-container {
         display: inline-block;
     }

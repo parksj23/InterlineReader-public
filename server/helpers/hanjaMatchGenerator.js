@@ -147,4 +147,6 @@ function getHanqcaMatchArray(str) {
 
 module.exports = {
     getHanqcaMatchArray,
+    isHangul,
+    isPunctuation
 };

@@ -17,6 +17,7 @@ class WordPower extends Component {
         super(props);
         this.state = {
             wordPowerData: [],
+            unmatchedYemun: [],
             wordPowerToEdit: {},
             yemunToEdit: {},
             showLoading: false,
@@ -109,11 +110,22 @@ class WordPower extends Component {
             .then(({ data }) => {
                 const wordPowerToEdit = {};
                 const yemunToEdit = {};
-                data.forEach(d => {
+                // console.log(data.unmatchedYemunWithWords);
+                // console.log(data.unmatchedYemunWithWords.length)
+                data.wordPowerList.forEach(d => {
                     wordPowerToEdit[d._id] = {};
                     yemunToEdit[d._id] = this._getEmptyObjWithKeys(d.examples.map(e => e._id));
                 });
-                this.setState({wordPowerData: data, showLoading: false, wordPowerToEdit, yemunToEdit});
+                data.unmatchedYemunWithWords.forEach(d => {
+                    wordPowerToEdit[d.wordPower._id] = {};
+                    yemunToEdit[d.wordPower._id] = this._getEmptyObjWithKeys(d.unmatchedYemun.map(e => e._id));
+                });
+                this.setState({
+                    wordPowerData: data.wordPowerList,
+                    unmatchedYemun: data.unmatchedYemunWithWords,
+                    showLoading: false,
+                    wordPowerToEdit,
+                    yemunToEdit});
             })
             .catch(() => {
                 alert("Error receiving wordPower data");
@@ -258,7 +270,7 @@ class WordPower extends Component {
     }
 
     render() {
-        const {isSaving, showLoading, wordPowerData, wordPowerToEdit, isWordPowerModalOpen, newWordPower, tabIndex, yemunTabIdx, yemunToEdit, newYemun, isYemunModalOpen} = this.state;
+        const {isSaving, showLoading, wordPowerData, unmatchedYemun, wordPowerToEdit, isWordPowerModalOpen, newWordPower, tabIndex, yemunTabIdx, yemunToEdit, newYemun, isYemunModalOpen} = this.state;
         const {newHanja} = this.state;
         const {newHanjaCombos} = this.state;
 
@@ -301,6 +313,7 @@ class WordPower extends Component {
                     <Tabs value={tabIndex} onChange={(e, tabIndex) => this.setState({ tabIndex })} aria-label="basic tabs example">
                         <Tab label="Words" />
                         <Tab label="Examples" />
+                        <Tab label="Unmatched yemun" />
                     </Tabs>
                 </Box>
 
@@ -499,6 +512,84 @@ class WordPower extends Component {
                                                 </AccordionDetails>
                                             </Accordion>
                                         )) : <h6>No examples found</h6>}
+                                    </TabPanel>)}
+                                </div>
+                            </div>
+                        )}
+                    </TabPanel>
+
+                    <TabPanel value={tabIndex} index={2}>
+                        <div className="ir-WordPower-header">
+                            <h4>Unmatched Yemun</h4>
+                        </div>
+                        <Divider/><br/>
+                        {showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> : (
+                            <div className="ir-WordPower-examples">
+                                {unmatchedYemun.length ? <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
+                                    {unmatchedYemun.map((obj, idx) =>
+                                        <Tab key={idx} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordPower.englishGloss} {...a11yProps(idx)}
+                                            // <Tab key={obj.wordPower._id} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordpower.englishGloss} {...a11yProps(idx)}
+                                        />)}
+                                </Tabs> :
+                                    <h6 style={{color: "green"}}><i>All yemun matched.</i></h6>
+                                }
+
+                                <div className="ir-WordPower-tabpanels">
+                                    {unmatchedYemun.map((obj, idx) => <TabPanel index={idx} value={yemunTabIdx} key={obj.wordPower._id}>
+                                        <div className="ir-WordPower-header">
+                                            <h5>Unmatched yemun of {obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')'}</h5>
+                                        </div>
+                                        <div className="ir-WordPower-header">
+                                            <span><i>Please edit if necessary. If not, leave as is.</i></span>
+                                        </div>
+                                        {obj.unmatchedYemun.map(example => (
+                                            <Accordion>
+                                                <AccordionSummary style={{display: 'flex', justifyContent: 'spaceBetween'}} expandIcon={<ExpandMoreIcon/>}>
+                                                    <Typography>{example.hanqcaizedSentence}</Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <div>
+                                                        Simple Hanja:<br/>
+                                                        <textarea
+                                                            defaultValue={example.simpleHanqca}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].simpleHanqca = event.target.value}
+                                                        ></textarea><br/>
+                                                        <br />
+                                                        Hanjaized Sentence:<br/>
+                                                        <textarea
+                                                            defaultValue={example.hanqcaizedSentence}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].hanqcaizedSentence = event.target.value}
+                                                        ></textarea><br/>
+                                                        <br />
+                                                        Korean Sentence:<br/>
+                                                        <textarea
+                                                            defaultValue={example.koreanSentence}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].koreanSentence = event.target.value}>
+                                                    </textarea><br/>
+                                                        <br />
+                                                        Translation:<br/>
+                                                        <textarea
+                                                            defaultValue={example.translation}
+                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            onChange={event => yemunToEdit[obj.wordPower._id][example._id].translation = event.target.value}>
+                                                    </textarea><br/>
+                                                        <br />
+                                                        {isSaving && <CircularProgress className="ir-WordPower-saving" size="small" />}
+                                                        <Button style={{
+                                                            marginRight: '4px',
+                                                            backgroundColor: '#00284d',
+                                                            color: 'white',
+                                                            width: '20%'
+                                                        }} onClick={() => this.saveYemun(obj.wordPower._id, example._id)}>{isSaving ? 'Saving ...' : 'Save'}</Button>
+                                                    </div>
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        ))
+                                            // : <h6 style={{color: "green"}}><i>All yemun matched.</i></h6>
+                                        }
                                     </TabPanel>)}
                                 </div>
                             </div>
