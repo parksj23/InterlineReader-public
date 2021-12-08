@@ -138,6 +138,12 @@ router.put("/saveSideBarVocab", (req, res, next) => {
     });
 });
 
+router.post("/addNewHanjaCombo", (req, res, next) => {
+    db.get().collection('NEW_HANJA_COMBO').insertOne(req.body).then((data) => {
+        res.status(200).send(data.insertedId);
+    });
+});
+
 router.post("/addHanjaCharacter", (req, res, next) => {
     db.get().collection('NEW_HANJA').insertOne(req.body).then((data) => {
         res.status(200).send(data.insertedId);
