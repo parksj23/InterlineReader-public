@@ -138,6 +138,35 @@ router.put("/saveSideBarVocab", (req, res, next) => {
     });
 });
 
+router.post("/addHanjaCharacter", (req, res, next) => {
+    db.get().collection('NEW_HANJA').insertOne(req.body).then((data) => {
+        res.status(200).send(data.insertedId);
+    });
+});
+
+router.put("/saveHanjaCharacter", (req, res, next) => {
+    const {lesson, id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount} = req.body.params;
+
+    let myquery = { lesson: lesson, _id: ObjectID(id) };
+    let newvalues = { $set: {additionalHoonMeaning: additionalHoonMeaning, characterStrokeCount: characterStrokeCount
+            , eum: eum, hanja: hanja, hoonEum: hoonEum, meaning: meaning, phonetic: phonetic, primaryHoonMeaning: primaryHoonMeaning
+            , radical: radical, radicalHangul: radicalHangul, radicalStrokeCount: radicalStrokeCount, totalStrokeCount: totalStrokeCount} };
+
+    db.get().collection('NEW_HANJA').updateOne(myquery, newvalues).then(() => {
+        res.status(200).send('success');
+    });
+});
+
+router.put("/deleteHanjaCharacter", (req, res, next) => {
+    const {lesson, id} = req.body.params;
+
+    let myquery = { lesson: lesson, _id: ObjectID(id) };
+
+    db.get().collection('NEW_HANJA').deleteOne(myquery).then(() => {
+        res.status(200).send('success');
+    });
+});
+
 router.put("/saveCharacter", (req, res, next) => {
     const {lesson, id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount} = req.body.params;
 
