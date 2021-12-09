@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { withRouter } from 'react-router-dom';
 import './WordPower.css';
 
-import { Button, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Divider, IconButton, Typography, Modal, Box, Tabs, Tab } from '@material-ui/core';
+import { Button, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Divider, IconButton, Typography, Modal, Box, Tabs, Tab, Radio} from '@material-ui/core';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PlusIcon from '@material-ui/icons/Add';
 import TabPanel, { a11yProps } from "../../../../components/common/TabPanel";
@@ -374,7 +374,7 @@ class WordPower extends Component {
                             onClose={this.onWordPowerModalOpen}
                         >
                             <Box className="ir-WordPower-modal">
-                                <Typography variant="h6" component="h6">Add Yemun</Typography>
+                                <Typography variant="h6" component="h6">Add New Word Power</Typography>
                                 <br />
                                 Hanja: <input type="text" placeholder="Type Hanja.."
                                                     style={{width: 300}}
@@ -388,6 +388,8 @@ class WordPower extends Component {
                                                         style={{width: 300}}
                                                         onChange={event => newWordPower.englishGloss = event.target.value}/><br/>
                                 <br />
+                                Also add to New Hanja Combos?
+                                <Radio checked name="add-new-hanja-combo"/>
                                 <Button style={{
                                     marginRight: '4px',
                                     backgroundColor: '#00284d',
