@@ -414,13 +414,13 @@ class EditLesson extends Component {
                         </AccordionSummary>
                         <AccordionDetails>
                             <div>
-                                {this.state.exampleSentences.map((num) => {
+                                {this.state.exampleSentences.map((num, idx) => {
                                     let str = '';
                                     num.sentences.forEach(sentence => {
                                         str += sentence + '\n'
                                     });
                                     let unique = num.num;
-                                    return <div style={{padding: '0 5%'}}>
+                                    return <div style={{padding: '0 5%'}} key={idx}>
                                         Num: {num.num}
                                         <br/>
                                         Sentences:
@@ -491,7 +491,7 @@ class EditLesson extends Component {
                                     <div>
                                         <div>
                                             Sub Heading: <br/>
-                                            <textarea rows="3" input type="text"
+                                            <textarea rows="3" input="true" type="text"
                                                       defaultValue={this.state.subText.subHeading}
                                                       style={{width: '100%'}}
                                                       ref={input => this.subheading = input}/><br/>
