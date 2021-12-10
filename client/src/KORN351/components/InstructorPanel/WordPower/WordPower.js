@@ -629,8 +629,8 @@ class WordPower extends Component {
                                         <div className="ir-WordPower-header">
                                             <span><i>Please edit if necessary. If not, leave as is.</i></span>
                                         </div>
-                                        {obj.unmatchedYemun.map(example => (
-                                            <Accordion>
+                                        {obj.unmatchedYemun.map((example, idx) => (
+                                            <Accordion key={idx}>
                                                 <AccordionSummary style={{display: 'flex', justifyContent: 'spaceBetween'}} expandIcon={<ExpandMoreIcon/>}>
                                                     <Typography>{example.hanqcaizedSentence}</Typography>
                                                 </AccordionSummary>

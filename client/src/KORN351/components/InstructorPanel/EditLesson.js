@@ -580,13 +580,13 @@ class EditLesson extends Component {
                     </Modal>
                     <Divider/><br/>
                     {
-                        aboutNewBusu.map(busu => {
+                        aboutNewBusu.map((busu, idx) => {
                             let str = '';
                             busu.examples.forEach(ex => {
                                 str += ex.word + ':' + ex.def + '\n'
                             });
 
-                            return <div>
+                            return <div key={idx}>
                                 <Accordion key={busu._id}>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{busu.word}</Typography>
@@ -604,7 +604,7 @@ class EditLesson extends Component {
                                                             style={{width: '100%'}}
                                                             ref={input => this.state[busu._id + 'busu'] = input}/><br/>
                                             <br/>
-                                            Description: <textarea rows="7" cols="50" input type="text"
+                                            Description: <textarea rows="7" cols="50" input="true" type="text"
                                                                    defaultValue={busu.description}
                                                                    style={{width: '100%'}}
                                                                    ref={input => this.state[busu._id + 'desc'] = input}/><br/>
@@ -649,7 +649,7 @@ class EditLesson extends Component {
                     <h2>About the New Phonetics</h2>
                     <Divider/><br/>
                     {
-                        (phonetics || []).map(phonetic => {
+                        (phonetics || []).map((phonetic, idx) => {
                             let str = '';
                             if (phonetic.characters) {
                                 phonetic.characters.forEach(charac => {
@@ -664,7 +664,7 @@ class EditLesson extends Component {
                                 })
                             }
 
-                            return phonetic && (<div>
+                            return phonetic && (<div key={idx}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{phonetic.phonetic}</Typography>
@@ -725,8 +725,8 @@ class EditLesson extends Component {
                     <h2>New 한자 Combos</h2>
                     <Divider/><br/>
                     {
-                        newHanjaCombos.map(combo => {
-                            return <div>
+                        newHanjaCombos.map((combo, idx) => {
+                            return <div key={idx}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{combo.hanja} {combo.kor}</Typography>
