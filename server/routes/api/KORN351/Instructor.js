@@ -85,7 +85,12 @@ router.put("/deleteAboutNewBusu", (req, res, next) => {
 });
 
 router.put("/saveNewPhonetic", (req, res, next) => {
-    const {lesson, id, phonetic, pronunciation, characters, subPronunciation, subCharacters} = req.body.params;
+    let {lesson, id, phonetic, pronunciation, characters, subPronunciation, subCharacters} = req.body.params;
+
+    phonetic = phonetic.trim().normalize('NFC');
+    for (let char of characters) {
+        char = char.trim().normalize('NFC');
+    }
 
     let myquery = { lesson: lesson, _id: ObjectID(id) };
     let newvalues = { $set: {phonetic: phonetic, pronunciation: pronunciation, characters: characters} };
@@ -111,7 +116,7 @@ router.put("/saveNewHanjaCombo", (req, res, next) => {
     const {lesson, id, hanja, kor, eng} = req.body.params;
 
     let myquery = { lesson: lesson, _id: ObjectID(id) };
-    let newvalues = { $set: {hanja: hanja, kor: kor, eng: eng} };
+    let newvalues = { $set: {hanja: hanja.trim().normalize('NFC'), kor: kor, eng: eng} };
 
     db.get().collection('NEW_HANJA_COMBO').updateOne(myquery, newvalues).then(() => {
         res.status(200).send('success');
@@ -139,7 +144,11 @@ router.put("/saveSideBarVocab", (req, res, next) => {
 });
 
 router.put("/saveCharacter", (req, res, next) => {
-    const {lesson, id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount} = req.body.params;
+    let {lesson, id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount} = req.body.params;
+
+    hanja = hanja.trim().normalize('NFC');
+    radical = radical.trim().normalize('NFC');
+    phonetic = phonetic.trim().normalize('NFC');
 
     let myquery = { lesson: lesson, _id: ObjectID(id) };
     let newvalues = { $set: {additionalHoonMeaning: additionalHoonMeaning, characterStrokeCount: characterStrokeCount
@@ -167,7 +176,12 @@ router.post("/addPhonetic", (req, res, next) => {
 });
 
 router.put("/savePhonetic", (req, res, next) => {
-    const {lesson, id, characters, phonetic, pronunciation, sub_pronunciation, sub_characters} = req.body.params;
+    let {lesson, id, characters, phonetic, pronunciation, sub_pronunciation, sub_characters} = req.body.params;
+
+    phonetic = phonetic.trim().normalize('NFC');
+    for (let char of characters) {
+        char = char.trim().normalize('NFC');
+    }
 
     let myquery = { lesson: lesson, _id: ObjectID(id) };
     let newvalues = { $set: {characters: characters, phonetic: phonetic, pronunciation: pronunciation} };
@@ -195,7 +209,8 @@ router.post("/addRadical", (req, res, next) => {
 });
 
 router.put("/saveRadical", (req, res, next) => {
-    const {lesson, id, additionalHoonMeaning, characterStrokeCount, hoonEum, meaning, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount} = req.body.params;
+    let {lesson, id, additionalHoonMeaning, characterStrokeCount, hoonEum, meaning, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount} = req.body.params;
+    radical = radical.trim().normalize('NFC');
 
     let myquery = { lesson: lesson, _id: ObjectID(id) };
     let newvalues = { $set: {additionalHoonMeaning:additionalHoonMeaning, characterStrokeCount:characterStrokeCount, hoonEum:hoonEum, meaning:meaning,
