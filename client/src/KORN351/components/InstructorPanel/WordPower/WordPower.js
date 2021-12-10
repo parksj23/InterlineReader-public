@@ -2,7 +2,23 @@ import React, {Component} from "react";
 import { withRouter } from 'react-router-dom';
 import './WordPower.css';
 
-import { Button, Accordion, AccordionSummary, AccordionDetails, CircularProgress, Divider, IconButton, Typography, Modal, Box, Tabs, Tab, Radio} from '@material-ui/core';
+import {
+    Button,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    CircularProgress,
+    Divider,
+    IconButton,
+    Typography,
+    Modal,
+    Box,
+    Tabs,
+    Tab,
+    Radio,
+    FormControlLabel,
+    RadioGroup
+} from '@material-ui/core';
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PlusIcon from '@material-ui/icons/Add';
 import TabPanel, { a11yProps } from "../../../../components/common/TabPanel";
@@ -34,7 +50,8 @@ class WordPower extends Component {
             newHanjaCombos: [],
             clickedHanja: null,
             clickedHanjaTab: null,
-            selectedWordPower: null
+            selectedWordPower: null,
+            checkedAddNewHanjaCombo: null
         }
         this.currentLesson = parseInt(this.props.lesson);
 
@@ -192,6 +209,7 @@ class WordPower extends Component {
         const { newWordPower } = this.state;
         if (_.isEmpty(newWordPower)) { return; }
         newWordPower.lesson = this.currentLesson;
+        newWordPower.checkedAddNewHanjaCombo = this.state.checkedAddNewHanjaCombo;
         axios({
             method: 'post',
             url: '/api/wordPower/createWordPower',
@@ -297,6 +315,10 @@ class WordPower extends Component {
         this.setState(prevState => ({ isYemunModalOpen: !prevState.isYemunModalOpen, newYemun: {}, selectedWordPower: id }));
     }
 
+    handleOnChangeAddNewHanjaComboRadio = (event, value) => {
+        this.setState({checkedAddNewHanjaCombo: value});
+    }
+
     render() {
         const {isSaving, showLoading, wordPowerData, unmatchedYemun, wordPowerToEdit, isWordPowerModalOpen, newWordPower, tabIndex, yemunTabIdx, yemunToEdit, newYemun, isYemunModalOpen} = this.state;
         const {newHanja} = this.state;
@@ -389,7 +411,16 @@ class WordPower extends Component {
                                                         onChange={event => newWordPower.englishGloss = event.target.value}/><br/>
                                 <br />
                                 Also add to New Hanja Combos?
-                                <Radio checked name="add-new-hanja-combo"/>
+                                <RadioGroup
+                                    onChange={this.handleOnChangeAddNewHanjaComboRadio}
+                                    value={this.state.checkedAddNewHanjaCombo}
+                                >
+                                    <FormControlLabel value="add-combo" control={<Radio/>}
+                                                      label="Add"/>
+                                    <FormControlLabel value="do-not-add-combo" control={<Radio/>}
+                                                      label="Do not add"/>
+                                </RadioGroup>
+                                <br />
                                 <Button style={{
                                     marginRight: '4px',
                                     backgroundColor: '#00284d',

@@ -1,5 +1,6 @@
 const WordPower = require('../models/WordPower');
 const Yemun = require('../models/Yemun');
+const HanjaCombo = require('../models/HanjaCombo');
 const {getHanqcaMatchArray, isHangul, isPunctuation} = require('../helpers/hanjaMatchGenerator');
 
 async function createWordPower(req, res) {
@@ -10,6 +11,29 @@ async function createWordPower(req, res) {
     }
 
     const wordPower = new WordPower(req.body);
+
+    if (req.body.checkedAddNewHanjaCombo === 'add-combo') {
+        const hanjaCombo = new HanjaCombo({
+            lesson: req.body.lesson,
+            hanja: req.body.hanqca,
+            kor: req.body.hankul,
+            eng: req.body.englishGloss,
+            isAllCombo: true
+        });
+
+        HanjaCombo.find({lesson: req.body.lesson.toString(), hanja: req.body.hanqca})
+            .exec()
+            .then((combos) => {
+                if (combos.length === 0) {
+                    const newHanjaCombo = hanjaCombo.save();
+                }
+            })
+            .catch((err) => {
+                return res.status(409).json({
+                    message: err,
+                });
+            });
+    }
 
     let query = {lesson: Number(req.body.lesson), hankul: req.body.hankul};
 
@@ -345,7 +369,7 @@ async function list(req, res) {
 }
 
 async function bulkCreate(req, res) {
-    const { data, lesson } = req.body;
+    const {data, lesson} = req.body;
 
     const wordPowerSet = new Set();
     const wordPowerData = [];
@@ -369,13 +393,13 @@ async function bulkCreate(req, res) {
     Array.from(wordPowerSet).forEach(wordpower => {
         const [hanqca, hankul, englishGloss] = wordpower.split('#');
         const hanqcaMatch = getHanqcaMatchArray(hanqca);
-        wordPowerData.push({ hanqca, hankul, englishGloss, hanqcaMatch, lesson });
+        wordPowerData.push({hanqca, hankul, englishGloss, hanqcaMatch, lesson});
     });
 
     const wordpowerDocs = await WordPower.insertMany(wordPowerData);
     const yemunDocs = await Yemun.insertMany(yemunData);
 
-    return res.status(201).json({ success: true });
+    return res.status(201).json({success: true});
 }
 
 module.exports = {
