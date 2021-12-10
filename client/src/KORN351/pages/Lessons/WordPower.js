@@ -25,7 +25,8 @@ class WordPower extends Component {
             showLoading: false,
             yemunCount: 1,
             examplesTabValue: "simple",
-            clickedWordTab: null,
+            clickedWordTab: 0,
+            clickedHanjaTab: 0,
             showTranslation: false,
             engChecked: false,
             showNewHanjaComboWords: true,
@@ -132,7 +133,7 @@ class WordPower extends Component {
         this.setState({examplesTabValue: "simple", yemunCount: 1});
         this.setState({showTranslation: false, engChecked: false});
         this.setState({clickedWord: {id: "null"}});
-        this.setState({clickedWordTab: null});
+        this.setState({clickedWordTab: 0});
         this.getWordPowerYemunData(event.currentTarget.id);
     }
 
@@ -183,7 +184,7 @@ class WordPower extends Component {
         });
         this.setState({showAllWords: false, showAllWordsChecked: false});
         this.setState({clickedWord: {id: "null"}});
-        this.setState({clickedWordTab: null});
+        this.setState({clickedWordTab: 0});
     }
 
     handleToggleShowAllWords = () => {
@@ -193,7 +194,7 @@ class WordPower extends Component {
         });
         this.setState({showNewHanjaComboWords: false, newHanjaComboWordsChecked: false});
         this.setState({clickedWord: {id: "null"}});
-        this.setState({clickedWordTab: null});
+        this.setState({clickedWordTab: 0});
     }
 
     render() {
@@ -235,11 +236,12 @@ class WordPower extends Component {
                                         style={{padding: '2%'}}
                                         wrapped="true"
                                     >
-                                        {newHanja.map((hanjaTab) => {
+                                        {newHanja.map((hanjaTab, idx) => {
                                             let tabId = hanjaTab.hanja.replace(/\s/g, '').trim().normalize('NFC');
                                             return (
                                                 <Tab
                                                     id={tabId}
+                                                    key={idx}
                                                     label={
                                                         <React.Fragment>
                                                             {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja.trim().normalize('NFC')}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
@@ -322,6 +324,7 @@ class WordPower extends Component {
                                                                         return (
                                                                             <Tab
                                                                                 id={wordTab.hanqca.trim().normalize('NFC') + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                key={idx}
                                                                                 label={
                                                                                     <div
                                                                                         className="wordTab-label-flexbox">
@@ -353,10 +356,11 @@ class WordPower extends Component {
                                                                             }
                                                                         });
                                                                         return filteredResult;
-                                                                    }, []).map(wordTab => {
+                                                                    }, []).map((wordTab, idx) => {
                                                                             return (
                                                                                 <Tab
                                                                                     id={wordTab.hanqca.trim().normalize('NFC') + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                    key={idx}
                                                                                     label={
                                                                                         <div
                                                                                             className="wordTab-label-flexbox">
@@ -411,7 +415,7 @@ class WordPower extends Component {
                                                         </div>
                                                         {this.state.examplesTabValue === "simple" &&
                                                         <div className="wordTab-results-div">
-                                                            {this.state.clickedWordTab === null &&
+                                                            {this.state.clickedWord.id === "null" &&
                                                             <div className="no-data">
                                                                 <Typography>
                                                                     Please select a word from the list.
@@ -431,7 +435,7 @@ class WordPower extends Component {
                                                                     }
                                                                     return (
                                                                         <div key={idx}>
-                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                            <ul style={{"listStyleType": "none"}}>
                                                                                 {filteredItem.examples.map((sentence, idx, arr) => {
                                                                                         if (idx + 1 < arr.length) {
                                                                                             return (
@@ -478,7 +482,7 @@ class WordPower extends Component {
 
                                                         {this.state.examplesTabValue === "complete" &&
                                                         <div className="wordTab-results-div">
-                                                            {this.state.clickedWordTab === null &&
+                                                            {this.state.clickedWord.id === "null" &&
                                                             <div className="no-data">
                                                                 <Typography>
                                                                     Please select a word from the list.
@@ -498,7 +502,7 @@ class WordPower extends Component {
                                                                     }
                                                                     return (
                                                                         <div key={idx}>
-                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                            <ul style={{"listStyleType": "none"}}>
                                                                                 {filteredItem.examples.map((sentence, idx, arr) => {
                                                                                         if (idx + 1 < arr.length) {
                                                                                             return (
@@ -545,7 +549,7 @@ class WordPower extends Component {
 
                                                         {this.state.examplesTabValue === "hangul" &&
                                                         <div className="wordTab-results-div">
-                                                            {this.state.clickedWordTab === null &&
+                                                            {this.state.clickedWord.id === "null" &&
                                                             <div className="no-data">
                                                                 <Typography>
                                                                     Please select a word from the list.
@@ -565,7 +569,7 @@ class WordPower extends Component {
                                                                     }
                                                                     return (
                                                                         <div key={idx}>
-                                                                            <ul style={{"list-style-type": "none"}}>
+                                                                            <ul style={{"listStyleType": "none"}}>
                                                                                 {filteredItem.examples.map((sentence, idx, arr) => {
                                                                                         if (idx + 1 < arr.length) {
                                                                                             return (
