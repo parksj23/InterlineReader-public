@@ -49,7 +49,7 @@ class WordPower extends Component {
             newHanja: [],
             newHanjaCombos: [],
             clickedHanja: null,
-            clickedHanjaTab: null,
+            clickedHanjaTab: 0,
             selectedWordPower: null,
             checkedAddNewHanjaCombo: null
         }

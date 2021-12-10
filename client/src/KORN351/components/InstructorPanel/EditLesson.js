@@ -41,12 +41,12 @@ class EditLesson extends Component {
             newVocabExampleSentences: [],
             newExampleSent: {num: [], sentences: []},
             isNewBusuModalOpen: false,
-            newAboutNewBusu: {}
+            newAboutNewBusu: {},
+            tabValue: 0
         };
     }
 
     componentDidMount() {
-        this.setState({tabValue: 0});
         this.setState({newExampleSent: {num: [], sentences: []}});
 
         let lesson = this.props.match.params.id;
