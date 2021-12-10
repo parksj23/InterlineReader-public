@@ -22,7 +22,7 @@ router.get("/getRadicals", (req, res) => {
 });
 
 router.get("/getNewBusu", (req, res) => {
-    db.get().collection('NEW_BUSU').find({}).toArray()
+    db.get().collection('RADICALS').find({}).toArray()
         .then((result) => {
             console.log('getNewBusu', result);
             res.json(result);
