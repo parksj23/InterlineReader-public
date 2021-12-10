@@ -1,10 +1,10 @@
 import HanziWriter from "hanzi-writer";
 
-const MISSING_CHARS = ['窓', // the only one still missing (lesson 6)
+const MISSING_CHARS = ['窓', // the only one still missing (lesson 4)
     // "金", "金", // lesson 1
     // "車", "車", "通", // lesson 2
     // '答', '國', "茶", "茶", // lesson 3
-    // "旅", "旅", "窓", // lesson 4 -- window actually has no hanja in hanzi-writer demo
+    // "旅", "旅", "窓", // lesson 4 -- window 窓 actually has no hanja in hanzi-writer demo
     // "復", "復", "飮", "飲", "來", "來", // lesson 5
     // "六", "六", "樂", "樂" // lesson 6
 ];
@@ -17,7 +17,10 @@ function showHanjiAnimation (hanja, target) {
     return document.getElementById(target).innerHTML = `<span class="missing-hanja">${hanja}</span>`;
   } else {
     writer = HanziWriter.create(target, hanja, {
-      showOutline: true,
+        width: 100,
+        height: 100,
+        padding: 5,
+        showOutline: true,
     });
   }
   writer.loopCharacterAnimation();

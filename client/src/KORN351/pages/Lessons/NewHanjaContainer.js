@@ -10,6 +10,8 @@ import {withRouter} from 'react-router-dom';
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 import Divider from "@material-ui/core/Divider";
 
+const {showHanjiAnimation} = require('../../../utils/index');
+
 class NewHanjaContainer extends Component {
     constructor(props) {
         super(props);
@@ -60,12 +62,13 @@ class NewHanjaContainer extends Component {
     }
 
     showHanjiAnimation = (hanja, idx) => {
-        HanziWriter.create("character-target-div-" + idx, hanja, {
-            width: 100,
-            height: 100,
-            padding: 5,
-            showOutline: true,
-        }).loopCharacterAnimation()
+        // HanziWriter.create("character-target-div-" + idx, hanja, {
+        //     width: 100,
+        //     height: 100,
+        //     padding: 5,
+        //     showOutline: true,
+        // }).loopCharacterAnimation()
+        showHanjiAnimation(hanja, "character-target-div-" + idx)
     };
 
     render() {
