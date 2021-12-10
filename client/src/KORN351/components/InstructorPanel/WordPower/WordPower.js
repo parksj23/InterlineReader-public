@@ -518,7 +518,7 @@ class WordPower extends Component {
                                             <div className="ir-WordPower-header">
                                                 <h4>Examples</h4>
                                             </div>
-                                            {wordpower.examples.length ? wordpower.examples.map(example => (
+                                            {wordpower.examples ? wordpower.examples.map(example => (
                                                 <Accordion key={example._id}>
                                                     <AccordionSummary style={{display: 'flex', justifyContent: 'spaceBetween', backgroundColor: '#f7f2f2'}} expandIcon={<ExpandMoreIcon/>}>
                                                         <Typography>{example.translation}</Typography>
