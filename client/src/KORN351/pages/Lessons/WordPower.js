@@ -233,7 +233,7 @@ class WordPower extends Component {
                                         variant="scrollable"
                                         scrollbuttons="auto"
                                         style={{padding: '2%'}}
-                                        wrapped
+                                        wrapped="true"
                                     >
                                         {newHanja.map((hanjaTab) => {
                                             let tabId = hanjaTab.hanja.replace(/\s/g, '').trim().normalize('NFC');
@@ -309,7 +309,7 @@ class WordPower extends Component {
                                                                     style={{padding: '1%', width: '100%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
-                                                                    wrapped
+                                                                    wrapped="true"
                                                                 >
 
                                                                     {this.state.showAllWords === true &&

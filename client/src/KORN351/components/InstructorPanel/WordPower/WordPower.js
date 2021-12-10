@@ -239,7 +239,7 @@ class WordPower extends Component {
     createYemun(wordpowerId) {
         const { newYemun } = this.state;
         if (_.isEmpty(newYemun)) { return; }
-        
+
         newYemun.lesson = this.currentLesson;
         axios({
             method: 'post',
@@ -340,7 +340,7 @@ class WordPower extends Component {
                         variant="scrollable"
                         scrollbuttons="auto"
                         style={{padding: '2%'}}
-                        wrapped
+                        wrapped="true"
                     >
                         {newHanja.map((hanjaTab) => {
                             let tabId = hanjaTab.hanja.replace(/\s/g, '').trim().normalize('NFC');
@@ -439,7 +439,7 @@ class WordPower extends Component {
                                 <Typography variant="h6" component="h6">Add Example</Typography>
                                 <br />
                                 Simple Hanja:<br/>
-                                    <textarea 
+                                    <textarea
                                         defaultValue={newYemun.simpleHanqca}
                                         style={{overflowWrap: 'break-word', width: 450}} rows="2"
                                         onChange={event => newYemun.simpleHanqca = event.target.value}
@@ -526,7 +526,7 @@ class WordPower extends Component {
                                                     <AccordionDetails>
                                                         <div>
                                                             Simple Hanja:<br/>
-                                                                <textarea 
+                                                                <textarea
                                                                     defaultValue={example.simpleHanqca}
                                                                     style={{overflowWrap: 'break-word', width: 450}} rows="2"
                                                                     onChange={event => yemunToEdit[wordpower._id][example._id].simpleHanqca = event.target.value}
@@ -586,10 +586,36 @@ class WordPower extends Component {
                         <Divider/><br/>
                         {showLoading ? <CircularProgress style={{display: 'flex', margin: '10px auto'}}/> : (
                             <div className="ir-WordPower-examples">
-                                {unmatchedYemun.length ? <Tabs variant="scrollable" className="ir-WordPower-tabs" value={yemunTabIdx} orientation="vertical" onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
+                                {unmatchedYemun.length ?
+                                    <Tabs
+                                        style={{padding: '1%', width: '35%'}}
+                                        wrapped="true"
+                                        indicatorColor="secondary"
+                                        textColor="primary"
+                                        variant="scrollable"
+                                        value={yemunTabIdx}
+                                        orientation="vertical"
+                                        onChange={(e, yemunTabIdx) => this.setState({ yemunTabIdx })}>
                                     {unmatchedYemun.map((obj, idx) =>
-                                        <Tab key={idx} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordPower.englishGloss} {...a11yProps(idx)}
-                                            // <Tab key={obj.wordPower._id} label={obj.wordPower.hanqca + '(' + obj.wordPower.hankul + ')' + '   ' + obj.wordpower.englishGloss} {...a11yProps(idx)}
+                                        <Tab
+                                            key={idx}
+                                            label={
+                                                <div
+                                                    className="wordTab-label-flexbox">
+                                                    <div
+                                                        className="wordTab-label-flexbox-1">
+                                                        <React.Fragment>
+                                                            {obj.wordPower.hanqca.trim().normalize('NFC')}({obj.wordPower.hankul})
+                                                        </React.Fragment>
+                                                    </div>
+                                                    <div
+                                                        className="wordTab-label-flexbox-2">
+                                                        <React.Fragment>
+                                                            {obj.wordPower.englishGloss}
+                                                        </React.Fragment>
+                                                    </div>
+                                                </div>
+                                            }
                                         />)}
                                 </Tabs> :
                                     <h6 style={{color: "green"}}><i>All yemun matched.</i></h6>
@@ -609,32 +635,32 @@ class WordPower extends Component {
                                                     <Typography>{example.hanqcaizedSentence}</Typography>
                                                 </AccordionSummary>
                                                 <AccordionDetails>
-                                                    <div>
+                                                    <div style={{display: 'flex', flexDirection: 'column', width: '90%'}}>
                                                         Simple Hanja:<br/>
                                                         <textarea
                                                             defaultValue={example.simpleHanqca}
-                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            style={{overflowWrap: 'break-word', width: '100%'}} rows="2"
                                                             onChange={event => yemunToEdit[obj.wordPower._id][example._id].simpleHanqca = event.target.value}
                                                         ></textarea><br/>
                                                         <br />
                                                         Hanjaized Sentence:<br/>
                                                         <textarea
                                                             defaultValue={example.hanqcaizedSentence}
-                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            style={{overflowWrap: 'break-word', width: '100%'}} rows="2"
                                                             onChange={event => yemunToEdit[obj.wordPower._id][example._id].hanqcaizedSentence = event.target.value}
                                                         ></textarea><br/>
                                                         <br />
                                                         Korean Sentence:<br/>
                                                         <textarea
                                                             defaultValue={example.koreanSentence}
-                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            style={{overflowWrap: 'break-word', width: '100%'}} rows="2"
                                                             onChange={event => yemunToEdit[obj.wordPower._id][example._id].koreanSentence = event.target.value}>
                                                     </textarea><br/>
                                                         <br />
                                                         Translation:<br/>
                                                         <textarea
                                                             defaultValue={example.translation}
-                                                            style={{overflowWrap: 'break-word', width: 450}} rows="2"
+                                                            style={{overflowWrap: 'break-word', width: '100%'}} rows="2"
                                                             onChange={event => yemunToEdit[obj.wordPower._id][example._id].translation = event.target.value}>
                                                     </textarea><br/>
                                                         <br />
