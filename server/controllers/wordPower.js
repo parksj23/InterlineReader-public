@@ -60,7 +60,7 @@ async function updateWordPower(req, res) {
     const docToUpdate = {...req.body};
     const {hanqca} = req.body;
     if (hanqca) {
-        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqca);
+        docToUpdate.hanqcaMatch = getHanqcaMatchArray(hanqca.normalize('NFC'));
     }
 
     const doc = await WordPower.findOne({_id: req.params.id}).exec();
