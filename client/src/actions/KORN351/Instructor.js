@@ -2,7 +2,8 @@ import {
     getMainText,
     getAboutNewBusu,
     getNewHanjaCombos,
-    getNewVocabulary
+    getNewVocabulary,
+    getNewHanja
 } from "./Lessons";
 
 import {
@@ -130,6 +131,29 @@ export const saveSideBarVocab = (lesson, mainText, exSentences) => dispatch => {
             getNewVocabulary(parseInt(lesson));
             alert("Success");
             resolve()
+        })
+    })
+};
+
+export const saveHanjaCharacter = (lesson, id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount) => dispatch => {
+    return new Promise((resolve, reject) => {
+        axios.put("/api/instructor351/saveHanjaCharacter", {params: {lesson: parseInt(lesson), id: id, additionalHoonMeaning: additionalHoonMeaning, characterStrokeCount: characterStrokeCount
+                , eum: eum, hanja: hanja, hoonEum: hoonEum, meaning: meaning, phonetic: phonetic, primaryHoonMeaning: primaryHoonMeaning
+                , radical: radical, radicalHangul: radicalHangul, radicalStrokeCount: radicalStrokeCount, totalStrokeCount: totalStrokeCount}}).then(resp => {
+            getNewHanja();
+            alert("Success");
+            resolve();
+            window.location.reload();
+        })
+    })
+};
+
+export const deleteHanjaCharacter = (lesson, id) => dispatch => {
+    return new Promise((resolve, reject) => {
+        axios.put("/api/instructor351/deleteHanjaCharacter", {params: {lesson: parseInt(lesson), id: id}}).then(resp => {
+            getNewHanja();
+            resolve();
+            window.location.reload();
         })
     })
 };
