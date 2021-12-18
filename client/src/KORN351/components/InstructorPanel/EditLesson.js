@@ -42,7 +42,9 @@ class EditLesson extends Component {
             newExampleSent: {num: [], sentences: []},
             isNewBusuModalOpen: false,
             newAboutNewBusu: {},
-            tabValue: 0
+            tabValue: 0,
+            isNewHanjaComboModalOpen: false,
+            newHanjaCombo: {}
         };
     }
 
@@ -292,12 +294,31 @@ class EditLesson extends Component {
         this.setState(prevState => ({ isNewBusuModalOpen: !prevState.isNewBusuModalOpen, newAboutNewBusu: {} }));
     }
 
+    onNewHanjaComboAddModalToggle = () => {
+        this.setState(prevState => ({ isNewHanjaComboModalOpen: !prevState.isNewHanjaComboModalOpen, newHanjaCombo: {} }));
+    }
+
     saveNewHanjaCombo = (id) => {
         let hanja = this.state[id + 'hanja'].value.trim();
         let kor = this.state[id + 'kor'].value.trim();
         let eng = this.state[id + 'eng'].value.trim();
 
         this.props.saveNewHanjaCombo(this.state.lesson, id, hanja, kor, eng);
+    };
+
+    createNewHanjaCombo = () => {
+        const { newHanjaCombo, lesson } = this.state;
+        newHanjaCombo.lesson = lesson;
+
+        axios({
+            method: 'POST',
+            data: newHanjaCombo,
+            url: '/api/instructor351/addNewHanjaCombo'
+        }).then(res => {
+            newHanjaCombo._id = res.data;
+            this.setState(prevState => ({ newHanjaCombos: [newHanjaCombo, ...prevState.newHanjaCombos] }));
+            this.onNewHanjaComboAddModalToggle();
+        });
     };
     deleteNewHanjaCombo = (id, hanja) => {
         if (window.confirm("Are you sure you want to delete " + hanja + " from New 한자?")) {
@@ -347,7 +368,9 @@ class EditLesson extends Component {
             newVocabMainText,
             newVocabExampleSentences,
             isNewBusuModalOpen,
-            newAboutNewBusu
+            newAboutNewBusu,
+            newHanjaCombo,
+            isNewHanjaComboModalOpen,
         } = this.state;
 
         let newVocabMainTextStr = '';
@@ -379,7 +402,6 @@ class EditLesson extends Component {
                     >
                         <Tab label="Main Lesson"/>
                         <Tab label="새 부수에 대하여"/>
-                        <Tab label="About the New Phonetics"/>
                         <Tab label="New 한자 Combos"/>
                         <Tab label="Word Power"/>
                     </Tabs>
@@ -646,7 +668,10 @@ class EditLesson extends Component {
 
                 {this.state.tabValue === 2 &&
                 <div className="edit-lesson-background">
-                    <h2>About the New Phonetics</h2>
+                    <div className="ir-EditOkpyeon-header">
+                        <h2>New 한자 Combos</h2>
+                        <IconButton size="medium" onClick={this.onNewHanjaComboAddModalToggle} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    </div>
                     <Divider/><br/>
                     {
                         (phonetics || []).map((phonetic, idx) => {
@@ -724,9 +749,33 @@ class EditLesson extends Component {
                 <div className="edit-lesson-background">
                     <h2>New 한자 Combos</h2>
                     <Divider/><br/>
+                    <Modal
+                        open={isNewHanjaComboModalOpen}
+                        onClose={this.onNewHanjaComboAddModalToggle}
+                    >
+                        <Box className="ir-EditOkpyeon-modal">
+                            <Typography variant="h6" component="h6">Add New 한자 Combos</Typography>
+                            <label>Hanja:</label>
+                            <input type="text" placeholder="Type Hanja.." style={{width: 400}} onChange={event => newHanjaCombo.hanja = event.target.value}/>
+                            <br />
+                            <label>Korean:</label>
+                            <input type="text" placeholder="Type Korean.." style={{width: 400}} onChange={event => newHanjaCombo.kor = event.target.value}/>
+                            <br />
+                            <label>English:</label>
+                            <input type="text" placeholder="Type English.." style={{width: 400}} onChange={event => newHanjaCombo.eng = event.target.value}/>
+                            <br /><br />
+                            <Button style={{
+                                marginRight: '4px',
+                                backgroundColor: '#00284d',
+                                color: 'white',
+                                width: '20%'
+                            }} onClick={this.createNewHanjaCombo}>Create</Button>
+                            <Button variant="contained" onClick={this.onNewHanjaComboAddModalToggle}>Cancel</Button>
+                        </Box>
+                    </Modal>
                     {
-                        newHanjaCombos.map((combo, idx) => {
-                            return <div key={idx}>
+                        newHanjaCombos.map(combo => {
+                            return <div key={combo._id}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{combo.hanja} {combo.kor}</Typography>
@@ -766,7 +815,7 @@ class EditLesson extends Component {
                 </div>
                 }
 
-                {this.state.tabValue === 4 &&
+                {this.state.tabValue === 3 &&
                     <WordPower lesson={this.props.match.params.id} />
                 }
             </div>

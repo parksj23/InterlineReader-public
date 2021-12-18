@@ -2,10 +2,11 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import "./EditLesson.css";
 import Divider from "@material-ui/core/Divider/Divider";
-import {getCharacters, getPhonetics, getRadicals} from "../../../actions/KORN351/Okpyeon";
+import {getPhonetics, getRadicals} from "../../../actions/KORN351/Okpyeon";
 import {
-    saveCharacter, savePhonetic, saveRadical, deleteCharacter, deleteRadical, deletePhonetic
+    saveHanjaCharacter, savePhonetic, saveRadical, deleteHanjaCharacter, deleteRadical, deletePhonetic
 } from "../../../actions/KORN351/Instructor";
+import { getNewHanja } from "../../../actions/KORN351/Lessons";
 import {Accordion, AccordionDetails, AccordionSummary, IconButton, Modal, Box, Button, Tab, Tabs, Typography} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PlusIcon from '@material-ui/icons/Add';
@@ -16,7 +17,7 @@ class EditOkpyeon extends Component {
         super(props);
         this.state = {
             radicals: [],
-            characters: [],
+            newHanja: [],
             phonetics: [],
             isPhoneticModalOpen: false,
             newPhonetic: {},
@@ -40,7 +41,7 @@ class EditOkpyeon extends Component {
 
         this.setState({tabValue: 0});
 
-        const {characters, phonetics, radicals} = this.props;
+        const {newHanja, phonetics, radicals} = this.props;
 
         if (radicals.length === 0) {
             this.props.getRadicals().then(() => {
@@ -53,14 +54,14 @@ class EditOkpyeon extends Component {
             });
         }
 
-        if (characters.length === 0)
-            this.props.getCharacters().then(() => {
-                let temp = this.props.characters.filter(char => {
+        if (newHanja.length === 0)
+            this.props.getNewHanja().then(() => {
+                let temp = this.props.newHanja.filter(char => {
                     return char.lesson === this.lesson
                 });
 
                 this.setState({
-                    characters: temp
+                    newHanja: temp
                 });
             });
 
@@ -81,10 +82,10 @@ class EditOkpyeon extends Component {
         axios({
             method: 'POST',
             data: newHanjaChar,
-            url: '/api/instructor351/addHanjaChar'
+            url: '/api/instructor351/addHanjaCharacter'
         }).then(res => {
             newHanjaChar._id = res.data;
-            this.setState(prevState => ({ characters: [newHanjaChar, ...prevState.characters] }));
+            this.setState(prevState => ({ newHanja: [newHanjaChar, ...prevState.newHanja] }));
             this.onHanjaAddModalToggle();
         });
     }
@@ -103,11 +104,11 @@ class EditOkpyeon extends Component {
         let radicalStrokeCount = parseInt(this.state[id + 'radicalStrokeCount'].value.trim());
         let totalStrokeCount = parseInt(this.state[id + 'totalStrokeCount'].value.trim());
 
-        this.props.saveCharacter(parseInt(this.props.match.params.id), id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount);
+        this.props.saveHanjaCharacter(parseInt(this.props.match.params.id), id, additionalHoonMeaning, characterStrokeCount, eum, hanja, hoonEum, meaning, phonetic, primaryHoonMeaning, radical, radicalHangul, radicalStrokeCount, totalStrokeCount);
     };
     deleteHanjaCharacter = (id, hanja) => {
         if (window.confirm("Are you sure you want to delete " + hanja + " from Hanja Characters?")) {
-            this.props.deleteCharacter(parseInt(this.props.match.params.id), id);
+            this.props.deleteHanjaCharacter(parseInt(this.props.match.params.id), id);
             window.alert(hanja + " has been deleted!");
         } else {
             alert(hanja + " has NOT been deleted.");
@@ -220,7 +221,7 @@ class EditOkpyeon extends Component {
     }
 
     render() {
-        const {characters, phonetics, radicals, newPhonetic, newRadical, isPhoneticModalOpen, isRadicalModalOpen, isHanjaAddModalOpen, newHanjaChar} = this.state;
+        const {newHanja, phonetics, radicals, newPhonetic, newRadical, isPhoneticModalOpen, isRadicalModalOpen, isHanjaAddModalOpen, newHanjaChar} = this.state;
         return (
             <div className="edit-lesson-container">
                 <h2>Lesson {this.props.match.params.id}</h2>
@@ -301,7 +302,7 @@ class EditOkpyeon extends Component {
                         </Box>
                     </Modal>
                     <div style={{textAlign: 'center'}}>
-                        {characters.map((char) => {
+                        {newHanja.map((char) => {
                             return <div key={char._id} style={{padding: '0 5%'}}>
                                 <Accordion>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
@@ -650,16 +651,19 @@ class EditOkpyeon extends Component {
 const mapStateToProps = state => ({
     radicals: state.okpyeon.radicals,
     phonetics: state.okpyeon.phonetics,
-    characters: state.okpyeon.characters
+    newHanja : state.lessons.newHanja,
 });
 
 const mapDispatchToProps = {
     getRadicals,
     getPhonetics,
-    getCharacters,
-    saveCharacter,
+    getNewHanja,
+    saveHanjaCharacter,
     saveRadical,
-    savePhonetic, deleteCharacter, deleteRadical, deletePhonetic
+    savePhonetic,
+    deleteHanjaCharacter,
+    deleteRadical,
+    deletePhonetic
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditOkpyeon);
