@@ -42,13 +42,13 @@ class EditLesson extends Component {
             newExampleSent: {num: [], sentences: []},
             isNewBusuModalOpen: false,
             newAboutNewBusu: {},
-            tabValue: 0,
             isNewHanjaComboModalOpen: false,
             newHanjaCombo: {}
         };
     }
 
     componentDidMount() {
+        this.setState({tabValue: 0});
         this.setState({newExampleSent: {num: [], sentences: []}});
 
         let lesson = this.props.match.params.id;
@@ -436,13 +436,13 @@ class EditLesson extends Component {
                         </AccordionSummary>
                         <AccordionDetails>
                             <div>
-                                {this.state.exampleSentences.map((num, idx) => {
+                                {this.state.exampleSentences.map((num) => {
                                     let str = '';
                                     num.sentences.forEach(sentence => {
                                         str += sentence + '\n'
                                     });
                                     let unique = num.num;
-                                    return <div style={{padding: '0 5%'}} key={idx}>
+                                    return <div style={{padding: '0 5%'}}>
                                         Num: {num.num}
                                         <br/>
                                         Sentences:
@@ -513,7 +513,7 @@ class EditLesson extends Component {
                                     <div>
                                         <div>
                                             Sub Heading: <br/>
-                                            <textarea rows="3" input="true" type="text"
+                                            <textarea rows="3" input type="text"
                                                       defaultValue={this.state.subText.subHeading}
                                                       style={{width: '100%'}}
                                                       ref={input => this.subheading = input}/><br/>
@@ -602,13 +602,13 @@ class EditLesson extends Component {
                     </Modal>
                     <Divider/><br/>
                     {
-                        aboutNewBusu.map((busu, idx) => {
+                        aboutNewBusu.map(busu => {
                             let str = '';
                             busu.examples.forEach(ex => {
                                 str += ex.word + ':' + ex.def + '\n'
                             });
 
-                            return <div key={idx}>
+                            return <div>
                                 <Accordion key={busu._id}>
                                     <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                                         <Typography>{busu.word}</Typography>
@@ -626,7 +626,7 @@ class EditLesson extends Component {
                                                             style={{width: '100%'}}
                                                             ref={input => this.state[busu._id + 'busu'] = input}/><br/>
                                             <br/>
-                                            Description: <textarea rows="7" cols="50" input="true" type="text"
+                                            Description: <textarea rows="7" cols="50" input type="text"
                                                                    defaultValue={busu.description}
                                                                    style={{width: '100%'}}
                                                                    ref={input => this.state[busu._id + 'desc'] = input}/><br/>
@@ -672,82 +672,6 @@ class EditLesson extends Component {
                         <h2>New 한자 Combos</h2>
                         <IconButton size="medium" onClick={this.onNewHanjaComboAddModalToggle} className="primary-button" variant="contained"><PlusIcon /></IconButton>
                     </div>
-                    <Divider/><br/>
-                    {
-                        (phonetics || []).map((phonetic, idx) => {
-                            let str = '';
-                            if (phonetic.characters) {
-                                phonetic.characters.forEach(charac => {
-                                    str += charac + '\n';
-                                });
-                            }
-
-                            let str2 = '';
-                            if (phonetic.sub_pronunciation !== undefined) {
-                                phonetic.sub_characters.forEach(charac => {
-                                    str2 += charac + '\n';
-                                })
-                            }
-
-                            return phonetic && (<div key={idx}>
-                                <Accordion>
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
-                                        <Typography>{phonetic.phonetic}</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <div>
-                                            Phonetic: <input type="text" defaultValue={phonetic.phonetic}
-                                                             style={{width: '25%'}}
-                                                             ref={input => this.state[phonetic._id + 'phonetic'] = input}/><br/>
-                                            Pronunciation: <input type="text" defaultValue={phonetic.pronunciation}
-                                                                  style={{width: '25%'}}
-                                                                  ref={input => this.state[phonetic._id + 'pronunciation'] = input}/><br/>
-                                            Characters:
-                                            <textarea name="characters" style={{overflowWrap: 'break-word'}}
-                                                      defaultValue={str} rows="7" cols="80" className="edit-input"
-                                                      ref={input => this.state[phonetic._id] = input}/>
-                                            {
-                                                phonetic.sub_pronunciation ?
-                                                    <div>
-                                                        Sub-Pronunciation: <input type="text"
-                                                                                  defaultValue={phonetic.sub_pronunciation}
-                                                                                  style={{width: '25%'}}
-                                                                                  ref={input => this.state[phonetic._id + 'sub-pronunciation'] = input}/><br/>
-                                                        Sub-Characters:
-                                                        <textarea name="main-text" style={{overflowWrap: 'break-word'}}
-                                                                  defaultValue={str2} rows="7" cols="90" className="edit-input"
-                                                                  ref={input => this.state[phonetic._id + 'sub-characters'] = input}/>
-                                                    </div> : ''
-                                            }
-                                            <br/><br/>
-                                            <Button style={{
-                                                marginRight: '4px',
-                                                backgroundColor: '#00284d',
-                                                color: 'white',
-                                                width: '20%'
-                                            }} onClick={() => this.saveNewPhonetics(phonetic._id)}>SAVE</Button>
-                                            <Button style={{
-                                                marginRight: '4px',
-                                                backgroundColor: '#f6152f',
-                                                color: 'white',
-                                                width: '20%'
-                                            }}
-                                                    onClick={() => this.deleteNewPhonetics(phonetic._id, phonetic.phonetic)}>DELETE</Button>
-                                        </div>
-                                    </AccordionDetails>
-                                </Accordion>
-                                <br/>
-                            </div>
-                        )
-                        })
-                    }
-                </div>
-                }
-
-
-                {this.state.tabValue === 3 &&
-                <div className="edit-lesson-background">
-                    <h2>New 한자 Combos</h2>
                     <Divider/><br/>
                     <Modal
                         open={isNewHanjaComboModalOpen}
