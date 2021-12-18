@@ -10,3 +10,28 @@
     padding: 16px;
     background-color: whitesmoke;
 }
+
+.ir-EditOkpyeon-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 450px;
+    border: '2px solid #000';
+    background: white;
+    padding: 16px;
+    border-radius: 4px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.ir-EditOkpyeon-modal label {
+    display: block;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.ir-EditOkpyeon-header {
+    display: flex;
+    justify-content: space-between;
+}

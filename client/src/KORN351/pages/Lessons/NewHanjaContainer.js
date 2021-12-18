@@ -21,7 +21,7 @@ class NewHanjaContainer extends Component {
 
     componentWillMount() {
         const reloadCount = sessionStorage.getItem('reloadCount');
-        if(reloadCount < 2) {
+        if(reloadCount < 1) {
             sessionStorage.setItem('reloadCount', String(reloadCount + 1));
             window.location.reload();
         } else {
@@ -74,7 +74,7 @@ class NewHanjaContainer extends Component {
         return (
             <div style={{display: "flex"}}>
                 <div className="new-hanja">
-                    <h3 style={{paddingBottom: 10}}>새 한자</h3>
+                    <h3 style={{paddingBottom: 10}}>새 漢字</h3>
                     <div>
                         <h4 style={{textAlign: 'left', width: "50%"}}>
                             제 {this.state.currentLesson} 과

@@ -7,6 +7,7 @@ import {updateDrawerSize} from '../../actions/KORN410/dashboard';
 import {toggleSideBar} from "../../actions/KORN410/sideBar";
 import SideBarButton from './common/sideBarButton';
 import { Button, Menu, MenuItem } from '@material-ui/core';
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import './style/navbar.css';
 
@@ -103,7 +104,7 @@ class Navbar extends Component {
                     <SideBarButton toggleDrawer={this.toggleDrawer} isDisabled={this.props.sideBar.isButtonDisabled}/>
                     <div className="container">
                         <Link className="navbar-brand" to="/dashboard/KORN351">
-                            Interline Reader
+                            <span className="nav-link-bg">Interline Reader</span>
                         </Link>
                         <button
                             className="navbar-toggler"
@@ -111,7 +112,8 @@ class Navbar extends Component {
                             data-toggle="collapse"
                             data-target="#mobile-nav"
                         >
-                            <span className="navbar-toggler-icon" />
+                            {/*<span className="navbar-toggler-icon" />*/}
+                            <span><ExpandMoreIcon/></span>
                         </button>
                         <div className="collapse navbar-collapse" id="mobile-nav">
                             <ul className="navbar-nav mr-auto">
@@ -127,18 +129,18 @@ class Navbar extends Component {
                                 {/*</li>*/}
                                 <li className="nav-item">
                                     <Link className={currentPath==="/dashboard/KORN351"? "selected-navbar": "nav-link"} to="/dashboard/KORN351">
-                                        KORN 351
+                                        <span className="nav-link-bg">KORN 351</span>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className={currentPath==="/about"? "selected-navbar": "nav-link"} to="/about">
-                                        About
+                                        <span className="nav-link-bg">About</span>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className={currentPath === "/KORN351/tutorial" ? "selected-navbar" : "nav-link"}
                                               to="/KORN351/tutorial">
-                                        Tutorial
+                                        <span className="nav-link-bg">Tutorial</span>
                                     </Link>
                                 </li>
                                 {/*{(Object.keys(user).length>=1 && !user.isStudent) && (*/}
@@ -148,7 +150,9 @@ class Navbar extends Component {
                                 {/*}*/}
                                 {(Object.keys(user).length>=1 && !user.isStudent) && (
                                     <li className="nav-item">
-                                        <Link className={currentPath.includes("/instructor351/editLesson")? "selected-navbar": "nav-link"} to="/instructor351/editLesson"> 351 Instructor Panel</Link>
+                                        <Link className={currentPath.includes("/instructor351/editLesson")? "selected-navbar": "nav-link"} to="/instructor351/editLesson">
+                                            <span className="nav-link-bg">351 Instructor Panel</span>
+                                        </Link>
                                     </li>)
                                 }
                             </ul>
@@ -172,10 +176,10 @@ const mapStateToProps = state => ({
     sideBar: state.sideBar
 });
 
-const mapDispatchToPRops = {
+const mapDispatchToProps = {
     logoutUser,
     toggleSideBar,
     updateDrawerSize
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToPRops)(Navbar));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

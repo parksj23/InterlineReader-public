@@ -1,20 +1,61 @@
 .selected-navbar {
-    color: rgba(255,255,255,.85);
-    border-bottom: 1px solid dodgerblue;
+    /*color: rgba(255,255,255,.85);*/
+    /*border-bottom: 1px solid dodgerblue;*/
+    color: rgb(99, 89, 243);
+    border-bottom: 2px solid black;
     padding: .5rem .5rem;
     align-self: center;
     display: block;
+    font-weight: bold;
 }
 
 .selected-navbar:hover {
-    color: rgba(255,255,255,.85);
+    /*color: rgba(255,255,255,.85);*/
+    color: rgba(34, 1, 1, 0.85);
     text-decoration: none;
+}
+
+.nav-link {
+    /*color: green;*/
+    /*font-weight: bold;*/
+}
+
+.nav-link-bg {
+    background-color: rgba(233, 246, 228, 0.3);
+    background-size: 90%;
+    box-shadow: 0px 0px 10px 10px rgba(233, 246, 228, 0.3);
+    border-radius: 10%;
+    color: black;
+}
+
+.nav-link-bg:hover {
+    color: ghostwhite;
+    font-weight: bolder;
+    background-color: rgba(162, 192, 253, 0.3);
+    box-shadow: 0px 0px 10px 10px rgba(162, 192, 253, 0.3);
+    border-radius: 15%;
+
+}
+
+.navbar navbar-expand-md navbar-dark bg-dark {
+    width: 100vw;
+}
+
+.navbar-brand {
+    color: green;
+}
+
+.navbar-toggler {
+    color: lightyellow;
 }
 
 .footer {
     color: white;
     background-color: #333333;
     text-align: center;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
 
 .ir-Navbar-accountBtn span {

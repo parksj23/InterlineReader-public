@@ -4,12 +4,13 @@ import {withRouter} from 'react-router-dom';
 import './WordPower.css';
 import NavigatingButtons from "../../components/Lessons/NavigatingButtons/NavigatingButtons";
 import {getNewHanja} from "../../../actions/KORN351/Lessons";
+import {getNewHanjaCombos} from "../../../actions/KORN351/Lessons";
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Divider from "@material-ui/core/Divider";
 import Grid from '@material-ui/core/Grid';
-import {ButtonGroup, CircularProgress, FormControlLabel, Radio, RadioGroup, Switch, Tab, Tabs} from "@material-ui/core";
+import {CircularProgress, FormControlLabel, Radio, RadioGroup, Switch, Tab, Tabs} from "@material-ui/core";
 import axios from "axios";
 import Button from "@material-ui/core/Button";
 
@@ -18,6 +19,7 @@ class WordPower extends Component {
         super(props);
         this.state = {
             newHanja: [],
+            newHanjaCombos: [],
             currentLesson: this.props.match.params.lesson,
             wordPowerData: [],
             showLoading: false,
@@ -26,7 +28,10 @@ class WordPower extends Component {
             clickedWordTab: null,
             showTranslation: false,
             engChecked: false,
-            // noMoreYemun: false
+            showNewHanjaComboWords: true,
+            newHanjaComboWordsChecked: true,
+            showAllWords: false,
+            showAllWordsChecked: false
         }
     }
 
@@ -46,11 +51,25 @@ class WordPower extends Component {
                 }
             );
         }
+
+        if (this.props.newHanjaCombos.length === 0 || this.props.newHanjaCombos === undefined) {
+            this.props.getNewHanjaCombos().then(() => {
+                    const currLesson = this.props.match.params.lesson;
+
+                    let temp = this.props.newHanjaCombos.filter(combo => {
+                        return combo.lesson === currLesson
+                    });
+                    this.setState({
+                        newHanjaCombos: temp
+                    })
+                }
+            );
+        }
     }
 
     componentWillMount() {
         const reloadCount = sessionStorage.getItem('reloadCount');
-        if (reloadCount < 2) {
+        if (reloadCount < 1) {
             sessionStorage.setItem('reloadCount', String(reloadCount + 1));
             window.location.reload();
         } else {
@@ -67,6 +86,17 @@ class WordPower extends Component {
                 newHanja: temp
             });
         }
+
+        if (this.state.newHanjaCombos.length === 0) {
+            const currLesson = this.props.match.params.lesson;
+
+            let temp = this.props.newHanjaCombos.filter(combo => {
+                return combo.lesson === currLesson
+            });
+            this.setState({
+                newHanjaCombos: temp
+            });
+        }
     }
 
     getWordPowerYemunData = (id) => {
@@ -77,9 +107,9 @@ class WordPower extends Component {
         })
             .then((response) => {
                 const data = response.data;
-                // console.log("The wordpower data from the backend");
+                // console.log("the data");
                 // console.log(data);
-                this.setState({wordPowerData: data});
+                this.setState({wordPowerData: data.wordPowerList});
                 this.setState({showLoading: false});
             })
             .catch(() => {
@@ -103,7 +133,6 @@ class WordPower extends Component {
         this.setState({showTranslation: false, engChecked: false});
         this.setState({clickedWord: {id: "null"}});
         this.setState({clickedWordTab: null});
-        // console.log("omw to get wordpower data");
         this.getWordPowerYemunData(event.currentTarget.id);
     }
 
@@ -111,7 +140,6 @@ class WordPower extends Component {
         this.setState({clickedWord: event.currentTarget, clickedWordTab: value});
         this.setState({examplesTabValue: "simple", yemunCount: 1});
         this.setState({showTranslation: false, engChecked: false});
-        // console.log(event.currentTarget);
     }
 
     handleClickMoreYemun = () => {
@@ -119,20 +147,16 @@ class WordPower extends Component {
         this.setState({showTranslation: false, engChecked: false});
     }
 
-    // setNoMoreYemun = (idx, arr) => {
-    //     this.setState(({noMoreYemun: !this.state.noMoreYemun}));
-    // }
-
     filterWordPowerData = (clickedWordIdPosition, char) => {
         return this.state.wordPowerData.filter((item) => {
-            if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
+            if (!item.hanqca.trim().normalize('NFC').includes(char.hanja.replace(/\s/g, '').trim().normalize('NFC'))) {
                 return false;
             }
             return true;
         }).filter((i) => {
             let clickedWordId = this.state.clickedWord.id.split("!!!");
             if (clickedWordIdPosition === 0) {
-                if (clickedWordId[clickedWordIdPosition] !== i.hanqca) {
+                if (clickedWordId[clickedWordIdPosition].trim().normalize('NFC') !== i.hanqca.trim().normalize('NFC')) {
                     return false;
                 }
                 return true;
@@ -152,8 +176,29 @@ class WordPower extends Component {
         })
     }
 
+    handleToggleNewHanjaCombos = () => {
+        this.setState({
+            showNewHanjaComboWords: !this.state.showNewHanjaComboWords,
+            newHanjaComboWordsChecked: !this.state.newHanjaComboWordsChecked
+        });
+        this.setState({showAllWords: false, showAllWordsChecked: false});
+        this.setState({clickedWord: {id: "null"}});
+        this.setState({clickedWordTab: null});
+    }
+
+    handleToggleShowAllWords = () => {
+        this.setState({
+            showAllWords: !this.state.showAllWords,
+            showAllWordsChecked: !this.state.showAllWordsChecked
+        });
+        this.setState({showNewHanjaComboWords: false, newHanjaComboWordsChecked: false});
+        this.setState({clickedWord: {id: "null"}});
+        this.setState({clickedWordTab: null});
+    }
+
     render() {
         const {newHanja} = this.state;
+        const {newHanjaCombos} = this.state;
 
         return (
             <Grid container>
@@ -191,13 +236,13 @@ class WordPower extends Component {
                                         wrapped
                                     >
                                         {newHanja.map((hanjaTab) => {
-                                            let tabId = hanjaTab.hanja.replace(/\s/g, '').trim();
+                                            let tabId = hanjaTab.hanja.replace(/\s/g, '').trim().normalize('NFC');
                                             return (
                                                 <Tab
                                                     id={tabId}
                                                     label={
                                                         <React.Fragment>
-                                                            {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
+                                                            {hanjaTab.hoonEum.split(" ")[0]} {hanjaTab.hanja.trim().normalize('NFC')}({hanjaTab.hoonEum.split(" ")[1]}) &nbsp;&nbsp;
                                                         </React.Fragment>
                                                     }
                                                 />
@@ -215,21 +260,37 @@ class WordPower extends Component {
                                 </Grid>
                             ) : (
                                 newHanja.map((char, idx) => {
-                                    if (this.state.clickedHanja.id === char.hanja.replace(/\s/g, '').trim()) {
+                                    if (this.state.clickedHanja.id.trim().normalize('NFC') === char.hanja.replace(/\s/g, '').trim().normalize('NFC')) {
                                         return (
                                             <Grid item xs={12} className="word-power-grid-card" key={idx}>
                                                 <Card variant="outlined" className="word-power-card">
                                                     <CardContent className="word-power-card-content">
                                                         <div className="word-power-card-div-1">
                                                             <Typography variant="h5" component="h2">
-                                                                {char.hoonEum.split(" ")[0]} {char.hanja}({char.hoonEum.split(" ")[1]})
+                                                                {char.hoonEum.split(" ")[0]} {char.hanja.trim().normalize('NFC')}({char.hoonEum.split(" ")[1]})
                                                             </Typography>
                                                             <Typography color="textSecondary" gutterBottom>
                                                                 부수: {char.radical} &nbsp; ({char.radicalHangul})
                                                                 + {char.characterStrokeCount}획
                                                             </Typography>
                                                         </div>
-                                                        <br/>
+                                                        <Divider style={{marginBottom: "0.5rem"}}/>
+                                                        <div className="word-power-card-div-1.5-combo-toggle">
+                                                            <FormControlLabel
+                                                                onChange={this.handleToggleNewHanjaCombos}
+                                                                checked={this.state.newHanjaComboWordsChecked}
+                                                                value="combos"
+                                                                control={<Switch/>}
+                                                                label="漢字 combos only"/>
+                                                            <br/>
+                                                            <FormControlLabel
+                                                                onChange={this.handleToggleShowAllWords}
+                                                                checked={this.state.showAllWordsChecked}
+                                                                value="all-words"
+                                                                control={<Switch/>}
+                                                                label="All words"/>
+                                                        </div>
+                                                        <Divider style={{marginBottom: "0.5rem"}}/>
                                                         <div className="word-power-card-div-2">
                                                             {this.state.wordPowerData.length === 0 ? (
                                                                 <Grid item xs={12}>
@@ -245,37 +306,29 @@ class WordPower extends Component {
                                                                     onChange={this.handleOnClickWord}
                                                                     indicatorColor="secondary"
                                                                     textColor="primary"
-                                                                    // centered
-                                                                    style={{padding: '1%'}}
+                                                                    style={{padding: '1%', width: '100%'}}
                                                                     orientation="vertical"
                                                                     key={"Tab" + this.state.clickedWordTab}
                                                                     wrapped
                                                                 >
-                                                                    {this.state.wordPowerData.filter((item) => {
-                                                                        if (!item.hanqca.includes(char.hanja.replace(/\s/g, '').trim())) {
+
+                                                                    {this.state.showAllWords === true &&
+                                                                    this.state.wordPowerData.filter((item) => {
+                                                                        if (!item.hanqca.trim().normalize('NFC').includes(char.hanja.replace(/\s/g, '').trim().normalize('NFC'))) {
                                                                             return false;
                                                                         }
                                                                         return true;
                                                                     }).map((wordTab, idx) => {
                                                                         return (
                                                                             <Tab
-                                                                                id={wordTab.hanqca + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                id={wordTab.hanqca.trim().normalize('NFC') + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
                                                                                 label={
-                                                                                    // <div className="wordTab-label-flexbox">
-                                                                                    //     <React.Fragment>
-                                                                                    //         {wordTab.hanqca}({wordTab.hankul})
-                                                                                    //     </React.Fragment>
-                                                                                    //     <br/>
-                                                                                    //     <React.Fragment>
-                                                                                    //         {wordTab.englishGloss}
-                                                                                    //     </React.Fragment>
-                                                                                    // </div>
                                                                                     <div
                                                                                         className="wordTab-label-flexbox">
                                                                                         <div
                                                                                             className="wordTab-label-flexbox-1">
                                                                                             <React.Fragment>
-                                                                                                {wordTab.hanqca}({wordTab.hankul})
+                                                                                                {wordTab.hanqca.trim().normalize('NFC')}({wordTab.hankul})
                                                                                             </React.Fragment>
                                                                                         </div>
                                                                                         <div
@@ -289,6 +342,42 @@ class WordPower extends Component {
                                                                             />
                                                                         )
                                                                     })}
+
+                                                                    {this.state.showNewHanjaComboWords === true &&
+                                                                    this.state.wordPowerData.reduce((filteredResult, item) => {
+                                                                        newHanjaCombos.forEach(combo => {
+                                                                            if (item.hanqca.trim().normalize('NFC').includes(combo.hanja.replace(/\s/g, '').trim().normalize('NFC'))) {
+                                                                                if (filteredResult.indexOf(item) === -1) {
+                                                                                    filteredResult.push(item);
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                        return filteredResult;
+                                                                    }, []).map(wordTab => {
+                                                                            return (
+                                                                                <Tab
+                                                                                    id={wordTab.hanqca.trim().normalize('NFC') + "!!!" + wordTab.hankul + "!!!" + wordTab.englishGloss}
+                                                                                    label={
+                                                                                        <div
+                                                                                            className="wordTab-label-flexbox">
+                                                                                            <div
+                                                                                                className="wordTab-label-flexbox-1">
+                                                                                                <React.Fragment>
+                                                                                                    {wordTab.hanqca.trim().normalize('NFC')}({wordTab.hankul})
+                                                                                                </React.Fragment>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                className="wordTab-label-flexbox-2">
+                                                                                                <React.Fragment>
+                                                                                                    {wordTab.englishGloss}
+                                                                                                </React.Fragment>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    }
+                                                                                />
+                                                                            )
+                                                                        })
+                                                                    }
                                                                 </Tabs>
                                                             )}
                                                         </div>
@@ -361,7 +450,6 @@ class WordPower extends Component {
                                                                                         }
 
                                                                                         if (idx + 1 === arr.length) {
-                                                                                            // this.setNoMoreYemun(idx, arr);
                                                                                             return (
                                                                                                 (idx === this.state.yemunCount - 1) &&
                                                                                                 <div key={idx}>
@@ -379,16 +467,6 @@ class WordPower extends Component {
                                                                                                 </div>
                                                                                             )
                                                                                         }
-
-                                                                                        // return (
-                                                                                        //     (this.state.noMoreYemun === true) &&
-                                                                                        //     <div
-                                                                                        //         className="no-more-yemun-msg">
-                                                                                        //         <Typography>
-                                                                                        //             예문이 없습니다.
-                                                                                        //         </Typography>
-                                                                                        //     </div>
-                                                                                        // )
                                                                                     }
                                                                                 )}
                                                                             </ul>
@@ -550,18 +628,9 @@ class WordPower extends Component {
 const
     mapStateToProps = (state) => {
         return {
-            newHanja: state.lessons.newHanja
+            newHanja: state.lessons.newHanja,
+            newHanjaCombos: state.lessons.newHanjaCombos
         };
     };
 
-export default withRouter(connect
-
-    (
-        mapStateToProps
-        , {
-            getNewHanja
-        }
-    )
-    (WordPower)
-)
-;
+export default withRouter(connect(mapStateToProps, {getNewHanja, getNewHanjaCombos})(WordPower));

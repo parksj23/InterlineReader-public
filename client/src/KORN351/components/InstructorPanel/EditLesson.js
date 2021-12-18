@@ -20,8 +20,11 @@ import WordPower from '../InstructorPanel/WordPower/WordPower';
 import "./EditLesson.css";
 import Divider from "@material-ui/core/Divider/Divider";
 import {getPhonetics} from "../../../actions/KORN351/Okpyeon";
-import {Accordion, AccordionDetails, AccordionSummary, Tab, Tabs, Typography} from "@material-ui/core";
+import {Accordion, AccordionDetails, AccordionSummary, Box, Modal, IconButton, Tab, Tabs, Typography} from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import PlusIcon from '@material-ui/icons/Add';
+import axios from "axios";
+
 
 class EditLesson extends Component {
     constructor(props) {
@@ -36,7 +39,9 @@ class EditLesson extends Component {
             newHanjaCombos: [],
             newVocabMainText: [],
             newVocabExampleSentences: [],
-            newExampleSent: {num: [], sentences: []}
+            newExampleSent: {num: [], sentences: []},
+            isNewBusuModalOpen: false,
+            newAboutNewBusu: {}
         };
     }
 
@@ -92,7 +97,7 @@ class EditLesson extends Component {
             this.props.getPhonetics().then(() => {
 
                     let temp = this.props.phonetics.filter(phonetic => {
-                        return phonetic.lesson || "".toString() === lesson
+                        return (phonetic.lesson || "").toString() === lesson
                     });
                     this.setState({
                         phonetics: temp
@@ -209,6 +214,27 @@ class EditLesson extends Component {
         }
     }
 
+    createNewBusu = () => {
+        const { newAboutNewBusu, lesson } = this.state;
+        if (newAboutNewBusu.examples) {
+            newAboutNewBusu.examples = newAboutNewBusu.examples.split('\n').map(c => c.trim()).map(c => {
+                const [word, def] = c.split(':');
+                return { word: word.trim(), def: def.trim() };
+            });
+        }
+        newAboutNewBusu.lesson = lesson;
+
+        axios({
+            method: 'POST',
+            data: newAboutNewBusu,
+            url: '/api/instructor351/addAboutNewBusu'
+        }).then(res => {
+            newAboutNewBusu._id = res.data;
+            this.setState(prevState => ({ aboutNewBusu: [newAboutNewBusu, ...prevState.aboutNewBusu] }));
+            this.onNewBusuAddModalToggle();
+        });
+    };
+
     saveNewBusu = (id) => {
         let characters = this.state[id].value.split("\n");
         characters = characters.filter(ex => {
@@ -261,6 +287,10 @@ class EditLesson extends Component {
             alert(phonetic + " has NOT been deleted.");
         }
     };
+
+    onNewBusuAddModalToggle = () => {
+        this.setState(prevState => ({ isNewBusuModalOpen: !prevState.isNewBusuModalOpen, newAboutNewBusu: {} }));
+    }
 
     saveNewHanjaCombo = (id) => {
         let hanja = this.state[id + 'hanja'].value.trim();
@@ -315,7 +345,9 @@ class EditLesson extends Component {
             newHanjaCombos,
             lesson,
             newVocabMainText,
-            newVocabExampleSentences
+            newVocabExampleSentences,
+            isNewBusuModalOpen,
+            newAboutNewBusu
         } = this.state;
 
         let newVocabMainTextStr = '';
@@ -342,8 +374,8 @@ class EditLesson extends Component {
                         onChange={this.handleOnChangeTab}
                         indicatorColor="primary"
                         textColor="primary"
-                        centered
                         style={{padding: '2%'}}
+                        variant="scrollable"
                     >
                         <Tab label="Main Lesson"/>
                         <Tab label="새 부수에 대하여"/>
@@ -511,7 +543,41 @@ class EditLesson extends Component {
 
                 {this.state.tabValue === 1 &&
                 <div className="edit-lesson-background">
-                    <h2>새 부수에 대하여</h2>
+                    <div className="ir-EditOkpyeon-header">
+                        <h2>새 부수에 대하여</h2>
+                        <IconButton size="medium" onClick={this.onNewBusuAddModalToggle} className="primary-button" variant="contained"><PlusIcon /></IconButton>
+                    </div>
+                    <Modal
+                        open={isNewBusuModalOpen}
+                        onClose={this.onNewBusuAddModalToggle}
+                    >
+                        <Box className="ir-EditOkpyeon-modal">
+                            <Typography variant="h6" component="h6">Add Hanja Character</Typography>
+                            <label>Word:</label>
+                            <input type="text" placeholder="Type Word.." style={{width: 400}} onChange={event => newAboutNewBusu.word = event.target.value}/>
+                            <br />
+                            <label>Definition:</label>
+                            <textarea placeholder="Type Definition.." style={{width: 400}} rows="3"
+                                onChange={event => newAboutNewBusu.def = event.target.value}></textarea>
+                            <br />
+                            <label>Busu:</label>
+                            <input type="text" placeholder="Type Busu.." style={{width: 400}} onChange={event => newAboutNewBusu.busu = event.target.value}/>
+                            <br />
+                            <label>Description:</label>
+                            <textarea placeholder="Type Description.." style={{width: 400}} onChange={event => newAboutNewBusu.desc = event.target.value}></textarea>
+                            <br />
+                            <label>Examples:</label>
+                            <textarea placeholder="Type examples separated by new line in the format word:definition" style={{width: 400}} onChange={event => newAboutNewBusu.examples = event.target.value}></textarea>
+                            <br /><br />
+                            <Button style={{
+                                marginRight: '4px',
+                                backgroundColor: '#00284d',
+                                color: 'white',
+                                width: '20%'
+                            }} onClick={this.createNewBusu}>Create</Button>
+                            <Button variant="contained" onClick={this.onNewBusuAddModalToggle}>Cancel</Button>
+                        </Box>
+                    </Modal>
                     <Divider/><br/>
                     {
                         aboutNewBusu.map(busu => {

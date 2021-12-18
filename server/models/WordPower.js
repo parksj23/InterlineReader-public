@@ -6,7 +6,9 @@ const WordPowerSchema = new Schema({
 	hanqca: { type: String },
 	hankul: { type: String },
 	englishGloss: { type: String },
-	hanqcaMatch: { type: Array, default: [] }
+	hanqcaMatch: { type: Array, default: [] },
+	createdDate: { type: Date, required: true, default: Date.now },
+	lastUpdated: { type: Date, required: true, default: Date.now },
 }, { toJSON: { virtuals: true, getters: true }});
 // }, { toJSON: { virtuals: true, getters: true }, collection: "wordpowerTEST"});
 

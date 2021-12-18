@@ -4,8 +4,7 @@ img {
 
 .landing {
   position: relative;
-  background: url('./img/showcase.jpg') no-repeat;
-  background-size: cover;
+  background-image: url("./assets/graphic design/tancheng lattice.jpg");
   background-position: center;
   height: 100vh;
   margin-bottom: -50px;
@@ -16,7 +15,7 @@ img {
 }
 
 .dark-overlay {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
   position: absolute;
   top: 0;
   left: 0;
@@ -69,4 +68,10 @@ footer {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+}
+
+.navbar {
+  background-image: url('./assets/graphic design/tancheong[1].whole.garo.white.cropped.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }

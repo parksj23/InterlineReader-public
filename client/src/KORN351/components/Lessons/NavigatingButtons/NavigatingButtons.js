@@ -11,9 +11,9 @@ const NavigatingButtons = (props) => {
     return (
         <div className='translateContainer' >
             <Link to={"/dashboard/KORN351/lesson/" + currLesson}>
-                <Tooltip title="Back to story" placement="left" style={{backgroundColor: '#00284d'}}>
+                <Tooltip title="Back to 본문" placement="left" style={{backgroundColor: '#00284d'}}>
                     <Fab color="primary" className="fab">
-                        Story
+                        본문
                     </Fab>
                 </Tooltip>
             </Link>

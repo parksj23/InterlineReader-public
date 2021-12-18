@@ -5,14 +5,24 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import '../style/instructorMenu.css'
 
 const drawerWidth = 200;
 
 const styles = theme => ({
     root: {
-        display: 'flex',
-        height: '100%',
-        background: '#c0d0e5'
+        // display: 'flex',
+        // height: '100%',
+        // background: '#c0d0e5'
+        display: 'inline-block',
+        height: '100vh',
+        // background: '#c0d0e5',
+        // backgroundImage: '../../../assets/graphic design/tancheong[1].whole.sero.no.white.jpg',
+        width: '100%',
+        overflowX: "auto",
+        color: "black",
+        fontWeight: "bolder",
+        fontFamily: "Arial"
     },
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
@@ -88,6 +98,7 @@ class InstructorMenu extends React.Component {
 
         // Original: <ListItem ... disabled={this.props.isLoading}
         return (
+            <div className="instructor-menu-bg-image">
             <div className={classes.root}>
                 <List>
                     <ListItem button key={'editLessons'}
@@ -131,6 +142,7 @@ class InstructorMenu extends React.Component {
                     </ListItem>
 
                 </List>
+            </div>
             </div>
         );
     }
